@@ -1,0 +1,92 @@
+[comment {-*- mode: tcl ; fill-column: 90 -*- doctools manpage}]
+[vset VERSION 0.5.0]
+[manpage_begin mkdoc n [vset VERSION]]
+[copyright {2020-2022, Detlef Groth <detlef(at)dgroth(dot)de>}]
+[moddesc   {Literate programming using Tcl}]
+[titledesc {Evaluate embedded Tcl code in Markdown or LaTeX documents}]
+[category  {Text processing}]
+[description]
+
+This document describes [cmd tmdoc], an application to evaluate embedded Tcl code documents
+of Markup languages like Markdown and LaTeX for literate programming.
+
+[section {Command Line}]
+
+[list_begin definitions]
+
+[call [cmd tmdoc] [option --help]]
+
+The application prints a short help to standard output and exits.
+
+[call [cmd tmdoc] [option --version]]
+
+The application prints its version number to standard output and exits.
+
+[call [cmd tmdoc] [option --license]]
+
+The application prints its license to standard output and exits.
+
+[call [cmd tmdoc] [arg input] [opt [arg output]] [opt "[option --mode] [arg weave|tangle]"]]
+
+The application reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
+the resulting output to the [arg output] file if such is given or to stdout if [arg output] is missing,
+this is the default mode [arg weave]. 
+
+[para] If as [option --mode] [arg tangle] is given, the Tcl code in
+code chunks is extracted but not evaluated.
+
+[list_end]
+
+[section Examples]
+
+[example {
+    # Evaluate and add the Tcl output in code chunks in a Markdown [ file .tmd] file
+    # andd write the document to a standard Markdown file, ready to be processed
+    # further, for example with pandoc, or similar with mkdoc into for instance a [file .html]
+    # file.
+    tmdoc sample.tmd sample.md
+
+    # Extract the Tcl code from the [file .tmd] file into a Tcl file, ready to
+    # be checked and evaluated separately by a Tcl interpreter
+    tmdoc sample.tmd sample.tcl --mode weave 
+}]
+
+[section "Bugs, Ideas, Feedback"]
+
+This document, and the package it describes, will undoubtedly contain bugs and
+other problems. Please report such to the author of this package. Please also report any ideas for enhancements you may have for
+either package and/or documentation.
+
+[section "Code Copyright"]
+
+BSD License type:
+
+[para] The following terms apply to all files a ssociated with the software unless
+explicitly disclaimed in individual files.
+
+[para] The authors hereby grant permission to use, copy, modify, distribute, and license
+this software and its documentation for any purpose, provided that existing copyright
+notices are retained in all copies and that this notice is included verbatim in any
+distributions. No written agreement, license, or royalty fee is required for any of the
+authorized uses.  Modifications to this software may be copyrighted by their authors and
+need not follow the licensing terms described here, provided that the new terms are
+clearly indicated on the first page of each file where they apply.
+
+[para] In no event shall the authors or distributors be liable to any party for direct,
+indirect, special, incidental, or consequential damages arising out of the use of this
+software, its documentation, or any derivatives thereof, even if the authors have been
+advised of the possibility of such damage.
+
+[para] The authors and distributors specifically disclaim any warranties, including, but
+not limited to, the implied warranties of merchantability, fitness for a particular
+purpose, and non-infringement.
+
+This software is provided on an "as is" basis, and the authors and distributors have no
+obligation to provide maintenance, support, updates, enhancements, or modifications.
+
+[para] [strong {RESTRICTED RIGHTS}]: Use, duplication or disclosure by the government is
+subject to the restrictions as set forth in subparagraph (c) (1) (ii) of the Rights in
+Technical Data and Computer Software Clause as DFARS 252.227-7013 and FAR 52.227-19.
+
+[vset CATEGORY tmdoc]
+[manpage_end]
