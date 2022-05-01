@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="Detlef Groth, Caputh-Schwielowsee, Germany" />
-  <meta name="dcterms.date" content="2022-05-01" />
-  <title>tmdoc::tmdoc 0.6 - Tcl Markdown processor tutorial</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="pandoc" name="generator"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport"/>
+<meta content="Detlef Groth, Caputh-Schwielowsee, Germany" name="author"/>
+<meta content="2022-05-01" name="dcterms.date"/>
+<title>tmdoc::tmdoc 0.6 - Tcl Markdown processor tutorial</title>
+<style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     span.underline{text-decoration: underline;}
@@ -16,8 +16,8 @@
     ul.task-list{list-style: none;}
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="tmdoc.css" />
-  <!--[if lt IE 9]>
+<link href="data:text/css,%0Abody%20%7B%0A%20%20%20%20padding%3A%2030px%3B%0A%20%20%20%20max-width%3A%201200px%3B%0A%20%20%20%20font%3A%20Alegreya%2C%20Georgia%2C%20serif%3B%0A%7D%0A%0Ah1.title%2C%20p.author%2C%20p.date%20%7B%0A%20%20%20%20text-align%3A%20center%3B%0A%7D%0Aa%20%7B%20text-decoration%3A%20none%20%3B%20%7D%0Apre%20%7B%0A%20%20%20%20padding%3A%2010px%20%3B%0A%20%20%20%20border-top%3A%202px%20solid%20%23CCCCCC%3B%0A%20%20%20%20border-bottom%3A%202px%20solid%20%23CCCCCC%3B%20%0A%20%20%20%20font%3A%20Monaco%2C%20monospace%3B%0A%7D%0Apre.tclcode%20%7B%0A%20%20%20%20background%3A%20cornsilk%3B%20%20%20%0A%7D%0Apre.tclout%20%7B%20%20%20%20%0A%20%20%20%20background%3A%20%23CCEEFF%3B%0A%7D%0Apre.tclerr%20%7B%20%20%20%20%0A%20%20%20%20background%3A%20%23FFCCCC%3B%0A%7D%0Apre.std%20%7B%0A%20%20%20%20background%3A%20%23efefef%3B%0A%7D%0A" rel="stylesheet"/><!--URL:tmdoc.css-->
+<!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
 </head>
@@ -58,16 +58,16 @@
 TMD --------&gt; MD ----------&gt; HTML/PDF/DOCX</code></pre>
 <p>Now the mandatory “Hello World!” example. If you embed the following text into your Markdown document, <em>tmdoc</em> will produce, after converting the document from Markdown to HTML, the following input (without the leading four spaces, nessessary here to avoid interpretation by <em>tmdoc</em>)</p>
 <pre class="std"><code>    ```{.tcl}
-    puts &quot;Hello World!&quot;
+    puts "Hello World!"
     ```</code></pre>
 <p>will produce this output:</p>
-<pre class="tclcode"><code>puts &quot;Hello World!&quot;</code></pre>
+<pre class="tclcode"><code>puts "Hello World!"</code></pre>
 <pre class="tclout"><code>Hello World!</code></pre>
 <p>Code block and/or the output can be as well hidden using chunk arguments, that will be described later in more detail. Short code fragments can be directly embedded into the text. Here an example for this approach:</p>
-<pre class="std"><code>The curent date and time is: `tcl clock format [clock seconds] -format &quot;%Y-%m-%d %H:%M&quot;`</code></pre>
+<pre class="std"><code>The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`</code></pre>
 <p>This is the output:</p>
-<p>The curent date and time is: 2022-05-01 11:00</p>
-<hr />
+<p>The curent date and time is: 2022-05-01 11:11</p>
+<hr/>
 <h2 id="short-tutorial"><a name="short">Short Tutorial</a></h2>
 <p>Now follows a short tutorial for the features of the <em>tmdoc</em> Markdown processor. For the code blocks the following color codes are used, grey is example Tcl code which is not evaluated by Tcl, it shows mainly how the code chunks looks in the Markdown document, in creme is Tcl code which is evaluated, in blue is the output of the creme tcl code before. Red code lines indicate code errors.</p>
 <p>So here again the color codes:</p>
@@ -94,16 +94,16 @@ set x</code></pre>
 <p>Only the last statement is returned. The arrow indicates the return value of the current code block. You should use <em>puts</em> if you need to output more than the last statement.</p>
 <h2 id="the-puts-statement"><a name="puts">The puts Statement</a></h2>
 <p>You can have several puts statements in your code which are printed before the final return value. The channel stdout is displayed as well in the results part. Also the <em>-nonewline</em> option can be used:</p>
-<pre class="tclcode"><code>puts &quot;Hello World 1&quot;
-puts &quot;Hello World 2&quot;
+<pre class="tclcode"><code>puts "Hello World 1"
+puts "Hello World 2"
 set x 3
-puts &quot;Hello World $x&quot;
-puts stdout &quot;Hello World [incr x]&quot;
-puts -nonewline &quot;Hello&quot;
-puts &quot; World [incr x]&quot;
-puts -nonewline stdout &quot;Hello&quot;
-puts stdout &quot; World [incr x]&quot;
-# let&#39;s reset x to one
+puts "Hello World $x"
+puts stdout "Hello World [incr x]"
+puts -nonewline "Hello"
+puts " World [incr x]"
+puts -nonewline stdout "Hello"
+puts stdout " World [incr x]"
+# let's reset x to one
 set x 1</code></pre>
 <pre class="tclout"><code>Hello World 1
 Hello World 2
@@ -114,22 +114,22 @@ Hello World 6
 ==&gt; 1</code></pre>
 <p>You can as well write into file channels as usually:</p>
 <pre class="tclcode"><code>set out [open file.ext w 0600]
-puts $out &quot;Hello File World!&quot;
+puts $out "Hello File World!"
 close $out
 # now display the content
 set filename file.ext
 if [catch {open $filename r} infh] {
-    puts stderr &quot;Cannot open $filename: $infh&quot;
+    puts stderr "Cannot open $filename: $infh"
     exit
 } else {
     while {[gets $infh line] &gt;= 0} {
-        puts stdout &quot;file: $line&quot;
+        puts stdout "file: $line"
     }   
 }</code></pre>
 <pre class="tclout"><code>file: Hello File World!</code></pre>
 <p>To supress any output, your last statment should return an empty string:</p>
 <pre class="tclcode"><code>set a 5
-set a &quot;&quot;</code></pre>
+set a ""</code></pre>
 <p>Alternatively you can supress the output at all by giving an option <code>results=hide</code> to the code chunk</p>
 <pre class="std"><code>    ```{.tcl results=hide}
     set a 1
@@ -141,11 +141,11 @@ set a &quot;&quot;</code></pre>
     set a 2
     ```
     
-   Our variable a has now a value of `tcl set a` although we don&#39;t know why as the programming code is hidden.</code></pre>
+   Our variable a has now a value of `tcl set a` although we don't know why as the programming code is hidden.</code></pre>
 <p>Our variable a has now a value of 2 although we don’t know why.</p>
 <p>This feature can be useful if you don’t want to show in a final version of a text document how the computation was done, but only the results of this computation within the text, for instance to display date and used Tcl packages as can be seen at the very end of this document.</p>
 <h2 id="inline-code"><a name="inline">Inline Code</a></h2>
-<pre class="std"><code>Let&#39;s look what is the value of x. The value of x is `tcl set x`. Is it one??</code></pre>
+<pre class="std"><code>Let's look what is the value of x. The value of x is `tcl set x`. Is it one??</code></pre>
 <p>Let’s look what is the value of x. The value of x is 1. Is it one??</p>
 <p>Yes it is!</p>
 <p>Now let’s try two times inline code on one line:</p>
@@ -155,7 +155,7 @@ set a &quot;&quot;</code></pre>
 <p>Let’s display errors of code blocks:</p>
 <pre class="tclcode"><code>set y 2
 set z</code></pre>
-<pre class="tclerr"><code>can&#39;t read &quot;z&quot;: no such variable</code></pre>
+<pre class="tclerr"><code>can't read "z": no such variable</code></pre>
 <p>Should given an error … It does!</p>
 <p>Now check for inline code errors in text:</p>
 <pre class="std"><code>This line contains an inline code error `tcl set z`!!</code></pre>
@@ -180,7 +180,7 @@ close $out</code></pre>
 <p>After creating the image we can display it inline using standard Markdown syntax:</p>
 <pre class="std"><code>  ![](out.png)</code></pre>
 <p>Shows the image:</p>
-<p><img src="out.png" /></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAJ0lEQVRYw+3JMQEAAAQAMNE15+USwPYuAmCqLY0xxhhjjDHmHuCPBqvQTNO295umAAAAAElFTkSuQmCC"/><!--URL:out.png--></p>
 <p>The last lines in the Tcl code above are slightly tedious if you need to repeat them again. So there is an alternative. Obviously you can create a <code>figure</code> procedure which gets one argument, a filename which is the file where the image should be written in.</p>
 <pre class="tclcode"><code>proc figure {filename} {
     set out [open $filename w 0600]
@@ -190,27 +190,27 @@ close $out</code></pre>
 }
 gd filled_rectangle 60 60 140 140 $blue
 figure out2.png</code></pre>
-<p><img src="out2.png" /></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVRYw+3WoREAIAwEwTjapmQ6AMcEhYzInvqZbeAjJCm33ybpKuvuQQghhBDykfrvQupFUp8ONEYjSIrDVwkAAAAASUVORK5CYII="/><!--URL:out2.png--></p>
 <p>That’s better, but you can even omit the figure call by specifiying <code>fig=true</code> as an additional code chunk option. Please note, that this still requires your implementation of the <code>figure</code> procedure with the <code>filename</code> argument. The following code block with automatically create the figure and embed it afterwards, the code itself (in the creme block) will be not shown as we specified <code>echo=false</code>:</p>
 <pre class="std"><code>    ```{tcl fig=true,echo=false}
     gd filled_rectangle 80 80 120 120 $white
     ```</code></pre>
-<p><img src="tmdoc-tutorial-chunk-13.png" /></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAPklEQVRYw+3WoQ0AIAxFwTrWZmQ2AEMIGGxF76kmZ79ohCTdzbdOqso4dyO1ZY+DEEI+siOVJf93IfkiqU4LLLgECjbU/KQAAAAASUVORK5CYII="/><!--URL:tmdoc-tutorial-chunk-13.png--></p>
 <p>Sometimes you don’t want this automatic embedding because you need to have more control over the placement of the image. To achieve this, you can specify the option <code>include=false</code> and include the image later. The problem is, that you are can’t be sure what the filename will be. Per default all code chunks and images will be named using a counter automatically for you. So your filename of the image which is derived from the code chunk name might later change if you add some code before of the current code. To fix this you have to add your own label to the code chunk as can be seen in the following example. This label will then be part of the image filename.</p>
 <pre class="std"><code>    ```{tcl label=myfig,fig=true,echo=false,include=false}
     gd filled_rectangle 90 90 110 110 $blue
     ```</code></pre>
 <p>We can now place the image where we like and we can place it also several times. The name of the file consists of the basename of the Markdown file and the label with the png extension. It is <code>basename-label.png</code>. So:</p>
-<pre class="std"><code>    ![](tmdoc-example-myfig.png) ![](tmdoc-example-myfig.png)</code></pre>
+<pre class="std"><code>    ![](tmdoc-tutorial-myfig.png) ![](tmdoc-tutorial-myfig.png)</code></pre>
 <p>gives us:</p>
-<p><img src="tmdoc-example-myfig.png" /> <img src="tmdoc-example-myfig.png" /></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVRYw+3WoQ0AIAxE0aJYm9EYiQ2oaQgY7In7XzV59kQjiIju9ttAXGWduyPeUuPwlhkNQT6i36hcKsRZ9L8Lohci8ikB9arVD1EgCFMAAAAASUVORK5CYII="/><!--URL:tmdoc-tutorial-myfig.png--> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVRYw+3WoQ0AIAxE0aJYm9EYiQ2oaQgY7In7XzV59kQjiIju9ttAXGWduyPeUuPwlhkNQT6i36hcKsRZ9L8Lohci8ikB9arVD1EgCFMAAAAASUVORK5CYII="/><!--URL:tmdoc-tutorial-myfig.png--></p>
 <h2 id="tk-samples-with-screenshots"><a name="screenshort">Tk samples with screenshots</a></h2>
 <p>We can also use screenshot applications to make screenshots of running Tk applications. So for instance on Unix systems the following code might work.</p>
 <pre class="std"><code>    ```{tcl}
     package require Tk
     toplevel .top
     wm title .top DGApp
-    pack [button .top.btn -text &quot;Canvas Demo 1a&quot; -command { exit 0 }] \
+    pack [button .top.btn -text "Canvas Demo 1a" -command { exit 0 }] \
        -padx 10 -pady 10 -fill x -expand false
     pack [canvas .top.c -background beige] \
        -padx 5 -pady 5 -side top -fill both -expand yes
@@ -241,7 +241,7 @@ set img [canvas::snap .c]
 $img write canvas.png -format png</code></pre>
 <pre class="std"><code>    ![ ](canvas.png)</code></pre>
 <p>shows the figure:</p>
-<p><img src="canvas.png" /></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAA0CAIAAACmb+mqAAAAA3NCSVQICAjb4U/gAAAAG3RFWHRTb2Z0d2FyZQBUayBUb29sa2l0IHY4LjYuMTAz2G6MAAAAaElEQVR4nO3PwQ2AMAADse4/I2v0XTbgQyWS4ugGiMec15GNzx+AgYFVBtYWWFs/ho3UbYCtFRcYWEhgYCGBgYUEBhYSGFhIYGAhgYGFBAYWEhhYSGCPsMy9hZUG1hZYW2BtgbV1LOwGZ2p/1yMhPFAAAAAASUVORK5CYII="/><!--URL:canvas.png--></p>
 <p>Ok, as this basically works let’s create as well a figure procedure which does the snap on the canvas.</p>
 <pre class="tclcode"><code>proc figure {filename} {
     set img [canvas::snap .c]
@@ -260,33 +260,33 @@ $img write canvas.png -format png</code></pre>
     .c create rectangle 65 65 85 70  -fill red
     ```
 
-    ![ ](tmdoc-example-rect.png) ![](tmdoc-example-rect.png)</code></pre>
+    ![ ](tmdoc-tutorial-rect.png) ![](tmdoc-tutorial-rect.png)</code></pre>
 <p>produces:</p>
 <pre class="tclcode"><code>.c create rectangle 65 65 85 70  -fill red</code></pre>
-<p><img src="tmdoc-example-rect.png" /> <img src="tmdoc-example-rect.png" /></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAA0CAIAAACmb+mqAAAAA3NCSVQICAjb4U/gAAAAG3RFWHRTb2Z0d2FyZQBUayBUb29sa2l0IHY4LjYuMTAz2G6MAAAAcklEQVR4nO3UsQ3AIBAEQfqv0W0Q4xYsg+x7mNPm/CS03q8ta79fAAYGVjKwaoFV62BYS90C2BhxgYGFBAYWEhhYSGBgIYEtgk0uGjbeBgYG9ui9PT+PzwIDCwkMLCSwM2GZm4UVDaxaYNUCqxZYtbaF3Yue0HiayL5tAAAAAElFTkSuQmCC"/><!--URL:tmdoc-tutorial-rect.png--> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAAA0CAIAAACmb+mqAAAAA3NCSVQICAjb4U/gAAAAG3RFWHRTb2Z0d2FyZQBUayBUb29sa2l0IHY4LjYuMTAz2G6MAAAAcklEQVR4nO3UsQ3AIBAEQfqv0W0Q4xYsg+x7mNPm/CS03q8ta79fAAYGVjKwaoFV62BYS90C2BhxgYGFBAYWEhhYSGBgIYEtgk0uGjbeBgYG9ui9PT+PzwIDCwkMLCSwM2GZm4UVDaxaYNUCqxZYtbaF3Yue0HiayL5tAAAAAElFTkSuQmCC"/><!--URL:tmdoc-tutorial-rect.png--></p>
 <h2 id="images-with-ukaz"><a name="ukaz">Images with ukaz</a></h2>
 <p>Let’s take an other example using the <em>ukaz</em> widget from Christian Gollwitzer available at: <a href="https://github.com/auriocus/ukaz">https://github.com/auriocus/ukaz</a>. Please note, that I had to add the following delegations to the graph widgetadaptor inside the source code of <code>ukaz.tcl</code> to get <code>canvas::snap</code> working:</p>
 <pre class="std"><code>delegate option * to hull
 delegate method * to hull</code></pre>
 <p>The project page has a readme, we now just convert a part of this readme to a Tcl Markdown document. Here the text from the Readme with some small modifications from my side:</p>
-<hr />
+<hr/>
 <p>The simplest usage looks like this:</p>
 <pre class="tclcode"><code>destroy .c ;# destroy old image example
 package require ukaz
 pack [ukaz::graph .c -xrange {0.8 4.2} -width 300 -height 300] -expand yes -fill both
 set data {1 4.5 2 7.3 3 1.8 4 6.5}
 .c plot $data </code></pre>
-<p><img src="tmdoc-tutorial-ukaz1.png" /></p>
+<p><img src="data:image/png;base64,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"/><!--URL:tmdoc-tutorial-ukaz1.png--></p>
 <p>This displays a resizable plot of the data, which is expected as a list of alternating x-y coordinates. The range of the axis, the number and placement of the the tic marks and the plot style is automatically chosen. The data can be zoomed in by dragging the left mouse button over the canvas, and zoomed out by clicking the right mouse button.</p>
 <p>The style of the plot can be adjusted by passing more options to the plot command, and by setting global options using either gnuplot-style commands or Tcl-style configure commands:</p>
 <pre class="tclcode"><code>destroy .c
 pack [ukaz::graph .c -xrange {0.8 4.2}] -expand yes -fill both
 set data {1 4.5 2 7.3 3 1.8 4 6.5}
-.c plot $data with points pointtype filled-squares color &quot;#A0FFA0&quot; 
+.c plot $data with points pointtype filled-squares color "#A0FFA0" 
 .c set log y</code></pre>
-<p><img src="tmdoc-tutorial-ukaz2.png" /></p>
+<p><img src="data:image/png;base64,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"/><!--URL:tmdoc-tutorial-ukaz2.png--></p>
 <p>This displays the same data with light-green squares on a logarithmic y-axis.</p>
-<hr />
+<hr/>
 <p>End of the readme part of the <em>ukaz</em> package. This example should show how easy Tcl Markdown can be used to document functions and usage of Tcl packages.</p>
 <h2 id="pandoc-compatible-code-syntax">Pandoc compatible code syntax</h2>
 <p>Since tmdoc version 0.5 as well Pandoc compatible code chunk options are supported. For instance spaces after the triple codes are ignored, and chunk options can be given space separated in addition to the comma separated approach.</p>
@@ -332,11 +332,11 @@ puts $x</code></pre>
 <li>tclgd 1.2</li>
 <li>ukaz 2.1</li>
 </ul>
-<p>Document was processed at: 2022-05-01 11:00</p>
-<p>Document processing was done within: 601 milliseconds.</p>
+<p>Document was processed at: 2022-05-01 11:12</p>
+<p>Document processing was done within: 592 milliseconds.</p>
 <p>Let’s destroy the Tk application at the end.</p>
 <p>TODO: Do this below automatically at the end !? Might be not good if it is loaded as package inside an application as this destroy probably as well the main application, not only the toplevel of the slave interpreter.</p>
 <pre class="tclcode"><code>after 10
 #destroy .</code></pre>
 </body>
-</html>
+</html><!--Generated by HTMLArk 2022-05-01 11:12:01.063681. Original URL tmdoc-tutorial.html-->

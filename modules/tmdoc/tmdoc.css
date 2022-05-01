@@ -2,11 +2,18 @@
 body {
     padding: 30px;
     max-width: 1200px;
+    font: Alegreya, Georgia, serif;
 }
+
+h1.title, p.author, p.date {
+    text-align: center;
+}
+a { text-decoration: none ; }
 pre {
     padding: 10px ;
     border-top: 2px solid #CCCCCC;
     border-bottom: 2px solid #CCCCCC; 
+    font: Monaco, monospace;
 }
 pre.tclcode {
     background: cornsilk;   
