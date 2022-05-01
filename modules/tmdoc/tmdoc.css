@@ -1,0 +1,22 @@
+
+body {
+    padding: 30px;
+    max-width: 1200px;
+}
+pre {
+    padding: 10px ;
+    border-top: 2px solid #CCCCCC;
+    border-bottom: 2px solid #CCCCCC; 
+}
+pre.tclcode {
+    background: cornsilk;   
+}
+pre.tclout {    
+    background: #CCEEFF;
+}
+pre.tclerr {    
+    background: #FFCCCC;
+}
+pre.std {
+    background: #efefef;
+}

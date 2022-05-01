@@ -1,0 +1,673 @@
+---
+title: tmdoc::tmdoc 0.6 - Tcl Markdown processor tutorial
+author:  Detlef Groth, Caputh-Schwielowsee, Germany
+date: `tcl clock format [clock seconds] -format "%Y-%m-%d"`
+output: 
+  pdf_document:
+    pandoc_args: "--highlight=pygments"
+---
+
+```{.tcl echo=false,results=hide}
+set start [clock milliseconds]
+lappend auto_path /home/groth/workspace/delfgroth/mytcl/libs
+```
+
+## <a name="abstract">Abstract</a>
+
+In the last years reproducible research has gained focus from the research
+community. It is a type of literate programming, introduced by Donald Knuth in
+1984, where code of a programming language is embedded with standard text
+documents, like LaTeX or Markdown documents. The code is evaluated and
+adds or replaces it's own code with teh code output. Alternatively the code chunks as well
+as the output result can be also hidden if needed. There exist several tools
+which allow this type of programming/documenting, for instance [knitr](https://yihui.name/knitr)  or
+[Sweave](https://en.wikipedia.org/wiki/Sweave). Knitr is an engine for dynamic report generation especially for the
+statistical language R but as well supports other programming languages such
+as for instance Python 3, Perl, Haskell, Ruby and more than 20 others with a few limitations.
+Embedding of Tcl in the knitr framework is somehow difficult as it has no command
+line option to evaluate Tcl code on the fly. There might be workarounds by
+creating a Tcl command line application which allows this. I thought however,
+that the Tcl programming as a mature highly dynamic scripting language
+invented by John Ousterhout in 1988, does not need a huge framework to support
+literate programming. Therefore I decided to implement a literate programming
+package for Tcl just based on standard Tcl which is called *tmdoc::tmdoc*, 
+short just *tmdoc*. In its current state *tmdoc* supports standard code chunks with options to display
+and hide code and code output, to embed inside text code evaluations and image
+creation. This basic subset of a literate programming environment should be
+sufficient to create nice technical and statistical reports, tutorials about
+Tcl packages and other types of documentation.
+
+## <a name="toc">Table of Contents</a>
+
+- [Introduction](#intro)
+- [Short Tutorial](#stut)
+- [Code Block](#block)
+- [The puts Statement](#puts)
+- [Inline Code](#inline)
+- [Error Handling](#errors)
+- [Writing Images](#images)
+    - [gdtcl](#images)
+    - [screenshot](#screenshot)
+    - [canvas](#canvas)
+    - [ukaz](#ukaz)
+- [Summary](#summary)
+- [Installation](#install)
+- [Processing Information](#process)
+
+## <a name="intro">Introduction</a>
+
+The Tcl package `tmdoc::tmdoc` which is both a standalone command line
+application and as well a Tcl package is a report generator and a literate
+programming tool for Tcl. It can capture the results and plots or images from
+data analysis and works well with other packages like Tk, or gdtcl. The
+current text is a short tutorial on how to do literate programming with Tcl
+using the package. Literate programming is a style of progamming where in a
+text document, shorter or longer code fragments of a programming language are
+embedded. The document is then "weaved", the programming code is replaced with
+it's output. The produced document can thereafter be further processed to other
+formats.The `tmdoc::tmdoc` package supports Markdown as documentation
+language. Using Markdown processors like `pandoc` or the Tcl package
+`Markdown` the output of the `tmdoc` processor can be converted finally to
+other document formats like pdf or html. 
+
+To give an example, below is the pipleine which was used to create the HTML document you are currently viewing:
+
+```{.std}
+$ tmdoc --mode weave tmdoc-tutorial.tmd - | \
+    pandoc -o tmdoc-tutorial.html -s --css tmdoc.css 
+```
+
+So basically the pipeline is the following:
+
+```{.std}
+      tmdoc        pandoc
+TMD --------> MD ----------> HTML/PDF/DOCX
+```
+
+Now the mandatory "Hello World!" example. If you embed the following text
+into your Markdown document, *tmdoc* will produce, after converting the document
+from Markdown to HTML, the following input (without the leading four spaces, nessessary here to avoid interpretation by *tmdoc*) 
+
+```{.std}
+    ```{.tcl}
+    puts "Hello World!"
+    ```
+```
+
+will produce this output:
+
+```{.tcl}
+puts "Hello World!"
+```
+
+Code block and/or the output can be as well hidden using chunk arguments, that
+will be described later in more detail. Short code fragments can be 
+directly embedded into the text. Here an example for this approach:
+
+```{.std}
+The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`
+```
+
+This is the output:
+
+The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`
+
+----
+
+## <a name="short">Short Tutorial</a>
+
+Now follows a short tutorial for the features of the *tmdoc* Markdown processor.
+For the code blocks the following color codes are used, grey is example Tcl
+code which is not evaluated by Tcl, it shows mainly how the code chunks looks in the Markdown document, in creme is Tcl code which is evaluated,
+in blue is the output of the creme tcl code before. Red code lines indicate code errors.
+
+So here again the color codes:
+
+```{.std}
+gray: code examples which are not evaluated within this document
+```
+
+```{.tclcode}
+creme: code examples which are evaluated by Tcl
+```
+
+```{.tclout}
+blue: result output of evaluated Tcl code
+```
+
+```{.tclerr}
+red: errors resulting from Tcl code evaluations
+```
+
+## <a name="block">Standard Code Block</a>
+
+Standard code block are started with three tickmarts at the beginning of a
+line and in curly brace the string tcl. Separated by a space might follow
+several evaluation options which will be described later in more detail.
+
+Here the Tcl-Markdown input (without the leading four spaces):
+
+```{.std}
+    ```{tcl echo=true}
+    set x 1
+    set a 1
+    set a
+    set x
+    ```
+```
+
+Please note that the indentation is neccessary only for the example here, as
+tmdoc is processing tmdoc inside tmdoc. So in fact there should be no four
+spaces at the beginning in your code.
+
+And here the resulting output:
+
+```{.tcl echo=true}
+set x 1
+set a 1
+set a
+set x
+```
+
+Only the last statement is returned. The arrow indicates the return value of
+the current code block. You should use *puts* if you need to output more than
+the last statement.
+
+
+## <a name="puts">The puts Statement</a>
+
+You can have several puts statements in your code which are printed
+before the final return value. The channel stdout is displayed as well in the
+results part. Also the *-nonewline* option can be used:
+
+```{.tcl echo=true}
+puts "Hello World 1"
+puts "Hello World 2"
+set x 3
+puts "Hello World $x"
+puts stdout "Hello World [incr x]"
+puts -nonewline "Hello"
+puts " World [incr x]"
+puts -nonewline stdout "Hello"
+puts stdout " World [incr x]"
+# let's reset x to one
+set x 1
+```
+
+You can as well write into file channels as usually:
+
+```{.tcl}
+set out [open file.ext w 0600]
+puts $out "Hello File World!"
+close $out
+# now display the content
+set filename file.ext
+if [catch {open $filename r} infh] {
+    puts stderr "Cannot open $filename: $infh"
+    exit
+} else {
+    while {[gets $infh line] >= 0} {
+        puts stdout "file: $line"
+    }   
+}
+```
+To supress any output, your last statment should return an empty string:
+
+```{.tcl echo=true}
+set a 5
+set a ""
+```
+
+Alternatively you can supress the output at all by giving an option `results=hide` to the code chunk
+
+```{.std}
+    ```{.tcl results=hide}
+    set a 1
+    ```
+```
+
+```{.tcl results=hide}
+set a 1
+```
+
+There is now no output with 1 here to see as we used chunk option `results=hide`.
+
+You can as well supress both showing the Tcl code and the output of the Tcl
+code by specifying `results=hide` and `echo=false` as shown in the following example:
+
+
+```{.std}
+    ```{tcl results=hide,echo=false}
+    set a 2
+    ```
+    
+   Our variable a has now a value of `tcl set a` although we don't know why as the programming code is hidden.
+```
+
+```{.tcl results=hide,echo=false}
+set a 2
+```
+    
+Our variable a has now a value of `tcl set a` although we don't know why.
+
+This feature can be useful if you don't want to show in a final
+version of a text document how the computation was done, but only the results
+of this computation within the text, for instance to display date and used Tcl packages as can be seen at the very end of this document.
+
+
+## <a name="inline">Inline Code</a>
+
+```{.std}
+Let's look what is the value of x. The value of x is `tcl set x`. Is it one??
+```
+
+Let's look what is the value of x. The value of x is `tcl set x`. Is it one??
+
+Yes it is!
+
+Now let's try two times inline code on one line:
+
+```{.std}
+The value of x is: `tcl incr x` and now `tcl incr x`!.
+```
+
+The value of x is: `tcl incr x` and now `tcl incr x`!. So also this works.
+Don't write too long Tcl statements directly in the text. You should perform
+your major computations in the code blocks. Please note as well, that the inline code chunks can't wrap over multiple lines. So opening and closing backtick must be on the same line.
+
+## <a name="errors">Error Handling</a>
+
+Let's display errors of code blocks:
+
+```{.tcl }
+set y 2
+set z
+```
+
+Should given an error ... It does!
+
+Now check for inline code errors in text:
+
+```{.std}
+This line contains an inline code error `tcl set z`!!
+```
+
+This line contains an inline code error `tcl set z`!!
+
+
+## <a name="images">Writing Images</a>
+
+Displaying images generated by Tcl code is as well possible. Here an example
+using the *tclgd* package which is available from the 
+[flightaware github page](https://github.com/flightaware/tcl.gd)
+
+
+We compile and then try to load the package:
+
+```{.tcl}
+lappend auto_path ../../libs
+package require tclgd
+package provide tclgd
+```
+
+Ok, this works on my machine, let's now create an image using *gdtcl*:
+
+```{.tcl}
+GD create gd 200 200
+set blue [gd allocate_color 50 50 100]
+set white [gd allocate_color 190 190 210]
+gd filled_rectangle 20 20 180 180 $blue
+gd filled_rectangle 40 40 160 160 $white
+set out [open out.png w 0600]
+fconfigure $out -translation binary -encoding binary
+gd write_png $out 7
+close $out
+```
+
+After creating the image we can display it inline using standard Markdown syntax:
+
+```{.std}
+  ![](out.png)
+```
+
+Shows the image:
+
+![ ](out.png)
+
+The last lines in the Tcl code above are slightly tedious if you need to repeat them again.
+So there is an alternative. Obviously you can create a `figure` procedure
+which gets one argument, a filename which is the file where the image should be written in.
+
+```{.tcl}
+proc figure {filename} {
+    set out [open $filename w 0600]
+    fconfigure $out -translation binary -encoding binary
+    gd write_png $out 7
+    close $out
+}
+gd filled_rectangle 60 60 140 140 $blue
+figure out2.png
+```
+
+![ ](out2.png)
+
+That's better, but you can even omit the figure call by specifiying `fig=true` as an additional code
+chunk option. Please note, that this still requires your implementation of the
+`figure` procedure with the `filename` argument. The following code block with automatically create the
+figure and embed it afterwards, the code itself (in the creme block) will be not shown as we specified `echo=false`:
+
+```{.std}
+    ```{tcl fig=true,echo=false}
+    gd filled_rectangle 80 80 120 120 $white
+    ```
+```
+
+```{.tcl fig=true,echo=false}
+gd filled_rectangle 80 80 120 120 $white
+```
+
+Sometimes you don't want this automatic embedding because you need to
+have more control over the placement of the image.
+To achieve this, you can specify the option `include=false` and include the image later.
+The problem is, that you are can't be sure what the filename will be. Per default
+all code chunks and images will be named using a counter automatically for
+you. So your filename of the image which is derived from the code chunk name
+might later change if you add some code before of the current code. To fix
+this you have to add your own label to the code chunk as can be seen in the
+following example. This label will then be part of the image filename.
+
+```{.std}
+    ```{tcl label=myfig,fig=true,echo=false,include=false}
+    gd filled_rectangle 90 90 110 110 $blue
+    ```
+```
+
+```{.tcl label=myfig,fig=true,echo=false,include=false}
+  gd filled_rectangle 90 90 110 110 $blue
+```
+
+We can now place the image where we like and we can place it also several
+times. The name of the file consists of the basename of the Markdown file and
+the label with the png extension. It is `basename-label.png`. So:
+
+
+```{.std}
+    ![](tmdoc-example-myfig.png) ![](tmdoc-example-myfig.png)
+```
+
+gives us:
+
+![](tmdoc-example-myfig.png) ![](tmdoc-example-myfig.png)
+
+## <a name="screenshort">Tk samples with screenshots</a>
+
+We can also use screenshot applications to make screenshots of running Tk applications. So for instance on Unix systems the following code might work.
+
+```{.std}
+    ```{tcl}
+    package require Tk
+    toplevel .top
+    wm title .top DGApp
+    pack [button .top.btn -text "Canvas Demo 1a" -command { exit 0 }] \
+       -padx 10 -pady 10 -fill x -expand false
+    pack [canvas .top.c -background beige] \
+       -padx 5 -pady 5 -side top -fill both -expand yes
+    .top.c create rectangle 50 50 100 80  -fill yellow
+    .top.c postscript -file canvas.ps
+    update idletasks
+    after 200
+    exec import -window DGApp -delay 200 screenshot-1.png
+    ```
+```
+
+And you get a screenshot.
+
+You can wrap the screenshot part as explained as well again in a `figure`
+procedure and use the approach with `fig=true` etc as chunk options.
+
+## <a name="canvas">Canvas Images</a>
+
+As this screenshot procedure is very platform specific, I prefer to demonstrate
+making figures with a canvas widget. Tcl will probably have a `canvas snap` or `tk snap`
+command in the new Tcl/Tk 8.7 release. In Tcl/Tk 8.6 we can use the *tklib*
+package canvas::snap for this purpose which needs again an installation of the *tkimg* package.
+
+```{.std}
+    ```{.tcl}
+    package require canvas::snap
+    pack [canvas .c -background beige] \
+        -padx 5 -pady 5 -side top -fill both -expand yes
+    .c create rectangle 50 50 100 80  -fill yellow
+    set img [canvas::snap .c]
+    $img write canvas.png -format png
+    ```
+```
+
+produces:
+
+```{.tcl}
+package require canvas::snap
+pack [canvas .c -background beige] \
+    -padx 5 -pady 5 -side top -fill both -expand yes
+.c create rectangle 50 50 100 80  -fill yellow
+set img [canvas::snap .c]
+$img write canvas.png -format png
+```
+
+```{.std}
+    ![ ](canvas.png)
+```
+
+shows the figure:
+
+![ ](canvas.png)
+
+
+Ok, as this basically works let's create as well a figure procedure which does
+the snap on the canvas.
+
+```{.tcl}
+proc figure {filename} {
+    set img [canvas::snap .c]
+    $img write $filename -format png
+}
+```
+
+Now our code chunk options for the figure setting should work on the canvas as well:
+
+```{.std}
+     ```{.tcl,fig=true,results=hide}
+     .c create rectangle 60 60 90 70  -fill blue
+     ```
+```
+
+This produces with the figure placed automatically:
+
+```{.tcl,fig=true,results=hide}
+.c create rectangle 60 60 90 70  -fill blue
+
+```
+
+We used `results=hide` to avoid showing the return value of the rectangle function.
+
+Let's at last in this section test the `include=false` option:
+
+```{.std}
+    ```{.tcl label=rect,fig=true,results=hide,include=false}
+    .c create rectangle 65 65 85 70  -fill red
+    ```
+
+    ![ ](tmdoc-example-rect.png) ![](tmdoc-example-rect.png)
+```
+
+produces:
+
+```{.tcl label=rect,fig=true,results=hide,include=false}
+.c create rectangle 65 65 85 70  -fill red
+```
+
+![](tmdoc-example-rect.png) ![](tmdoc-example-rect.png)
+
+## <a name="ukaz">Images with ukaz</a>
+
+Let's take an other example using the *ukaz* widget from Christian Gollwitzer
+available at:
+[https://github.com/auriocus/ukaz](https://github.com/auriocus/ukaz). Please
+note, that I had to add the following delegations to the graph widgetadaptor inside the source code of `ukaz.tcl` to get `canvas::snap` working:
+
+```{.std}
+delegate option * to hull
+delegate method * to hull
+```
+
+The project page has a readme, we now just convert a part of this readme to a
+Tcl Markdown document. Here the text from the Readme with some small modifications from my side:
+
+---
+
+The simplest usage looks like this:
+
+```{.tcl echo=false,results=hide}
+package require Tk
+lappend auto_path ../libs
+package require canvas::snap
+# just that i3 makes a floating window of smaller size
+wm title . DGApp
+```
+
+```{.tcl label=ukaz1,fig=true,results=hide}
+destroy .c ;# destroy old image example
+package require ukaz
+pack [ukaz::graph .c -xrange {0.8 4.2} -width 300 -height 300] -expand yes -fill both
+set data {1 4.5 2 7.3 3 1.8 4 6.5}
+.c plot $data 
+```
+
+This displays a resizable plot of the data, which is expected as a list of
+alternating x-y coordinates. The range of the axis, the number and placement
+of the the tic marks and the plot style is automatically chosen. The data can
+be zoomed in by dragging the left mouse button over the canvas, and zoomed out
+by clicking the right mouse button.
+
+The style of the plot can be adjusted by passing more options to the plot
+command, and by setting global options using either gnuplot-style commands or
+Tcl-style configure commands:
+
+```{.tcl label=ukaz2,fig=true,results=hide}
+destroy .c
+pack [ukaz::graph .c -xrange {0.8 4.2}] -expand yes -fill both
+set data {1 4.5 2 7.3 3 1.8 4 6.5}
+.c plot $data with points pointtype filled-squares color "#A0FFA0" 
+.c set log y
+```
+
+This displays the same data with light-green squares on a logarithmic y-axis.
+
+***
+
+End of the readme part of the *ukaz* package. 
+This example should show how easy Tcl Markdown can be used to document 
+functions and usage of Tcl packages.
+
+## Pandoc compatible code syntax
+
+Since tmdoc version 0.5 as well Pandoc compatible code chunk options are
+supported. For instance spaces after the triple codes are ignored, and chunk
+options can be given space separated in addition to the comma separated
+approach.
+
+Here an example:
+
+```{.unindent}
+    ``` {.tcl}  
+    set x 3
+    puts $x
+    ```
+```
+
+And here the output:
+
+``` {.tcl}  
+set x 3
+puts $x
+```
+
+Now the options: `{.tcl echo=false results="hide"}`
+
+``` {.tcl echo=true results="hide"}  
+set x 4
+puts $x
+```
+
+## <a name="summary">Summary</a>
+
+The `tmdoc::tmdoc` package provides a literate programming proccessor which
+extracts and evaluates Tcl code within code chunks of a Markdown documents.
+The code chunks are evaluated by the `tmdoc` processor and replaced with their
+output. Tcl code and the output can be shown or hidden due to specific
+configuration options for the code chunk. There is as well the possibility to
+display images created by Tcl within the document and inline evaluation of
+short Tcl commands within backtick where the first backtick is followed by the
+character sequence like here: <code>'tcl set x 1'</code> (replace single quotes with backticks).
+
+Code chunks start on lines with three backticks and the character sequence tcl after a curly brace. They end at the next line which has again three backticks.
+
+```{.std}
+    ```{.tcl}
+    set x 1
+    ```
+    or Pandoc style
+    ``` {.tcl}
+    set x 2
+    ```
+```
+
+The following options for code chunks are currently available:
+
+- label: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
+- echo: Should the Tcl code be shown, either show or hide, default: true.
+- results: Should the output of the Tcl code evaluation be shown, default: show.
+- fig: Does the code chunk produces a graphic, default: false. If this feature is used there must be a `figure` procedure with a filename argument which writes the figure.
+- include: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
+
+
+
+## <a name="install">Installation</a>
+
+There is currently no prepared zip file. Just go to the dgroth tclcode project
+releases site:
+[https://chiselapp.com/user/dgroth/repository/tclcode/wiki?name=releases](https://chiselapp.com/user/dgroth/repository/tclcode/wiki?name=releases)
+and download the latest tmdoc zip file.
+
+Unzip this file into a folder which is in your Tcl `auto_path` variable. For
+installing *tmdoc* as standalone application just copy the file `tmdoc.tcl` as
+`tmdoc` in a directory which belongs to your executable `PATH` directory and make
+it executable, on Unix for instance using the command `chmod`.
+
+## <a name="process">Processing Information</a>
+
+For generating the document the following Tcl version and Tcl packages were used:
+
+```{tcl results=hide,echo=false}
+source tmdoc.tcl
+```
+
+* Tcl/Tk `tcl set tcl_patchLevel` 
+* tmdoc::tmdoc `tcl package provide tmdoc::tmdoc`
+* canvas::snap `tcl package provide canvas::snap`
+* tclgd `tcl package provide tclgd`
+* ukaz `tcl package provide ukaz`
+
+Document was processed at: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`
+
+Document processing was done within: `tcl expr {[clock milliseconds] - $start}` milliseconds.
+
+Let's destroy the Tk application at the end.
+
+TODO: Do this below automatically at the end !? Might be not good if it is loaded as package inside an application as this destroy probably as well the main application, not only the toplevel of the slave interpreter.
+
+```{.tcl results=hide}
+after 10
+#destroy .
+```
+
