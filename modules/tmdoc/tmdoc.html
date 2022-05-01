@@ -125,9 +125,11 @@
 <div class="doctools_synopsis">
 <ul class="doctools_requirements">
 <li>package require <b class="pkgname">Tcl 8.6</b></li>
+<li>package require <b class="pkgname">textutil 0.8</b></li>
 </ul>
 <ul class="doctools_syntax">
 <li><a href="#1"><b class="cmd">::tmdoc::tmdoc</b> <i class="arg">infile</i> <i class="arg">outfile</i> <span class="opt">?<b class="option">-mode</b> <i class="arg">weave|tangle</i>?</span></a></li>
+<li><a href="#2"><b class="cmd">::tmdoc::tmeval</b> <i class="arg">text</i></a></li>
 </ul>
 </div>
 </div>
@@ -167,6 +169,19 @@ tmdoc tmdoc-example.tmd tmdoc-example.md
 tmdoc tmdoc-example.tmd tmdoc-example.tcl -mode tangle
 </pre>
 </dd>
+<dt><a name="2"><b class="cmd">::tmdoc::tmeval</b> <i class="arg">text</i></a></dt>
+<dd><p>The command evaluates the given <i class="arg">text</i> as code chunk and returns the resulting output.
+Note, that the interpreter is reset after each call, so variable declared in previous calls will not exists in calls thereafter.</p>
+<pre class="doctools_example">
+tmdoc::tmeval &quot;
+Short code chunk follows:
+```{.tcl}
+set x 2
+set x
+```
+&quot;
+</pre>
+<p><em>This function is mainly used for testing the package and usually not useful in other situations.</em></p></dd>
 </dl>
 </div>
 <div id="section3" class="doctools_section"><h2><a name="section3">Examples</a></h2>

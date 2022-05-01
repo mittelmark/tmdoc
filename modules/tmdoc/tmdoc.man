@@ -6,6 +6,7 @@
 [titledesc {Evaluate embedded Tcl code in Markdown or LaTeX documents}]
 [category  {Text processing}]
 [require Tcl 8.6]
+[require textutil 0.8]
 [description]
 
 The package [package tmdoc] provides a command to evaluate embedded Tcl code in
@@ -55,6 +56,24 @@ namespace import tmdoc::tmdoc
 tmdoc tmdoc-example.tmd tmdoc-example.md
 tmdoc tmdoc-example.tmd tmdoc-example.tcl -mode tangle
 }]
+
+[call [cmd ::tmdoc::tmeval] [arg text]]
+
+[para] The command evaluates the given [arg text] as code chunk and returns the resulting output.
+Note, that the interpreter is reset after each call, so variable declared in previous calls will not exists in calls thereafter. 
+
+[para][example {
+tmdoc::tmeval "
+Short code chunk follows:
+
+```{.tcl}
+set x 2
+set x
+```
+"
+}]
+
+[para] [emph "This function is mainly used for testing the package and usually not useful in other situations."]
 
 [list_end]
 
