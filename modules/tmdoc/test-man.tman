@@ -1,0 +1,30 @@
+[vset VERSION 0.5.0]
+[manpage_begin tmdoc-test n [vset VERSION]]
+[copyright {2020-2022, Detlef Groth <detlef(at)dgroth(dot)de>}]
+[moddesc   {Literate programming using Tcl - Test file}]
+[titledesc {Evaluate embedded Tcl code in Markdown or LaTeX documents - test file}]
+[category  {Text processing}]
+[require Tcl 8.6]
+[require textutil 0.8]
+[description]
+
+The package [package tmdoc] provides a command to evaluate embedded Tcl code in
+code chunks within documents of Markup languages like Markdown and LaTeX and
+add the resulting output to the document for creating dynamic documents, a technique
+as well known as literate programming.
+
+The latter uses Tcllib's [package Markdown] package.
+
+The embedded Tcl code starts with tri backticks and a language marker like this:
+
+[example {
+```{.tcl}
+puts "Hello World"
+```
+}]
+
+This should be now evaluated.
+
+[vset CATEGORY tmdoc-test]
+[manpage_end]
+

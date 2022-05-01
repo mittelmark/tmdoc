@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <220501.1440>
+#  Last Modified : <220501.1859>
 #
 # Copyright (c) 2020-2022  Dr. Detlef Groth, E-mail: detlef(at)dgroth(dot)de
 # 
@@ -23,6 +23,7 @@ package provide tmdoc::tmdoc 0.6.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {} 
 
+# clear all variables and defintions
 
 proc ::tmdoc::interpReset {} {
     if {[interp exists intp]} {
@@ -81,11 +82,13 @@ proc ::tmdoc::interpReset {} {
     interp eval try { proc puts {args} {  } }
 }
 
-# public functions
+# public functions - the main function process the files
 
 proc ::tmdoc::tmdoc {filename outfile args} {
     if {[string tolower [file extension $filename]] in [list .tnw .tex]} {
         set inmode latex
+    } elseif {[string tolower [file extension $filename]] in [list .tan .man .tman]} {
+        set inmode man
     } else {
         set inmode md
     }
@@ -97,6 +100,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         if {[file extension $arg(outfile)] eq ".tex"} {
             set inmode latex
         }
+        if {[file extension $arg(outfile)] eq ".man"} {
+            set inmode man
+        }
+       
         set out [open $arg(outfile) w 0600]
     } else {
         set out stdout
@@ -166,6 +173,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         puts $out "```{.tclcode}"
                         puts -nonewline $out $tclcode
                         puts $out "```"
+                    } elseif {$inmode eq "man"} {
+                        puts $out ""
+                        puts -nonewline $out "$tclcode"
+                        puts $out ""
                     } else {
                         puts $out "\\begin{lcverbatim}"
                         puts -nonewline $out $tclcode
@@ -175,6 +186,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 if {[catch {interp eval try $tclcode} res]} {
                     if {$inmode eq "md"} {
                         puts $out "```{.tclerr}\n$res\n```\n"
+                    } elseif {$inmode eq "man"} {
+                        puts $out "\nError:\n$res\n"
                     } else {
                         puts $out "\n\\begin{lrverbatim}\n$res\n\\end{lrverbatim}\n"
                     }
@@ -194,6 +207,13 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                             }
                             if {$res ne "" || $pres ne ""} {
                                 puts $out "```"
+                            }
+                        } elseif {$inmode eq "man"} { 
+                            if {$pres ne ""} {
+                                puts -nonewline $out "==> $pres"
+                            }
+                            if {$res ne ""} {
+                                puts $out "==> $res"
                             }
                         } else {
                             if {$res ne "" || $pres ne ""} {
@@ -247,14 +267,14 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 # todo check for `tcl fragments`
                 while {[regexp {(.*?)`tcl ([^`]+)`(.*)$} $line -> pre t post]} {
                     if {[catch {interp eval try $t} res]} {
-                        if {$inmode eq "md"} {
+                        if {$inmode in [list md man]} {
                             set line "$pre*??$res??*$post"
                         } else {
                             set line [regsub -all {_} "$pre*??$res??*$post" {\\_}]
                         }
                     } else {
                         set res [interp eval intp $t]
-                        if {$inmode eq "md"} {                                                
+                        if {$inmode in [list md man]} {                                                
                             set line "$pre$res$post"
                         } else {
                             set line [regsub -all {_}  "$pre$res$post" {\\_}]
