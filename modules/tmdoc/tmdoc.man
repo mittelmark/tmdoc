@@ -1,6 +1,6 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
 [vset VERSION 0.5.0]
-[manpage_begin tmdocc n [vset VERSION]]
+[manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2022, Detlef Groth <detlef(at)dgroth(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
 [titledesc {Evaluate embedded Tcl code in Markdown or LaTeX documents}]
