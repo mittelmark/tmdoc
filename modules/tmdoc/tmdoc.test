@@ -46,3 +46,36 @@ Some text
 
 
 }
+
+tcltest::test tmdoc-test-1.4 {
+    Calling my tmdoc::tmeval with a simple code chunk and 
+    eval=false and results=hide separated by comma
+} -body {
+     tmdoc::tmeval "
+Some text
+
+```{.tcl echo=false, results=hide}
+set x 4; set x
+```\n"
+} -result {
+Some text
+
+
+}
+
+tcltest::test tmdoc-test-1.5 {
+    Calling my tmdoc::tmeval with a simple code chunk and 
+    eval=false and results=hide separated by comma
+    with space and tcl instead of .tcl marker
+} -body {
+     tmdoc::tmeval "
+Some text
+
+``` {tcl echo=false, results=hide}
+set x 5; set x
+```\n"
+} -result {
+Some text
+
+
+}
