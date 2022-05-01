@@ -3,3 +3,4 @@ default:
 	   -s --css tmdoc.css
 	htmlark tmdoc-tutorial.html -o tmdoc-tutorial-out.html
 	mv tmdoc-tutorial-out.html tmdoc-tutorial.html
+	dtplite -o tmdoc.html html tmdoc.man

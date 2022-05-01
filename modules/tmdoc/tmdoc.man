@@ -34,13 +34,13 @@ This document was generated at `tcl clock format [clock seconds] -format "%Y-%m-
 
 [list_begin definitions]
 
-[call [cmd ::tmdoc::tmdoc] [arg infile] [opt [arg outfile]] [opt "[option --mode] [arg weave|tangle]"]]
+[call [cmd ::tmdoc::tmdoc] [arg infile] [opt [arg outfile]] [opt "[option -mode] [arg weave|tangle]"]]
 
 The command reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
 the resulting output to the [arg output] file if such is given or to stdout if [arg output] is missing,
 this is the default mode [arg weave]. 
 
-[para] If as [option --mode] [arg tangle] is given, the Tcl code in
+[para] If as [option -mode] [arg tangle] is given, the Tcl code in
 code chunks is extracted but not evaluated.
 
 [para] All arguments are paths to the files to read from or write to.
@@ -52,8 +52,8 @@ code chunks is extracted but not evaluated.
 [para][example {
 package require tmdoc
 namespace import tmdoc::tmdoc
-tmdoc tmdoc-example.tmd --outfile tmdoc-example.md
-tmdoc tmdoc-example.tmd --mode tangle --outfile tmdoc-example.tcl
+tmdoc tmdoc-example.tmd tmdoc-example.md
+tmdoc tmdoc-example.tmd tmdoc-example.tcl -mode tangle
 }]
 
 [list_end]
