@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <220501.0906>
+#  Last Modified : <220501.1057>
 #
 # Copyright (c) 2020-2022  Dr. Detlef Groth, E-mail: detlef(at)dgroth(dot)de
 # 
@@ -22,51 +22,6 @@ package provide tmdoc::tmdoc 0.6.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {} 
 
-## helper functions
-# TODO: include into argparse
-# check if a -option is first parameter if yes places last argument
-# parameter in varname a#nd removes it first argument is places in front 
-# of arglist that way it does not matter if argument order is
-# func filename -option value -flag
-# or 
-# func -option value -flag filename
-# returns: modified argument list 
-proc tmdoc::pfirst {varname arglist} {
-    upvar $varname x
-    set varval $x
-    if {[regexp {^-} $varval]} {
-        set arglist [linsert $arglist 0 $varval]
-        set x [lindex $args end]
-        set arglist [lrange $arglist 0 end-1]
-    } else {
-        set x $varval
-    }
-    return $arglist
-}
-# argument parser for procedures
-# places all --options or -options in an array given with arrayname
-# recognises
-# -option2 value -flag1 -flag2 -option2 value
-proc tmdoc::pargs {arrayname defaults args} {
-    upvar $arrayname arga
-    array set arga $defaults
-    set args {*}$args
-    if {[llength $args] > 0} {
-        set args [lmap i $args { regsub -- {^--} $i "-" }]
-        while {[llength $args] > 0} {
-            set a [lindex $args 0]
-            set args [lrange $args 1 end]
-            if {[regexp {^-{1,2}(.+)} $a -> opt]} {
-                if {([llength $args] > 0 && [regexp -- {^-} [lindex $args 0]]) || [llength $args] == 0} {
-                    set arga($opt) true
-                } elseif {[regexp {^[^-].*} [lindex $args 0] value]} {
-                    set arga($opt) $value
-                    set args [lrange $args 1 end]
-                }
-            } 
-        }
-    }
-}
 
 proc ::tmdoc::interpReset {} {
     if {[interp exists intp]} {
@@ -127,19 +82,15 @@ proc ::tmdoc::interpReset {} {
 
 # public function
 
-proc ::tmdoc::tmdoc {filename args} {
-    # argv will be just a list
-    if {[llength $args] == 1} {
-        set args {*}$args
-    }
-    if {[string tolower [file extension $filename]] eq ".tnw"} {
+proc ::tmdoc::tmdoc {filename outfile args} {
+    if {[string tolower [file extension $filename]] in [list .tnw .tex]} {
         set inmode latex
     } else {
         set inmode md
     }
-    set args [::tmdoc::pfirst filename $args]
-    ::tmdoc::pargs arg [list mode weave outfile stdout infile ""] $args
-    if {$arg(outfile) ne "stdout"} {
+    array set arg [list infile $filename  outfile $outfile -mode weave] 
+    array set arg {*}$args
+    if {$arg(outfile) ni [list stdout -]} {
         if {[file extension $arg(outfile)] eq ".tex"} {
             set inmode latex
         }
@@ -147,13 +98,13 @@ proc ::tmdoc::tmdoc {filename args} {
     } else {
         set out stdout
     } 
-    if {$arg(mode) eq "tangle"} {
+    if {$arg(-mode) eq "tangle"} {
         if [catch {open $filename r} infh] {
             return -code error "Cannot open $filename: $infh"
         } else {
             set flag false
             while {[gets $infh line] >= 0} {
-                if {[regexp {^[> ]{0,2}```\{tcl[^a-zA-Z]} $line]} {
+                if {[regexp {^[> ]{0,2}```\{\.?tcl[^a-zA-Z]} $line]} {
                     set flag true
                     continue
                 } elseif {$flag && [regexp {^[> ]{0,2}```} $line]} {
@@ -170,6 +121,7 @@ proc ::tmdoc::tmdoc {filename args} {
         }
         return
     }
+    
     set mode text
     set tclcode ""
     array set dopt [list echo true results show fig false include true \
@@ -180,7 +132,11 @@ proc ::tmdoc::tmdoc {filename args} {
     } else {
         set chunki 0
         while {[gets $infh line] >= 0} {
-            if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.tcl\s*(.*)\}} $line -> opts])} {
+            if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?tcl\s*\}} $line -> opts])} {
+                set mode code
+                incr chunki
+                array set copt [array get dopt]
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?tcl\s+(.*)\}} $line -> opts])} {
                 set mode code
                 incr chunki
                 array set copt [array get dopt]
@@ -205,7 +161,7 @@ proc ::tmdoc::tmdoc {filename args} {
             } elseif {$mode eq "code" && [regexp {```} $line]} {
                 if {$copt(echo)} {
                     if {$inmode eq "md"} {
-                        puts $out "```{.tcl}"
+                        puts $out "```{.tclcode}"
                         puts -nonewline $out $tclcode
                         puts $out "```"
                     } else {
