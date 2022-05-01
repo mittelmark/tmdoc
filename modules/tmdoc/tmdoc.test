@@ -1,0 +1,48 @@
+lappend auto_path ..
+package require tcltest
+package require tmdoc
+
+tcltest::test tmdoc-test-1.1 {
+    Calling my tmdoc::tmeval with a simple code chunk
+} -body {
+     tmdoc::tmeval "\n```{.tcl}
+set x 1; set x
+```\n"   
+} -result {
+```{.tclcode}
+set x 1; set x
+```
+```{.tclout}
+==> 1
+```
+
+}
+
+tcltest::test tmdoc-test-1.2 {
+    Calling my tmdoc::tmeval with a simple code chunk and echo=false
+} -body {
+     tmdoc::tmeval "\n```{.tcl echo=false}
+set x 2; set x
+```\n"   
+} -result {
+```{.tclout}
+==> 2
+```
+
+}
+
+tcltest::test tmdoc-test-1.3 {
+    Calling my tmdoc::tmeval with a simple code chunk and 
+    eval=false and results=hide
+} -body {
+     tmdoc::tmeval "
+Some text
+
+```{.tcl echo=false results=hide}
+set x 3; set x
+```\n"
+} -result {
+Some text
+
+
+}

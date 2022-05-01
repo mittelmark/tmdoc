@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <220501.1057>
+#  Last Modified : <220501.1440>
 #
 # Copyright (c) 2020-2022  Dr. Detlef Groth, E-mail: detlef(at)dgroth(dot)de
 # 
@@ -17,7 +17,8 @@ exec tclsh "$0" "$@"
 #                  2020-11-09 version 0.4
 #                  2021-12-19 version 0.5.0
 #                  2022-05-XX version 0.6.0 (tcllib) 
-
+package require Tcl 8.6
+package require fileutil
 package provide tmdoc::tmdoc 0.6.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {} 
@@ -80,7 +81,7 @@ proc ::tmdoc::interpReset {} {
     interp eval try { proc puts {args} {  } }
 }
 
-# public function
+# public functions
 
 proc ::tmdoc::tmdoc {filename outfile args} {
     if {[string tolower [file extension $filename]] in [list .tnw .tex]} {
@@ -89,7 +90,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set inmode md
     }
     array set arg [list infile $filename  outfile $outfile -mode weave] 
-    array set arg {*}$args
+    if {[llength $args] > 0} {
+        array set arg {*}$args
+    }
     if {$arg(outfile) ni [list stdout -]} {
         if {[file extension $arg(outfile)] eq ".tex"} {
             set inmode latex
@@ -121,7 +124,6 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         }
         return
     }
-    
     set mode text
     set tclcode ""
     array set dopt [list echo true results show fig false include true \
@@ -276,6 +278,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             
         }
         close $infh
+        close $out
         if {[interp exists intp]} {
             interp eval intp { catch {destroy . } }
             interp delete intp
@@ -286,8 +289,22 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         }
     }
 }
+proc ::tmdoc::tmeval {text} {
+    set filename [fileutil::tempfile]
+    set out [open $filename.tmd w 0600]
+    puts $out $text
+    close $out
+    tmdoc::tmdoc $filename.tmd $filename.md
+    set infh [open $filename.md r]
+    set ret [read $infh]
+    close $infh
+    file delete $filename.tmd
+    file delete $filename.md
+    return $ret
+}
+
 namespace eval ::tmdoc {
-    namespace export tmdoc
+    namespace export tmdoc tmeval
 }
 
 #' 
