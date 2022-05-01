@@ -1,0 +1,211 @@
+[comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
+[vset VERSION 0.5.0]
+[manpage_begin tmdocc n [vset VERSION]]
+[copyright {2020-2022, Detlef Groth <detlef(at)dgroth(dot)de>}]
+[moddesc   {Literate programming using Tcl}]
+[titledesc {Evaluate embedded Tcl code in Markdown or LaTeX documents}]
+[category  {Text processing}]
+[require Tcl 8.6]
+[description]
+
+The package [package tmdoc] provides a command to evaluate embedded Tcl code in
+code chunks within documents of Markup languages like Markdown and LaTeX and
+add the resulting output to the document for creating dynamic documents, a technique
+as well known as literate programming.
+
+The latter uses Tcllib's [package Markdown] package.
+
+The embedded Tcl code starts with tri backticks and a language marker like this:
+
+[example {
+```{.tcl}
+puts "Hello World"
+```
+}]
+
+Shorter Tcl code fragments can be embedded directly within the text using
+single backticks like this:
+
+[example {
+This document was generated at `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"` MET.
+}]
+
+[section Functions]
+
+[list_begin definitions]
+
+[call [cmd ::tmdoc::tmdoc] [arg infile] [opt [arg outfile]] [opt "[option --mode] [arg weave|tangle]"]]
+
+The command reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
+the resulting output to the [arg output] file if such is given or to stdout if [arg output] is missing,
+this is the default mode [arg weave]. 
+
+[para] If as [option --mode] [arg tangle] is given, the Tcl code in
+code chunks is extracted but not evaluated.
+
+[para] All arguments are paths to the files to read from or write to.
+
+[para] The result of the command is the empty string.
+
+[para] See section [sectref "Code Chunk Options"] for the supported code chunk options.
+
+[para][example {
+package require tmdoc
+namespace import tmdoc::tmdoc
+tmdoc tmdoc-example.tmd --outfile tmdoc-example.md
+tmdoc tmdoc-example.tmd --mode tangle --outfile tmdoc-example.tcl
+}]
+
+[list_end]
+
+[section Examples]
+
+[para] Here is such an example which will be executed by the Tcl interpreter
+
+[example {
+
+The code chunk below will be executed:
+
+```{.tcl}
+set x 1
+expr {$x*2}
+```
+
+Some more Markup text ...
+
+}]
+
+[section "Code Chunk Options"]
+
+The package supports the following code chunk options.
+
+[list_begin definitions]
+[def [const echo]] Should the Tcl code itself been show. Defaults to [const true].
+[def [const eval]] Should the code chunk be evaluated. Defaults to [const true].
+[def [const fig]] Should a custom figure function called with the chunk label as argument. Defaults to [const false].
+[def [const include]] Should a possible figure been included directly after the code chunk. Defaults to [const true].
+[def [const label]] A text label for the code chunk. Defaults to [const chunk-nn] where nn is a counter.
+[def [const results]] Should the results of code evaluation been show, either [const show] or [const hide]. Defaults to [const show].
+[list_end]
+
+The following example will just do an computation using the Tcl interpreter but does not show the output due to [const results=hide] and not the code due to [const echo=false]:
+
+[para] [example {
+
+```{.tcl echo=false results=hide}
+set date [clock format [clock seconds]]
+```
+}]
+
+[section "Inline code chunks"]
+
+[para] Short Tcl codes can be as well evaluated within the standard text flow using single backticks. For instance:
+
+[para][example {
+
+The current date is `tcl clock format [clock seconds] -format "%Y-%m-%d"`
+
+}]
+
+The code above would insert the current date into the text. 
+So text inline code chunks are possible using single backticks such as here [const "`tcl set x`"].
+
+[section Images]
+
+[para] Inside standard code chunks as well images with Tcl can be generated with normal Tcl code.
+
+[para] To support the standard chunk properties [const fig=true], optionally with [const include=false] however a Tcl procedure proc must be provided. Below is an example to use the tklib package [const canvas::snap] to create images using the Tk canvas.
+
+[para] [example {
+```{.tcl}
+package require Tk
+package require canvas::snap
+pack [canvas .c -background beige] \
+   -padx 5 -pady 5 -side top -fill both -expand yes
+proc figure {outfile} {
+    set img [canvas::snap .c]
+    $img write $outfile -format png
+}
+```
+}]
+
+[para] After preparing the canvas and the figure procedure the canvas can be used for 
+making images like in the example below:
+
+[para][example { 
+```{.tcl fig=true results=hide}
+.c create rectangle 60 60 90 90  -fill blue
+```
+}]
+
+[para] The code above will create a canvas figure and embeds it automatically. 
+
+[para] If you need more control on the figure placement you can 
+use the option [const include=false].
+
+[para] [example {
+```{.tcl label=mfig fig=true results=hide include=false}
+.c create rectangle 65 65 85 85  -fill blue
+```
+}]
+
+[para]You can now manually place the figure. The filename of the figure will
+be automatically created, it is the basename of the tmd-file  and the label.
+So in principle: `basename-label.png`. You can embed the figure using Markdown 
+figure markup such as:
+
+[para][example {
+
+![](basename-label.png)
+
+}]
+
+[section Filetypes] 
+
+[para] Currently [cmd tmdoc]  supports the filetypes Markdown which is assumed if you are using the file extension [file .tmd]
+and LaTeX if you use the file extensions [file .tnw].
+
+[section "See Also"]
+
+[para] For a detailed tutorial on how to do literate programming with Tcl have a look at the Tcl Markdown tutorial.
+
+
+[section "Bugs, Ideas, Feedback"]
+
+This document, and the package it describes, will undoubtedly contain bugs and other
+problems. Please report such to the author of this package. Please also report any ideas
+for enhancements you may have for either package and/or documentation.
+
+[section "Code Copyright"]
+
+BSD License type:
+
+[para] The following terms apply to all files a ssociated with the software unless
+explicitly disclaimed in individual files.
+
+[para] The authors hereby grant permission to use, copy, modify, distribute, and license
+this software and its documentation for any purpose, provided that existing copyright
+notices are retained in all copies and that this notice is included verbatim in any
+distributions. No written agreement, license, or royalty fee is required for any of the
+authorized uses.  Modifications to this software may be copyrighted by their authors and
+need not follow the licensing terms described here, provided that the new terms are
+clearly indicated on the first page of each file where they apply.
+
+[para] In no event shall the authors or distributors be liable to any party for direct,
+indirect, special, incidental, or consequential damages arising out of the use of this
+software, its documentation, or any derivatives thereof, even if the authors have been
+advised of the possibility of such damage.
+
+[para] The authors and distributors specifically disclaim any warranties, including, but
+not limited to, the implied warranties of merchantability, fitness for a particular
+purpose, and non-infringement.
+
+This software is provided on an "as is" basis, and the authors and distributors have no
+obligation to provide maintenance, support, updates, enhancements, or modifications.
+
+[para] [emph {RESTRICTED RIGHTS}]: Use, duplication or disclosure by the government is
+subject to the restrictions as set forth in subparagraph (c) (1) (ii) of the Rights in
+Technical Data and Computer Software Clause as DFARS 252.227-7013 and FAR 52.227-19.
+
+[vset CATEGORY tmdoc]
+[manpage_end]
