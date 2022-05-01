@@ -28,14 +28,16 @@
 <p class="date">2022-05-01</p>
 </header>
 <h2 id="abstract"><a name="abstract">Abstract</a></h2>
-<p>In the last years reproducible research has gained focus from the research community. It is a type of literate programming, introduced by Donald Knuth in 1984, where code of a programming language is embedded with standard text documents, like LaTeX or Markdown documents. The code is evaluated and adds or replaces it’s own code with teh code output. Alternatively the code chunks as well as the output result can be also hidden if needed. There exist several tools which allow this type of programming/documenting, for instance <a href="https://yihui.name/knitr">knitr</a> or <a href="https://en.wikipedia.org/wiki/Sweave">Sweave</a>. Knitr is an engine for dynamic report generation especially for the statistical language R but as well supports other programming languages such as for instance Python 3, Perl, Haskell, Ruby and more than 20 others with a few limitations. Embedding of Tcl in the knitr framework is somehow difficult as it has no command line option to evaluate Tcl code on the fly. There might be workarounds by creating a Tcl command line application which allows this. I thought however, that the Tcl programming as a mature highly dynamic scripting language invented by John Ousterhout in 1988, does not need a huge framework to support literate programming. Therefore I decided to implement a literate programming package for Tcl just based on standard Tcl which is called <em>tmdoc::tmdoc</em>, short just <em>tmdoc</em>. In its current state <em>tmdoc</em> supports standard code chunks with options to display and hide code and code output, to embed inside text code evaluations and image creation. This basic subset of a literate programming environment should be sufficient to create nice technical and statistical reports, tutorials about Tcl packages and other types of documentation.</p>
+<p>In the last years reproducible research has gained focus from the research community. It is a type of literate programming, introduced by Donald Knuth in 1984, where code of a programming language is embedded within standard text documents, like LaTeX or Markdown documents. The code is evaluated and adds or replaces it’s own code with the code output. Alternatively the code chunks as well as the output result can be also hidden if needed.</p>
+<p>There exist several tools which allow this type of programming/documenting, for instance for the R programming language <a href="https://yihui.name/knitr">knitr</a> or <a href="https://en.wikipedia.org/wiki/Sweave">Sweave</a>. Although Knitr is an engine for dynamic report generation especially for the statistical language R it supports as well other programming languages such as for instance Python 3, Perl, Haskell, Ruby and more than 20 others with a few limitations.</p>
+<p>Embedding of Tcl in the Knitr framework is somehow difficult as it has no command line option to evaluate Tcl code on the fly. There might be workarounds by creating a Tcl command line application which allows this. Form my perspective however, the Tcl programming as a mature highly dynamic scripting language invented by John Ousterhout in 1988, should not need a huge framework to support literate programming with Tcl itself. Therefore the decision to write a Tcl program to implement a literate programming package for Tcl just based on standard Tcl which is called <em>tmdoc::tmdoc</em>, or short just <em>tmdoc</em>. In its current state <em>tmdoc</em> supports standard code chunks with options to display and hide code and code output, to embed inside text code evaluations and image creation. This basic subset of a literate programming environment should be sufficient to create nice technical and statistical reports, tutorials about Tcl packages and other types of documentation.</p>
 <h2 id="table-of-contents"><a name="toc">Table of Contents</a></h2>
 <ul>
 <li><a href="#intro">Introduction</a></li>
-<li><a href="#stut">Short Tutorial</a></li>
-<li><a href="#block">Code Block</a></li>
+<li><a href="#codes">Color Codesl</a></li>
+<li><a href="#block">Standard Code Blocks</a></li>
 <li><a href="#puts">The puts Statement</a></li>
-<li><a href="#inline">Inline Code</a></li>
+<li><a href="#inline">Inline Codes</a></li>
 <li><a href="#errors">Error Handling</a></li>
 <li><a href="#images">Writing Images</a>
 <ul>
@@ -66,16 +68,16 @@ TMD --------&gt; MD ----------&gt; HTML/PDF/DOCX</code></pre>
 <p>Code block and/or the output can be as well hidden using chunk arguments, that will be described later in more detail. Short code fragments can be directly embedded into the text. Here an example for this approach:</p>
 <pre class="std"><code>The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`</code></pre>
 <p>This is the output:</p>
-<p>The curent date and time is: 2022-05-01 14:59</p>
+<p>The curent date and time is: 2022-05-01 19:20</p>
 <hr/>
-<h2 id="short-tutorial"><a name="short">Short Tutorial</a></h2>
+<h2 id="color-codes"><a name="codes">Color Codes</a></h2>
 <p>Now follows a short tutorial for the features of the <em>tmdoc</em> Markdown processor. For the code blocks the following color codes are used, grey is example Tcl code which is not evaluated by Tcl, it shows mainly how the code chunks looks in the Markdown document, in creme is Tcl code which is evaluated, in blue is the output of the creme tcl code before. Red code lines indicate code errors.</p>
 <p>So here again the color codes:</p>
 <pre class="std"><code>gray: code examples which are not evaluated within this document</code></pre>
 <pre class="tclcode"><code>creme: code examples which are evaluated by Tcl</code></pre>
 <pre class="tclout"><code>blue: result output of evaluated Tcl code</code></pre>
 <pre class="tclerr"><code>red: errors resulting from Tcl code evaluations</code></pre>
-<h2 id="standard-code-block"><a name="block">Standard Code Block</a></h2>
+<h2 id="standard-code-blocks"><a name="block">Standard Code Blocks</a></h2>
 <p>Standard code block are started with three tickmarts at the beginning of a line and in curly brace the string tcl. Separated by a space might follow several evaluation options which will be described later in more detail.</p>
 <p>Here the Tcl-Markdown input (without the leading four spaces):</p>
 <pre class="std"><code>    ```{tcl echo=true}
@@ -144,7 +146,7 @@ set a ""</code></pre>
    Our variable a has now a value of `tcl set a` although we don't know why as the programming code is hidden.</code></pre>
 <p>Our variable a has now a value of 2 although we don’t know why.</p>
 <p>This feature can be useful if you don’t want to show in a final version of a text document how the computation was done, but only the results of this computation within the text, for instance to display date and used Tcl packages as can be seen at the very end of this document.</p>
-<h2 id="inline-code"><a name="inline">Inline Code</a></h2>
+<h2 id="inline-codes"><a name="inline">Inline Codes</a></h2>
 <pre class="std"><code>Let's look what is the value of x. The value of x is `tcl set x`. Is it one??</code></pre>
 <p>Let’s look what is the value of x. The value of x is 1. Is it one??</p>
 <p>Yes it is!</p>
@@ -332,11 +334,11 @@ puts $x</code></pre>
 <li>tclgd 1.2</li>
 <li>ukaz 2.1</li>
 </ul>
-<p>Document was processed at: 2022-05-01 14:59</p>
-<p>Document processing was done within: 585 milliseconds.</p>
+<p>Document was processed at: 2022-05-01 19:20</p>
+<p>Document processing was done within: 581 milliseconds.</p>
 <p>Let’s destroy the Tk application at the end.</p>
 <p>TODO: Do this below automatically at the end !? Might be not good if it is loaded as package inside an application as this destroy probably as well the main application, not only the toplevel of the slave interpreter.</p>
 <pre class="tclcode"><code>after 10
 #destroy .</code></pre>
 </body>
-</html><!--Generated by HTMLArk 2022-05-01 14:59:16.530291. Original URL tmdoc-tutorial.html-->
+</html><!--Generated by HTMLArk 2022-05-01 19:20:15.460694. Original URL tmdoc-tutorial.html-->

@@ -16,22 +16,25 @@ lappend auto_path /home/groth/workspace/delfgroth/mytcl/libs
 
 In the last years reproducible research has gained focus from the research
 community. It is a type of literate programming, introduced by Donald Knuth in
-1984, where code of a programming language is embedded with standard text
+1984, where code of a programming language is embedded within standard text
 documents, like LaTeX or Markdown documents. The code is evaluated and
-adds or replaces it's own code with teh code output. Alternatively the code chunks as well
-as the output result can be also hidden if needed. There exist several tools
-which allow this type of programming/documenting, for instance [knitr](https://yihui.name/knitr)  or
-[Sweave](https://en.wikipedia.org/wiki/Sweave). Knitr is an engine for dynamic report generation especially for the
-statistical language R but as well supports other programming languages such
+adds or replaces it's own code with the code output. Alternatively the code chunks as well
+as the output result can be also hidden if needed. 
+
+There exist several tools
+which allow this type of programming/documenting, for instance for the R programming language [knitr](https://yihui.name/knitr)  or
+[Sweave](https://en.wikipedia.org/wiki/Sweave). Although Knitr is an engine for dynamic report generation especially for the
+statistical language R it supports as well other programming languages such
 as for instance Python 3, Perl, Haskell, Ruby and more than 20 others with a few limitations.
-Embedding of Tcl in the knitr framework is somehow difficult as it has no command
+
+Embedding of Tcl in the Knitr framework is somehow difficult as it has no command
 line option to evaluate Tcl code on the fly. There might be workarounds by
-creating a Tcl command line application which allows this. I thought however,
-that the Tcl programming as a mature highly dynamic scripting language
-invented by John Ousterhout in 1988, does not need a huge framework to support
-literate programming. Therefore I decided to implement a literate programming
+creating a Tcl command line application which allows this. Form my perspective however,
+the Tcl programming as a mature highly dynamic scripting language
+invented by John Ousterhout in 1988, should not need a huge framework to support
+literate programming with Tcl itself. Therefore the decision to write a Tcl program to implement a literate programming
 package for Tcl just based on standard Tcl which is called *tmdoc::tmdoc*, 
-short just *tmdoc*. In its current state *tmdoc* supports standard code chunks with options to display
+or short just *tmdoc*. In its current state *tmdoc* supports standard code chunks with options to display
 and hide code and code output, to embed inside text code evaluations and image
 creation. This basic subset of a literate programming environment should be
 sufficient to create nice technical and statistical reports, tutorials about
@@ -40,10 +43,10 @@ Tcl packages and other types of documentation.
 ## <a name="toc">Table of Contents</a>
 
 - [Introduction](#intro)
-- [Short Tutorial](#stut)
-- [Code Block](#block)
+- [Color Codesl](#codes)
+- [Standard Code Blocks](#block)
 - [The puts Statement](#puts)
-- [Inline Code](#inline)
+- [Inline Codes](#inline)
 - [Error Handling](#errors)
 - [Writing Images](#images)
     - [gdtcl](#images)
@@ -114,7 +117,7 @@ The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d
 
 ----
 
-## <a name="short">Short Tutorial</a>
+## <a name="codes">Color Codes</a>
 
 Now follows a short tutorial for the features of the *tmdoc* Markdown processor.
 For the code blocks the following color codes are used, grey is example Tcl
@@ -139,7 +142,7 @@ blue: result output of evaluated Tcl code
 red: errors resulting from Tcl code evaluations
 ```
 
-## <a name="block">Standard Code Block</a>
+## <a name="block">Standard Code Blocks</a>
 
 Standard code block are started with three tickmarts at the beginning of a
 line and in curly brace the string tcl. Separated by a space might follow
@@ -255,7 +258,7 @@ version of a text document how the computation was done, but only the results
 of this computation within the text, for instance to display date and used Tcl packages as can be seen at the very end of this document.
 
 
-## <a name="inline">Inline Code</a>
+## <a name="inline">Inline Codes</a>
 
 ```{.std}
 Let's look what is the value of x. The value of x is `tcl set x`. Is it one??
