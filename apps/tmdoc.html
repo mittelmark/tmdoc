@@ -122,7 +122,7 @@
 <li><a href="#1"><b class="cmd">tmdoc</b> <b class="option">--help</b></a></li>
 <li><a href="#2"><b class="cmd">tmdoc</b> <b class="option">--version</b></a></li>
 <li><a href="#3"><b class="cmd">tmdoc</b> <b class="option">--license</b></a></li>
-<li><a href="#4"><b class="cmd">tmdoc</b> <i class="arg">input</i> <span class="opt">?<i class="arg">output</i>?</span> <span class="opt">?<b class="option">--mode</b> <i class="arg">weave|tangle</i>?</span></a></li>
+<li><a href="#4"><b class="cmd">tmdoc</b> <i class="arg">input</i> <i class="arg">output</i> <span class="opt">?<b class="option">--mode</b> <i class="arg">weave|tangle</i>?</span></a></li>
 </ul>
 </div>
 </div>
@@ -138,10 +138,9 @@ of Markup languages like Markdown and LaTeX for literate programming.</p>
 <dd><p>The application prints its version number to standard output and exits.</p></dd>
 <dt><a name="3"><b class="cmd">tmdoc</b> <b class="option">--license</b></a></dt>
 <dd><p>The application prints its license to standard output and exits.</p></dd>
-<dt><a name="4"><b class="cmd">tmdoc</b> <i class="arg">input</i> <span class="opt">?<i class="arg">output</i>?</span> <span class="opt">?<b class="option">--mode</b> <i class="arg">weave|tangle</i>?</span></a></dt>
+<dt><a name="4"><b class="cmd">tmdoc</b> <i class="arg">input</i> <i class="arg">output</i> <span class="opt">?<b class="option">--mode</b> <i class="arg">weave|tangle</i>?</span></a></dt>
 <dd><p>The application reads the <i class="arg">input</i> file, evaluates embedded Tcl code in code chunks and writes
-the resulting output to the <i class="arg">output</i> file if such is given or to stdout if <i class="arg">output</i> is missing,
-this is the default mode <i class="arg">weave</i>.</p>
+the resulting output to the <i class="arg">output</i> or to stdout if <i class="arg">output</i> is a single minus sign. This is the behaviour for the default <b class="option">--mode</b> which is <b class="option">weave</b>.</p>
 <p>If as <b class="option">--mode</b> <i class="arg">tangle</i> is given, the Tcl code in
 code chunks is extracted but not evaluated.</p></dd>
 </dl>

@@ -26,11 +26,10 @@ The application prints its version number to standard output and exits.
 
 The application prints its license to standard output and exits.
 
-[call [cmd tmdoc] [arg input] [opt [arg output]] [opt "[option --mode] [arg weave|tangle]"]]
+[call [cmd tmdoc] [arg input] [arg output] [opt "[option --mode] [arg weave|tangle]"]]
 
-The application reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
-the resulting output to the [arg output] file if such is given or to stdout if [arg output] is missing,
-this is the default mode [arg weave]. 
+[para] The application reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
+the resulting output to the [arg output] or to stdout if [arg output] is a single minus sign. This is the behaviour for the default [option --mode] which is [option weave].
 
 [para] If as [option --mode] [arg tangle] is given, the Tcl code in
 code chunks is extracted but not evaluated.
@@ -84,7 +83,7 @@ purpose, and non-infringement.
 This software is provided on an "as is" basis, and the authors and distributors have no
 obligation to provide maintenance, support, updates, enhancements, or modifications.
 
-[para] [strong {RESTRICTED RIGHTS}]: Use, duplication or disclosure by the government is
+[para] [emph {RESTRICTED RIGHTS}]: Use, duplication or disclosure by the government is
 subject to the restrictions as set forth in subparagraph (c) (1) (ii) of the Rights in
 Technical Data and Computer Software Clause as DFARS 252.227-7013 and FAR 52.227-19.
 
