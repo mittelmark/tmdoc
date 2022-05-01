@@ -34,7 +34,7 @@ This document was generated at `tcl clock format [clock seconds] -format "%Y-%m-
 
 [list_begin definitions]
 
-[call [cmd ::tmdoc::tmdoc] [arg infile] [opt [arg outfile]] [opt "[option -mode] [arg weave|tangle]"]]
+[call [cmd ::tmdoc::tmdoc] [arg infile] [arg outfile] [opt "[option -mode] [arg weave|tangle]"]]
 
 The command reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
 the resulting output to the [arg output] file if such is given or to stdout if [arg output] is missing,
