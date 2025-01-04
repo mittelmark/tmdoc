@@ -1,8 +1,6 @@
 default:
-	tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd - | pandoc -o tmdoc-tutorial.html \
-	   -s --css tmdoc.css
-	htmlark tmdoc-tutorial.html -o tmdoc-tutorial-out.html
-	mv tmdoc-tutorial-out.html tmdoc-tutorial.html
+	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd - | \
+	 TCLLIBPATH=~/workspace/mkdoc tclsh ../../../mkdoc/apps/mkdoc - tmdoc-tutorial.html --css tmdoc.css
 	dtplite -o tmdoc.html html tmdoc.man
 test:
 	tclsh tmdoc.test

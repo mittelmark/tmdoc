@@ -5,7 +5,7 @@
 [moddesc   {Literate programming using Tcl}]
 [titledesc {Evaluate embedded Tcl code in Markdown or LaTeX documents}]
 [category  {Text processing}]
-[require Tcl 8.6]
+[require Tcl 8.6-]
 [require textutil 0.8]
 [description]
 
@@ -34,6 +34,13 @@ This document was generated at `tcl clock format [clock seconds] -format "%Y-%m-
 [section Functions]
 
 [list_begin definitions]
+
+[call [cmd ::tmdoc::main] [arg argv]]
+
+The main entry point for applications. The [arg argv] vector is usually the
+argument vector given on the command line. It is used by the tmdoc command
+line application but could be used as well by other programming languages liem
+Python or R which can with an installed Tcl interpreter.
 
 [call [cmd ::tmdoc::tmdoc] [arg infile] [arg outfile] [opt "[option -mode] [arg weave|tangle]"]]
 

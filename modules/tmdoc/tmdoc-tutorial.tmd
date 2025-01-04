@@ -73,25 +73,27 @@ language. Using Markdown processors like `pandoc` or the Tcl package
 `Markdown` the output of the `tmdoc` processor can be converted finally to
 other document formats like pdf or html. 
 
-To give an example, below is the pipleine which was used to create the HTML document you are currently viewing:
+To give an example, below is the pipleine which was used to create the HTML document you are
+currently viewing using [https://github.com/mittelmark/tmdoc](tmdoc) and [https://github.com/mittelmark/mkdoc](mkdoc) :
 
-```{.std}
-$ tmdoc --mode weave tmdoc-tutorial.tmd - | \
-    pandoc -o tmdoc-tutorial.html -s --css tmdoc.css 
+```{std}
+$ tmdoc tmdoc-tutorial.tmd - | \
+    mkdoc - tmdoc-tutorial.html --css tmdoc.css 
 ```
 
-So basically the pipeline is the following:
+With the [pandoc](https://pandoc.org/) command line application yo can as well convert the Markdown output of *tmdoc* to many other formats. 
+The pipeline is then the following:
 
-```{.std}
+```{std}
       tmdoc        pandoc
 TMD --------> MD ----------> HTML/PDF/DOCX
 ```
 
 Now the mandatory "Hello World!" example. If you embed the following text
-into your Markdown document, *tmdoc* will produce, after converting the document
-from Markdown to HTML, the following input (without the leading four spaces, nessessary here to avoid interpretation by *tmdoc*) 
+into your Markdown document with the extension, `.tmd`, *tmdoc* will produce, after converting the document
+from Markdown to HTML via *mkdoc* or *pandoc*, the following input (without the leading four spaces, nessessary here to avoid interpretation by *tmdoc*) 
 
-```{.std}
+```{std}
     ```{.tcl}
     puts "Hello World!"
     ```
@@ -107,7 +109,7 @@ Code block and/or the output can be as well hidden using chunk arguments, that
 will be described later in more detail. Short code fragments can be 
 directly embedded into the text. Here an example for this approach:
 
-```{.std}
+```{std}
 The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`
 ```
 
@@ -126,19 +128,19 @@ in blue is the output of the creme tcl code before. Red code lines indicate code
 
 So here again the color codes:
 
-```{.std}
+```{std}
 gray: code examples which are not evaluated within this document
 ```
 
-```{.tclcode}
+```{tclcode}
 creme: code examples which are evaluated by Tcl
 ```
 
-```{.tclout}
+```{tclout}
 blue: result output of evaluated Tcl code
 ```
 
-```{.tclerr}
+```{tclerr}
 red: errors resulting from Tcl code evaluations
 ```
 
@@ -150,7 +152,7 @@ several evaluation options which will be described later in more detail.
 
 Here the Tcl-Markdown input (without the leading four spaces):
 
-```{.std}
+```{std}
     ```{tcl echo=true}
     set x 1
     set a 1
@@ -223,7 +225,7 @@ set a ""
 
 Alternatively you can supress the output at all by giving an option `results=hide` to the code chunk
 
-```{.std}
+```{std}
     ```{.tcl results=hide}
     set a 1
     ```
@@ -239,7 +241,7 @@ You can as well supress both showing the Tcl code and the output of the Tcl
 code by specifying `results=hide` and `echo=false` as shown in the following example:
 
 
-```{.std}
+```{std}
     ```{tcl results=hide,echo=false}
     set a 2
     ```
@@ -260,7 +262,7 @@ of this computation within the text, for instance to display date and used Tcl p
 
 ## <a name="inline">Inline Codes</a>
 
-```{.std}
+```{std}
 Let's look what is the value of x. The value of x is `tcl set x`. Is it one??
 ```
 
@@ -270,7 +272,7 @@ Yes it is!
 
 Now let's try two times inline code on one line:
 
-```{.std}
+```{std}
 The value of x is: `tcl incr x` and now `tcl incr x`!.
 ```
 
@@ -291,7 +293,7 @@ Should given an error ... It does!
 
 Now check for inline code errors in text:
 
-```{.std}
+```{std}
 This line contains an inline code error `tcl set z`!!
 ```
 
@@ -329,7 +331,7 @@ close $out
 
 After creating the image we can display it inline using standard Markdown syntax:
 
-```{.std}
+```{std}
   ![](out.png)
 ```
 
@@ -359,8 +361,8 @@ chunk option. Please note, that this still requires your implementation of the
 `figure` procedure with the `filename` argument. The following code block with automatically create the
 figure and embed it afterwards, the code itself (in the creme block) will be not shown as we specified `echo=false`:
 
-```{.std}
-    ```{tcl fig=true,echo=false}
+```{std}
+    ```{.tcl fig=true,echo=false}
     gd filled_rectangle 80 80 120 120 $white
     ```
 ```
@@ -379,8 +381,8 @@ might later change if you add some code before of the current code. To fix
 this you have to add your own label to the code chunk as can be seen in the
 following example. This label will then be part of the image filename.
 
-```{.std}
-    ```{tcl label=myfig,fig=true,echo=false,include=false}
+```{std}
+    ```{.tcl label=myfig,fig=true,echo=false,include=false}
     gd filled_rectangle 90 90 110 110 $blue
     ```
 ```
@@ -394,7 +396,7 @@ times. The name of the file consists of the basename of the Markdown file and
 the label with the png extension. It is `basename-label.png`. So:
 
 
-```{.std}
+```{std}
     ![](tmdoc-tutorial-myfig.png) ![](tmdoc-tutorial-myfig.png)
 ```
 
@@ -406,8 +408,8 @@ gives us:
 
 We can also use screenshot applications to make screenshots of running Tk applications. So for instance on Unix systems the following code might work.
 
-```{.std}
-    ```{tcl}
+```{std}
+    ```{.tcl}
     package require Tk
     toplevel .top
     wm title .top DGApp
@@ -435,7 +437,7 @@ making figures with a canvas widget. Tcl will probably have a `canvas snap` or `
 command in the new Tcl/Tk 8.7 release. In Tcl/Tk 8.6 we can use the *tklib*
 package canvas::snap for this purpose which needs again an installation of the *tkimg* package.
 
-```{.std}
+```{std}
     ```{.tcl}
     package require canvas::snap
     pack [canvas .c -background beige] \
@@ -457,7 +459,7 @@ set img [canvas::snap .c]
 $img write canvas.png -format png
 ```
 
-```{.std}
+```{std}
     ![ ](canvas.png)
 ```
 
@@ -478,7 +480,7 @@ proc figure {filename} {
 
 Now our code chunk options for the figure setting should work on the canvas as well:
 
-```{.std}
+```{std}
      ```{.tcl fig=true,results=hide}
      .c create rectangle 60 60 90 70  -fill blue
      ```
@@ -495,7 +497,7 @@ We used `results=hide` to avoid showing the return value of the rectangle functi
 
 Let's at last in this section test the `include=false` option:
 
-```{.std}
+```{std}
     ```{.tcl label=rect,fig=true,results=hide,include=false}
     .c create rectangle 65 65 85 70  -fill red
     ```
@@ -518,7 +520,7 @@ available at:
 [https://github.com/auriocus/ukaz](https://github.com/auriocus/ukaz). Please
 note, that I had to add the following delegations to the graph widgetadaptor inside the source code of `ukaz.tcl` to get `canvas::snap` working:
 
-```{.std}
+```{std}
 delegate option * to hull
 delegate method * to hull
 ```
@@ -615,7 +617,7 @@ character sequence like here: <code>'tcl set x 1'</code> (replace single quotes 
 
 Code chunks start on lines with three backticks and the character sequence tcl after a curly brace. They end at the next line which has again three backticks.
 
-```{.std}
+```{std}
     ```{.tcl}
     set x 1
     ```
@@ -637,23 +639,31 @@ The following options for code chunks are currently available:
 
 ## <a name="install">Installation</a>
 
-There is currently no prepared zip file. Just go to the dgroth tclcode project
-releases site:
-[https://chiselapp.com/user/dgroth/repository/tclcode/wiki?name=releases](https://chiselapp.com/user/dgroth/repository/tclcode/wiki?name=releases)
-and download the latest tmdoc zip file.
+To install the command line application, just download the latest bin file from the release page of the Github project,
+rename it as tmdoc, make it  executable  and move to a directory  belonging to
+your PATH variable. 
 
-Unzip this file into a folder which is in your Tcl `auto_path` variable. For
-installing *tmdoc* as standalone application just copy the file `tmdoc.tcl` as
-`tmdoc` in a directory which belongs to your executable `PATH` directory and make
-it executable, on Unix for instance using the command `chmod`.
+Here an example:
+
+```
+wget https://github.com/mittelmark/mkdoc/releases/download/v0.6.0/tmdoc-0.6.0.bin -O ~/.local/bin/tmdoc
+chmod 755 ~/.local/bin
+tmdoc --version
+## 0.6.0
+```
+
+To install the library copy the folder _modules/tmdoc_ to a folder belonging to
+your TCLLIBPATH variable. If this variable does not exists you can set it for instance to `~/.local/lib/Tcl8.6` and place the code therein.
+
 
 ## <a name="process">Processing Information</a>
 
-For generating the document the following Tcl version and Tcl packages were used:
-
 ```{tcl results=hide,echo=false}
-source tmdoc.tcl
+package require tmdoc
 ```
+
+
+For generating the document the following Tcl version and Tcl packages were used:
 
 * Tcl/Tk `tcl set tcl_patchLevel` 
 * tmdoc::tmdoc `tcl package provide tmdoc::tmdoc`

@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <220501.1859>
+#  Last Modified : <250104.2137>
 #
 # Copyright (c) 2020-2022  Dr. Detlef Groth, E-mail: detlef(at)dgroth(dot)de
 # 
@@ -16,8 +16,9 @@ exec tclsh "$0" "$@"
 #                  2020-02-23 version 0.3
 #                  2020-11-09 version 0.4
 #                  2021-12-19 version 0.5.0
-#                  2022-05-XX version 0.6.0 (tcllib) 
-package require Tcl 8.6
+#                  2025-01-04 version 0.6.0 (tcllib and Tcl 9 aware version) 
+#
+package require Tcl 8.6-
 package require fileutil
 package provide tmdoc::tmdoc 0.6.0
 package provide tmdoc [package provide tmdoc::tmdoc]
@@ -170,7 +171,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             } elseif {$mode eq "code" && [regexp {```} $line]} {
                 if {$copt(echo)} {
                     if {$inmode eq "md"} {
-                        puts $out "```{.tclcode}"
+                        puts $out "```{tclcode}"
                         puts -nonewline $out $tclcode
                         puts $out "```"
                     } elseif {$inmode eq "man"} {
@@ -185,7 +186,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 if {[catch {interp eval try $tclcode} res]} {
                     if {$inmode eq "md"} {
-                        puts $out "```{.tclerr}\n$res\n```\n"
+                        puts $out "```{tclerr}\n$res\n```\n"
                     } elseif {$inmode eq "man"} {
                         puts $out "\nError:\n$res\n"
                     } else {
@@ -197,7 +198,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     if {$copt(results) eq "show"} {
                         if {$inmode eq "md"} {
                             if {$res ne "" || $pres ne ""} {
-                                puts $out "```{.tclout}"
+                                puts $out "```{tclout}"
                             }
                             if {$pres ne ""} {
                                 puts -nonewline $out "$pres"
@@ -235,7 +236,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         set imgfile [file tail [file rootname $filename]]-$copt(label).$copt(ext)
                         if {[interp eval intp "info commands figure"] eq ""} {
                             if {$inmode eq "md"} {
-                                puts $out "```{.tclerr}\nYou need to define a figure procedure \nwhich gets a filename as argument"
+                                puts $out "```{tclerr}\nYou need to define a figure procedure \nwhich gets a filename as argument"
                                 puts $out "proc figure {filename} { }\n\nwhere within you create the image file```\n"
                             } else {
                                 puts $out "\n\\begin{lrverbatim}\n\nYou need to define a figure procedure \nwhich gets a filename as argument\n"
@@ -323,6 +324,86 @@ proc ::tmdoc::tmeval {text} {
     return $ret
 }
 
+proc ::tmdoc::main {argv} {
+    global argv0
+    set APP $argv0
+    if {[regexp {tclmain} $APP]} {
+        set APP "tclmain -m tmdoc"
+    }
+    set Usage [string map [list "\n    " "\n"] {
+        Usage: __APP__ ?[--help|version]? INFILE OUTFILE ?--mode weave|tangle?   
+               
+        tmdoc - Literate programming with Tcl for Markdown and LaTeX processor, Version __VERSION__
+                Converts Markdown or LaTeX documents with embedded Tcl code into Markdown 
+                or LaTeX documents with evaluated Tcl code
+                
+        Positional arguments (required):
+        
+            INFILE  - input file usually Markdown or LaTeX with embedded Tcl code
+                      either in code chunks starting with ```{.tcl} or in short
+                      inline code  with `tcl set x` syntax.
+                      
+            OUTFILE - output file usually a Markdown or LaTeX file, if not given
+                      or if outfile is the `-` output is send to stdout
+           
+                     
+        Optional arguments:
+            
+           --help       - displays this help page, and exit
+           --version    - display version number, and exit
+           --license    - display license information, and exit
+           --mode       - either `weave` for evaluating the code chunks
+                          or `tangle` for extracting all Tcl code  
+                          
+        Examples:
+        
+           # convert the tutorial in the modules/tmdoc folder
+           __APP__ modules/tmdoc/tmdoc-tutorial.Tmd modules/tmdoc/tmdoc-tutorial.md
+           # convert it furthermore to HTML using mkdoc
+           mkdoc modules/tmdoc/tmdoc-tutorial.md modules/tmdoc/tmdoc-tutorial.html \
+                 --css tmdoc.css
+           
+           # extract inline examples from the package code
+           mkdoc modules/tmdoc/tmdoc.tcl modules/tmdoc/tmdoc.tmd
+           # evaluate the examples and add the code output
+           __APP__ modules/tmdoc/tmdoc.tmd modules/tmdoc/tmdoc.md
+           # convert it to HTML 
+           mkdoc modules/tmdoc/tmdoc.md modules/tmdoc/tmdoc-tmdoc.html \
+                 --css tmdoc.css
+           
+      License: BSD
+    }]
+    
+    if {[lsearch -exact $argv {--version}] > -1} {
+        puts "[package provide tmdoc::tmdoc]"
+        return
+    }
+    if {[lsearch -exact $argv {--license}] > -1} {
+        puts "BSD License - see manual page"
+        return
+    }
+    
+    if {[llength $argv] < 2 || [lsearch -exact $argv {--help}] > -1} {
+        set usage [regsub -all {__VERSION__} [regsub -all {__APP__} $Usage $APP] [package provide tmdoc]]
+        puts $usage
+        exit 0
+    } else {
+        set idxm [lsearch -exact $argv {--mode}] 
+        set mode weave
+        if {$idxm >-1} {
+            if {[llength $argv] != 4} {
+                puts "Usage: Error - argument --mode must have an argument either weave or tangle"
+            } elseif {[lindex $argv [expr {$idxm+1}]] ni [list weave tangle]} {
+                puts "Usage: Error - --mode must have as values on of weave or tangle"
+            } else {
+                set mode [lindex $argv [expr {$idxm+1}]]
+            }
+            set argv [lreplace $argv $idxm [expr {$idxm+1}]]
+        }
+        tmdoc::tmdoc [lindex $argv 0] [lindex $argv 1] [list -mode $mode]
+    }
+}
+
 namespace eval ::tmdoc {
     namespace export tmdoc tmeval
 }
@@ -349,10 +430,12 @@ namespace eval ::tmdoc {
 #' - 2021-12-19 Release 0.5.0
 #'     - pandoc compatible syntax with .tcl and tcl as chunk indicator
 #'     - chunk options with spaces possible instead of comma
-#' - 2022-05-XX Release 0.6.0
+#' - 2025-01-XX Release 0.6.0
 #'     - making it ready for tcllib inclusion
 #'     - splitting app into own file
 #'     - writing man-pages
+#'     - adding tmdoc::main argv method to make it tclmain aware
+#'     - adapting tmdoc.css to be used by mkdoc
 #'
 #' ## <a name='todo'>TODO</a>
 #'
@@ -360,11 +443,17 @@ namespace eval ::tmdoc {
 #' - fig.width, fig.height options by using args argument in figure (for LaTeX done)
 #' - your suggestions ...
 #'
-#'
 #' ## <a name='license'>LICENSE AND COPYRIGHT</a>
 #'
 #' Tcl Markdown processor tmdoc::tmdoc, version 0.6.0
 #'
-#' Copyright (c) 2020-2022  Dr. Detlef Groth, E-mail: <detlef(at)dgroth(dot)de>
+#' Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany E-mail: <dgroth(at)uni(minus)potsdam(dot)de>
 #' 
 #' License: BSD
+#'
+#' ## See Also
+#'
+#' - [mkdoc](https://github.com/mittelmark/mkdoc) - converting Markdown to HTML or extrac ting Markdown documentation from source code files
+#' - [pandoc](https://pandoc.org)                 - the most flexible document converter
+#' - [pantcl](https://github.com/mittelmark/pantcl) - combines the functionality of mkdoc, tmdoc and adds more languages like R, Python, GraphViz, PlantUML  and many more
+#'

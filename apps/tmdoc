@@ -2,80 +2,10 @@
 # A Tcl comment, whose contents don't matter \
 exec tclsh "$0" "$@"
 
-package require Tcl 8.6
+package require Tcl 8.6-
 package require tmdoc
 
-set Usage [string map [list "\n    " "\n"] {
-    Usage: __APP__ ?[--help|version]? INFILE OUTFILE ?--mode weave|tangle?   
-           
-    tmdoc - Literate programming with Tcl for Markdown and LaTeX processor, Version [package provide tmdoc::tmdoc]
-            Converts Markdown or LaTeX documents with embedded Tcl code into Markdown 
-            or LaTeX documents with evaluated Tcl code
-            
-    Positional arguments (required):
-    
-        INFILE  - input file usually Markdown or LaTeX with embedded Tcl code
-                  either in code chunks starting with ```{.tcl} or in short
-                  inline code  with `tcl set x` syntax.
-                  
-        OUTFILE - output file usually a Markdown or LaTeX file, if not given
-                  or if outfile is the `-` output is send to stdout
-       
-                 
-    Optional arguments:
-        
-       --help       - displays this help page, and exit
-       --version    - display version number, and exit
-       --license    - display license information, and exit
-       --mode       - either `weave` for evaluating the code chunks
-                      or `tangle` for extracting all Tcl code  
-                      
-    Examples:
-    
-       # convert the tutorial in the modules/tmdoc folder
-       __APP__ modules/tmdoc/tmdoc-tutorial.Tmd modules/tmdoc/tmdoc-tutorial.md
-       # convert it furthermore to HTML using mkdoc
-       mkdoc modules/tmdoc/tmdoc-tutorial.md modules/tmdoc/tmdoc-tutorial.html \
-             --css modules/tmdoc/mkdoc.css
-       
-       # extract inline examples from the package code
-       mkdoc modules/tmdoc/tmdoc.tcl modules/tmdoc/tmdoc.tmd
-       # evaluate the examples and add the code output
-       __APP__ modules/tmdoc/tmdoc.tmd modules/tmdoc/tmdoc.md
-       # convert it to HTML 
-       mkdoc modules/tmdoc/tmdoc.md modules/tmdoc/tmdoc-tmdoc.html \
-             --css modules/tmdoc/mkdoc.css
-       
-  License: BSD
-}]
-
-if {[lsearch -exact $argv {--version}] > -1} {
-    puts "[package provide tmdoc::tmdoc]"
-    return
+if {[info exists argv0]} {
+    tmdoc::main $argv
 }
-if {[lsearch -exact $argv {--license}] > -1} {
-    puts "BSD License - see manual page"
-    return
-}
-
-if {[llength $argv] < 2 || [lsearch -exact $argv {--help}] > -1} {
-    set usage [regsub -all {__APP__} $Usage [info script]]
-    puts $usage
-    exit 0
-} else {
-    set idxm [lsearch -exact $argv {--mode}] 
-    set mode weave
-    if {$idxm >-1} {
-        if {[llength $argv] != 4} {
-            puts "Usage: Error - argument --mode must have an argument either weave or tangle"
-        } elseif {[lindex $argv [expr {$idxm+1}]] ni [list weave tangle]} {
-            puts "Usage: Error - --mode must have as values on of weave or tangle"
-        } else {
-            set mode [lindex $argv [expr {$idxm+1}]]
-        }
-        set argv [lreplace $argv $idxm [expr {$idxm+1}]]
-    }
-    tmdoc::tmdoc [lindex $argv 0] [lindex $argv 1] [list -mode $mode]
-}
-
 exit

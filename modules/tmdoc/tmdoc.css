@@ -5,7 +5,7 @@ body {
     font: Alegreya, Georgia, serif;
 }
 
-h1.title, p.author, p.date {
+h1.title, p.author, p.date, h2.author, h2.date {
     text-align: center;
 }
 a { text-decoration: none ; }
@@ -15,15 +15,16 @@ pre {
     border-bottom: 2px solid #CCCCCC; 
     font: Monaco, monospace;
 }
-pre.tclcode {
+pre:has(code) {
+    background: #efefef;
+}
+pre:has(code.tclcode) {
     background: cornsilk;   
 }
-pre.tclout {    
+
+pre:has(code.tclout) {    
     background: #CCEEFF;
 }
-pre.tclerr {    
+pre:has(code.tclerr) {    
     background: #FFCCCC;
-}
-pre.std {
-    background: #efefef;
 }
