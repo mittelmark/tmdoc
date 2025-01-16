@@ -548,7 +548,8 @@ Let's at last in this section test the `include=false` option:
     .c create rectangle 65 65 85 70  -fill red
     ```
 
-    ![](tmdoc-tutorial-rect.png) ![](tmdoc-tutorial-rect.png)
+    ![](tmdoc-tutorial-rect.png)
+    ![](tmdoc-tutorial-rect.png)
 ```
 
 produces:
@@ -557,7 +558,8 @@ produces:
 .c create rectangle 65 65 85 70  -fill red
 ```
 
-![](tmdoc-tutorial-rect.png) ![](tmdoc-tutorial-rect.png)
+![](tmdoc-tutorial-rect.png) 
+![](tmdoc-tutorial-rect.png)
 
 ## <a name="ukaz">Images with ukaz</a>
 
