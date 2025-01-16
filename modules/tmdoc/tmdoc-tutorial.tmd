@@ -1,10 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.6 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.7.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, Caputh-Schwielowsee, Germany
 date: `tcl clock format [clock seconds] -format "%Y-%m-%d"`
-output: 
-  pdf_document:
-    pandoc_args: "--highlight=pygments"
 ---
 
 ```{.tcl echo=false,results=hide}
@@ -48,6 +45,8 @@ Tcl packages and other types of documentation.
 - [The puts Statement](#puts)
 - [Inline Codes](#inline)
 - [Error Handling](#errors)
+- [Creating Tables](#tables)
+- [Including Files](#include)
 - [Writing Images](#images)
     - [gdtcl](#images)
     - [screenshot](#screenshot)
@@ -298,6 +297,53 @@ This line contains an inline code error `tcl set z`!!
 ```
 
 This line contains an inline code error `tcl set z`!!
+
+
+## <a name="tables">Creating Tables</a>
+
+Since  _tmdoc_  version  0.7.0 there is as well  support for tables  using the
+`results=asis` option. Here an example:
+
+```{std}
+    ```{.tcl results=asis,echo=false}
+    set h [list A B C]
+    set d [list 1 2 3 4 5 6 7 8 9]
+    puts [list2mdtab $h $d]
+    ```
+```
+
+```{.tcl results=asis,echo=false}
+set h [list A B C]
+set d [list 1 2 3 4 5 6 7 8 9]
+puts [list2mdtab $h $d]
+```
+    
+## <a name="include">Including Files</a>
+
+Sometimes we store information which should be available for a set of files in
+separate file to reuse this  information in other files. Examples for this are
+headers and footers. Let's create such a file here and then include that file.
+Let's assume we have a file  lipsum.txt  which  contains Lorem lipsum text. We
+can then easily include that file like this:
+
+
+```{std}
+    Some text - indented and emphasized.
+    
+    > _`tcl include lipsum.txt`_
+    
+    Some more text.
+````
+
+Here the output:
+
+Some text - indented and emphasized.
+ 
+> _`tcl include lipsum.txt`_
+ 
+Some more text.
+    
+
 
 
 ## <a name="images">Writing Images</a>
