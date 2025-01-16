@@ -125,7 +125,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-01-16 07:00</p>
+<p>The curent date and time is: 2025-01-16 08:05</p>
 
 <hr />
 
@@ -511,13 +511,13 @@ the snap on the canvas.</p>
     .c create rectangle 65 65 85 70  -fill red
     ```
 
-    ![ ](tmdoc-tutorial-rect.png) &lt;img src=&quot;tmdoc-tutorial-rect.png&quot;&gt;&lt;/img&gt;</code></pre>
+    &lt;img src=&quot;tmdoc-tutorial-rect.png&quot;&gt;&lt;/img&gt; &lt;img src=&quot;tmdoc-tutorial-rect.png&quot;&gt;&lt;/img&gt;</code></pre>
 
 <p>produces:</p>
 
 <pre class='code'><code class='tclcode'>.c create rectangle 65 65 85 70  -fill red</code></pre>
 
-<p><img src="tmdoc-tutorial-rect.png" alt=" "/> <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEgAAAA0CAIAAACmb+mqAAAAA3NCSVQICAjb4U/gAAAAG3RFWHRTb2Z0d2FyZQBUayBUb29sa2l0IHY4LjYuMTOq0T82AAAAfElEQVR4nO3UwQ3AIAwEQfdfY9rg7RSQ8AmxfAd72j+MkIgxri2L9hsAAwbMMmBuAXPrYFio7gdYplzAgIkEDJhIwIA9D6hbOyxrAgYM2Ats9b/QhX1/IGDAgE1gVeuEdQUMmEjAgIkE7EyY5lZhpgFzC5hbwNwC5ta2sBs0jL97u6FWxQAAAABJRU5ErkJggg=="></img></p>
+<p><img src="tmdoc-tutorial-rect.png"></img> <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEgAAAA0CAIAAACmb+mqAAAAA3NCSVQICAjb4U/gAAAAG3RFWHRTb2Z0d2FyZQBUayBUb29sa2l0IHY4LjYuMTOq0T82AAAAfElEQVR4nO3UwQ3AIAwEQfdfY9rg7RSQ8AmxfAd72j+MkIgxri2L9hsAAwbMMmBuAXPrYFio7gdYplzAgIkEDJhIwIA9D6hbOyxrAgYM2Ats9b/QhX1/IGDAgE1gVeuEdQUMmEjAgIkE7EyY5lZhpgFzC5hbwNwC5ta2sBs0jL97u6FWxQAAAABJRU5ErkJggg=="></img></p>
 
 <h2><a name="ukaz">Images with ukaz</a></h2>
 
@@ -620,7 +620,8 @@ character sequence like here: <code>'tcl set x 1'</code> (replace single quotes 
 <ul>
 <li>label: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.</li>
 <li>echo: Should the Tcl code be shown, either show or hide, default: true.</li>
-<li>results: Should the output of the Tcl code evaluation be shown, default: show.</li>
+<li>results: Should the output of the Tcl code evaluation be shown, either hide,
+  asis or show, default: show.</li>
 <li>fig: Does the code chunk produces a graphic, default: false. If this feature is used there must be a <code>figure</code> procedure with a filename argument which writes the figure.</li>
 <li>include: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
 
@@ -635,10 +636,10 @@ your PATH variable.</p>
 
 <p>Here an example:</p>
 
-<pre class='code'><code>wget https://github.com/mittelmark/mkdoc/releases/download/v0.6.0/tmdoc-0.6.0.bin -O ~/.local/bin/tmdoc
-chmod 755 ~/.local/bin
+<pre class='code'><code>wget https://github.com/mittelmark/tmdoc/releases/download/v0.7.0/tmdoc-0.6.0.bin -O ~/.local/bin/tmdoc
+chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.6.0</code></pre>
+## 0.7.0</code></pre>
 
 <p>To install the library copy the folder <em>modules/tmdoc</em> to a folder belonging to
 your TCLLIBPATH variable. If this variable does not exists you can set it for instance to <code>~/.local/lib/Tcl8.6</code> and place the code therein.</p>
@@ -655,9 +656,9 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 <li>ukaz 2.1
 </li></ul>
 
-<p>Document was processed at: 2025-01-16 07:00</p>
+<p>Document was processed at: 2025-01-16 08:05</p>
 
-<p>Document processing was done within: 821 milliseconds.</p>
+<p>Document processing was done within: 784 milliseconds.</p>
 
 <p>Let's destroy the Tk application at the end.</p>
 
