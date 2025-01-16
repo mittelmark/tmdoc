@@ -4,8 +4,9 @@
 [![Release](https://img.shields.io/github/v/release/mittelmark/tmdoc.svg?label=current+release)](https://github.com/mittelmark/tmdoc/releases)
 ![Downloads](https://img.shields.io/github/downloads/mittelmark/tmdoc/total)
 ![Commits](https://img.shields.io/github/commits-since/mittelmark/tmmdoc/latest)
-[![Docu](https://img.shields.io/badge/Docu-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/mkdoc/blob/master/modules/tmdoc.html)
-[![Tutorial](https://img.shields.io/badge/Tutorial-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/mkdoc/blob/master/modules/tmdoc-tutorial.html)
+
+[![Docu](https://img.shields.io/badge/Docu-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc.html)
+[![Tutorial](https://img.shields.io/badge/Tutorial-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
 [![Wiki](https://img.shields.io/badge/Wiki-blue)](https://wiki.tcl-lang.org/page/tmdoc%3A%3Atmdoc)
 
 Literate programming with Tcl. Embed Tcl code into Markdown or LaTeX
