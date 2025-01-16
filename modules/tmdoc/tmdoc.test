@@ -1,3 +1,4 @@
+#!/usr/bin/env tclsh
 lappend auto_path ..
 package require tcltest
 package require tmdoc
@@ -9,10 +10,10 @@ tcltest::test tmdoc-test-1.1 {
 set x 1; set x
 ```\n"   
 } -result {
-```{.tclcode}
+```{tclcode}
 set x 1; set x
 ```
-```{.tclout}
+```{tclout}
 ==> 1
 ```
 
@@ -25,7 +26,7 @@ tcltest::test tmdoc-test-1.2 {
 set x 2; set x
 ```\n"   
 } -result {
-```{.tclout}
+```{tclout}
 ==> 2
 ```
 
@@ -54,8 +55,8 @@ tcltest::test tmdoc-test-1.4 {
      tmdoc::tmeval "
 Some text
 
-```{.tcl echo=false, results=hide}
-set x 4; set x
+```{.tcl echo=false results=hide}
+set x 3; set x
 ```\n"
 } -result {
 Some text
@@ -69,13 +70,59 @@ tcltest::test tmdoc-test-1.5 {
     with space and tcl instead of .tcl marker
 } -body {
      tmdoc::tmeval "
-Some text
+Some text with space test
 
 ``` {tcl echo=false, results=hide}
 set x 5; set x
-```\n"
+```"
+
+} -result {
+Some text with space test
+
+}
+
+tcltest::test tmdoc-test-1.6 {checking include} -body {
+   set out [open include.md w 0600]
+   puts $out "## Hello Include"
+   close $out
+   tmdoc::tmeval "
+Some text
+
+`tcl include include.md`
+
+Some text
+"
+} -result {
+Some text
+
+## Hello Include
+
+Some text
+
+}
+
+tcltest::test tmdoc-test-1.7 {
+    Calling my tmdoc::tmeval with results=asis 
+    to display a table using the list2md command
+} -body {
+     tmdoc::tmeval "
+Some text
+
+```{tcl echo=false, results=asis}
+set h {A B C}
+puts \[list2mdtab \$h \[list 1 2 3 4 5 6\]\]
+```"
+
 } -result {
 Some text
 
 
+| A | B | C |
+| ---- | ---- | ---- |
+|  1 | 2 | 3 |
+|  4 | 5 | 6 |
+
 }
+
+::tcltest::cleanupTests 0
+

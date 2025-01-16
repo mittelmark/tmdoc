@@ -4,9 +4,10 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250104.2137>
+#  Last Modified : <250116.0628>
 #
-# Copyright (c) 2020-2022  Dr. Detlef Groth, E-mail: detlef(at)dgroth(dot)de
+# Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
+#                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
 # 
 #  Description	 : Command line utility and package to embed and evaluate Tcl code
 #                  inside Markdown documents, a technique known as literate programming. 
@@ -17,10 +18,11 @@ exec tclsh "$0" "$@"
 #                  2020-11-09 version 0.4
 #                  2021-12-19 version 0.5.0
 #                  2025-01-04 version 0.6.0 (tcllib and Tcl 9 aware version) 
+#                  2025-01-18 version 0.7.0 results="asis" implemented, include and list2md
 #
 package require Tcl 8.6-
 package require fileutil
-package provide tmdoc::tmdoc 0.6.0
+package provide tmdoc::tmdoc 0.7.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {} 
 
@@ -64,7 +66,60 @@ proc ::tmdoc::interpReset {} {
             }
             return ""
         }
-    } 
+        proc list2mdtab {header values} {
+            set ncol [llength $header]
+            set nval [llength $values]
+            if {[llength [lindex $values 0]] > 1 && [llength [lindex $values 0]] != [llength $header]} {
+                error "Error: list2table - number of values if first row is not a multiple of columns!"
+            } elseif {[expr {int(fmod($nval,$ncol))}] != 0} {
+                error "Error: list2table - number of values is not a multiple of columns!"
+            }
+            set res "\n|" 
+            foreach h $header {
+                append res " $h |"
+            }   
+            append res "\n|"
+            foreach h $header {
+                append res " ---- |"
+            }
+            append res "\n"
+            set c 0
+            foreach val $values {
+                if {[llength $val] > 1} {    
+                    # nested list
+                    append res "| "
+                    foreach v $val {
+                        append res " $v |"
+                    }
+                    append res "\n"
+                } else {
+                    if {[expr {int(fmod($c,$ncol))}] == 0} {
+                        append res "| " 
+                    }    
+                    append res " $val |"
+                    incr c
+                    if {[expr {int(fmod($c,$ncol))}] == 0} {
+                        append res "\n" 
+                    }    
+                }
+            }
+            return $res
+            
+        }
+        proc include {filename} {
+            if [catch {open $filename r} infh] {
+                return "Cannot open $filename"
+            } else {
+                set res ""
+                while {[gets $infh line] >= 0} {
+                    append res "$line\n"
+                }
+                set res [regsub {\n$} $res ""]
+                close $infh
+                return $res
+            }
+        }
+    }
     interp eval intp { 
         proc gputs {} { 
             set res $::pres 
@@ -81,6 +136,8 @@ proc ::tmdoc::interpReset {} {
     interp eval try { rename puts puts.orig }
     # todo handle puts options
     interp eval try { proc puts {args} {  } }
+    interp eval try { proc include {filename} {  } }    
+    interp eval try { proc list2mdtab {header data} {  } }        
 }
 
 # public functions - the main function process the files
@@ -195,7 +252,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 } else {
                     set res [interp eval intp $tclcode]
                     set pres [interp eval intp gputs]
-                    if {$copt(results) eq "show"} {
+                    if {$copt(results) eq "asis"} {
+                        puts -nonewline $out $pres
+                    } elseif {$copt(results) eq "show"} {
                         if {$inmode eq "md"} {
                             if {$res ne "" || $pres ne ""} {
                                 puts $out "```{tclout}"

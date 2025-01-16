@@ -98,7 +98,7 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.6.0 tmdoc &quot;Literate programming using Tcl&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.7.0 tmdoc &quot;Literate programming using Tcl&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
 <p>tmdoc - Evaluate embedded Tcl code in Markdown or LaTeX documents</p>
 </div>
@@ -111,11 +111,13 @@
 <li class="doctools_section"><a href="#section3">Examples</a></li>
 <li class="doctools_section"><a href="#section4">Code Chunk Options</a></li>
 <li class="doctools_section"><a href="#section5">Inline code chunks</a></li>
-<li class="doctools_section"><a href="#section6">Images</a></li>
-<li class="doctools_section"><a href="#section7">Filetypes</a></li>
-<li class="doctools_section"><a href="#section8">See Also</a></li>
-<li class="doctools_section"><a href="#section9">Bugs, Ideas, Feedback</a></li>
-<li class="doctools_section"><a href="#section10">Code Copyright</a></li>
+<li class="doctools_section"><a href="#section6">Tables</a></li>
+<li class="doctools_section"><a href="#section7">Images</a></li>
+<li class="doctools_section"><a href="#section8">Includes</a></li>
+<li class="doctools_section"><a href="#section9">Filetypes</a></li>
+<li class="doctools_section"><a href="#section10">See Also</a></li>
+<li class="doctools_section"><a href="#section11">Bugs, Ideas, Feedback</a></li>
+<li class="doctools_section"><a href="#section12">Code Copyright</a></li>
 <li class="doctools_section"><a href="#category">Category</a></li>
 <li class="doctools_section"><a href="#copyright">Copyright</a></li>
 </ul>
@@ -214,7 +216,7 @@ Some more Markup text ...
 <dt><b class="const">label</b></dt>
 <dd><p>A text label for the code chunk. Defaults to <b class="const">chunk-nn</b> where nn is a counter.</p></dd>
 <dt><b class="const">results</b></dt>
-<dd><p>Should the results of code evaluation been show, either <b class="const">show</b> or <b class="const">hide</b>. Defaults to <b class="const">show</b>.</p></dd>
+<dd><p>Should the results of code evaluation been show, either <b class="const">show</b>, <b class="const">hide</b> or <b class="const">asis</b>, the latter does include the ouptput not into a pre / verbatim environment. Defaults to <b class="const">show</b>.</p></dd>
 </dl>
 <p>The following example will just do an computation using the Tcl interpreter but does not show the output due to <b class="const">results=hide</b> and not the code due to <b class="const">echo=false</b>:</p>
 <pre class="doctools_example">
@@ -231,7 +233,20 @@ The current date is `tcl clock format [clock seconds] -format &quot;%Y-%m-%d&quo
 <p>The code above would insert the current date into the text. 
 So text inline code chunks are possible using single backticks such as here <b class="const">`tcl set x`</b>.</p>
 </div>
-<div id="section6" class="doctools_section"><h2><a name="section6">Images</a></h2>
+<div id="section6" class="doctools_section"><h2><a name="section6">Tables</a></h2>
+<p>The Tcl interpreter which is executed inside the code chunks supports as well a procedure <b class="cmd">list2mdtab</b> <b class="const">headers</b> <b class="const">data</b> which allows of inserting tables if the output is Markdown.</p>
+<pre class="doctools_example">
+```{.tcl results=&quot;asis&quot;}
+set l [list [list A B C D E]  [list 1 2 3 4 5]  [list 6 7 8 9 10]  [list 11 12 13 14 15]]
+# syntax: list2mdtab header rows
+# we need to flatten the row list
+set r &lt;center&gt;\n\n
+append r [list2mdtab [lindex $l 0] [concat {*}[lrange $l 1 end]]]
+append r \n\n&lt;/center&gt;\n
+```
+</pre>
+</div>
+<div id="section7" class="doctools_section"><h2><a name="section7">Images</a></h2>
 <p>Inside standard code chunks as well images with Tcl can be generated with normal Tcl code.</p>
 <p>To support the standard chunk properties <b class="const">fig=true</b>, optionally with <b class="const">include=false</b> however a Tcl procedure proc must be provided. Below is an example to use the tklib package <b class="const">canvas::snap</b> to create images using the Tk canvas.</p>
 <pre class="doctools_example">
@@ -268,19 +283,29 @@ figure markup such as:</p>
 ![](basename-label.png)
 </pre>
 </div>
-<div id="section7" class="doctools_section"><h2><a name="section7">Filetypes</a></h2>
-<p>Currently <b class="cmd">tmdoc</b>  supports the filetypes Markdown which is assumed if you are using the file extension &quot;<b class="file">.tmd</b>&quot;
-and LaTeX if you use the file extensions &quot;<b class="file">.tnw</b>&quot;.</p>
+<div id="section8" class="doctools_section"><h2><a name="section8">Includes</a></h2>
+<p><b class="cmd">tmdoc</b> supports as well the inclusion of other files into the
+output document, the Tcl interpreter running into your source code chunks has
+an <b class="cmd">include</b> <b class="const">FILENAME</b> feature which allows you to insert Markdown or LaTeX
+code directly within your document.</p>
+<pre class="doctools_example">
+`include filename.md`
+</pre>
 </div>
-<div id="section8" class="doctools_section"><h2><a name="section8">See Also</a></h2>
+<div id="section9" class="doctools_section"><h2><a name="section9">Filetypes</a></h2>
+<p>Currently <b class="cmd">tmdoc</b> supports the filetypes Markdown which is assumed
+if you are using the file extension &quot;<b class="file">.tmd</b>&quot; and LaTeX if you use the file
+extensions &quot;<b class="file">.tnw</b>&quot;.</p>
+</div>
+<div id="section10" class="doctools_section"><h2><a name="section10">See Also</a></h2>
 <p>For a detailed tutorial on how to do literate programming with Tcl have a look at the Tcl Markdown tutorial.</p>
 </div>
-<div id="section9" class="doctools_section"><h2><a name="section9">Bugs, Ideas, Feedback</a></h2>
+<div id="section11" class="doctools_section"><h2><a name="section11">Bugs, Ideas, Feedback</a></h2>
 <p>This document, and the package it describes, will undoubtedly contain bugs and other
 problems. Please report such to the author of this package. Please also report any ideas
 for enhancements you may have for either package and/or documentation.</p>
 </div>
-<div id="section10" class="doctools_section"><h2><a name="section10">Code Copyright</a></h2>
+<div id="section12" class="doctools_section"><h2><a name="section12">Code Copyright</a></h2>
 <p>BSD License type:</p>
 <p>The following terms apply to all files a ssociated with the software unless
 explicitly disclaimed in individual files.</p>

@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.6.0]
+[vset VERSION 0.7.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <detlef(at)dgroth(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
@@ -111,7 +111,7 @@ The package supports the following code chunk options.
 [def [const fig]] Should a custom figure function called with the chunk label as argument. Defaults to [const false].
 [def [const include]] Should a possible figure been included directly after the code chunk. Defaults to [const true].
 [def [const label]] A text label for the code chunk. Defaults to [const chunk-nn] where nn is a counter.
-[def [const results]] Should the results of code evaluation been show, either [const show] or [const hide]. Defaults to [const show].
+[def [const results]] Should the results of code evaluation been show, either [const show], [const hide] or [const asis], the latter does include the ouptput not into a pre / verbatim environment. Defaults to [const show].
 [list_end]
 
 The following example will just do an computation using the Tcl interpreter but does not show the output due to [const results=hide] and not the code due to [const echo=false]:
@@ -136,11 +136,29 @@ The current date is `tcl clock format [clock seconds] -format "%Y-%m-%d"`
 The code above would insert the current date into the text. 
 So text inline code chunks are possible using single backticks such as here [const "`tcl set x`"].
 
+[section Tables]
+
+[para] The Tcl interpreter which is executed inside the code chunks supports as well a procedure [cmd list2mdtab] [const headers] [const data] which allows of inserting tables if the output is Markdown.
+
+[para] [example {
+```{.tcl results="asis"}
+set l [list [list A B C D E] \
+   [list 1 2 3 4 5] \
+   [list 6 7 8 9 10] \
+   [list 11 12 13 14 15]]
+# syntax: list2mdtab header rows
+# we need to flatten the row list
+set r <center>\n\n
+append r [list2mdtab [lindex $l 0] [concat {*}[lrange $l 1 end]]]
+append r \n\n</center>\n
+```
+}]
+
 [section Images]
 
 [para] Inside standard code chunks as well images with Tcl can be generated with normal Tcl code.
 
-[para] To support the standard chunk properties [const fig=true], optionally with [const include=false] however a Tcl procedure proc must be provided. Below is an example to use the tklib package [const canvas::snap] to create images using the Tk canvas.
+[para] To support the standard chunk properties [const fig=true], optionally with [const include=false] however a Tcl procedure [cmd figure] must be provided. Below is an example to use the tklib package [const canvas::snap] to create images using the Tk canvas.
 
 [para] [example {
 ```{.tcl}
@@ -186,10 +204,24 @@ figure markup such as:
 
 }]
 
+[section Includes]
+
+[para] [cmd tmdoc] supports as well the inclusion of other files into the
+output document, the Tcl interpreter running into your source code chunks has
+an [cmd include] [const FILENAME] feature which allows you to insert Markdown or LaTeX
+code directly within your document.
+
+[para] [example {
+
+`include filename.md`
+
+}]
+
 [section Filetypes] 
 
-[para] Currently [cmd tmdoc]  supports the filetypes Markdown which is assumed if you are using the file extension [file .tmd]
-and LaTeX if you use the file extensions [file .tnw].
+[para] Currently [cmd tmdoc] supports the filetypes Markdown which is assumed
+if you are using the file extension [file .tmd] and LaTeX if you use the file
+extensions [file .tnw].
 
 [section "See Also"]
 
