@@ -75,6 +75,14 @@ tclmain -m tmdoc --help
 - 2025-01-18  0.7 support for  _results="asis"_  and  functions  _include_ and
 _list2mdtab_
 
+## See Also
+
+- [mkdoc](https://github.com/mittelmark/mkdoc) - converting Markdown output of
+tmdoc to HTML
+- [pantcl](https://github.com/mittelmark/pantcl)  - combines functionality of
+pandoc, mkdoc, tmdoc and brings many filter for code blocks like for GraphViz,
+PlantUML, Shell, R and Python
+
 
 ## Author
 

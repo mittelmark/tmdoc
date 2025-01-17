@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250116.0628>
+#  Last Modified : <250117.1109>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -489,13 +489,14 @@ namespace eval ::tmdoc {
 #' - 2021-12-19 Release 0.5.0
 #'     - pandoc compatible syntax with .tcl and tcl as chunk indicator
 #'     - chunk options with spaces possible instead of comma
-#' - 2025-01-XX Release 0.6.0
+#' - 2025-01-18 Release 0.7.0
 #'     - making it ready for tcllib inclusion
 #'     - splitting app into own file
 #'     - writing man-pages
 #'     - adding tmdoc::main argv method to make it tclmain aware
 #'     - adapting tmdoc.css to be used by mkdoc
-#'
+#'     - Tcl 9 aware
+#'     - documentation fix for app
 #' ## <a name='todo'>TODO</a>
 #'
 #' - LaTeX mode if file extension is tnw intead of tmd (done)
