@@ -25,8 +25,9 @@ The package tmdoc provides a command to evaluate embedded Tcl code in code chunk
 Shorter  Tcl code  fragments  can be embedded  directly  within the text using
 single backticks like this (replace single ticks with backticks):
 
-```
+```txt
    This document was generated at 'tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"' MET.
+```
 ```
 
 ## Documentation
