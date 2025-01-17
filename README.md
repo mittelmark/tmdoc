@@ -17,17 +17,16 @@ documents with code evaluation.
 The package tmdoc provides a command to evaluate embedded Tcl code in code chunks within documents of Markup languages like Markdown and LaTeX and add the resulting output to the document for creating dynamic documents, a technique as well known as literate programming. The latter uses Tcllib's Markdown package. The embedded Tcl code starts with tri backticks and a language marker like this:
 
 ```
-   ```{.tcl}
-   puts "Hello World"
-   ```
+    '''{.tcl}
+    puts "Hello World"
+    '''
 ```
    
 Shorter  Tcl code  fragments  can be embedded  directly  within the text using
 single backticks like this (replace single ticks with backticks):
 
-```txt
-   This document was generated at 'tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"' MET.
 ```
+    This document was generated at 'tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"' MET.
 ```
 
 ## Documentation
