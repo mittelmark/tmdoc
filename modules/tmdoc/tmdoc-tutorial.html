@@ -23,7 +23,7 @@
 
 <h1 class="title">tmdoc::tmdoc 0.7.0 - Tcl Markdown processor tutorial</h1>
 <h2 class="author">Detlef Groth, Caputh-Schwielowsee, Germany</h2>
-<h2 class="date">2025-01-16</h2>
+<h2 class="date">2025-01-17</h2>
 
 <h2><a name="abstract">Abstract</a></h2>
 
@@ -125,7 +125,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-01-16 08:07</p>
+<p>The curent date and time is: 2025-01-17 07:46</p>
 
 <hr />
 
@@ -375,7 +375,7 @@ close $out</code></pre>
 
 <p>Shows the image:</p>
 
-<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAJ0lEQVRYw+3JMQEAAAQAMNE15+USwPYuAmCqLY0xxhhjjDHmHuCPBqvQTNO295umAAAAAElFTkSuQmCC"/></p>
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAJ0lEQVRYw+3JMQEAAAQAMNE15+USwPYuAmCqLY0xxhhjjDHmHuCPBqvQTNO295umAAAAAElFTkSuQmCC" alt=" "/></p>
 
 <p>The last lines in the Tcl code above are slightly tedious if you need to repeat them again.
 So there is an alternative. Obviously you can create a <code>figure</code> procedure
@@ -390,7 +390,7 @@ which gets one argument, a filename which is the file where the image should be 
 gd filled_rectangle 60 60 140 140 $blue
 figure out2.png</code></pre>
 
-<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVRYw+3WoREAIAwEwTjapmQ6AMcEhYzInvqZbeAjJCm33ybpKuvuQQghhBDykfrvQupFUp8ONEYjSIrDVwkAAAAASUVORK5CYII="/></p>
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVRYw+3WoREAIAwEwTjapmQ6AMcEhYzInvqZbeAjJCm33ybpKuvuQQghhBDykfrvQupFUp8ONEYjSIrDVwkAAAAASUVORK5CYII=" alt=" "/></p>
 
 <p>That's better, but you can even omit the figure call by specifiying <code>fig=true</code> as an additional code
 chunk option. Please note, that this still requires your implementation of the
@@ -425,7 +425,7 @@ the label with the png extension. It is <code>basename-label.png</code>. So:</p>
 
 <p>gives us:</p>
 
-<p><img src="tmdoc-tutorial-myfig.png"></img> <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVRYw+3WoQ0AIAxE0aJYm9EYiQ2oaQgY7In7XzV59kQjiIju9ttAXGWduyPeUuPwlhkNQT6i36hcKsRZ9L8Lohci8ikB9arVD1EgCFMAAAAASUVORK5CYII="></img></p>
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVRYw+3WoQ0AIAxE0aJYm9EYiQ2oaQgY7In7XzV59kQjiIju9ttAXGWduyPeUuPwlhkNQT6i36hcKsRZ9L8Lohci8ikB9arVD1EgCFMAAAAASUVORK5CYII="></img> <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQMAAACXljzdAAAABlBMVEUyMmS+vtJeK3cPAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVRYw+3WoQ0AIAxE0aJYm9EYiQ2oaQgY7In7XzV59kQjiIju9ttAXGWduyPeUuPwlhkNQT6i36hcKsRZ9L8Lohci8ikB9arVD1EgCFMAAAAASUVORK5CYII="></img></p>
 
 <h2><a name="screenshort">Tk samples with screenshots</a></h2>
 
@@ -480,7 +480,7 @@ $img write canvas.png -format png</code></pre>
 
 <p>shows the figure:</p>
 
-<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEgAAAA0CAIAAACmb+mqAAAAA3NCSVQICAjb4U/gAAAAG3RFWHRTb2Z0d2FyZQBUayBUb29sa2l0IHY4LjYuMTOq0T82AAAAaElEQVR4nO3PwQ2AMAADse4/I2v0XTbgQyWS4ugGiMec15GNzx+AgYFVBtYWWFs/ho3UbYCtFRcYWEhgYCGBgYUEBhYSGFhIYGAhgYGFBAYWEhhYSGCPsMy9hZUG1hZYW2BtgbV1LOwGZ2p/1yMhPFAAAAAASUVORK5CYII="/></p>
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAEgAAAA0CAIAAACmb+mqAAAAA3NCSVQICAjb4U/gAAAAG3RFWHRTb2Z0d2FyZQBUayBUb29sa2l0IHY4LjYuMTOq0T82AAAAaElEQVR4nO3PwQ2AMAADse4/I2v0XTbgQyWS4ugGiMec15GNzx+AgYFVBtYWWFs/ho3UbYCtFRcYWEhgYCGBgYUEBhYSGFhIYGAhgYGFBAYWEhhYSGCPsMy9hZUG1hZYW2BtgbV1LOwGZ2p/1yMhPFAAAAAASUVORK5CYII=" alt=" "/></p>
 
 <p>Ok, as this basically works let's create as well a figure procedure which does
 the snap on the canvas.</p>
@@ -658,9 +658,9 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 <li>ukaz 2.1
 </li></ul>
 
-<p>Document was processed at: 2025-01-16 08:07</p>
+<p>Document was processed at: 2025-01-17 07:46</p>
 
-<p>Document processing was done within: 772 milliseconds.</p>
+<p>Document processing was done within: 1019 milliseconds.</p>
 
 <p>Let's destroy the Tk application at the end.</p>
 
