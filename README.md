@@ -52,7 +52,7 @@ $ tmdoc --version
 
 To install the  package,  you just copy the  _modules/tmdoc_  folder to a folder
 belonging to your _TCLLIBPATH_ variable. Therafter you can as well execute the
-command  line  application  using  the   [tclmain](https://mittelmark/tclmain)
+command  line  application  using  the   [tclmain](https://gtihub.com/mittelmark/tclmain)
 utility like this:
 
 ```
