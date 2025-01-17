@@ -14,7 +14,8 @@ documents with code evaluation.
 
 ## Description
 
-The package tmdoc provides a command to evaluate embedded Tcl code in code chunks within documents of Markup languages like Markdown and LaTeX and add the resulting output to the document for creating dynamic documents, a technique as well known as literate programming. The latter uses Tcllib's Markdown package. The embedded Tcl code starts with tri backticks and a language marker like this:
+The package  tmdoc  provides a command to evaluate  embedded  Tcl code in code
+chunks within documents of Markup languages like Markdown and LaTeX and add the resulting output to the document for creating dynamic documents, a technique as well known as literate programming. The latter uses Tcllib's Markdown package. The embedded Tcl code starts with tri backticks and a language marker like this ((replace single ticks with backticks):
 
 ```
     '''{.tcl}
