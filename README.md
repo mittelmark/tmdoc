@@ -71,8 +71,8 @@ tclmain -m tmdoc --help
     - LaTeX support
     - project moved to github 
 - 2021-12-19 0.5 release - making code structure like in tcllib
-- 2025-01-04 0.6  tcllib and Tcl 9 aware version
-- 2025-01-18  0.7 support for  _results="asis"_  and  functions  _include_ and
+- 2025-01-04 0.6 tcllib and Tcl 9 aware version
+- 2025-01-18 0.7 support for  _results="asis"_  and  functions  _include_ and
 _list2mdtab_
 
 ## See Also
