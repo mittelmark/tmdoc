@@ -36,16 +36,16 @@ single backticks like this (replace single ticks with backticks):
 
 Documents   can   be   processed   to   HTML   or   PDF   using   tools   like
 [mkdoc](https://github.com/mittelmark/mkdoc/),
-[pandoc](https:///www.pandoc.org)  or LibreOffice. Here a pipeline to create an
+[pandoc](https:///www.pandoc.org)  or [LibreOffice](https://libreoffice.org/). Here a pipeline to create an
 HTML or PDF or Libreoffice ODT documents
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
 
-
-Furh you might embed your Tmd text within Tcl source code files after the _#'_
-commented  lines. You can then  extract the Markdown  text first with _mkdoc_,
-then  process the Tcl code within  using  _tmdoc_ and again do then a document
-conversion to HTML and or PDF or OST as described above. Here such a workflow:
+Further  you might  embed your Tmd text within Tcl source code files after the
+_#'_ commented lines for documentation  purposes of your Tcl projects. You can
+then  extract the Markdown  text first with _mkdoc_, then process the Tcl code
+within  using _tmdoc_ and again do then a document  conversion  to HTML and or
+PDF or OST as described above. Here such a workflow:
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQBuA9T3FkroI4SpyKOLQokq04pLnUHr02JS2oiO9uU6iD4HTc__13SLdg-hpu8BLQeXTFUJveqdI_kmF8slMVMTtM4rCefVDWh24gbpI74VirzXp73QkIpmuQgpLZRU6rtgyrPegWCzalYyXbBr2VsTqF0fIvje1COUKko86z3zsQcxz5nB4WzagMzlcVWTc_WCqnVP-pvIX4AAltTeI=)
 
@@ -54,10 +54,13 @@ as example for such embedded documentation.
 
 ## Documentation
 
+* [tmdoc package](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc.html)
+* [tmdoc application](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/apps/tmdoc.html)
+* [tmdoc tutorial](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
+
+## Download 
+
 * [tmdoc code and manuals download](https://github.com/mittelmark/tmdoc/archive/refs/heads/main.zip)
-* [tmdoc application manual](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/apps/tmdoc.html)
-* [tmdoc package manual](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc.html)
-* [tmdoc writing tutorial](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
 
 ## Installation
 
