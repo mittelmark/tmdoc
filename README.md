@@ -14,8 +14,12 @@ documents with code evaluation.
 
 ## Description
 
-The package  tmdoc  provides a command to evaluate  embedded  Tcl code in code
-chunks within documents of Markup languages like Markdown and LaTeX and add the resulting output to the document for creating dynamic documents, a technique as well known as literate programming. The latter uses Tcllib's Markdown package. The embedded Tcl code starts with tri backticks and a language marker like this ((replace single ticks with backticks):
+The package _tmdoc_  provides a command to evaluate  embedded Tcl code in code
+chunks within  documents of Markup  languages  like Markdown and LaTeX and add
+the  resulting  output to the  document  for  creating  dynamic  documents,  a
+technique  as well known as  literate  programming.  The latter uses  Tcllib's
+Markdown  package.  The  embedded  Tcl code  starts with tri  backticks  and a
+language marker like this ((replace single ticks with backticks):
 
 ```
     '''{.tcl}
@@ -29,6 +33,23 @@ single backticks like this (replace single ticks with backticks):
 ```
     This document was generated at 'tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"' MET.
 ```
+
+Documents can be processed to HTML or PDF using tools like [mkdoc](../mkdoc/),
+[pandoc](https:///ww.pandoc.org)  or LibreOffice. Here a pipeline to create an
+HTML or PDF or Libreoffice ODT documents
+
+![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
+
+
+Furh you might embed your Tmd text within Tcl source code files after the _#'_
+commented  lines. You can then  extract the Markdown  text first with _mkdoc_,
+then  process the Tcl code within  using  _tmdoc_ and again do then a document
+conversion to HTML and or PDF or OST as described above. Here such a workflow:
+
+![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQBuA9T3FkroI4SpyKOLQokq04pLnUHr02JS2oiO9uU6iD4HTc__13SLdg-hpu8BLQeXTFUJveqdI_kmF8slMVMTtM4rCefVDWh24gbpI74VirzXp73QkIpmuQgpLZRU6rtgyrPegWCzalYyXbBr2VsTqF0fIvje1COUKko86z3zsQcxz5nB4WzagMzlcVWTc_WCqnVP-pvIX4AAltTeI=)
+
+See  the   [tdot)[../tdot/tdot/tdot.tcl]   sor   code  for  such   embedded
+documentation.
 
 ## Documentation
 
@@ -72,8 +93,8 @@ tclmain -m tmdoc --help
     - project moved to github 
 - 2021-12-19 0.5 release - making code structure like in tcllib
 - 2025-01-04 0.6 tcllib and Tcl 9 aware version
-- 2025-01-18 0.7 support for  _results="asis"_  and  functions  _include_ and
-_list2mdtab_
+- 2025-01-18  0.7 support for  _results="asis"_  and  functions  _include_ to
+  include other Markdown files and  _list2mdtab_ to  add tables
 
 ## See Also
 
@@ -86,7 +107,7 @@ PlantUML, Shell, R and Python
 
 ## Author
 
-@copyright Detlef  Groth,  University  of  Potsdam,  Germany  -
+@copyright 2020-2025 - Detlef  Groth,  University  of  Potsdam,  Germany  -
 dgroth(at)uni(minus)potsdam(dot)de
 
 ## License
