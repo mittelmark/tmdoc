@@ -5,7 +5,8 @@
 ![Downloads](https://img.shields.io/github/downloads/mittelmark/tmdoc/total)
 ![Commits](https://img.shields.io/github/commits-since/mittelmark/tmmdoc/latest)
 
-[![Docu](https://img.shields.io/badge/Docu-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc.html)
+[![Docu Package](https://img.shields.io/badge/Docu-Package-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc.html)
+[![Docu App](https://img.shields.io/badge/Docu-App-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/apps/tmdoc.html)
 [![Tutorial](https://img.shields.io/badge/Tutorial-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
 [![Wiki](https://img.shields.io/badge/Wiki-blue)](https://wiki.tcl-lang.org/page/tmdoc%3A%3Atmdoc)
 
@@ -37,7 +38,7 @@ single backticks like this (replace single ticks with backticks):
 Documents   can   be   processed   to   HTML   or   PDF   using   tools   like
 [mkdoc](https://github.com/mittelmark/mkdoc/),
 [pandoc](https:///www.pandoc.org)  or [LibreOffice](https://libreoffice.org/). Here a pipeline to create an
-HTML or PDF or Libreoffice ODT documents
+HTML, PDF or ODT document using Libreoffice.
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
 
@@ -115,7 +116,7 @@ tclmain -m tmdoc --help
 ## See Also
 
 - [mkdoc](https://github.com/mittelmark/mkdoc) - converting Markdown output of
-  tmdoc to HTML
+  tmdoc to HTML or extracting Markdown documentagtion from sourc code files
 - [pantcl](https://github.com/mittelmark/pantcl)  - combines functionality of
   pandoc, mkdoc, tmdoc and brings many filter for code blocks like for GraphViz,
   PlantUML, Shell, R and Python
