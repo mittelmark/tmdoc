@@ -60,7 +60,8 @@ as example for such embedded documentation.
 
 ## Download 
 
-* [tmdoc code and manuals download](https://github.com/mittelmark/tmdoc/archive/refs/heads/main.zip)
+* [Latest Release](https://github.com/mittelmark/tmdoc/releases)
+* [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
 ## Installation
 
