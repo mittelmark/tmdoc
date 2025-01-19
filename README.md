@@ -34,8 +34,9 @@ single backticks like this (replace single ticks with backticks):
     This document was generated at 'tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"' MET.
 ```
 
-Documents can be processed to HTML or PDF using tools like [mkdoc](../mkdoc/),
-[pandoc](https:///ww.pandoc.org)  or LibreOffice. Here a pipeline to create an
+Documents   can   be   processed   to   HTML   or   PDF   using   tools   like
+[mkdoc](https://github.com/mittelmark/mkdoc/),
+[pandoc](https:///www.pandoc.org)  or LibreOffice. Here a pipeline to create an
 HTML or PDF or Libreoffice ODT documents
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
@@ -48,8 +49,8 @@ conversion to HTML and or PDF or OST as described above. Here such a workflow:
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQBuA9T3FkroI4SpyKOLQokq04pLnUHr02JS2oiO9uU6iD4HTc__13SLdg-hpu8BLQeXTFUJveqdI_kmF8slMVMTtM4rCefVDWh24gbpI74VirzXp73QkIpmuQgpLZRU6rtgyrPegWCzalYyXbBr2VsTqF0fIvje1COUKko86z3zsQcxz5nB4WzagMzlcVWTc_WCqnVP-pvIX4AAltTeI=)
 
-See  the   [tdot)[../tdot/tdot/tdot.tcl]   sor   code  for  such   embedded
-documentation.
+See the  [tdot)[https://githib.com/mittelmark/tdot/tdot/tdot.tcl]  source code
+as example for such embedded documentation.
 
 ## Documentation
 
