@@ -57,7 +57,7 @@ PDF or OST as described above. Here such a workflow:
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQBuA9T3FkroI4SpyKOLQokq04pLnUHr02JS2oiO9uU6iD4HTc__13SLdg-hpu8BLQeXTFUJveqdI_kmF8slMVMTtM4rCefVDWh24gbpI74VirzXp73QkIpmuQgpLZRU6rtgyrPegWCzalYyXbBr2VsTqF0fIvje1COUKko86z3zsQcxz5nB4WzagMzlcVWTc_WCqnVP-pvIX4AAltTeI=)
 
-See the  [tdot](https://github.com/mittelmark/tdot/tdot/tdot.tcl)  source code
+See the  [tdot](https://github.com/mittelmark/tdot/blob/main/tdot/tdot.tcl)  source code
 as example for such embedded documentation.
 
 ## Documentation
@@ -74,7 +74,7 @@ as example for such embedded documentation.
 ## Installation
 
 On Linux, MacOS and on Windows with installed Msys2 or Cyvwin download the latest
-[tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (90kb in size), rename
+[tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (190kb in size), rename
 it to _tmdoc_ and copy the file to a folder belonging to your PATH variable. 
 Thereafter make the file executable and check that it is correctly installed like
 this:
@@ -84,7 +84,8 @@ $ tmdoc --version
 0.7.0
 ```
 
-To install the  package,  you just copy the  _modules/tmdoc_  folder to a folder
+To install the  package just  download  the latest Zip or Tar-Gz  archive from the release page and
+unpack these files, then  you just copy the  _modules/tmdoc_  folder to a folder
 belonging to your _TCLLIBPATH_ variable. Therafter you can as well execute the
 command  line  application  using  the   [tclmain](https://github.com/mittelmark/tclmain)
 utility like this:
@@ -127,7 +128,7 @@ dgroth(at)uni(minus)potsdam(dot)de
 
 
 ```
-The following  terms apply to all files a ssociated  with the software  unless
+The following  terms apply to all files associated  with the software  unless
 explicitly disclaimed in individual files.
 
 The authors  hereby grant  permission  to use, copy, modify,  distribute,  and
