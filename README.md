@@ -107,22 +107,24 @@ tclmain -m tmdoc --help
     - project moved to github 
 - 2021-12-19 0.5 release - making code structure like in tcllib
 - 2025-01-04 0.6 tcllib and Tcl 9 aware version
-- 2025-01-18  0.7 support for  _results="asis"_  and  functions  _include_ to
-  include other Markdown files and  _list2mdtab_ to  add tables
+- 2025-01-18 0.7.0
+    - support for  _results="asis"_ for instance to create Markdown or SVG code
+    - function  _include_ to  include other Markdown files 
+    - function  _list2mdtab_ to  add tables within code chunks
 
 ## See Also
 
 - [mkdoc](https://github.com/mittelmark/mkdoc) - converting Markdown output of
-tmdoc to HTML
+  tmdoc to HTML
 - [pantcl](https://github.com/mittelmark/pantcl)  - combines functionality of
-pandoc, mkdoc, tmdoc and brings many filter for code blocks like for GraphViz,
-PlantUML, Shell, R and Python
+  pandoc, mkdoc, tmdoc and brings many filter for code blocks like for GraphViz,
+  PlantUML, Shell, R and Python
 
 
 ## Author
 
-@copyright 2020-2025 - Detlef  Groth,  University  of  Potsdam,  Germany  -
-dgroth(at)uni(minus)potsdam(dot)de
+@ 2020-2025 - Detlef  Groth,  University  of  Potsdam,  Germany  -
+  dgroth(at)uni(minus)potsdam(dot)de
 
 ## License
 
