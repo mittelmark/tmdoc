@@ -41,6 +41,14 @@ HTML or PDF or Libreoffice ODT documents
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
 
+To        give       an        example        the        tmdoc        tutorial
+([source](modules/tmdoc/tmdoc-tutorial.tmd), [HTML](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
+is processed with the following commands.
+
+```
+tmdoc --mode weave tmdoc-tutorial.tmd - | mkdoc - tmdoc-tutorial.html --css tmdoc.css
+```
+
 Further  you might  embed your Tmd text within Tcl source code files after the
 _#'_ commented lines for documentation  purposes of your Tcl projects. You can
 then  extract the Markdown  text first with _mkdoc_, then process the Tcl code
@@ -49,7 +57,7 @@ PDF or OST as described above. Here such a workflow:
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQBuA9T3FkroI4SpyKOLQokq04pLnUHr02JS2oiO9uU6iD4HTc__13SLdg-hpu8BLQeXTFUJveqdI_kmF8slMVMTtM4rCefVDWh24gbpI74VirzXp73QkIpmuQgpLZRU6rtgyrPegWCzalYyXbBr2VsTqF0fIvje1COUKko86z3zsQcxz5nB4WzagMzlcVWTc_WCqnVP-pvIX4AAltTeI=)
 
-See the  [tdot)[https://githib.com/mittelmark/tdot/tdot/tdot.tcl]  source code
+See the  [tdot](https://github.com/mittelmark/tdot/tdot/tdot.tcl)  source code
 as example for such embedded documentation.
 
 ## Documentation
