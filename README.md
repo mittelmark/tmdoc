@@ -3,12 +3,12 @@
 [![license](https://img.shields.io/badge/license-BSD-lightgray.svg)](https://opensource.org/license/bsd)
 [![Release](https://img.shields.io/github/v/release/mittelmark/tmdoc.svg?label=current+release)](https://github.com/mittelmark/tmdoc/releases)
 ![Downloads](https://img.shields.io/github/downloads/mittelmark/tmdoc/total)
-![Commits](https://img.shields.io/github/commits-since/mittelmark/tmmdoc/latest)
+![Commits](https://img.shields.io/github/commits-since/mittelmark/tmdoc/latest)
 
 [![Docu Package](https://img.shields.io/badge/Docu-Package-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc.html)
 [![Docu App](https://img.shields.io/badge/Docu-App-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/apps/tmdoc.html)
-[![Tutorial](https://img.shields.io/badge/Tutorial-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
-[![Wiki](https://img.shields.io/badge/Wiki-blue)](https://wiki.tcl-lang.org/page/tmdoc%3A%3Atmdoc)
+[![Tutorial](https://img.shields.io/badge/Docu-Tutorial-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
+[![Wiki](https://img.shields.io/badge/Docu-Wiki-blue)](https://wiki.tcl-lang.org/page/tmdoc%3A%3Atmdoc)
 
 Literate programming with Tcl. Embed Tcl code into Markdown or LaTeX
 documents with code evaluation.
