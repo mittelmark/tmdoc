@@ -98,7 +98,7 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.7.0 tmdoc &quot;Literate programming using Tcl&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.8.0 tmdoc &quot;Literate programming using Tcl&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
 <p>tmdoc - Evaluate embedded Tcl code in Markdown or LaTeX documents</p>
 </div>
@@ -136,12 +136,12 @@
 </div>
 </div>
 <div id="section1" class="doctools_section"><h2><a name="section1">Description</a></h2>
-<p>The package <b class="package">tmdoc</b> provides a command to evaluate embedded Tcl code in
+<p>The package <b class="package">tmdoc</b> provides a command to evaluate embedded Tcl and Shell code in
 code chunks within documents of Markup languages like Markdown and LaTeX and
 add the resulting output to the document for creating dynamic documents, a technique
 as well known as literate programming.
 The latter uses Tcllib's <b class="package">Markdown</b> package.
-The embedded Tcl code starts with tri backticks and a language marker like this:</p>
+The embedded Tcl code starts with three backticks and a language marker like this:</p>
 <pre class="doctools_example">
 ```{.tcl}
 puts &quot;Hello World&quot;
@@ -152,6 +152,18 @@ single backticks like this:</p>
 <pre class="doctools_example">
 This document was generated at `tcl clock format [clock seconds] -format &quot;%Y-%m-%d %H:%m&quot;` MET.
 </pre>
+<p>The embedded Shell code chunks start as well with three backticks then the <i class="arg">.shell</i> indicator and 
+a <i class="arg">cmd</i> code chunk argument which explains how to process the input in the code chunk like this:</p>
+<pre class="doctools_example">
+```{.shell cmd=&quot;dot -Tpng %i -o%o&quot;}
+digraph g {
+  A -&gt; B
+}
+```
+</pre>
+<p>The arguments <i class="arg">%i</i> are used as placeholder for the input file name, which contains the text in the
+code chunk and <i class="arg">%o</i> for the output filename, usually a PNG or SVG file. If the text from the previous code 
+chunk just needs to be reused again in the next one, you can use the string 'LASTFILE' as a place holder.</p>
 </div>
 <div id="section2" class="doctools_section"><h2><a name="section2">Functions</a></h2>
 <dl class="doctools_definitions">

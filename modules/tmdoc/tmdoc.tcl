@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250117.1109>
+#  Last Modified : <250317.1051>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -19,10 +19,11 @@ exec tclsh "$0" "$@"
 #                  2021-12-19 version 0.5.0
 #                  2025-01-04 version 0.6.0 (tcllib and Tcl 9 aware version) 
 #                  2025-01-18 version 0.7.0 results="asis" implemented, include and list2md
+#                  2025-03-2X8version 0.8.0 support for shell chunks
 #
 package require Tcl 8.6-
 package require fileutil
-package provide tmdoc::tmdoc 0.7.0
+package provide tmdoc::tmdoc 0.8.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {} 
 
@@ -191,8 +192,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     }
     set mode text
     set tclcode ""
+    set bashinput ""
+    set lastbashinput ""
     array set dopt [list echo true results show fig false include true \
                     fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png]
+    array set bdopt [list cmd "" echo true eval true results show fig true include true \
+                     label chunk-nn ext png]
     interpReset
     if [catch {open $filename r} infh] {
         return -code error "Cannot open $filename: $infh"
@@ -208,23 +213,51 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 incr chunki
                 array set copt [array get dopt]
                 # TODO: spaces in fig.cap etc
-                set opts [regsub -all {,+} [regsub -all { +} $opts ,] ,]
-                foreach opt [split $opts ","] {
-                    set opt [string trim [string tolower $opt]]
-                    set o [split $opt =] 
-                    set key [lindex $o 0]
-                    set value [regsub {"(.+)"} [lindex $o 1] "\\1"]
-                    
-                    set copt($key) $value
-                }
-                # setting default label if no label was given
-                foreach key [array names copt] {
-                    if {$key eq "label" && $copt($key) eq "chunk-nn"} {
-                        set value [regsub {nn} $copt($key) $chunki]
-                        set copt($key) $value
+                ::tmdoc::GetOpts 
+                continue
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?shell\s+(.*)\}} $line -> opts])} {
+                set mode shell
+                incr chunki
+                array set copt [array get bdopt]
+                # TODO: spaces in fig.cap etc
+                ::tmdoc::GetOpts 
+                continue
+            } elseif {$mode eq "shell" && [regexp {```} $line]} {
+                if {$copt(echo)} {
+                    if {$inmode eq "md"} {
+                        puts -nonewline $out "```\n${bashinput}"
+                        puts $out "```"
+                    } elseif {$inmode eq "man"} {
+                        puts $out ""
+                        puts -nonewline $out "$bashinput"
+                        puts $out ""
+                    } else {
+                        puts $out "\\begin{lcverbatim}"
+                        puts -nonewline $out $bashinput
+                        puts $out "\\end{lcverbatim}"
                     }
                 }
-                continue
+                set cmd [regsub {%i} $copt(cmd) $copt(label).txt]
+                set cmd [regsub {%o} $cmd $copt(label).$copt(ext)]
+                if {$copt(results) eq "show"} {
+                    if {[regexp {LASTFILE} $bashinput]} {
+                        set bashinput $lastbashinput
+                    }
+                    set tout [open $copt(label).txt w 0600]
+                    puts $tout $bashinput
+                    close $tout
+                    set lastbashinput $bashinput
+                }
+                if {$copt(eval)} {
+                    exec {*}$cmd
+                }
+                if {$copt(include)} {
+                    puts $out "!\[\]($copt(label).$copt(ext))"
+                }
+                set bashinput ""
+                set mode text
+            } elseif {$mode eq "shell"} {
+               append bashinput "$line\n"
             } elseif {$mode eq "code" && [regexp {```} $line]} {
                 if {$copt(echo)} {
                     if {$inmode eq "md"} {
@@ -369,6 +402,35 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         }
     }
 }
+proc ::tmdoc::GetOpts {} {
+    uplevel 1 {
+        while {[regexp -indices {"(.+?)"} $opts m1 m2]} {
+            set before [string range $opts 0 [expr {[lindex $m1 0]-1}]] 
+            set match [regsub -all { } [string range $opts [lindex $m2 0] [lindex $m2 1]] "%20"]
+            set match [regsub -all "=" $match "%3d"]
+            set after [string range $opts [expr {[lindex $m1 1]+1}] end] 
+            set opts ${before}${match}${after}
+        }
+        set opts [regsub -all {,+} [regsub -all { +} $opts ,] ,]
+        foreach opt [split $opts ","] {
+            set opt [string trim [regsub -nocase false [regsub -nocase true $opt true] false]]
+            set o [split $opt =] 
+            set key [lindex $o 0]
+            set value [regsub {"(.+)"} [lindex $o 1] "\\1"]
+            set value [regsub -all {%20} $value " "]
+            set value [regsub -all {%3d} $value "="]
+            
+            set copt($key) $value
+        }
+        # setting default label if no label was given
+        foreach key [array names copt] {
+            if {$key eq "label" && $copt($key) eq "chunk-nn"} {
+                set value [regsub {nn} $copt($key) $chunki]
+                set copt($key) $value
+            }
+        }
+    }
+}
 proc ::tmdoc::tmeval {text} {
     set filename [fileutil::tempfile]
     set out [open $filename.tmd w 0600]
@@ -497,6 +559,10 @@ namespace eval ::tmdoc {
 #'     - adapting tmdoc.css to be used by mkdoc
 #'     - Tcl 9 aware
 #'     - documentation fix for app
+#' - 2025-03-2X Release 0.8.0
+#'     - adding support for shell code chunks to create graphics for
+#'       tools like GraphViz dot, PlantUML or sgf-render and many others
+#'
 #' ## <a name='todo'>TODO</a>
 #'
 #' - LaTeX mode if file extension is tnw intead of tmd (done)
@@ -505,7 +571,7 @@ namespace eval ::tmdoc {
 #'
 #' ## <a name='license'>LICENSE AND COPYRIGHT</a>
 #'
-#' Tcl Markdown processor tmdoc::tmdoc, version 0.6.0
+#' Tcl Markdown processor tmdoc::tmdoc, version 0.8.0
 #'
 #' Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany E-mail: <dgroth(at)uni(minus)potsdam(dot)de>
 #' 

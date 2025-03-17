@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.7.0]
+[vset VERSION 0.8.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <detlef(at)dgroth(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
@@ -9,14 +9,14 @@
 [require textutil 0.8]
 [description]
 
-The package [package tmdoc] provides a command to evaluate embedded Tcl code in
+The package [package tmdoc] provides a command to evaluate embedded Tcl and Shell code in
 code chunks within documents of Markup languages like Markdown and LaTeX and
 add the resulting output to the document for creating dynamic documents, a technique
 as well known as literate programming.
 
 The latter uses Tcllib's [package Markdown] package.
 
-The embedded Tcl code starts with tri backticks and a language marker like this:
+The embedded Tcl code starts with three backticks and a language marker like this:
 
 [example {
 ```{.tcl}
@@ -30,6 +30,21 @@ single backticks like this:
 [example {
 This document was generated at `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"` MET.
 }]
+
+The embedded Shell code chunks start as well with three backticks then the [arg .shell] indicator and 
+a [arg cmd] code chunk argument which explains how to process the input in the code chunk like this:
+
+[example {
+```{.shell cmd="dot -Tpng %i -o%o"}
+digraph g {
+  A -> B
+}
+```
+}]
+
+The arguments [arg %i] are used as placeholder for the input file name, which contains the text in the
+code chunk and [arg %o] for the output filename, usually a PNG or SVG file. If the text from the previous code 
+chunk just needs to be reused again in the next one, you can use the string 'LASTFILE' as a place holder.
 
 [section Functions]
 

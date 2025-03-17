@@ -1,5 +1,5 @@
 ---
-title: tmdoc::tmdoc 0.7.0 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.8.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, Caputh-Schwielowsee, Germany
 date: `tcl clock format [clock seconds] -format "%Y-%m-%d"`
 ---
@@ -651,6 +651,208 @@ Now the options: `{.tcl echo=false results="hide"}`
 set x 4
 puts $x
 ```
+## Shell chunks
+
+Since  version  0.8.0 there is as well support for embedding  arbitrary  shell
+code  chunks, for  instance to create  images  using  command  line tools like
+[GraphViz dot](https://www.graphviz.org), [Pikchr](https://pikchr.org) or 
+[PlantUML](https://www.plantuml.com).  To do this you add code chunks with the
+`.shell` tag and provide the command to process in the code chunk  options the
+command to process the content with the `cmd` attribute. There are as well two
+placeholders,  one for the input filename `%i` and one for an optional  output
+filename: `%o`. Here an example for using the dot executable:
+
+```
+    ```{.shell cmd="dot -Tpng %i -o%o" echo=false}
+    digraph g {
+      A -> B
+    }
+    ```
+```
+
+And here the output:
+
+```{.shell cmd="dot -Tpng %i -o%o" echo=false}
+digraph g {
+ A -> B
+}
+
+```
+
+Let's continue with an example using the `plantuml`  command line application.
+Here the output  filename is guessed  from the input  filename, so there is no
+need to give the `%o` argument.
+
+```
+    ```{.shell cmd="plantuml -tpng %i" echo=false}
+    class A { }
+    class B { }
+      A --> B
+    }
+    ```
+```
+
+And here the output:
+
+```{.shell cmd="plantuml -tpng %i" echo=false}
+@startuml
+class A { }
+class B { }
+  A -> B
+}
+@enduml
+```
+
+Some  times you would  like to use the same input as in the graphi  before but
+with  different  command line  arguments. In this case you can add as well the
+term  `LASTFILE`  on the first  line of the code chunk to reuse  this. Here an
+example to display different moments of a Go game. So instead of writing again
+and again the same game record in the code chunk you just write the short text
+`LASTFILE`  into it. Here an example for this approach  displaying the initial
+phase of a 13x13 board game but with  different  command  line options for the
+display using the command line tool [sgf-render](https://github.com/julianandrews/sgf-render):
+
+```
+    '``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=1-10 -n 10" echo=false}
+    (;FF[4]
+    CA[UTF-8]
+    GM[1]
+    DT[2025-02-28]
+    GN[Freundschaftsspiel]
+    PB[Black Player]
+    PW[White Player]
+    BR[15k]
+    WR[14k]
+    ...
+    '``
+    '``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=11-20 -n 20" echo=false}
+    LASTFILE
+    '``
+
+    '``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=21-30 -n 30" echo=false}
+    LASTFILE
+    '``
+```
+
+And here the ouput (the sgf codes on top where shortened):
+    
+```{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=1-10 -n 10" echo=false}
+(;FF[4]
+CA[UTF-8]
+GM[1]
+DT[2025-02-28]
+GN[Freundschaftsspiel]
+PB[Black Player]
+PW[White Player]
+BR[15k]
+WR[14k]
+TM[432000]OT[86400 fischer]
+RE[W+9.5]
+SZ[13]
+KM[6.5]
+RU[Japanese]
+;B[jj]
+(;W[dd]
+(;B[jc]
+(;W[dj]
+(;B[je]
+(;W[hk]
+(;B[ik]
+(;W[hj]
+(;B[cc]
+(;W[cd]
+(;B[dc]
+(;W[ec]
+(;B[eb]
+(;W[fc]
+(;B[bd]
+(;W[fb]
+(;B[db]
+(;W[be]
+(;B[ac]
+(;W[cf]
+(;B[ck]
+(;W[cj]
+(;B[dk]
+(;W[ek]
+(;B[el]
+(;W[fk]
+(;B[fl]
+(;W[kg]
+(;B[jh]
+(;W[jg]
+(;B[kh]
+(;W[hg]
+(;B[bj]
+(;W[bi]
+(;B[bk]
+(;W[le]
+(;B[ld]
+(;W[kd]
+(;B[lg]
+(;W[lf]
+(;B[lh]
+(;W[lc]
+(;B[kc]
+(;W[jd]
+(;B[lb]
+(;W[md]
+(;B[ic]
+(;W[id]
+(;B[hc]
+(;W[gd]
+(;B[hd]
+(;W[he]
+(;B[gc]
+(;W[fd]
+(;B[ij]
+(;W[hi]
+(;B[ih]
+(;W[hh]
+(;B[hl]
+(;W[ha]
+(;B[hb]
+(;W[ga]
+(;B[ia]
+(;W[gb]
+(;B[jb]
+(;W[mb]
+(;B[la]
+(;W[gl]
+(;B[ig]
+(;W[if]
+(;B[gm]
+(;W[gk]
+(;B[im]
+(;W[aj]
+(;B[ak]
+(;W[ai]
+(;B[mf]
+(;W[ae]
+(;B[bb]
+(;W[ad]
+(;B[bc]
+(;W[mc]
+(;B[ii]
+(;W[me]
+(;B[mg]
+(;W[ea]
+(;B[da]
+(;W[fa]
+(;B[dl]
+(;W[ma]
+(;B[]
+(;W[]
+))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+```
+
+```{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=11-20 -n 20" echo=false}
+LASTFILE
+```
+
+```{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=21-30 -n 30" echo=false}
+LASTFILE
+```
 
 ## <a name="summary">Summary</a>
 
@@ -695,15 +897,14 @@ your PATH variable.
 Here an example:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.7.0/tmdoc-0.6.0.bin -O ~/.local/bin/tmdoc
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.8.0/tmdoc-0.6.0.bin -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.7.0
+## 0.8.0
 ```
 
 To install the library copy the folder _modules/tmdoc_ to a folder belonging to
 your TCLLIBPATH variable. If this variable does not exists you can set it for instance to `~/.local/lib/Tcl8.6` and place the code therein.
-
 
 ## <a name="process">Processing Information</a>
 

@@ -35,7 +35,20 @@ single backticks like this (replace single ticks with backticks):
     This document was generated at 'tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"' MET.
 ```
 
-Documents   can   be   processed   to   HTML   or   PDF   using   tools   like
+Furthermore  since  version  0.8.0 you can embed code chunks for command  line
+tools          like           [GraphViz](https://www.graphviz.org)          or
+[PlantUML](https://www.plantuml.com)  to embed  graphics  into your  documents
+like this:
+
+```
+   '''{.shell cmd="dot -Tpng %i -o%o" echo=false}
+   digraph g {
+      A -> B 
+   }
+   '''
+```
+
+Documents   can   be  then processed from the generated Markdown to   HTML   or   PDF   using   tools   like
 [mkdoc](https://github.com/mittelmark/mkdoc/),
 [pandoc](https:///www.pandoc.org)  or [LibreOffice](https://libreoffice.org/). Here a pipeline to create an
 HTML, PDF or ODT document using Libreoffice.
@@ -112,6 +125,8 @@ tclmain -m tmdoc --help
     - support for  _results="asis"_ for instance to create Markdown or SVG code
     - function  _include_ to  include other Markdown files 
     - function  _list2mdtab_ to  add tables within code chunks
+- 2025-03-2X 0.8.0
+    - support for shell code embedding to generate graphics
 
 ## See Also
 
