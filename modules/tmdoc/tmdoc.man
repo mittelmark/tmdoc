@@ -281,7 +281,16 @@ extensions [file .tnw].
 
 [section "See Also"]
 
-[para] For a detailed tutorial on how to do literate programming with Tcl have a look at the Tcl Markdown tutorial.
+[para] For a detailed tutorial on how to do literate programming with Tcl have a look at the [uri tmdoc-tutorial.html tmdoc-tutorial].
+
+[list_begin itemized]
+
+
+[item] [uri ../modules/tmdoc/tmdoc-tutorial.html tmdoc-tutorial]
+
+[item] [uri ../apps/tmdoc.html tmdoc-application]
+
+[list_end]
 
 
 [section "Bugs, Ideas, Feedback"]

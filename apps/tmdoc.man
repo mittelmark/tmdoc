@@ -1,7 +1,7 @@
 [comment {-*- mode: tcl ; fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.7.0]
+[vset VERSION 0.8.0]
 [manpage_begin tmdoc n [vset VERSION]]
-[copyright {2020-2025, Detlef Groth <detlef(at)dgroth(dot)de>}]
+[copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus=potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
 [titledesc {Evaluate embedded Tcl code in Markdown or LaTeX documents}]
 [category  {Text processing}]
@@ -55,6 +55,16 @@ code chunks is extracted but not evaluated.
 This document, and the package it describes, will undoubtedly contain bugs and
 other problems. Please report such to the author of this package. Please also report any ideas for enhancements you may have for
 either package and/or documentation.
+
+[section "See Also"]
+
+[list_begin itemized]
+
+[item] [uri ../modules/tmdoc/tmdoc.html tmdoc-package]
+
+[item] [uri ../modules/tmdoc/tmdoc-tutorial.html tmdoc-tutorial]
+
+[list_end]
 
 [section "Code Copyright"]
 

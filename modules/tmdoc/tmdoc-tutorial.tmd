@@ -58,6 +58,7 @@ Tcl packages and other types of documentation.
 - [Other Command Line Tools](#clp)
 - [Summary](#summary)
 - [Installation](#install)
+- [See Also](#seealso)
 - [Processing Information](#process)
 
 ## <a name="intro">Introduction</a>
@@ -998,6 +999,11 @@ tmdoc --version
 
 To install the library copy the folder _modules/tmdoc_ to a folder belonging to
 your TCLLIBPATH variable. If this variable does not exists you can set it for instance to `~/.local/lib/Tcl8.6` and place the code therein.
+
+## <a name="seealso">See Also</a>
+
+- [tmdoc-package](tmdoc.html)
+- [tmdoc-application](../../apps/tmdoc.html)
 
 ## <a name="process">Processing Information</a>
 
