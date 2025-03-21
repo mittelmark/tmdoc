@@ -659,10 +659,11 @@ puts $x
 <a name="clp"> </a>
 ## Other Command Line Tools
 
-Since  version  0.8.0 there is as well support for embedding  arbitrary  shell
-code  chunks, for  instance to create  images  using  command  line tools like
+Since  version  0.8.0  there  is  as  well  support  for  embedding  input
+for command line applications which produce graphics inside
+code  chunks, for  instance using tools like
 [GraphViz dot](https://www.graphviz.org), [Pikchr](https://pikchr.org) or 
-[PlantUML](https://www.plantuml.com).  To do this you add code chunks with the
+[PlantUML](https://www.plantuml.com) or even [R](https://www.r-project.org).  To do this you add code chunks with the
 `.shell` tag and provide the command to process in the code chunk  options the
 command to process the content with the `cmd` attribute. There are as well two
 placeholders,  one for the input filename `%i` and one for an optional  output
@@ -989,7 +990,7 @@ your PATH variable.
 Here an example:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.8.0/tmdoc-0.6.0.bin -O ~/.local/bin/tmdoc
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.8.0/tmdoc-0.8.0.bin -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
 ## 0.8.0
