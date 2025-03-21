@@ -1,7 +1,7 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
 [vset VERSION 0.8.0]
 [manpage_begin tmdoc n [vset VERSION]]
-[copyright {2020-2025, Detlef Groth <detlef(at)dgroth(dot)de>}]
+[copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
 [titledesc {Evaluate embedded Tcl code or other command line tool input in Markdown or LaTeX documents}]
 [category  {Text processing}]
@@ -262,6 +262,16 @@ digraph g {
 ```
 }]
 
+[para] Using the LASTFILE content of a code chunk the last text of a previous
+code chunk can be reused. This LASTFILE string can reused several times, here an example which should produce the same image as before just with filled boxes as the [const cmd] code chunk option was changed.
+
+[para] [example {
+
+```{.cmd cmd="dot -Tpng -Nstyle=filled -o%o %i" echo=false results=hide}
+LASTFILE
+```
+
+}]
 
 [section Filetypes] 
 

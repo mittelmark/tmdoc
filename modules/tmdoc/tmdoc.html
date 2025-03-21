@@ -93,7 +93,7 @@
 </head>
 <!-- Generated from file 'tmdoc.man' by tcllib/doctools with format 'html'
    -->
-<!-- Copyright &amp;copy; 2020-2025, Detlef Groth &amp;lt;detlef(at)dgroth(dot)de&amp;gt;
+<!-- Copyright &amp;copy; 2020-2025, Detlef Groth &amp;lt;dgroth(at)uni(minus)potsdam(dot)de&amp;gt;
    -->
 <!-- tmdoc.n
    -->
@@ -340,6 +340,13 @@ digraph g {
 }
 ```
 </pre>
+<p>Using the LASTFILE content of a code chunk the last text of a previous
+code chunk can be reused. This LASTFILE string can reused several times, here an example which should produce the same image as before just with filled boxes as the <b class="const">cmd</b> code chunk option was changed.</p>
+<pre class="doctools_example">
+```{.cmd cmd=&quot;dot -Tpng -Nstyle=filled -o%o %i&quot; echo=false results=hide}
+LASTFILE
+```
+</pre>
 </div>
 <div id="section10" class="doctools_section"><h2><a name="section10">Filetypes</a></h2>
 <p>Currently <b class="cmd">tmdoc</b> supports the filetypes Markdown which is assumed
@@ -382,6 +389,6 @@ Technical Data and Computer Software Clause as DFARS 252.227-7013 and FAR 52.227
 <p>Text processing</p>
 </div>
 <div id="copyright" class="doctools_section"><h2><a name="copyright">Copyright</a></h2>
-<p>Copyright &copy; 2020-2025, Detlef Groth &lt;detlef(at)dgroth(dot)de&gt;</p>
+<p>Copyright &copy; 2020-2025, Detlef Groth &lt;dgroth(at)uni(minus)potsdam(dot)de&gt;</p>
 </div>
 </div></body></html>
