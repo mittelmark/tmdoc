@@ -35,10 +35,13 @@ adds or replaces it's own code with the code output. Alternatively the code chun
 as the output result can be also hidden if needed.</p>
 
 <p>There exist several tools
-which allow this type of programming/documenting, for instance for the R programming language <a href="https://yihui.name/knitr">knitr</a>  or
-<a href="https://en.wikipedia.org/wiki/Sweave">Sweave</a>. Although Knitr is an engine for dynamic report generation especially for the
+which allow this type of programming/documenting, for instance for the R
+programming language <a href="https://yihui.name/knitr">Knitr</a> or
+<a href="https://en.wikipedia.org/wiki/Sweave">Sweave</a>. Although Knitr is an engine
+for dynamic report generation especially for the
 statistical language R it supports as well other programming languages such
-as for instance Python 3, Perl, Haskell, Ruby and more than 20 others with a few limitations.</p>
+as for instance Python 3, Perl, Haskell, Ruby and more than 20 others with a
+few limitations.</p>
 
 <p>Embedding of Tcl in the Knitr framework is somehow difficult as it has no command
 line option to evaluate Tcl code on the fly. There might be workarounds by
@@ -72,6 +75,7 @@ Tcl packages and other types of documentation.</p>
 <li><a href="#ukaz">ukaz</a></li></ul>
 
 </li>
+<li><a href="#clp">Other Command Line Tools</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#install">Installation</a></li>
 <li><a href="#process">Processing Information</a>
@@ -125,7 +129,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-03-21 08:11</p>
+<p>The curent date and time is: 2025-03-21 09:32</p>
 
 <hr />
 
@@ -594,7 +598,9 @@ puts $x</code></pre><pre class='code'><code class='tclout'>3</code></pre>
 <p>Now the options: <code>{.tcl echo=false results=&quot;hide&quot;}</code></p>
 
 <pre class='code'><code class='tclcode'>set x 4
-puts $x</code></pre><h2>Shell chunks</h2>
+puts $x</code></pre>
+
+<p><a name="clp"> </a></p><h2>Other Command Line Tools</h2>
 
 <p>Since  version  0.8.0 there is as well support for embedding  arbitrary  shell
 code  chunks, for  instance to create  images  using  command  line tools like
@@ -722,7 +728,7 @@ character sequence like here: <code>'tcl set x 1'</code> (replace single quotes 
     set x 2
     ```</code></pre>
 
-<p>The following options for code chunks are currently available:</p>
+<p>The following options for for Tcl code chunks are currently available:</p>
 
 <ul>
 <li>label: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.</li>
@@ -731,9 +737,23 @@ character sequence like here: <code>'tcl set x 1'</code> (replace single quotes 
   asis or show, default: show.</li>
 <li>fig: Does the code chunk produces a graphic, default: false. If this feature is used there must be a <code>figure</code> procedure with a filename argument which writes the figure.</li>
 <li>include: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
+</li></ul>
 
+<p>The following code chunk option is as well available for Shell / Cmd code chunks:</p>
+
+<ul>
+<li><strong>cmd</strong>: the command line to process the input in the code chunk, the  following
+  place holders are available
+<ul>
+<li><em>%i</em> - the input filename</li>
+<li><em>%o</em> - the output filename</li>
+<li><em>%b</em> - the basename of the input filename
+</li></ul>
 
 </li></ul>
+
+<p>If the same input  should be used with an other  command line  invocation,  as
+code chunk should be filled with the text string <em>LASTFILE</em>.</p>
 
 <h2><a name="install">Installation</a></h2>
 
@@ -763,9 +783,9 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 <li>ukaz 2.1
 </li></ul>
 
-<p>Document was processed at: 2025-03-21 08:11</p>
+<p>Document was processed at: 2025-03-21 09:32</p>
 
-<p>Document processing was done within: 1770 milliseconds.</p>
+<p>Document processing was done within: 1911 milliseconds.</p>
 
 <p>Let's destroy the Tk application at the end.</p>
 

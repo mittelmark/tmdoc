@@ -19,10 +19,13 @@ adds or replaces it's own code with the code output. Alternatively the code chun
 as the output result can be also hidden if needed. 
 
 There exist several tools
-which allow this type of programming/documenting, for instance for the R programming language [knitr](https://yihui.name/knitr)  or
-[Sweave](https://en.wikipedia.org/wiki/Sweave). Although Knitr is an engine for dynamic report generation especially for the
+which allow this type of programming/documenting, for instance for the R
+programming language [Knitr](https://yihui.name/knitr) or
+[Sweave](https://en.wikipedia.org/wiki/Sweave). Although Knitr is an engine
+for dynamic report generation especially for the
 statistical language R it supports as well other programming languages such
-as for instance Python 3, Perl, Haskell, Ruby and more than 20 others with a few limitations.
+as for instance Python 3, Perl, Haskell, Ruby and more than 20 others with a
+few limitations.
 
 Embedding of Tcl in the Knitr framework is somehow difficult as it has no command
 line option to evaluate Tcl code on the fly. There might be workarounds by
@@ -52,6 +55,7 @@ Tcl packages and other types of documentation.
     - [screenshot](#screenshot)
     - [canvas](#canvas)
     - [ukaz](#ukaz)
+- [Other Command Line Tools](#clp)
 - [Summary](#summary)
 - [Installation](#install)
 - [Processing Information](#process)
@@ -651,7 +655,9 @@ Now the options: `{.tcl echo=false results="hide"}`
 set x 4
 puts $x
 ```
-## Shell chunks
+
+<a name="clp"> </a>
+## Other Command Line Tools
 
 Since  version  0.8.0 there is as well support for embedding  arbitrary  shell
 code  chunks, for  instance to create  images  using  command  line tools like
@@ -924,7 +930,7 @@ Code chunks start on lines with three backticks and the character sequence tcl a
     ```
 ```
 
-The following options for code chunks are currently available:
+The following options for for Tcl code chunks are currently available:
 
 - label: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
 - echo: Should the Tcl code be shown, either show or hide, default: true.
@@ -933,7 +939,16 @@ The following options for code chunks are currently available:
 - fig: Does the code chunk produces a graphic, default: false. If this feature is used there must be a `figure` procedure with a filename argument which writes the figure.
 - include: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
 
+The following code chunk option is as well available for Shell / Cmd code chunks:
 
+- __cmd__: the command line to process the input in the code chunk, the  following
+  place holders are available
+    - _%i_ - the input filename
+    - _%o_ - the output filename
+    - _%b_ - the basename of the input filename
+
+If the same input  should be used with an other  command line  invocation,  as
+code chunk should be filled with the text string _LASTFILE_.
 
 ## <a name="install">Installation</a>
 
