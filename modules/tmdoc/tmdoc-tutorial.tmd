@@ -854,6 +854,53 @@ LASTFILE
 LASTFILE
 ```
 
+Let's  continue  with an example using the  statistical  programming  language
+[R](https://r-project.org):
+
+```
+     ```{.shell cmd="Rscript %i %o"}
+     ### outfile is the argument %o
+     outfile=commandArgs(trailingOnly=TRUE)[1]
+     png(outfile)
+     par(mai=rep(0.1,4))
+     pie(rep(1,20),col=rainbow(20))
+     dev.off()
+     ```
+```
+
+And here the output:
+
+```{.shell cmd="Rscript %i %o"}
+### outfile is the argument %o
+outfile=commandArgs(trailingOnly=TRUE)[1]
+png(outfile)
+par(mai=rep(0.1,4))
+pie(rep(1,20),col=rainbow(20))
+dev.off()
+```
+
+To have compatibility with  [pantcl](https://github.com/mittelmark/pantcl) you
+can use as well cmd as the chunk indicator.
+
+```
+      ```{.cmd cmd="dot -Tpng -o%o %i" echo=false}
+      digraph g {
+        rankdir="LR"
+        node[shape=box,style=filled,fillcolor=orange1]
+        A -> B -> C
+      }
+      ```
+```
+
+Output:
+
+```{.cmd cmd="dot -Tpng -o%o %i" echo=false}
+digraph g {
+    rankdir="LR"
+    node[shape=box,style=filled,fillcolor=orange1]
+    A -> B -> C
+}
+```
 ## <a name="summary">Summary</a>
 
 The `tmdoc::tmdoc` package provides a literate programming proccessor which

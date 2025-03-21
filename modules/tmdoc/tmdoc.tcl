@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250317.1051>
+#  Last Modified : <250321.0707>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -215,7 +215,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 # TODO: spaces in fig.cap etc
                 ::tmdoc::GetOpts 
                 continue
-            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?shell\s+(.*)\}} $line -> opts])} {
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(shell|cmd)\s+(.*)\}} $line -> tp opts])} {
                 set mode shell
                 incr chunki
                 array set copt [array get bdopt]
