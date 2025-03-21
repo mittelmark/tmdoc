@@ -910,9 +910,9 @@ digraph g {
 ## <a name="summary">Summary</a>
 
 The `tmdoc::tmdoc` package provides a literate programming proccessor which
-extracts and evaluates Tcl code within code chunks of a Markdown documents.
+extracts and evaluates Tcl or command line applicatons code or input within code chunks of a Markdown documents.
 The code chunks are evaluated by the `tmdoc` processor and replaced with their
-output. Tcl code and the output can be shown or hidden due to specific
+output. The code or input and the output can be shown or hidden due to specific
 configuration options for the code chunk. There is as well the possibility to
 display images created by Tcl within the document and inline evaluation of
 short Tcl commands within backtick where the first backtick is followed by the
@@ -930,25 +930,55 @@ Code chunks start on lines with three backticks and the character sequence tcl a
     ```
 ```
 
-The following options for for Tcl code chunks are currently available:
+The following options for Tcl code chunks are currently available:
 
-- label: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
-- echo: Should the Tcl code be shown, either show or hide, default: true.
-- results: Should the output of the Tcl code evaluation be shown, either hide,
-  asis or show, default: show.
-- fig: Does the code chunk produces a graphic, default: false. If this feature is used there must be a `figure` procedure with a filename argument which writes the figure.
-- include: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
+- _echo_: Should the Tcl code be shown, true or false, default: true.
+- _fig_: Does the code chunk  produces a graphic,  default: false for Tcl code
+  If this feature is used there must be a `figure` procedure with a filename argument which writes the figure.
+- _include_: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
+- _label_: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
+- _results_: Should the output of the Tcl code evaluation be shown, either "hide",
+  "asis" or "show", default: "show".
 
-The following code chunk option is as well available for Shell / Cmd code chunks:
+The following code chunk options are available for Shell / Cmd code chunks:
+
 
 - __cmd__: the command line to process the input in the code chunk, the  following
   place holders are available
     - _%i_ - the input filename
     - _%o_ - the output filename
     - _%b_ - the basename of the input filename
+- _echo_: Should the Input for the command line tool be shown, either true or false, default: true.
+- _fig_: Does the code chunk  produces a graphic,  default: true
+- _label_: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
+- _results_: Should the output of the Tcl code evaluation be shown, either "hide",
+  "asis" or "show", default: "show".
+- _include_: Should the created figure automatically displayed, default: true.
+  If set to false it is as well recommended to give the chunk a label, which will be used to create the image filename.
 
 If the same input  should be used with an other  command line  invocation,  as
 code chunk should be filled with the text string _LASTFILE_.
+
+Here an example:
+
+```{std}
+    ```{.cmd cmd="dot -Tpng -o%o %i" echo=false}
+    digraph g { A -> B }
+    ```
+    ```{.cmd cmd="dot -Tpng -Nshape=box -Nstyle=filled -o%o %i" echo=false}
+    LASTFILE
+    ```
+```
+
+Here the output:
+
+```{.cmd cmd="dot -Tpng -o%o %i" echo=false}
+digraph g { rankdir="LR"; A -> B -> C}
+```
+```{.cmd cmd="dot -Tpng -Nshape=box -Nstyle=filled -o%o %i" echo=false}
+LASTFILE
+```
+
 
 ## <a name="install">Installation</a>
 
