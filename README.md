@@ -94,7 +94,10 @@ Thereafter make the file executable and check that it is correctly installed lik
 this:
 
 ```
-$ tmdoc --version
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.8.0/tmdoc-0.8.0.bin -O ~/.local/bin/tmdoc
+chmod 755 ~/.local/bin/tmdoc
+tmdoc --version
+## 0.8.0
 0.7.0
 ```
 

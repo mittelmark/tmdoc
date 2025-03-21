@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-<title>tmdoc - Literate programming using Tcl</title>
+<title>tmdoc - Literate programming using Tcl/Tk and various command line tools</title>
 <style type="text/css"><!--
     HTML {
 	background: 	#FFFFFF;
@@ -98,9 +98,9 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.8.0 tmdoc &quot;Literate programming using Tcl&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.8.0 tmdoc &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
-<p>tmdoc - Evaluate embedded Tcl code in Markdown or LaTeX documents</p>
+<p>tmdoc - Evaluate embedded Tcl code or other command line tool input in Markdown or LaTeX documents</p>
 </div>
 <div id="toc" class="doctools_section"><h2><a name="toc">Table Of Contents</a></h2>
 <ul class="doctools_toc">
@@ -114,10 +114,11 @@
 <li class="doctools_section"><a href="#section6">Tables</a></li>
 <li class="doctools_section"><a href="#section7">Images</a></li>
 <li class="doctools_section"><a href="#section8">Includes</a></li>
-<li class="doctools_section"><a href="#section9">Filetypes</a></li>
-<li class="doctools_section"><a href="#section10">See Also</a></li>
-<li class="doctools_section"><a href="#section11">Bugs, Ideas, Feedback</a></li>
-<li class="doctools_section"><a href="#section12">Code Copyright</a></li>
+<li class="doctools_section"><a href="#section9">Command Line Applications</a></li>
+<li class="doctools_section"><a href="#section10">Filetypes</a></li>
+<li class="doctools_section"><a href="#section11">See Also</a></li>
+<li class="doctools_section"><a href="#section12">Bugs, Ideas, Feedback</a></li>
+<li class="doctools_section"><a href="#section13">Code Copyright</a></li>
 <li class="doctools_section"><a href="#category">Category</a></li>
 <li class="doctools_section"><a href="#copyright">Copyright</a></li>
 </ul>
@@ -150,7 +151,8 @@ puts &quot;Hello World&quot;
 <p>Shorter Tcl code fragments can be embedded directly within the text using
 single backticks like this:</p>
 <pre class="doctools_example">
-This document was generated at `tcl clock format [clock seconds] -format &quot;%Y-%m-%d %H:%m&quot;` MET.
+This document was generated at \
+    `tcl clock format [clock seconds] -format &quot;%Y-%m-%d %H:%m&quot;` MET.
 </pre>
 <p>The embedded Shell code chunks start as well with three backticks then the <i class="arg">.shell</i> indicator and 
 a <i class="arg">cmd</i> code chunk argument which explains how to process the input in the code chunk like this:</p>
@@ -240,7 +242,8 @@ set date [clock format [clock seconds]]
 <div id="section5" class="doctools_section"><h2><a name="section5">Inline code chunks</a></h2>
 <p>Short Tcl codes can be as well evaluated within the standard text flow using single backticks. For instance:</p>
 <pre class="doctools_example">
-The current date is `tcl clock format [clock seconds] -format &quot;%Y-%m-%d&quot;`
+The current date is  \
+  `tcl clock format [clock seconds] -format &quot;%Y-%m-%d&quot;`
 </pre>
 <p>The code above would insert the current date into the text. 
 So text inline code chunks are possible using single backticks such as here <b class="const">`tcl set x`</b>.</p>
@@ -249,7 +252,10 @@ So text inline code chunks are possible using single backticks such as here <b c
 <p>The Tcl interpreter which is executed inside the code chunks supports as well a procedure <b class="cmd">list2mdtab</b> <b class="const">headers</b> <b class="const">data</b> which allows of inserting tables if the output is Markdown.</p>
 <pre class="doctools_example">
 ```{.tcl results=&quot;asis&quot;}
-set l [list [list A B C D E]  [list 1 2 3 4 5]  [list 6 7 8 9 10]  [list 11 12 13 14 15]]
+set l [list [list A B C D E] \
+   [list 1 2 3 4 5] \
+   [list 6 7 8 9 10] \
+   [list 11 12 13 14 15]]
 # syntax: list2mdtab header rows
 # we need to flatten the row list
 set r &lt;center&gt;\n\n
@@ -265,7 +271,8 @@ append r \n\n&lt;/center&gt;\n
 ```{.tcl}
 package require Tk
 package require canvas::snap
-pack [canvas .c -background beige]  -padx 5 -pady 5 -side top -fill both -expand yes
+pack [canvas .c -background beige] \
+   -padx 5 -pady 5 -side top -fill both -expand yes
 proc figure {outfile} {
     set img [canvas::snap .c]
     $img write $outfile -format png
@@ -304,20 +311,50 @@ code directly within your document.</p>
 `include filename.md`
 </pre>
 </div>
-<div id="section9" class="doctools_section"><h2><a name="section9">Filetypes</a></h2>
+<div id="section9" class="doctools_section"><h2><a name="section9">Command Line Applications</a></h2>
+<p>Since Version 0.8.0 <b class="cmd">tmdoc</b> as well supports the inclusion of code for
+tools that can create graphics from the given input such like GraphViz 
+<b class="cmd">dot</b> or <b class="cmd">plantuml</b>. These code chunks have a `.cmd` chunk indication and need to
+provide as well a cmd chunk option which indicates the required command line to process the input.
+The following code chunk options are available.</p>
+<dl class="doctools_definitions">
+<dt><b class="const">cmd</b></dt>
+<dd><p>The command line to process the given code chunk input. There are placeholders for the input filename &quot;%i&quot; and the output filename &quot;%o&quot; available.</p></dd>
+<dt><b class="const">echo</b></dt>
+<dd><p>Should the code input be shown. Defaults to <b class="const">true</b>.</p></dd>
+<dt><b class="const">eval</b></dt>
+<dd><p>Should the code chunk be evaluated. Defaults to <b class="const">true</b>.</p></dd>
+<dt><b class="const">fig</b></dt>
+<dd><p>Should a custom figure function called with the chunk label as argument. Defaults to <b class="const">true</b>.</p></dd>
+<dt><b class="const">include</b></dt>
+<dd><p>Should a possible figure been included directly after the code chunk. Defaults to <b class="const">true</b>.</p></dd>
+<dt><b class="const">label</b></dt>
+<dd><p>A text label for the code chunk. Defaults to <b class="const">chunk-nn</b> where nn is a counter.</p></dd>
+<dt><b class="const">results</b></dt>
+<dd><p>Should the results of code evaluation been show, either <b class="const">show</b>, <b class="const">hide</b> or <b class="const">asis</b>, the latter does include the ouptput not into a pre / verbatim environment. Defaults to <b class="const">show</b>.</p></dd>
+</dl>
+<pre class="doctools_example">
+```{.cmd cmd=&quot;dot -Tpng -o%o %i&quot; echo=false results=hide}
+digraph g {
+    A -&gt; B
+}
+```
+</pre>
+</div>
+<div id="section10" class="doctools_section"><h2><a name="section10">Filetypes</a></h2>
 <p>Currently <b class="cmd">tmdoc</b> supports the filetypes Markdown which is assumed
 if you are using the file extension &quot;<b class="file">.tmd</b>&quot; and LaTeX if you use the file
 extensions &quot;<b class="file">.tnw</b>&quot;.</p>
 </div>
-<div id="section10" class="doctools_section"><h2><a name="section10">See Also</a></h2>
+<div id="section11" class="doctools_section"><h2><a name="section11">See Also</a></h2>
 <p>For a detailed tutorial on how to do literate programming with Tcl have a look at the Tcl Markdown tutorial.</p>
 </div>
-<div id="section11" class="doctools_section"><h2><a name="section11">Bugs, Ideas, Feedback</a></h2>
+<div id="section12" class="doctools_section"><h2><a name="section12">Bugs, Ideas, Feedback</a></h2>
 <p>This document, and the package it describes, will undoubtedly contain bugs and other
 problems. Please report such to the author of this package. Please also report any ideas
 for enhancements you may have for either package and/or documentation.</p>
 </div>
-<div id="section12" class="doctools_section"><h2><a name="section12">Code Copyright</a></h2>
+<div id="section13" class="doctools_section"><h2><a name="section13">Code Copyright</a></h2>
 <p>BSD License type:</p>
 <p>The following terms apply to all files a ssociated with the software unless
 explicitly disclaimed in individual files.</p>

@@ -2,8 +2,8 @@
 [vset VERSION 0.8.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <detlef(at)dgroth(dot)de>}]
-[moddesc   {Literate programming using Tcl}]
-[titledesc {Evaluate embedded Tcl code in Markdown or LaTeX documents}]
+[moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
+[titledesc {Evaluate embedded Tcl code or other command line tool input in Markdown or LaTeX documents}]
 [category  {Text processing}]
 [require Tcl 8.6-]
 [require textutil 0.8]
@@ -28,7 +28,8 @@ Shorter Tcl code fragments can be embedded directly within the text using
 single backticks like this:
 
 [example {
-This document was generated at `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"` MET.
+This document was generated at \\
+    `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"` MET.
 }]
 
 The embedded Shell code chunks start as well with three backticks then the [arg .shell] indicator and 
@@ -144,7 +145,8 @@ set date [clock format [clock seconds]]
 
 [para][example {
 
-The current date is `tcl clock format [clock seconds] -format "%Y-%m-%d"`
+The current date is  \\
+  `tcl clock format [clock seconds] -format "%Y-%m-%d"`
 
 }]
 
@@ -157,9 +159,9 @@ So text inline code chunks are possible using single backticks such as here [con
 
 [para] [example {
 ```{.tcl results="asis"}
-set l [list [list A B C D E] \
-   [list 1 2 3 4 5] \
-   [list 6 7 8 9 10] \
+set l [list [list A B C D E] \\
+   [list 1 2 3 4 5] \\
+   [list 6 7 8 9 10] \\
    [list 11 12 13 14 15]]
 # syntax: list2mdtab header rows
 # we need to flatten the row list
@@ -179,7 +181,7 @@ append r \n\n</center>\n
 ```{.tcl}
 package require Tk
 package require canvas::snap
-pack [canvas .c -background beige] \
+pack [canvas .c -background beige] \\
    -padx 5 -pady 5 -side top -fill both -expand yes
 proc figure {outfile} {
     set img [canvas::snap .c]
@@ -231,6 +233,35 @@ code directly within your document.
 `include filename.md`
 
 }]
+
+[section "Command Line Applications"]
+
+Since Version 0.8.0 [cmd tmdoc] as well supports the inclusion of code for
+tools that can create graphics from the given input such like GraphViz 
+[cmd dot] or [cmd plantuml]. These code chunks have a `.cmd` chunk indication and need to
+provide as well a cmd chunk option which indicates the required command line to process the input.
+
+The following code chunk options are available.
+
+[list_begin definitions]
+[def [const cmd]] The command line to process the given code chunk input. There are placeholders for the input filename "%i" and the output filename "%o" available.
+[def [const echo]] Should the code input be shown. Defaults to [const true].
+[def [const eval]] Should the code chunk be evaluated. Defaults to [const true].
+[def [const fig]] Should a custom figure function called with the chunk label as argument. Defaults to [const true].
+[def [const include]] Should a possible figure been included directly after the code chunk. Defaults to [const true].
+[def [const label]] A text label for the code chunk. Defaults to [const chunk-nn] where nn is a counter.
+[def [const results]] Should the results of code evaluation been show, either [const show], [const hide] or [const asis], the latter does include the ouptput not into a pre / verbatim environment. Defaults to [const show].
+[list_end]
+
+[para] [example {
+
+```{.cmd cmd="dot -Tpng -o%o %i" echo=false results=hide}
+digraph g {
+    A -> B
+}
+```
+}]
+
 
 [section Filetypes] 
 
