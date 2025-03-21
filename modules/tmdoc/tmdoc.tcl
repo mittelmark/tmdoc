@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250321.0707>
+#  Last Modified : <250321.0811>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -19,7 +19,7 @@ exec tclsh "$0" "$@"
 #                  2021-12-19 version 0.5.0
 #                  2025-01-04 version 0.6.0 (tcllib and Tcl 9 aware version) 
 #                  2025-01-18 version 0.7.0 results="asis" implemented, include and list2md
-#                  2025-03-2X8version 0.8.0 support for shell chunks
+#                  2025-03-21 version 0.8.0 support for shell chunks
 #
 package require Tcl 8.6-
 package require fileutil
@@ -559,7 +559,7 @@ namespace eval ::tmdoc {
 #'     - adapting tmdoc.css to be used by mkdoc
 #'     - Tcl 9 aware
 #'     - documentation fix for app
-#' - 2025-03-2X Release 0.8.0
+#' - 2025-03-21 Release 0.8.0
 #'     - adding support for shell code chunks to create graphics for
 #'       tools like GraphViz dot, PlantUML or sgf-render and many others
 #'

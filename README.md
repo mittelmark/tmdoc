@@ -125,7 +125,7 @@ tclmain -m tmdoc --help
     - support for  _results="asis"_ for instance to create Markdown or SVG code
     - function  _include_ to  include other Markdown files 
     - function  _list2mdtab_ to  add tables within code chunks
-- 2025-03-2X 0.8.0
+- 2025-03-21 0.8.0
     - support for shell code embedding to generate graphics
 
 ## See Also
