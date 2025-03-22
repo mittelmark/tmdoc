@@ -19,8 +19,8 @@ The package _tmdoc_  provides a command to evaluate  embedded Tcl code in code
 chunks within  documents of Markup  languages  like Markdown and LaTeX and add
 the  resulting  output to the  document  for  creating  dynamic  documents,  a
 technique  as well known as  literate  programming.  The latter uses  Tcllib's
-Markdown  package.  The  embedded  Tcl code  starts with tri  backticks  and a
-language marker like this ((replace single ticks with backticks):
+Markdown  package.  The  embedded  Tcl code  starts with three backticks  and a
+language marker like this (replace single ticks with backticks):
 
 ```
     '''{.tcl}
@@ -50,11 +50,16 @@ like this:
 
 Documents   can   be  then processed from the generated Markdown to   HTML   or   PDF   using   tools   like
 [mkdoc](https://github.com/mittelmark/mkdoc/),
-[pandoc](https:///www.pandoc.org)  or [LibreOffice](https://libreoffice.org/). Here a pipeline to create an
+[pandoc](https:///www.pandoc.org),                                            
+[WeasyPrint](https://pypi.org/project/weasyprint/) or  [LibreOffice](https://libreoffice.org/). Here a pipeline to create an
 HTML, PDF or ODT document using Libreoffice.
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
 
+If you like to better retain the formatting of your HTML documents in your PDF
+output,       you       should       use       the       Python        package
+[WeasyPrint](https://pypi.org/project/weasyprint/).
+ 
 To        give       an        example        the        tmdoc        tutorial
 ([source](modules/tmdoc/tmdoc-tutorial.tmd), [HTML](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
 is processed with the following commands.
@@ -130,6 +135,13 @@ tclmain -m tmdoc --help
     - function  _list2mdtab_ to  add tables within code chunks
 - 2025-03-21 0.8.0
     - support for shell code embedding to generate graphics
+- 2025-03-XX 0.9.0
+    - better support for Tcl man pages (images, code examples)
+    
+## TODO
+
+- kroki code chunk support
+- test cases with examples for Markdown, LaTeX, and Tcl Man page format.
 
 ## See Also
 
@@ -138,7 +150,8 @@ tclmain -m tmdoc --help
 - [pantcl](https://github.com/mittelmark/pantcl)  - combines functionality of
   pandoc, mkdoc, tmdoc and brings many filter for code blocks like for GraphViz,
   PlantUML, Shell, R and Python
-
+- [Tcl man page format](https://core.tcl-lang.org/tcllib/doc/trunk/embedded/md/tcllib/files/modules/doctools/doctools_lang_cmdref.md)
+- [WeasyPrint](https://pypi.org/project/weasyprint/)
 
 ## Author
 

@@ -1,5 +1,5 @@
 ---
-title: tmdoc::tmdoc 0.8.0 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.9.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
 date: `tcl clock format [clock seconds] -format "%Y-%m-%d"`
 ---

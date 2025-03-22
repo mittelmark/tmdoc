@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.8.0]
+[vset VERSION 0.9.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -286,7 +286,7 @@ extensions [file .tnw].
 [list_begin itemized]
 
 
-[item] [uri ../modules/tmdoc/tmdoc-tutorial.html tmdoc-tutorial]
+[item] [uri tmdoc-tutorial.html tmdoc-tutorial]
 
 [item] [uri ../apps/tmdoc.html tmdoc-application]
 

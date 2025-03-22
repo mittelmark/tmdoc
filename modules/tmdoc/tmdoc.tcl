@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250321.0811>
+#  Last Modified : <250322.0817>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -20,10 +20,11 @@ exec tclsh "$0" "$@"
 #                  2025-01-04 version 0.6.0 (tcllib and Tcl 9 aware version) 
 #                  2025-01-18 version 0.7.0 results="asis" implemented, include and list2md
 #                  2025-03-21 version 0.8.0 support for shell chunks
+#                  2025-03-XX version 0.9.0 better support for Tcl man page format
 #
 package require Tcl 8.6-
 package require fileutil
-package provide tmdoc::tmdoc 0.8.0
+package provide tmdoc::tmdoc 0.9.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {} 
 
@@ -162,7 +163,6 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         if {[file extension $arg(outfile)] eq ".man"} {
             set inmode man
         }
-       
         set out [open $arg(outfile) w 0600]
     } else {
         set out stdout
@@ -197,7 +197,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     array set dopt [list echo true results show fig false include true \
                     fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png]
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
-                     label chunk-nn ext png]
+                     fig.width 12cm label chunk-nn ext png]
     interpReset
     if [catch {open $filename r} infh] {
         return -code error "Cannot open $filename: $infh"
@@ -229,7 +229,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         puts $out "```"
                     } elseif {$inmode eq "man"} {
                         puts $out ""
-                        puts -nonewline $out "$bashinput"
+                        puts -nonewline $out "\[example_begin\]\n\n$bashinput\n\n\[example_end\]\n"
                         puts $out ""
                     } else {
                         puts $out "\\begin{lcverbatim}"
@@ -252,7 +252,13 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     exec {*}$cmd
                 }
                 if {$copt(include)} {
-                    puts $out "!\[\]($copt(label).$copt(ext))"
+                    if {$inmode eq "md"} {
+                        puts $out "!\[\]($copt(label).$copt(ext))"
+                    } elseif {$inmode eq "man"} {
+                        puts $out "\n\[image $copt(label)\]n"
+                    } elseif {$inmode eq "latex"} {
+                        puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$copt(label)}\n"
+                    }
                 }
                 set bashinput ""
                 set mode text
@@ -266,7 +272,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         puts $out "```"
                     } elseif {$inmode eq "man"} {
                         puts $out ""
-                        puts -nonewline $out "$tclcode"
+                        puts -nonewline $out "\n\[example_begin\]\n$tclcode\n\[example_end\]\n"
                         puts $out ""
                     } else {
                         puts $out "\\begin{lcverbatim}"
@@ -278,7 +284,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     if {$inmode eq "md"} {
                         puts $out "```{tclerr}\n$res\n```\n"
                     } elseif {$inmode eq "man"} {
-                        puts $out "\nError:\n$res\n"
+                        puts $out "\n\[example_begin\]\nError:\n$res\n\[example_end\]\n"
                     } else {
                         puts $out "\n\\begin{lrverbatim}\n$res\n\\end{lrverbatim}\n"
                     }
@@ -330,6 +336,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                             if {$inmode eq "md"} {
                                 puts $out "```{tclerr}\nYou need to define a figure procedure \nwhich gets a filename as argument"
                                 puts $out "proc figure {filename} { }\n\nwhere within you create the image file```\n"
+                            } elseif {$inmode eq "man"} {
+                                puts $out "\n\[example_begin\]"
+                                puts $out "\nYou need to define a figure procedure \nwhich gets a filename as argument"
+                                puts $out "proc figure {filename} { }\n\nwhere within you create the image file\n"
+                                puts $out "\n\[example_end\]"
                             } else {
                                 puts $out "\n\\begin{lrverbatim}\n\nYou need to define a figure procedure \nwhich gets a filename as argument\n"
                                 puts $out "proc figure {filename} { }\n\nwhere within you create the image file\\end{lrverbatim}\n"
@@ -339,6 +350,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                             if {$copt(include)} {
                                 if {$inmode eq "md"} {
                                     puts $out "\n!\[\]($imgfile)\n"
+                                } elseif {$inmode eq "man"} {
+                                    puts $out "\n\[image [file rootname $imgfile]\]\n"
                                 } else {
                                     puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$imgfile}\n"
                                 }
