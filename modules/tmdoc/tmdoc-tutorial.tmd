@@ -56,6 +56,7 @@ Tcl packages and other types of documentation.
     - [canvas](#canvas)
     - [ukaz](#ukaz)
 - [Other Command Line Tools](#clp)
+- [Kroki Webservice](#kroki)
 - [Summary](#summary)
 - [Installation](#install)
 - [See Also](#seealso)
@@ -909,6 +910,18 @@ digraph g {
     A -> B -> C
 }
 ```
+
+## <a name="kroki">Kroki Diagrams</a>
+
+The  [kroki.io](https://kroki.io)  webservice allows you to embed diagram code
+for many  diagram  tools into your  websites in form of base64  encoding. 
+Since version 0.9.0 _tmdoc_ supports embedding of this using kroki code chunks
+like this:
+
+```{.kroki dia=ditaa ext=png}
+A --> B
+```
+
 ## <a name="summary">Summary</a>
 
 The `tmdoc::tmdoc` package provides a literate programming proccessor which

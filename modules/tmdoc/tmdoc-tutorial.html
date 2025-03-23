@@ -3,10 +3,10 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="title" content="tmdoc::tmdoc 0.8.0 - Tcl Markdown processor tutorial">
+<meta name="title" content="tmdoc::tmdoc 0.9.0 - Tcl Markdown processor tutorial">
 <meta name="author" content="Detlef Groth, University of Potsdam, Germany">
     
-<title>tmdoc::tmdoc 0.8.0 - Tcl Markdown processor tutorial</title>
+<title>tmdoc::tmdoc 0.9.0 - Tcl Markdown processor tutorial</title>
     
     
 
@@ -21,9 +21,9 @@
 
 
 
-<h1 class="title">tmdoc::tmdoc 0.8.0 - Tcl Markdown processor tutorial</h1>
+<h1 class="title">tmdoc::tmdoc 0.9.0 - Tcl Markdown processor tutorial</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-03-22</h2>
+<h2 class="date">2025-03-23</h2>
 
 <h2><a name="abstract">Abstract</a></h2>
 
@@ -76,6 +76,7 @@ Tcl packages and other types of documentation.</p>
 
 </li>
 <li><a href="#clp">Other Command Line Tools</a></li>
+<li><a href="#kroki">Kroki Webservice</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#install">Installation</a></li>
 <li><a href="#seealso">See Also</a></li>
@@ -130,7 +131,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-03-22 08:18</p>
+<p>The curent date and time is: 2025-03-23 09:30</p>
 
 <hr />
 
@@ -709,7 +710,18 @@ can use as well cmd as the chunk indicator.</p>
 
 <p>Output:</p>
 
-<p><img src="data:image/png;base64, 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"></img></p><h2><a name="summary">Summary</a></h2>
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAUMAAAA7CAYAAADhNegfAAAABmJLR0QA/wD/AP+gvaeTAAAGZUlEQVR4nO3de0yVdRzH8TfBOUFRpGiOqFw3IjPbukzn7GJNp0h6ch2UTGyatdaF3DJWrFplN7e8rrSsrUV6RKThpmuk3ckLc9mFTLSolqkUSRLqgcPh6Y9f5IWLQMrvefTz2p4xD2x8xpfzOc/z+z0eYhzHcRARObUVnWY7gYiIG6gMRURUhiIiRtzRD+zcuZP169fbSeMhWVlZtiN0i+bbOZrvya3N+TpHKSwsdAAdxzi8SvPVfHW0Od8Vrc4M/yvJpSe4mj1qxUaYsNB2iv9P822b5nty62i+WjMUEVEZiogYKkMREZWhiIihMhQRURmKiBgqQxERlaGIiKEyFBFRGYqIGCpDERGVoYiIoTIUEVEZiogYKkMREZWhiIjR7pu7usV9b8EbH8ET4+B5b74T+3FVX19PNBolKSnJdpQu21ULTxdD6Tfw659wST+I90E4AnUHoX8fCA6GGaPBF2s7rR1enu/havfDa2thzVfQ7IA/FuoboD5s5pw9FKbeZDvlkVx9ZtgUhQ+/gz5nwdIvQH/hGSorK+nXrx+BQIDi4mLC4bDtSJ12Xi9Ycg+MvMr8e2UuVLwMP8yBqrkw+BLIC8GDb9tOao+X59tiy88wMA8+3goF98PGZ+Czp+DL56H8ObjlSlhXYTtla64uw7UV5gly+3XwSw18Xmk7kTs0NDSwevVqgsEgycnJ5OTkUFpaSjQatR2t2xLjYd5kc6ZYUHZqv/B5eb5/h2HcHDjzdFg905z9H+6cM8yZf3OzrYTtc3UZhtbD+OvNpRPAu2W2E7lHNBrFcRwOHDhAKBRi1KhR9O7dm5ycHNatW4fjwTaJi4WkM8wVQbP34h9XXp3vmx+bJZAZo80LW1vifbD8oZ5OdmyuLcNwBD74FkZdDcMHQHIiFG2ChojtZO7T1NQEQF1dHYWFhYwYMYKUlBRyc3MpK/POK8hvtVC9D24eALGu/c3seV6a75ot5uPwAbaTdJ1rN1DWbIEhl5rTbYDAdfDWJ2ZBdvz1ttNBUVGRle9bVVXV4ecbGxsBqK6uZtGiRSxYsIC0tDSmTJnCxIkTeyhl1xxshIqdMKMArkiFxVNtJ9J8u+v7XebjxefaTtJ1ri3D5RuOLL3gYFOG75a5owy98EfGIxFzGr19+3by8/MpKSkhMzPTdqz/3DHfXDI1O2b3MdoMD4xwx06y5ts9dQfNcofftc3SPldejNSHze0Xt11z6LFbr4TeiebMsHa/zXSG4zhWjs2bN3cqn9/vByA1NZW8vDy2bdtGeXk56enpJ/gn03ktu8lbZ8PuV2HTs2YHMv1R+Og7u9k03+5JjDdrvk3u3+tpxZX9XbIZfHFww7NHPu6LhcYms3Z47y220rmX3++nsbGRvn37kp2dTTAYZNiwYbZjddpFfWHpA3D+g/BIAXzzku1E7uKF+V6eAnv+gqrfIS3FdpqucWUZhjbA/Mlw11Fz/vR7uHmWuVRWGRo+n49IJEJiYiKBQICsrCwyMjKIjXXBtWY3pPYyl8479thO4g5em++4a83zdG1Fx2U4fi68N6Mnkx2b68pwbz1s2AErHm79uRvT4YJkKNtu7jvs38dGQvdISEggEAgwadIkRo4cic/Xzr0MHvJjtbmTYNCFtpPY58X5Th8OC0vhlTVw942HNkAP1+zAT3/YSNcx160Zriw3a4Vt/RBjYuDOoeaG3KVf2Ehnn8/nY+zYsYRCIWpqali2bBljxozxxBPlWH6pgWlLzG01s4K209jh9fkmxpubrR0gY7a5XD7c3np4fLk71xRdc2YYjkDuO+aWmuSzzH/JmjfZ7Ey1eKLQLLADzH0fKnfDzEwYeL612D1u0KBBrFq1ynaMbtlVC0+tNJtjAKNnmxc9fxzsD5vd5CGXwWdPwtA022nt8PJ8WwxIha9fhMUfQs4i8+KW4IdIFH7fB1f3h/yA7ZStuaYM433w+rSOv+aFCT2VRk6E83rBm9Ntp5CecHYCPJZpDq9w3WWyiIgNKkMREZWhiIihMhQRURmKiBgqQxERlaGIiKEyFBFRGYqIGCpDERGVoYiIoTIUEVEZiogYKkMREZWhiIjR7vsZrtjYs0G8YsMO2wmOD823bZrvya2j+bZbhhMWnqA04gqa78lN8+26GMdxHNshREQsK9KaoYiINlBERAyVoYjIvxsoRbZDiIhYtvEfQjlUO7qQhdEAAAAASUVORK5CYII="></img></p>
+
+<h2><a name="kroki">Kroki Diagrams</a></h2>
+
+<p>The  <a href="https://kroki.io">kroki.io</a>  webservice allows you to embed diagram code
+for many  diagram  tools into your  websites in form of base64  encoding. 
+Since version 0.9.0 <em>tmdoc</em> supports embedding of this using kroki code chunks
+like this:</p>
+
+<pre class='code'><code>A --&gt; B</code></pre><p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAG4AAABGCAIAAACixjb3AAAC3UlEQVR4Xu3YPU8iURiG4QkmiGAINnY0EBJorGygtMGKwgQSTSiBgpLOAjuxoLGRX2CjlfQ2+guoLEwkhK9oIg0kJiTs7rueLB5OVoaPh924+1yFGd85I8OtDIPWdwKxzAEtiilhPlJ+o4UwJQxTwjAlDFPCMCUMU8IwJQxTwjAlDFPCMCUMU8IwJQxTwjAlDFPCMCUMU8IwJQxTwjAlDFPCMCUMU8J87ZSHh4e9Xs+c/iUrSfn6+up0Oi3LWl9fl21zN448hN/vv729NXfMw9I4HA6v17u7u3t2djYcDs2lU60k5cXFhZyWqlmpVMzdOOPnXygU3t7ezN2zUT9EbY9Go6enp4ODA5nk8/nJhTZWkjIajcqpnJ+fy9dYLGbuxlEVlJ2dnVqtZq6YgTpcn3S7XZlsbW3pQ1v4lI+Pj3IekUhEtsPhsGzLxFwEopX8Sa4n5XJZ/rLMdVOpY/WJSul2u/WhLXzKYrEo51EqlWT79PRUtk9OTsxFIFrGD3t7e41Gw1z6OXWU2pZfQ71eTyaTMkmlUpMLbeBTBgKBtbW1Vqsl281mUy5kwWDQXAQykVDj8/kuLy/N1Z8wD363sbHx8PBgLp0KnPLu7k7OY39/fzyJx+Myub+/11ZNEwqFzKc1vwVSjr9tt9vpdFomiURCW2UPnDKbzU48p19yuZy5FMF8mHfLvMCVl5cXmWxubupDW8iUcjsifw4ej2cwGIyH/X5fJvJuuPDNyhQTCXFvO8/PzzLZ3t7Wh7aQKa+uruQMjo6OjLl8JpH59fW1MV+elhF2M9TpdNQLPJPJaKvsIVPKxUXOoFqtGvObmxtr/kvPLFQFyC36mMvlkuv18fGx/tqaBTLln2chPjiifO2U//6/M/5PTAnDlDBMCcOUMEwJw5QwTAnDlDBMCcOUMEwJw5QwTAnDlDBMCcOUMEwJw5QwTAnDlDBMCcOUMEwJw5Qwv0lJS2JKGKaE+QGCO2mvlQr/0gAAAABJRU5ErkJggg=="></img></p>
+
+<h2><a name="summary">Summary</a></h2>
 
 <p>The <code>tmdoc::tmdoc</code> package provides a literate programming proccessor which
 extracts and evaluates Tcl or command line applicatons code or input within code chunks of a Markdown documents.
@@ -814,9 +826,9 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 <li>ukaz 2.1
 </li></ul>
 
-<p>Document was processed at: 2025-03-22 08:18</p>
+<p>Document was processed at: 2025-03-23 09:30</p>
 
-<p>Document processing was done within: 2429 milliseconds.</p>
+<p>Document processing was done within: 2560 milliseconds.</p>
 
 <p>Let's destroy the Tk application at the end.</p>
 

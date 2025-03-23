@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250322.0817>
+#  Last Modified : <250323.0903>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -142,6 +142,24 @@ proc ::tmdoc::interpReset {} {
     interp eval try { proc list2mdtab {header data} {  } }        
 }
 
+proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {
+    set b64 [string map {+ - / _ = ""}  [binary encode base64 [zlib compress [encoding convertto utf-8 $text]]]]
+    set uri https://kroki.io//$dia/$ext/$b64
+}
+
+proc ::tmdoc::url2crc32file {url {folder .} {ext png}} {
+    if {[auto_execok wget] eq ""} {
+        return "Error: wget not installed!"
+    }
+    set filename [file join $folder [zlib crc32 $url].$ext]
+    if {[file exists $filename]} {
+        return $filename
+    } else {
+        exec {*}[list wget $url -O $filename]
+        return $filename
+    }
+}
+
 # public functions - the main function process the files
 
 proc ::tmdoc::tmdoc {filename outfile args} {
@@ -193,11 +211,15 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set mode text
     set tclcode ""
     set bashinput ""
+    set krokiinput ""
     set lastbashinput ""
     array set dopt [list echo true results show fig false include true \
                     fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png]
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
                      fig.width 12cm label chunk-nn ext png]
+    array set kdopt [list echo true eval true results show fig true include true \
+                     fig.width 12cm label chunk-nn ext png dia ditaa \
+                     imagepath .]
     interpReset
     if [catch {open $filename r} infh] {
         return -code error "Cannot open $filename: $infh"
@@ -219,6 +241,13 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode shell
                 incr chunki
                 array set copt [array get bdopt]
+                # TODO: spaces in fig.cap etc
+                ::tmdoc::GetOpts 
+                continue
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(kroki)\s+(.*)\}} $line -> tp opts])} {
+                set mode kroki
+                incr chunki
+                array set copt [array get kdopt]
                 # TODO: spaces in fig.cap etc
                 ::tmdoc::GetOpts 
                 continue
@@ -262,8 +291,38 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 set bashinput ""
                 set mode text
+            } elseif {$mode eq "kroki" && [regexp {```} $line]} {
+                if {$copt(echo)} {
+                    if {$inmode eq "md"} {
+                        puts -nonewline $out "```\n${krokiinput}"
+                        puts $out "```"
+                    } elseif {$inmode eq "man"} {
+                        puts $out ""
+                        puts -nonewline $out "\[example_begin\]\n\n$krokiinput\n\n\[example_end\]\n"
+                        puts $out ""
+                    } else {
+                        puts $out "\\begin{lcverbatim}"
+                        puts -nonewline $out $krokiinput
+                        puts $out "\\end{lcverbatim}"
+                    }
+                }
+                set url [dia2kroki $krokiinput $copt(dia) $copt(ext)] 
+                set filename [url2crc32file $url $copt(imagepath) $copt(ext)]
+                if {$copt(include)} {
+                    if {$inmode eq "md"} {
+                        puts $out "!\[\]($filename)"
+                    } elseif {$inmode eq "man"} {
+                        puts $out "\n\[image [file rootname $filename]\]n"
+                    } elseif {$inmode eq "latex"} {
+                        puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{[file rootname $filename]}\n"
+                    }
+                }
+                set krokiinput ""
+                set mode text
             } elseif {$mode eq "shell"} {
                append bashinput "$line\n"
+            } elseif {$mode eq "kroki"} {
+               append krokiinput "$line\n"
             } elseif {$mode eq "code" && [regexp {```} $line]} {
                 if {$copt(echo)} {
                     if {$inmode eq "md"} {

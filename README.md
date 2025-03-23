@@ -141,6 +141,7 @@ tclmain -m tmdoc --help
 ## TODO
 
 - kroki code chunk support
+- bibtex citation support (citer package)
 - test cases with examples for Markdown, LaTeX, and Tcl Man page format.
 
 ## See Also
