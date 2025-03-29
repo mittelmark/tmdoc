@@ -915,11 +915,69 @@ digraph g {
 
 The  [kroki.io](https://kroki.io)  webservice allows you to embed diagram code
 for many  diagram  tools into your  websites in form of base64  encoding. 
-Since version 0.9.0 _tmdoc_ supports embedding of this using kroki code chunks
-like this:
+Since  version  0.9.0  _tmdoc_  supports  embedding  of this using  kroki code
+chunks.  If the tool wget is  installed  on the users  machine  files  will be
+downloaded  and stored  locally,  these files are then used instead of the the
+web link. The download is only repeated if the code chunk content does change.
+See here for some examples. 
 
-```{.kroki dia=ditaa ext=png}
+
+A simple [Ditaa](https://ditaa.sourceforge.net/)  diagram can be created like this:
+
+```
+    ```{.kroki dia=ditaa imagepath=kroki ext=png}
+    A --> B
+    ```
+```
+
+Here the output:
+
+```{.kroki dia=ditaa imagepath=kroki ext=png}
 A --> B
+```
+
+Here an example for a GraphViz Kroki diagram:
+
+```
+    ```{.kroki dia=graphviz imagepath=kroki ext=png}
+    digraph a {
+        rankdir="LR"
+        node[shape=box,style=filled]
+        A -> B -> C
+    }
+    ```
+```
+
+Here the output:
+
+```{.kroki dia=graphviz imagepath=kroki ext=png}
+digraph a {
+    rankdir="LR"
+    node[shape=box,style=filled]
+    A -> B -> C
+}
+```
+
+Using the option `echo=false` we can as well hide the code display:
+
+```
+    ```{.kroki dia=graphviz ext=png imagepath=kroki echo=false}
+    digraph a {
+        rankdir="LR"
+        node[shape=box,style=filled,fillcolor=cornsilk]
+        A -> B -> C -> D
+    }
+    ```
+```
+
+Here the result:
+
+```{.kroki dia=graphviz ext=png imagepath=kroki echo=false}
+digraph a {
+    rankdir="LR"
+    node[shape=box,style=filled,fillcolor=cornsilk]
+    A -> B -> C -> D
+}
 ```
 
 ## <a name="summary">Summary</a>
@@ -945,7 +1003,8 @@ Code chunks start on lines with three backticks and the character sequence tcl a
     ```
 ```
 
-The following options for Tcl code chunks are currently available:
+The following  options for Tcl code chunks which are
+declared with as _{.tcl}_ are currently  available:
 
 - _echo_: Should the Tcl code be shown, true or false, default: true.
 - _fig_: Does the code chunk  produces a graphic,  default: false for Tcl code
@@ -955,10 +1014,11 @@ The following options for Tcl code chunks are currently available:
 - _results_: Should the output of the Tcl code evaluation be shown, either "hide",
   "asis" or "show", default: "show".
 
-The following code chunk options are available for Shell / Cmd code chunks:
+The following code chunk options are available for Shell / Cmd code  which are
+declared with _{.cmd}_  or _{.shell}_ as chunks:
 
 
-- __cmd__: the command line to process the input in the code chunk, the  following
+- _cmd__: the command line to process the input in the code chunk, the  following
   place holders are available
     - _%i_ - the input filename
     - _%o_ - the output filename
@@ -994,6 +1054,23 @@ digraph g { rankdir="LR"; A -> B -> C}
 LASTFILE
 ```
 
+
+The following code chunk options are available for Kroki code chunks which are
+declared with _{.kroki}_ :
+
+
+- _dia_: The  diagram  type such as ditaa,  plantuml,  graphviz,  pikchr  etc,
+  default: ditaa
+- _echo_: Should the Input for the command line tool be shown, either true or false, default: true.
+- _ext_: The file extension, such as pdf, png or svg, default: png
+- _fig_: Does the code chunk  produces a graphic,  default: true
+- _imagepath_:  The folder where to store the images,  default . (dot, current
+  working directory)
+- _label_: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
+- _results_: Should the output of the Tcl code evaluation be shown, either "hide",
+  "asis" or "show", default: "show".
+- _include_: Should the created figure automatically displayed, default: true.
+  If set to false it is as well recommended to give the chunk a label, which will be used to create the image filename.
 
 ## <a name="install">Installation</a>
 

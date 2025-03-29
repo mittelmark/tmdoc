@@ -4,20 +4,20 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250323.0903>
+#  Last Modified : <250329.1335>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
-# 
+#
 #  Description	 : Command line utility and package to embed and evaluate Tcl code
-#                  inside Markdown documents, a technique known as literate programming. 
+#                  inside Markdown documents, a technique known as literate programming.
 #
 #  History       : 2020-02-19 version 0.1
-#                  2020-02-21 version 0.2 
+#                  2020-02-21 version 0.2
 #                  2020-02-23 version 0.3
 #                  2020-11-09 version 0.4
 #                  2021-12-19 version 0.5.0
-#                  2025-01-04 version 0.6.0 (tcllib and Tcl 9 aware version) 
+#                  2025-01-04 version 0.6.0 (tcllib and Tcl 9 aware version)
 #                  2025-01-18 version 0.7.0 results="asis" implemented, include and list2md
 #                  2025-03-21 version 0.8.0 support for shell chunks
 #                  2025-03-XX version 0.9.0 better support for Tcl man page format
@@ -26,7 +26,7 @@ package require Tcl 8.6-
 package require fileutil
 package provide tmdoc::tmdoc 0.9.0
 package provide tmdoc [package provide tmdoc::tmdoc]
-namespace eval ::tmdoc {} 
+namespace eval ::tmdoc {}
 
 # clear all variables and defintions
 
@@ -37,10 +37,9 @@ proc ::tmdoc::interpReset {} {
     }
     interp create intp
     interp eval intp " set pres {} ;  set auto_path {$::auto_path}"
-    interp eval intp { rename puts puts.orig }
-    interp eval intp { 
-        proc puts {args} { 
-
+    interp eval intp {rename puts puts.orig}
+    interp eval intp {
+        proc puts {args} {
             # TODO: catch if channel stdout is given
             set l [llength $args]
             if {[lindex $args 0] eq "-nonewline"} {
@@ -73,13 +72,13 @@ proc ::tmdoc::interpReset {} {
             set nval [llength $values]
             if {[llength [lindex $values 0]] > 1 && [llength [lindex $values 0]] != [llength $header]} {
                 error "Error: list2table - number of values if first row is not a multiple of columns!"
-            } elseif {[expr {int(fmod($nval,$ncol))}] != 0} {
+            } elseif {[expr {int(fmod($nval, $ncol))}] != 0} {
                 error "Error: list2table - number of values is not a multiple of columns!"
             }
-            set res "\n|" 
+            set res "\n|"
             foreach h $header {
                 append res " $h |"
-            }   
+            }
             append res "\n|"
             foreach h $header {
                 append res " ---- |"
@@ -87,7 +86,7 @@ proc ::tmdoc::interpReset {} {
             append res "\n"
             set c 0
             foreach val $values {
-                if {[llength $val] > 1} {    
+                if {[llength $val] > 1} {
                     # nested list
                     append res "| "
                     foreach v $val {
@@ -95,18 +94,17 @@ proc ::tmdoc::interpReset {} {
                     }
                     append res "\n"
                 } else {
-                    if {[expr {int(fmod($c,$ncol))}] == 0} {
-                        append res "| " 
-                    }    
+                    if {[expr {int(fmod($c, $ncol))}] == 0} {
+                        append res "| "
+                    }
                     append res " $val |"
                     incr c
-                    if {[expr {int(fmod($c,$ncol))}] == 0} {
-                        append res "\n" 
-                    }    
+                    if {[expr {int(fmod($c, $ncol))}] == 0} {
+                        append res "\n"
+                    }
                 }
             }
             return $res
-            
         }
         proc include {filename} {
             if [catch {open $filename r} infh] {
@@ -122,39 +120,45 @@ proc ::tmdoc::interpReset {} {
             }
         }
     }
-    interp eval intp { 
-        proc gputs {} { 
-            set res $::pres 
+    interp eval intp {
+        proc gputs {} {
+            set res $::pres
             set ::pres ""
-            return $res 
+            return $res
         }
     }
     # todo handle puts options
-    
+
     # this is the try interp for the catch statements
     # we first check statements and only if they are ok
     # the real interpreter intp will be used
     interp create try
-    interp eval try { rename puts puts.orig }
+    interp eval try {rename puts puts.orig}
     # todo handle puts options
-    interp eval try { proc puts {args} {  } }
-    interp eval try { proc include {filename} {  } }    
-    interp eval try { proc list2mdtab {header data} {  } }        
+    interp eval try {proc puts {args} {}}
+    interp eval try {proc include {filename} {}}
+    interp eval try {proc list2mdtab {header data} {}}
 }
 
 proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {
-    set b64 [string map {+ - / _ = ""}  [binary encode base64 [zlib compress [encoding convertto utf-8 $text]]]]
+    set b64 [string map {+ - / _ = ""} [binary encode base64 [zlib compress [encoding convertto utf-8 $text]]]]
     set uri https://kroki.io//$dia/$ext/$b64
 }
 
 proc ::tmdoc::url2crc32file {url {folder .} {ext png}} {
+    
     if {[auto_execok wget] eq ""} {
-        return "Error: wget not installed!"
+        ## no local saving
+        return $url
+        ##"Error: wget not installed!"
     }
     set filename [file join $folder [zlib crc32 $url].$ext]
     if {[file exists $filename]} {
         return $filename
     } else {
+        if {![file isdirectory $folder]} {
+            file mkdir $folder
+        }
         exec {*}[list wget $url -O $filename]
         return $filename
     }
@@ -170,7 +174,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     } else {
         set inmode md
     }
-    array set arg [list infile $filename  outfile $outfile -mode weave] 
+    array set arg [list infile $filename outfile $outfile -mode weave]
     if {[llength $args] > 0} {
         array set arg {*}$args
     }
@@ -184,7 +188,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set out [open $arg(outfile) w 0600]
     } else {
         set out stdout
-    } 
+    }
     if {$arg(-mode) eq "tangle"} {
         if [catch {open $filename r} infh] {
             return -code error "Cannot open $filename: $infh"
@@ -214,12 +218,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set krokiinput ""
     set lastbashinput ""
     array set dopt [list echo true results show fig false include true \
-                    fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png]
+        fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png]
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
-                     fig.width 12cm label chunk-nn ext png]
+        fig.width 12cm label chunk-nn ext png]
     array set kdopt [list echo true eval true results show fig true include true \
-                     fig.width 12cm label chunk-nn ext png dia ditaa \
-                     imagepath .]
+        fig.width 12cm label chunk-nn ext png dia ditaa \
+        imagepath .]
     interpReset
     if [catch {open $filename r} infh] {
         return -code error "Cannot open $filename: $infh"
@@ -566,7 +570,7 @@ proc ::tmdoc::main {argv} {
            
       License: BSD
     }]
-    
+
     if {[lsearch -exact $argv {--version}] > -1} {
         puts "[package provide tmdoc::tmdoc]"
         return
@@ -575,23 +579,23 @@ proc ::tmdoc::main {argv} {
         puts "BSD License - see manual page"
         return
     }
-    
+
     if {[llength $argv] < 2 || [lsearch -exact $argv {--help}] > -1} {
         set usage [regsub -all {__VERSION__} [regsub -all {__APP__} $Usage $APP] [package provide tmdoc]]
         puts $usage
         exit 0
     } else {
-        set idxm [lsearch -exact $argv {--mode}] 
+        set idxm [lsearch -exact $argv {--mode}]
         set mode weave
-        if {$idxm >-1} {
+        if {$idxm > -1} {
             if {[llength $argv] != 4} {
                 puts "Usage: Error - argument --mode must have an argument either weave or tangle"
-            } elseif {[lindex $argv [expr {$idxm+1}]] ni [list weave tangle]} {
+            } elseif {[lindex $argv [expr {$idxm + 1}]] ni [list weave tangle]} {
                 puts "Usage: Error - --mode must have as values on of weave or tangle"
             } else {
-                set mode [lindex $argv [expr {$idxm+1}]]
+                set mode [lindex $argv [expr {$idxm + 1}]]
             }
-            set argv [lreplace $argv $idxm [expr {$idxm+1}]]
+            set argv [lreplace $argv $idxm [expr {$idxm + 1}]]
         }
         tmdoc::tmdoc [lindex $argv 0] [lindex $argv 1] [list -mode $mode]
     }
@@ -601,14 +605,14 @@ namespace eval ::tmdoc {
     namespace export tmdoc tmeval
 }
 
-#' 
+#'
 #' ## <a name='changes'>CHANGES</a>
 #'
 #' - 2020-02-19 Release 0.1
 #' - 2020-02-21 Release 0.2
 #'     - docu updates
 #'     - nonewline puts fix
-#'     - *-outfile filename* option 
+#'     - *-outfile filename* option
 #'     - *-mode tangle* option
 #' - 2020-02-23 Release 0.3
 #'     - fix for puts into channels
@@ -646,7 +650,7 @@ namespace eval ::tmdoc {
 #' Tcl Markdown processor tmdoc::tmdoc, version 0.8.0
 #'
 #' Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany E-mail: <dgroth(at)uni(minus)potsdam(dot)de>
-#' 
+#'
 #' License: BSD
 #'
 #' ## See Also

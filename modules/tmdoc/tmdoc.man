@@ -12,9 +12,10 @@
 The package [package tmdoc] provides a command to evaluate embedded Tcl and Shell code in
 code chunks within documents of Markup languages like Markdown and LaTeX and
 add the resulting output to the document for creating dynamic documents, a technique
-as well known as literate programming.
+as well known as literate programming. Further it can use the kroki.io webservice to embed diagrams for this web service wven if diagram tools
+like GraphViz or PlantUML are not installed locally.
 
-The latter uses Tcllib's [package Markdown] package.
+Conversion of the created Markdown documents can be done by using Tcllib's [package Markdown] package.
 
 The embedded Tcl code starts with three backticks and a language marker like this:
 
@@ -43,9 +44,25 @@ digraph g {
 ```
 }]
 
-The arguments [arg %i] are used as placeholder for the input file name, which contains the text in the
-code chunk and [arg %o] for the output filename, usually a PNG or SVG file. If the text from the previous code 
-chunk just needs to be reused again in the next one, you can use the string 'LASTFILE' as a place holder.
+The arguments [arg %i] are used as placeholder for the input file name, which
+contains the text in the code chunk and [arg %o] for the output filename,
+usually a PNG or SVG file. If the text from the previous code chunk just needs
+to be reused again in the next one, you can use the string 'LASTFILE' as a
+place holder.
+
+Embedded diagram chunks using the [uri https://kroki.io kroki.io] web service are done like this:
+
+[example {
+```{.kroki dia=graphviz ext=png}
+digraph g {
+  A -> B
+}
+```
+}]
+
+Other file extensions are svg and pdf. Other diagram tools are plantuml, ditaa
+and many others. For details look at the kroki.io website.
+
 
 [section Functions]
 
@@ -272,6 +289,37 @@ LASTFILE
 ```
 
 }]
+
+[section "Kroki Webservice"]
+
+Since Version 0.9.0 [cmd tmdoc] as well supports the inclusion of code for
+diagram tools provided by the [uri https://kroki.io kroki.io] websevices so
+that you do not need tools like GraphViz 
+[cmd dot] or [cmd plantuml] to be installed locally. Instead in case of an existing internet connection you can fetch images for these tools
+and many others from the webservice.
+
+The following code chunk options are available.
+
+[list_begin definitions]
+[def [const dia]] The diagram type, the most common options are graphviz, plantuml, diataa or pkchr, default: ditaa
+[def [const echo]] Should the code input be shown. Defaults to [const true].
+[def [const eval]] Should the code chunk be evaluated. Defaults to [const true].
+[def [const fig]] Should a custom figure function called with the chunk label as argument. Defaults to [const true].
+[def [const imagepath]] the path where the images should be stored, the images are usually downloaded from the webservice locally, default: . (cuurent directory)
+[def [const include]] Should a possible figure be included directly after the code chunk. Defaults to [const true].
+[def [const label]] A text label for the code chunk. Defaults to [const chunk-nn] where nn is a counter.
+[def [const results]] Should the results of code evaluation been show, either [const show], [const hide] or [const asis], the latter does include the ouptput not into a pre / verbatim environment. Defaults to [const show].
+[list_end]
+
+[para] [example {
+
+```{.kroki dia=graphviz ext=png echo=false results=hide}
+digraph g {
+    A -> B
+}
+```
+}]
+
 
 [section Filetypes] 
 

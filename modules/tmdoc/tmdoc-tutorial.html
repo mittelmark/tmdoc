@@ -23,7 +23,7 @@
 
 <h1 class="title">tmdoc::tmdoc 0.9.0 - Tcl Markdown processor tutorial</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-03-23</h2>
+<h2 class="date">2025-03-29</h2>
 
 <h2><a name="abstract">Abstract</a></h2>
 
@@ -131,7 +131,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-03-23 09:30</p>
+<p>The curent date and time is: 2025-03-29 13:35</p>
 
 <hr />
 
@@ -716,10 +716,53 @@ can use as well cmd as the chunk indicator.</p>
 
 <p>The  <a href="https://kroki.io">kroki.io</a>  webservice allows you to embed diagram code
 for many  diagram  tools into your  websites in form of base64  encoding. 
-Since version 0.9.0 <em>tmdoc</em> supports embedding of this using kroki code chunks
-like this:</p>
+Since  version  0.9.0  <em>tmdoc</em>  supports  embedding  of this using  kroki code
+chunks.  If the tool wget is  installed  on the users  machine  files  will be
+downloaded  and stored  locally,  these files are then used instead of the the
+web link. The download is only repeated if the code chunk content does change.
+See here for some examples.</p>
+
+<p>A simple <a href="https://ditaa.sourceforge.net/">Ditaa</a>  diagram can be created like this:</p>
+
+<pre class='code'><code>    ```{.kroki dia=ditaa imagepath=kroki ext=png}
+    A --&gt; B
+    ```</code></pre>
+
+<p>Here the output:</p>
 
 <pre class='code'><code>A --&gt; B</code></pre><p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAG4AAABGCAIAAACixjb3AAAC3UlEQVR4Xu3YPU8iURiG4QkmiGAINnY0EBJorGygtMGKwgQSTSiBgpLOAjuxoLGRX2CjlfQ2+guoLEwkhK9oIg0kJiTs7rueLB5OVoaPh924+1yFGd85I8OtDIPWdwKxzAEtiilhPlJ+o4UwJQxTwjAlDFPCMCUMU8IwJQxTwjAlDFPCMCUMU8IwJQxTwjAlDFPCMCUMU8IwJQxTwjAlDFPCMCUMU8J87ZSHh4e9Xs+c/iUrSfn6+up0Oi3LWl9fl21zN448hN/vv729NXfMw9I4HA6v17u7u3t2djYcDs2lU60k5cXFhZyWqlmpVMzdOOPnXygU3t7ezN2zUT9EbY9Go6enp4ODA5nk8/nJhTZWkjIajcqpnJ+fy9dYLGbuxlEVlJ2dnVqtZq6YgTpcn3S7XZlsbW3pQ1v4lI+Pj3IekUhEtsPhsGzLxFwEopX8Sa4n5XJZ/rLMdVOpY/WJSul2u/WhLXzKYrEo51EqlWT79PRUtk9OTsxFIFrGD3t7e41Gw1z6OXWU2pZfQ71eTyaTMkmlUpMLbeBTBgKBtbW1Vqsl281mUy5kwWDQXAQykVDj8/kuLy/N1Z8wD363sbHx8PBgLp0KnPLu7k7OY39/fzyJx+Myub+/11ZNEwqFzKc1vwVSjr9tt9vpdFomiURCW2UPnDKbzU48p19yuZy5FMF8mHfLvMCVl5cXmWxubupDW8iUcjsifw4ej2cwGIyH/X5fJvJuuPDNyhQTCXFvO8/PzzLZ3t7Wh7aQKa+uruQMjo6OjLl8JpH59fW1MV+elhF2M9TpdNQLPJPJaKvsIVPKxUXOoFqtGvObmxtr/kvPLFQFyC36mMvlkuv18fGx/tqaBTLln2chPjiifO2U//6/M/5PTAnDlDBMCcOUMEwJw5QwTAnDlDBMCcOUMEwJw5QwTAnDlDBMCcOUMEwJw5QwTAnDlDBMCcOUMEwJw5Qwv0lJS2JKGKaE+QGCO2mvlQr/0gAAAABJRU5ErkJggg=="></img></p>
+
+<p>Here an example for a GraphViz Kroki diagram:</p>
+
+<pre class='code'><code>    ```{.kroki dia=graphviz imagepath=kroki ext=png}
+    digraph a {
+        rankdir=&quot;LR&quot;
+        node[shape=box,style=filled]
+        A -&gt; B -&gt; C
+    }
+    ```</code></pre>
+
+<p>Here the output:</p>
+
+<pre class='code'><code>digraph a {
+    rankdir=&quot;LR&quot;
+    node[shape=box,style=filled]
+    A -&gt; B -&gt; C
+}</code></pre><p><img src="data:image/png;base64, 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"></img></p>
+
+<p>Using the option <code>echo=false</code> we can as well hide the code display:</p>
+
+<pre class='code'><code>    ```{.kroki dia=graphviz ext=png imagepath=kroki echo=false}
+    digraph a {
+        rankdir=&quot;LR&quot;
+        node[shape=box,style=filled,fillcolor=cornsilk]
+        A -&gt; B -&gt; C -&gt; D
+    }
+    ```</code></pre>
+
+<p>Here the result:</p>
+
+<p><img src="data:image/png;base64, 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"></img></p>
 
 <h2><a name="summary">Summary</a></h2>
 
@@ -742,7 +785,8 @@ character sequence like here: <code>'tcl set x 1'</code> (replace single quotes 
     set x 2
     ```</code></pre>
 
-<p>The following options for Tcl code chunks are currently available:</p>
+<p>The following  options for Tcl code chunks which are
+declared with as <em>{.tcl}</em> are currently  available:</p>
 
 <ul>
 <li><em>echo</em>: Should the Tcl code be shown, true or false, default: true.</li>
@@ -754,10 +798,11 @@ character sequence like here: <code>'tcl set x 1'</code> (replace single quotes 
   &quot;asis&quot; or &quot;show&quot;, default: &quot;show&quot;.
 </li></ul>
 
-<p>The following code chunk options are available for Shell / Cmd code chunks:</p>
+<p>The following code chunk options are available for Shell / Cmd code  which are
+declared with <em>{.cmd}</em>  or <em>{.shell}</em> as chunks:</p>
 
 <ul>
-<li><strong>cmd</strong>: the command line to process the input in the code chunk, the  following
+<li><em>cmd</em>_: the command line to process the input in the code chunk, the  following
   place holders are available
 <ul>
 <li><em>%i</em> - the input filename</li>
@@ -790,6 +835,24 @@ code chunk should be filled with the text string <em>LASTFILE</em>.</p>
 
 <p><img src="data:image/png;base64, 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"></img>
 <img src="data:image/png;base64, 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"></img></p>
+
+<p>The following code chunk options are available for Kroki code chunks which are
+declared with <em>{.kroki}</em> :</p>
+
+<ul>
+<li><em>dia</em>: The  diagram  type such as ditaa,  plantuml,  graphviz,  pikchr  etc,
+  default: ditaa</li>
+<li><em>echo</em>: Should the Input for the command line tool be shown, either true or false, default: true.</li>
+<li><em>ext</em>: The file extension, such as pdf, png or svg, default: png</li>
+<li><em>fig</em>: Does the code chunk  produces a graphic,  default: true</li>
+<li><em>imagepath</em>:  The folder where to store the images,  default . (dot, current
+  working directory)</li>
+<li><em>label</em>: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.</li>
+<li><em>results</em>: Should the output of the Tcl code evaluation be shown, either &quot;hide&quot;,
+  &quot;asis&quot; or &quot;show&quot;, default: &quot;show&quot;.</li>
+<li><em>include</em>: Should the created figure automatically displayed, default: true.
+  If set to false it is as well recommended to give the chunk a label, which will be used to create the image filename.
+</li></ul>
 
 <h2><a name="install">Installation</a></h2>
 
@@ -826,9 +889,9 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 <li>ukaz 2.1
 </li></ul>
 
-<p>Document was processed at: 2025-03-23 09:30</p>
+<p>Document was processed at: 2025-03-29 13:35</p>
 
-<p>Document processing was done within: 2560 milliseconds.</p>
+<p>Document processing was done within: 2462 milliseconds.</p>
 
 <p>Let's destroy the Tk application at the end.</p>
 
