@@ -93,17 +93,16 @@ as example for such embedded documentation.
 ## Installation
 
 On Linux, MacOS and on Windows with installed Msys2 or Cyvwin download the latest
-[tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (190kb in size), rename
-it to _tmdoc_ and copy the file to a folder belonging to your PATH variable. 
+[tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (150-200kb in size), rename
+thh bin file to _tmdoc_ and copy the file to a folder belonging to your PATH variable. 
 Thereafter make the file executable and check that it is correctly installed like
 this:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.8.0/tmdoc-0.8.0.bin -O ~/.local/bin/tmdoc
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.9.0/tmdoc-0.9.0.bin -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.8.0
-0.7.0
+## 0.9.0
 ```
 
 To install the  package just  download  the latest Zip or Tar-Gz  archive from the release page and
