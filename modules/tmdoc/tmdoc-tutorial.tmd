@@ -1018,7 +1018,7 @@ The following code chunk options are available for Shell / Cmd code  which are
 declared with _{.cmd}_  or _{.shell}_ as chunks:
 
 
-- _cmd__: the command line to process the input in the code chunk, the  following
+- _cmd_: the command line to process the input in the code chunk, the  following
   place holders are available
     - _%i_ - the input filename
     - _%o_ - the output filename
@@ -1081,10 +1081,10 @@ your PATH variable.
 Here an example:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.8.0/tmdoc-0.8.0.bin -O ~/.local/bin/tmdoc
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.9.0/tmdoc-0.9.0.bin -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.8.0
+## 0.9.0
 ```
 
 To install the library copy the folder _modules/tmdoc_ to a folder belonging to
