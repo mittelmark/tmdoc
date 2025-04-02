@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250329.1335>
+#  Last Modified : <250402.0642>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -20,7 +20,8 @@ exec tclsh "$0" "$@"
 #                  2025-01-04 version 0.6.0 (tcllib and Tcl 9 aware version)
 #                  2025-01-18 version 0.7.0 results="asis" implemented, include and list2md
 #                  2025-03-21 version 0.8.0 support for shell chunks
-#                  2025-03-XX version 0.9.0 better support for Tcl man page format
+#                  2025-04-02 version 0.9.0 better support for Tcl man page format
+#                                           support for kroki code chunks
 #
 package require Tcl 8.6-
 package require fileutil
@@ -638,12 +639,16 @@ namespace eval ::tmdoc {
 #' - 2025-03-21 Release 0.8.0
 #'     - adding support for shell code chunks to create graphics for
 #'       tools like GraphViz dot, PlantUML or sgf-render and many others
+#' - 2025-04-02 Release 0.9.0
+#'     - adding support for kroki code chunks to create graphics for
+#'       tools like GraphViz dot, PlantUML using the [kroki.io](https://kroki.io) web service
+#'     - better support for Tcl man pages (images, code examples)
 #'
 #' ## <a name='todo'>TODO</a>
 #'
 #' - LaTeX mode if file extension is tnw intead of tmd (done)
 #' - fig.width, fig.height options by using args argument in figure (for LaTeX done)
-#' - your suggestions ...
+#' - more test cases
 #'
 #' ## <a name='license'>LICENSE AND COPYRIGHT</a>
 #'

@@ -135,15 +135,19 @@ tclmain -m tmdoc --help
     - function  _list2mdtab_ to  add tables within code chunks
 - 2025-03-21 0.8.0
     - support for shell code embedding to generate graphics
-- 2025-03-XX 0.9.0
+- 2025-04-02 0.9.0
     - better support for Tcl man pages (images, code examples)
+    - support for kroki code chunks
     
 ## TODO
 
-- kroki code chunk support
-- bibtex citation support (citer package)
+- kroki code chunk support  (done)
+- bibtex citation support (citer package) using `[@ref]` syntax
 - test cases with examples for Markdown, LaTeX, and Tcl Man page format.
-
+- R code chunk with default opening a png file and adding dev.off so automatic 
+  generation  of, as well  use of  save.image  and load for  keeping  sessions
+  between chunks
+  
 ## See Also
 
 - [mkdoc](https://github.com/mittelmark/mkdoc) - converting Markdown output of
