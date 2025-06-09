@@ -48,20 +48,49 @@ like this:
    '''
 ```
 
-Documents   can   be  then processed from the generated Markdown to   HTML   or   PDF   using   tools   like
-[mkdoc](https://github.com/mittelmark/mkdoc/),
-[pandoc](https:///www.pandoc.org),                                            
-[WeasyPrint](https://pypi.org/project/weasyprint/) or  [LibreOffice](https://libreoffice.org/). Here a pipeline to create an
-HTML, PDF or ODT document using Libreoffice.
+Since    version   0.9.0   as   well   creation   of   diagrams    using   the
+[kroki.io](https://kroki.io) webservice is as well possible here an example on
+how to process Tmd documents to html using tmdoc and mkdoc.
+
+```
+'''{.kroki dia=graphviz imagepath=kroki ext=png}
+digraph g {
+  node[height=1.2,width=1.5,style=filled,shape=box,fillcolor=beige]
+  TMD -> MD[label="tmdoc"]
+  MD -> HTML[label="mkdoc"]
+}
+'''
+```
+
+Since  version  0.10.0 the  support for  embedding  tools which  provide  text
+output. This can be used as well to embed and execute the code for programming
+languages. Here an example for a C program which is compiled and executed.
+
+```
+'``{.shell cmd="gcc %i -o hello&&./hello > %o" chunk.ext=c ext=txt}
+#include <stdio.h>
+int main() {
+    printf("Hello C World!\n");
+    return(0);
+}
+'``
+```
+
+
+Documents  generated  with  tmdoc  can be then  processed  from the  generated
+Markdown to HTML or PDF using tools like [mkdoc](https://github.com/mittelmark/mkdoc/),
+[pandoc](https:///www.pandoc.org), [WeasyPrint](https://pypi.org/project/weasyprint/) or
+[LibreOffice](https://libreoffice.org/). Here a pipeline to create an HTML, PDF or ODT 
+document using Libreoffice.
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
 
 If you like to better retain the formatting of your HTML documents in your PDF
-output,       you       should       use       the       Python        package
+output, you should use the Python package
 [WeasyPrint](https://pypi.org/project/weasyprint/).
  
-To        give       an        example        the        tmdoc        tutorial
-([source](modules/tmdoc/tmdoc-tutorial.tmd), [HTML](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
+To give an example the tmdoc tutorial ([source](modules/tmdoc/tmdoc-tutorial.tmd), 
+[HTML](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
 is processed with the following commands.
 
 ```
@@ -99,10 +128,10 @@ Thereafter make the file executable and check that it is correctly installed lik
 this:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.9.0/tmdoc-0.9.0.bin -O ~/.local/bin/tmdoc
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.10.0/tmdoc-0.10.0.bin -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.9.0
+## 0.10.0
 ```
 
 To install the  package just  download  the latest Zip or Tar-Gz  archive from the release page and
@@ -137,7 +166,10 @@ tclmain -m tmdoc --help
 - 2025-04-02 0.9.0
     - better support for Tcl man pages (images, code examples)
     - support for kroki code chunks
-    
+- 2025-06-09 0.10.0    
+    - support for embedded code of different programming languages like 
+      C, C++, Python etc and displaying text output from the code
+      
 ## TODO
 
 - kroki code chunk support  (done)

@@ -1,5 +1,5 @@
 ---
-title: tmdoc::tmdoc 0.9.0 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.10.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
 date: `tcl clock format [clock seconds] -format "%Y-%m-%d"`
 ---
@@ -43,7 +43,7 @@ Tcl packages and other types of documentation.
 ## <a name="toc">Table of Contents</a>
 
 - [Introduction](#intro)
-- [Color Codesl](#codes)
+- [Color Codes](#codes)
 - [Standard Code Blocks](#block)
 - [The puts Statement](#puts)
 - [Inline Codes](#inline)
@@ -56,7 +56,8 @@ Tcl packages and other types of documentation.
     - [canvas](#canvas)
     - [ukaz](#ukaz)
 - [Other Command Line Tools](#clp)
-- [Kroki Webservice](#kroki)
+- [Kroki Webservice Diagrams](#kroki)
+- [Programming](#programming)
 - [Summary](#summary)
 - [Installation](#install)
 - [See Also](#seealso)
@@ -456,7 +457,7 @@ gives us:
 
 ![](tmdoc-tutorial-myfig.png) ![](tmdoc-tutorial-myfig.png)
 
-## <a name="screenshort">Tk samples with screenshots</a>
+## <a name="screenshot">Tk samples with screenshots</a>
 
 We can also use screenshot applications to make screenshots of running Tk applications. So for instance on Unix systems the following code might work.
 
@@ -694,10 +695,11 @@ need to give the `%o` argument.
 
 ```
     ```{.shell cmd="plantuml -tpng %i" echo=false}
+    @startuml
     class A { }
     class B { }
-      A --> B
-    }
+      A -> B
+    @enduml
     ```
 ```
 
@@ -707,8 +709,7 @@ And here the output:
 @startuml
 class A { }
 class B { }
-  A -> B
-}
+A -> B
 @enduml
 ```
 
@@ -911,7 +912,7 @@ digraph g {
 }
 ```
 
-## <a name="kroki">Kroki Diagrams</a>
+## <a name="kroki">Kroki Webservice Diagrams</a>
 
 The  [kroki.io](https://kroki.io)  webservice allows you to embed diagram code
 for many  diagram  tools into your  websites in form of base64  encoding. 
@@ -979,19 +980,66 @@ digraph a {
     A -> B -> C -> D
 }
 ```
+## <a name="programming">Programming</a>
+
+Sometimes you would like to prepare programming tutorials where you embed your
+code with  explanations  in a Markdown  document and you then like to test the
+code and show the output of the  program.  For this  purpose as well  `.shell`
+code chunks can be used. The command line should then contain the command line
+for compilation and separated with two `&&` symbols the command to execute the
+program. Here a simple "Hello World!" script written in the Python programming
+language.
+
+```
+       ```{.shell cmd="python3 %i > %o" chunk.ext=py ext=txt}
+       print("Hello Python World!")
+       ```
+```
+
+Here the output:
+       
+```{.shell cmd="python3 %i > %o" chunk.ext=py ext=txt}
+print("Hello Python World!")
+```
+
+Here an example for a C program:
+
+```
+    ```{.shell cmd="gcc %i -o hello&&./hello > %o" chunk.ext=c ext=txt}
+    #include <stdio.h>
+    int main() {
+        printf("Hello C World!\n");
+        return(0);
+    }
+    ```
+```
+
+And here the output:
+
+```{.shell cmd="gcc %i -o hello&&./hello > %o" chunk.ext=c ext=txt}
+#include <stdio.h>
+int main() {
+    printf("Hello C World!\n");
+    return(0);
+}
+```
+
 
 ## <a name="summary">Summary</a>
 
-The `tmdoc::tmdoc` package provides a literate programming proccessor which
-extracts and evaluates Tcl or command line applicatons code or input within code chunks of a Markdown documents.
-The code chunks are evaluated by the `tmdoc` processor and replaced with their
-output. The code or input and the output can be shown or hidden due to specific
-configuration options for the code chunk. There is as well the possibility to
-display images created by Tcl within the document and inline evaluation of
-short Tcl commands within backtick where the first backtick is followed by the
-character sequence like here: <code>'tcl set x 1'</code> (replace single quotes with backticks).
+The `tmdoc::tmdoc`  package provides a literate  programming  proccessor which
+extracts and  evaluates Tcl or command line  applicatons  code or input within
+code  chunks of a Markdown  documents.  The code chunks are  evaluated  by the
+`tmdoc`  processor  and replaced  with their output. The code or input and the
+output can be shown or hidden due to  specific  configuration  options for the
+code chunk. There is as well the  possibility to display images created by Tcl
+within  the  document  and  inline  evaluation  of short Tcl  commands  within
+backtick  where the first backtick is followed by the character  sequence like
+here: <code>'tcl set x 1'</code> (replace single quotes with backticks).
 
-Code chunks start on lines with three backticks and the character sequence tcl after a curly brace. They end at the next line which has again three backticks.
+Code chunks start on lines with three backticks and the character sequence tcl
+after  a curly  brace.  They  end at the  next  line  which  has  again  three
+backticks.
 
 ```{std}
     ```{.tcl}
@@ -1023,7 +1071,12 @@ declared with _{.cmd}_  or _{.shell}_ as chunks:
     - _%i_ - the input filename
     - _%o_ - the output filename
     - _%b_ - the basename of the input filename
+-  _chunk.ext_ - file  filename  extension  for the code chunk, the default is
+txt, but for some tools like for instance a compiler an extension used usually
+for that programming language should be used
 - _echo_: Should the Input for the command line tool be shown, either true or false, default: true.
+- _ext_: file extension for the output file, either a image extension like `png`
+    or `svg` or a text extension like `txt` for showing text output, default: png 
 - _fig_: Does the code chunk  produces a graphic,  default: true
 - _label_: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
 - _results_: Should the output of the Tcl code evaluation be shown, either "hide",
@@ -1081,10 +1134,11 @@ your PATH variable.
 Here an example:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.9.0/tmdoc-0.9.0.bin -O ~/.local/bin/tmdoc
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.10.0/tmdoc-0.10.0.bin \
+    -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.9.0
+## 0.10.0
 ```
 
 To install the library copy the folder _modules/tmdoc_ to a folder belonging to
