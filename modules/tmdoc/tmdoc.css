@@ -28,6 +28,9 @@ pre:has(code.tclout) {
 pre:has(code.tclerr) {    
     background: #FFCCCC;
 }
+pre:has(code.error) {    
+    background: #FFCCCC;
+}
 
 table {    
   border-collapse: collapse;

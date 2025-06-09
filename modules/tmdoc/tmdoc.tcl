@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250607.1131>
+#  Last Modified : <250609.1854>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -280,20 +280,25 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         set bashinput $lastbashinput
                     }
                     set tout [open $copt(label).$copt(chunk.ext) w 0600]
-                    puts $tout $bashinput
+                    puts -nonewline $tout $bashinput
                     close $tout
                     set lastbashinput $bashinput
                 }
                 if {$copt(eval)} {
+                    set err ""
                     if {[regexp {&&} $cmd]} {
                         set cmds [split $cmd &]
                         foreach c $cmds {
                             if {$c ne ""} {
-                                exec {*}$c
+                                if {[catch { set cnt [exec -ignorestderr {*}$c] } errMsg]} {
+                                    append err "$::errorInfo\n\n$errMsg"
+                                }
                             }
                         }
                     } else {
-                        exec {*}$cmd
+                        if {[catch { set cnt [exec {*}$cmd] } errMsg]} {
+                            set err "$::errorInfo\n\n$errMsg"
+                        } 
                     }
                 }
                 if {$copt(include)} {
@@ -305,8 +310,22 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         } elseif {$inmode eq "latex"} {
                             puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$copt(label)}\n"
                         }
+                        if {$err ne ""} {
+                            if {$inmode eq "md"} {
+                                puts -nonewline $out "\n\n```{error}\n$err\n\n$cnt"
+                                puts $out "```"
+                            } elseif {$inmode eq "man"} {
+                                puts $out ""
+                                puts -nonewline $out "\[example_begin\]\n\n$err\n\n\[example_end\]\n"
+                                puts $out ""
+                            } else {
+                                puts $out "\\begin{lcverbatim}"
+                                puts -nonewline $out $err
+                                puts $out "\\end{lcverbatim}"
+                            }
+                        }
+                            
                     } else {
-                        puts stderr "$copt(label).$copt(ext)"
                         if [catch {open $copt(label).$copt(ext) r} infh2] {
                             set cnt "Cannot open $copt(label).$copt(ext)"
                         } else {

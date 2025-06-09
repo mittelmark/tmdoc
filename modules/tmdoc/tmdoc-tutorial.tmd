@@ -912,6 +912,17 @@ digraph g {
 }
 ```
 
+Error  handling  is as well  implented  let's  say you  have an  error in your
+GraphViz code, like a missing curly brace at the end:
+
+```{.cmd cmd="dot -Tpng -o%o %i" echo=true}
+digraph g {
+    rankdir="LR"
+    node[shape=box,style=filled,fillcolor=orange1]
+    A -> B -> C
+
+```
+
 ## <a name="kroki">Kroki Webservice Diagrams</a>
 
 The  [kroki.io](https://kroki.io)  webservice allows you to embed diagram code
