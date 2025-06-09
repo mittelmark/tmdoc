@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250402.0642>
+#  Last Modified : <250607.1131>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -22,10 +22,12 @@ exec tclsh "$0" "$@"
 #                  2025-03-21 version 0.8.0 support for shell chunks
 #                  2025-04-02 version 0.9.0 better support for Tcl man page format
 #                                           support for kroki code chunks
+#                  2025-06-07 version 0.10.0 support for textual tool output, for example
+#                                            from programming code
 #
 package require Tcl 8.6-
 package require fileutil
-package provide tmdoc::tmdoc 0.9.0
+package provide tmdoc::tmdoc 0.10.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {}
 
@@ -219,9 +221,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set krokiinput ""
     set lastbashinput ""
     array set dopt [list echo true results show fig false include true \
-        fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png]
+        fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png chunk.ext txt]
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
-        fig.width 12cm label chunk-nn ext png]
+        fig.width 12cm label chunk-nn ext png chunk.ext txt]
     array set kdopt [list echo true eval true results show fig true include true \
         fig.width 12cm label chunk-nn ext png dia ditaa \
         imagepath .]
@@ -271,27 +273,58 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         puts $out "\\end{lcverbatim}"
                     }
                 }
-                set cmd [regsub {%i} $copt(cmd) $copt(label).txt]
+                set cmd [regsub {%i} $copt(cmd) $copt(label).$copt(chunk.ext)]
                 set cmd [regsub {%o} $cmd $copt(label).$copt(ext)]
                 if {$copt(results) eq "show"} {
                     if {[regexp {LASTFILE} $bashinput]} {
                         set bashinput $lastbashinput
                     }
-                    set tout [open $copt(label).txt w 0600]
+                    set tout [open $copt(label).$copt(chunk.ext) w 0600]
                     puts $tout $bashinput
                     close $tout
                     set lastbashinput $bashinput
                 }
                 if {$copt(eval)} {
-                    exec {*}$cmd
+                    if {[regexp {&&} $cmd]} {
+                        set cmds [split $cmd &]
+                        foreach c $cmds {
+                            if {$c ne ""} {
+                                exec {*}$c
+                            }
+                        }
+                    } else {
+                        exec {*}$cmd
+                    }
                 }
                 if {$copt(include)} {
-                    if {$inmode eq "md"} {
-                        puts $out "!\[\]($copt(label).$copt(ext))"
-                    } elseif {$inmode eq "man"} {
-                        puts $out "\n\[image $copt(label)\]n"
-                    } elseif {$inmode eq "latex"} {
-                        puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$copt(label)}\n"
+                    if {$copt(ext) in [list png svg gif jpeg jpg]} {
+                        if {$inmode eq "md"} {
+                            puts $out "!\[\]($copt(label).$copt(ext))"
+                        } elseif {$inmode eq "man"} {
+                            puts $out "\n\[image $copt(label)\]n"
+                        } elseif {$inmode eq "latex"} {
+                            puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$copt(label)}\n"
+                        }
+                    } else {
+                        puts stderr "$copt(label).$copt(ext)"
+                        if [catch {open $copt(label).$copt(ext) r} infh2] {
+                            set cnt "Cannot open $copt(label).$copt(ext)"
+                        } else {
+                            set cnt [read $infh2]
+                            close $infh2
+                        }
+                        if {$inmode eq "md"} {
+                            puts -nonewline $out "```\n$cnt"
+                            puts $out "```"
+                        } elseif {$inmode eq "man"} {
+                            puts $out ""
+                            puts -nonewline $out "\[example_begin\]\n\n$cnt\n\n\[example_end\]\n"
+                            puts $out ""
+                        } else {
+                            puts $out "\\begin{lcverbatim}"
+                            puts -nonewline $out $cnt
+                            puts $out "\\end{lcverbatim}"
+                        }
                     }
                 }
                 set bashinput ""

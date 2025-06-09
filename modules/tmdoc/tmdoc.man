@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.9.0]
+[vset VERSION 0.10.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -9,11 +9,14 @@
 [require textutil 0.8]
 [description]
 
-The package [package tmdoc] provides a command to evaluate embedded Tcl and Shell code in
-code chunks within documents of Markup languages like Markdown and LaTeX and
-add the resulting output to the document for creating dynamic documents, a technique
-as well known as literate programming. Further it can use the kroki.io webservice to embed diagrams for this web service wven if diagram tools
-like GraphViz or PlantUML are not installed locally.
+The package [package tmdoc] provides a command to evaluate embedded Tcl and
+Shell code in code chunks within documents of Markup languages like Markdown
+and LaTeX and add the resulting output to the document for creating dynamic
+documents, a technique as well known as literate programming. Further it can
+use the kroki.io webservice to embed diagrams for this web service wven if
+diagram tools like GraphViz or PlantUML are not installed locally. Since version 0.10.0 as well
+code written in various programming languages can be embedded, compiled and executed making 
+[package tmdoc] an useful utility to write programming tutorials.
 
 Conversion of the created Markdown documents can be done by using Tcllib's [package Markdown] package.
 
@@ -49,6 +52,31 @@ contains the text in the code chunk and [arg %o] for the output filename,
 usually a PNG or SVG file. If the text from the previous code chunk just needs
 to be reused again in the next one, you can use the string 'LASTFILE' as a
 place holder.
+
+Programming code can be as well executed, even programming languages requiring
+an compilation step can be embedded. Here is an example for the Python
+programming language:
+
+[example {
+```{.shell cmd="python3 %i > %o" chunk.ext=py ext=txt}
+print("Hello Python World!")
+```
+}]
+
+And here an example on how to display the output of a C program:
+
+[example {
+```{.shell cmd="gcc %i -o hello&&./hello > %o" chunk.ext=c ext=txt}
+#include <stdio.h>
+int main() {
+    printf("Hello C World!\n");
+    return(0);
+}
+```
+}]
+
+Please note, that the compilation step is separated by the execution step
+using the _&&_ and operator of the Bash shell.
 
 Embedded diagram chunks using the [uri https://kroki.io kroki.io] web service are done like this:
 
