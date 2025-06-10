@@ -1,0 +1,28 @@
+---
+title: Tmdoc - examples for the Python programming language
+author: Detlef Groth
+date: 2025-06-10 09:58
+include-before: |
+    <style>
+    body { max-width: 1000px; font-family: Candara, sans-serif; }
+    pre  { font-family: Consolas; monospaced; }
+    table { min-width: 400px; border-spacing: 5px;  border-collapse: collapse; }
+    </style>
+    <center>some links on top</center>
+---
+
+`tcl include header.md`
+
+## Introduction
+
+Below are some Python coding examples.
+
+## Hello World
+
+```{.shell cmd="python3 %i > %o" chunk.ext=py ext=txt}
+import sys
+def main(argv):
+    print("Hello Python World!\n")
+
+main(sys.argv)
+```

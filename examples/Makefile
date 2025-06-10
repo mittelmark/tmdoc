@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <250610.0639>
+#  Last Modified : <250610.0941>
 #
 #  Description	 :
 #
@@ -22,7 +22,7 @@
 ##############################################################################
 
 CURRENT_MAKEFILE := $(lastword $(MAKEFILE_LIST))
-
+lang=c
 ## argument delegation
 ARGS=
 
@@ -31,9 +31,19 @@ ARGS=
 tasks:  ## list all tasks
 	@grep -Eo '^[a-z0-9]+:.+' $(CURRENT_MAKEFILE) | sed -E 's/:\s+##/\t- /g'
 
+default: ## ause lang=c|cpp|py for processing
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $(lang).tmd - | \
+	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - $(lang).html --css tmdoc.css
+	
+
 c:      ## process C examples
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave c.tmd - | \
 	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - c.html --css tmdoc.css
 cpp:    ## process C++ examples 
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave cpp.tmd - | \
 	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - cpp.html --css tmdoc.css
+
+%.html: %.tmd mini.css ## that does not work
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $< - | \
+	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - `basename $< .tmd`.html --css tmdoc.css
+	
