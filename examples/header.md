@@ -1,3 +1,3 @@
 <center>
-x[c](c.html) - [c++](cpp.html) - [emf](emf.html) - [py](py.html)
+[c](c.html) - [c++](cpp.html) - [emf](emf.html) - [py](py.html)
 </center>
