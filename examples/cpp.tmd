@@ -1,0 +1,70 @@
+---
+title: Tmdoc - examples for the C++ programming language
+author: Detlef Groth
+date: 2025-06-10 06:41
+include-before: |
+    <style>
+    body { max-width: 1000px; font-family: Candara, sans-serif; }
+    pre  { font-family: Consolas; monospaced; }
+    table { min-width: 400px; border-spacing: 5px;  border-collapse: collapse; }
+    </style>
+    <center>some links on top</center>
+---
+
+## Introduction
+
+Below are some C++ coding examples.
+
+## Hello World
+
+```{.shell cmd="g++ %i -o cpp-hello&&./cpp-hello > %o" chunk.ext=cpp ext=txt}
+#include <iostream>
+int main() {
+    std::cout << "Hello C World!" << std::endl;
+    return(0);
+}
+```
+
+## Image Creation
+
+Here   an    example    which    does    create    an    image    using    the
+[Cimg](https://https://cimg.eu) library.
+
+```
+'```{.shell  cmd="g++ -O2 -lX11 -lpthread -lm %i -o cimg&&./cimg > %o" chunk.ext=cpp ext=png include=false}
+... code ..
+'```
+```
+
+Output:
+
+```{.shell  cmd="g++ -O2 -lX11 -lpthread -lm %i -o cimg&&./cimg > %o" chunk.ext=cpp ext=png include=false}
+#include "CImg.h"
+using namespace cimg_library;
+
+int main() {
+    // Create a 300x200 RGB image, initialized to black
+    CImg<unsigned char> img(300, 200, 1, 3, 0);
+
+    // Define colors
+    const unsigned char red[]   = {255, 0, 0};
+    const unsigned char white[] = {255, 255, 255};
+
+    // Draw a filled red rectangle (box) at (50,50) with size 200x100
+    img.draw_rectangle(50, 50, 249, 149, red);
+
+    // Draw "Hello World" in white, at position (90, 90)
+    img.draw_text(90, 90, "Hello World", white);
+
+    // Display the image in a window
+    //img.display("Hello World Example");
+
+    // Optionally, save the image to a file
+    img.save("cpp-hello-world.png");
+
+    return 0;
+}
+```
+
+![](cpp-hello-world.png)
+

@@ -1,0 +1,52 @@
+
+body {
+    padding: 30px;
+    max-width: 1200px;
+    font: Alegreya, Georgia, serif;
+}
+
+h1.title, p.author, p.date, h2.author, h2.date {
+    text-align: center;
+}
+a { text-decoration: none ; }
+pre {
+    padding: 10px ;
+    border-top: 2px solid #CCCCCC;
+    border-bottom: 2px solid #CCCCCC; 
+    font: Monaco, monospace;
+}
+pre:has(code) {
+    background: #efefef;
+}
+pre:has(code.tclcode) {
+    background: cornsilk;   
+}
+
+pre:has(code.tclout) {    
+    background: #CCEEFF;
+}
+pre:has(code.tclerr) {    
+    background: #FFCCCC;
+}
+pre:has(code.error) {    
+    background: #FFCCCC;
+}
+
+table {    
+  border-collapse: collapse;
+  border-bottom: 2px solid;
+  border-spacing: 5px;
+  min-width: 300px;
+}
+table thead tr th { 
+  background-color: #fde9d9;
+  text-align: left; 
+  padding: 5px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+}
+table tr td { 
+  background-color: #f6f6f6;
+  text-align: left; 
+  padding: 5px;
+}
