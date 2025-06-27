@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250609.1854>
+#  Last Modified : <250625.1444>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -261,7 +261,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             } elseif {$mode eq "shell" && [regexp {```} $line]} {
                 if {$copt(echo)} {
                     if {$inmode eq "md"} {
-                        puts -nonewline $out "```\n${bashinput}"
+                        puts -nonewline $out "```{code}\n${bashinput}"
                         puts $out "```"
                     } elseif {$inmode eq "man"} {
                         puts $out ""
@@ -333,7 +333,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                             close $infh2
                         }
                         if {$inmode eq "md"} {
-                            puts -nonewline $out "```\n$cnt"
+                            puts -nonewline $out "```{out}\n$cnt"
                             puts $out "```"
                         } elseif {$inmode eq "man"} {
                             puts $out ""
