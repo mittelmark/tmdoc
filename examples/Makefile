@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <250914.1619>
+#  Last Modified : <250914.1636>
 #
 #  Description	 :
 #
@@ -36,20 +36,13 @@ default: ## ause lang=c|cpp|py for processing
 	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - $(lang).html --css tmdoc.css
 	
 
-c:      ## process C examples
-	TCLLIBPATH=~/workspace/tmdoc/modules ../apps/tmdoc --mode weave c.tmd c.md
-	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc c.md c.html --css tmdoc.css
-cpp:    ## process C++ examples 
-	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave cpp.tmd cpp.md
-	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc - cpp.html --css tmdoc.css
-py:    ## process Python examples 
-	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $@.tmd  $@.md
-	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc $@.md $@.html --css tmdoc.css
-emf:
-	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $@.tmd  $@.md
+c cpp py emf:      ## process C examples
+	TCLLIBPATH=~/workspace/tmdoc/modules ../apps/tmdoc --mode weave $@.tmd $@.md
 	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc $@.md $@.html --css tmdoc.css
 
+
+## run with make c.html, make cpp.html, make emf, make py
 %.html: %.tmd mini.css ## that does not work
-	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $< - | \
-	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - `basename $< .tmd`.html --css tmdoc.css
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $<.tmd $<.md
+	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc $<.md $<.html --css tmdoc.css
 	
