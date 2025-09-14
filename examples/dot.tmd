@@ -1,7 +1,7 @@
 ---
 title: Tmdoc - examples for the Graphviz programming language
 author: Detlef Groth
-date: 2025-09-14 17:42
+date: 2025-09-14 17:49
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }
@@ -27,7 +27,7 @@ digraph G {
 }
 ```
 
-__Figure: `tcl nfig`__ Simple GraphViz dot example.
+__Figure: `tcl nfig dot1`__ Simple GraphViz dot example.
 
 ```{.shell label=dot2 cmd="neato -Tpng %i -o%o" chunk.ext=dot ext=png}
 graph G {
@@ -42,4 +42,8 @@ graph G {
 }
 ```
 
-__Figure: `tcl nfig`__ Simple GraphViz neato example.
+__Figure: `tcl nfig dot2`__ Simple GraphViz neato example.
+
+In Figure `tcl rfig dot1` we see the use of GraphViz _dot_, in Figure 
+`tcl rfig dot2` we see the use of GraphViz _neato_.
+
