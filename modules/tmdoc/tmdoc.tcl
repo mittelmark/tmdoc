@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250914.1534>
+#  Last Modified : <250914.1741>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -42,6 +42,7 @@ proc ::tmdoc::interpReset {} {
     interp eval intp " set pres {} ;  set auto_path {$::auto_path}"
     interp eval intp {rename puts puts.orig}
     interp eval intp {
+        set nfig 0
         proc puts {args} {
             # TODO: catch if channel stdout is given
             set l [llength $args]
@@ -122,6 +123,11 @@ proc ::tmdoc::interpReset {} {
                 return $res
             }
         }
+        proc nfig {} {
+            global nfig
+            incr nfig 1
+            return $nfig
+        }
     }
     interp eval intp {
         proc gputs {} {
@@ -141,6 +147,7 @@ proc ::tmdoc::interpReset {} {
     interp eval try {proc puts {args} {}}
     interp eval try {proc include {filename} {}}
     interp eval try {proc list2mdtab {header data} {}}
+    interp eval try {proc nfig {} {}}    
 }
 
 proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {
@@ -702,7 +709,7 @@ namespace eval ::tmdoc {
 #'     - more examples added, 
 #' - 2025-09-1X Release 0.11.0
 #'     - support for %b, the basename of the input file
-#'     - C examples updated
+#'     - C and C++ examples updated
 #'
 #' ## <a name='todo'>TODO</a>
 #'
