@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <250914.1445>
+#  Last Modified : <250914.1558>
 #
 #  Description	 :
 #
@@ -40,8 +40,8 @@ c:      ## process C examples
 	TCLLIBPATH=~/workspace/tmdoc/modules ../apps/tmdoc --mode weave c.tmd c.md
 	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc c.md c.html --css tmdoc.css
 cpp:    ## process C++ examples 
-	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave cpp.tmd - | \
-	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - cpp.html --css tmdoc.css
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave cpp.tmd cpp.md
+	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc - cpp.html --css tmdoc.css
 
 %.html: %.tmd mini.css ## that does not work
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $< - | \
