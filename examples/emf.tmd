@@ -1,7 +1,7 @@
 ---
 title: Tmdoc - examples for the MicroEmacs programming language
 author: Detlef Groth
-date: 2025-06-10 11:08
+date: 2025-09-14 16:18
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }
@@ -22,7 +22,7 @@ Below are some [MicroEmacs](https://github.com/bjasspa/jasspa) macros coding exa
 Files containing ME macros can be run like this: `mesc -p @./filename.emf`
 
 
-```{.shell cmd="mesc -p @./%i > %o" chunk.ext=emf ext=txt}
+```{.shell cmd="mecb -p @./%i > %o" chunk.ext=emf ext=txt}
 0 define-macro start-up
   set-variable #l0 1
   !while &less #l0 10
