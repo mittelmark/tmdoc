@@ -1,7 +1,7 @@
 ---
 title: Tmdoc - examples for the C programming language
 author: Detlef Groth
-date: 2025-06-10 09:41
+date: 2025-09-14 15:26
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }
@@ -32,7 +32,7 @@ int main() {
 Here   an    example    which    does    create    an    image    using    the
 [Gd](https://libgd.github.io) library.
 
-```{.shell  cmd="gcc -lgd -lpng -lz -ljpeg -lfreetype -lm %i -o gdimg&&./gdimg > %o" chunk.ext=c ext=png include=false}
+```{.shell label=gdtest cmd="gcc -L/usr/lib/x86_64-linux-gnu %i -o %b -lgd -lpng -lz -ljpeg -lfreetype -lm &&./%b %o" chunk.ext=c ext=png include=false}
 /* Bring in gd library functions */
 #include <gd.h>
 
@@ -40,7 +40,7 @@ Here   an    example    which    does    create    an    image    using    the
 #include <stdio.h>
 
 
-int main() {
+int main(int argc, char **argv) {
   /* Declare the image */
   gdImagePtr im;
   /* Declare output files */
@@ -66,7 +66,7 @@ int main() {
 
   /* Open a file for writing. "wb" means "write binary", important
     under MSDOS, harmless under Unix. */
-  pngout = fopen("test.png", "wb");
+  pngout = fopen(argv[1], "wb");
 
   /* Output the image to the disk file in PNG format. */
   gdImagePng(im, pngout);
@@ -79,7 +79,7 @@ int main() {
 }
 ```
 
-![](test.png)
+![](gdtest.png)
 
 And here an example using the small PlutoVG vector graphics library which can be installed on Fedora like this:
 
@@ -95,12 +95,30 @@ Here example code:
 '``
 ```
 
+On debain the library seems not to be available. Here you can then install the library like this:
+
+```
+git clone https://github.com/sammycage/plutovg.git
+cd plutovg
+cmake -B build .
+cmake --build build
+cmake --install build
+```
+
+You the need to use the following chunk parameters to use the package:
+
+```
+label=smiley cmd="gcc -I/usr/local/include/plutovg %i /usr/local/lib/libplutovg.a \
+    -o %b -lm &&./%b %o" chunk.ext=c ext=png include=false
+```    
+
+
 And here the output:
 
-```{.shell  cmd="gcc -lplutovg %i -o smiley&&./smiley" chunk.ext=c ext=png include=false}
+```{.shell label=smiley cmd="gcc -I/usr/local/include/plutovg %i /usr/local/lib/libplutovg.a -o %b -lm &&./%b %o" chunk.ext=c ext=png include=false}
 #include <plutovg/plutovg.h>
 
-int main(void)
+int main(int argc, char **argv)
 {
     const int width = 150;
     const int height = 150;
@@ -141,7 +159,7 @@ int main(void)
     plutovg_canvas_stroke(canvas);
     plutovg_canvas_restore(canvas);
 
-    plutovg_surface_write_to_png(surface, "smiley.png");
+    plutovg_surface_write_to_png(surface, argv[1]);
     plutovg_canvas_destroy(canvas);
     plutovg_surface_destroy(surface);
     return 0;

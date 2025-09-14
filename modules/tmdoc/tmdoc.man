@@ -49,7 +49,9 @@ digraph g {
 
 The arguments [arg %i] are used as placeholder for the input file name, which
 contains the text in the code chunk and [arg %o] for the output filename,
-usually a PNG or SVG file. If the text from the previous code chunk just needs
+usually a PNG or SVG file. Further [arg %b] can be used as placeholder for
+the basename of the inputfile, so the input filename without the file extension.
+If the text from the previous code chunk just needs
 to be reused again in the next one, you can use the string 'LASTFILE' as a
 place holder.
 

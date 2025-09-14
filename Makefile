@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : MicroEmacs User
 #  Created       : 2025-01-04 18:30:01
-#  Last Modified : <250118.1737>
+#  Last Modified : <250914.1453>
 #
 #  Description	
 #
@@ -32,6 +32,7 @@
 
 TCL9=~/.local/opt/bin/tclsh9.0
 TCL=tclsh
+TCLLIB=https://raw.githubusercontent.com/tcltk/tcllib/refs/heads/master/modules
 default:
 	echo "Usage: make app|docu|test"
 app:
@@ -59,3 +60,45 @@ test:
 
 test9:
 	TCLLIBPATH=modules $(TCL9) modules/tmdoc/tmdoc.test	
+
+fileutil: lib
+	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
+	for file in $@.tcl pkgIndex.tcl traverse.tcl multi.tcl multiop.tcl decode.tcl paths.tcl ; do \
+		if [ ! -f modules/$@/$$file ]; then \
+			wget -q $(TCLLIB)/$@/$$file -O modules/$@/$$file; \
+		fi \
+	done
+cmdline:
+	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
+	for file in $@.tcl pkgIndex.tcl ; do \
+		if [ ! -f modules/$@/$$file ]; then \
+			wget -q $(TCLLIB)/$@/$$file -O modules/$@/$$file; \
+		fi \
+	done
+yaml:
+	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
+	for file in $@.tcl huddle.tcl huddle_types.tcl json2huddle.tcl pkgIndex.tcl ; do \
+		if [ ! -f modules/$@/$$file ]; then \
+			wget -q $(TCLLIB)/$@/$$file -O modules/$@/$$file; \
+		fi \
+	done
+			
+markdown:
+	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
+	for file in $@.tcl pkgIndex.tcl ; do \
+		if [ ! -f modules/$@/$$file ]; then \
+			wget -q $(TCLLIB)/$@/$$file -O modules/$@/$$file; \
+		fi \
+	done
+
+textutil:
+	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
+	for file in $@.tcl pkgIndex.tcl adjust.tcl expander.tcl patch.tcl repeat.tcl split.tcl string.tcl tabify.tcl trim.tcl wcswidth.tcl; do \
+		if [ ! -f modules/$@/$$file ]; then \
+			wget -q $(TCLLIB)/$@/$$file -O modules/$@/$$file; \
+		fi \
+	done
+			
+lib:
+	@[[ -d lib ]] || mkdir -p lib
+

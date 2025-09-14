@@ -1,6 +1,6 @@
 default:
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd - | \
-	TCLLIBPATH=~/workspace/mkdoc tclsh ../../../mkdoc/apps/mkdoc - tmdoc-tutorial.html --css tmdoc.css
+	TCLLIBPATH="~/workspace/mkdoc .." tclsh ../../../mkdoc/apps/mkdoc - tmdoc-tutorial.html --css tmdoc.css
 	weasyprint -s small.css tmdoc-tutorial.html tmdoc-tutorial.pdf
 	dtplite -o tmdoc.html html tmdoc.man
 	weasyprint -s small.css tmdoc.html tmdoc.pdf

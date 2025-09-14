@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250625.1444>
+#  Last Modified : <250914.1534>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -24,10 +24,10 @@ exec tclsh "$0" "$@"
 #                                           support for kroki code chunks
 #                  2025-06-07 version 0.10.0 support for textual tool output, for example
 #                                            from programming code
-#
+#                  2025-09-14 version 0.11.0 support for %b basename of input file
 package require Tcl 8.6-
 package require fileutil
-package provide tmdoc::tmdoc 0.10.0
+package provide tmdoc::tmdoc 0.11.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {}
 
@@ -273,8 +273,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         puts $out "\\end{lcverbatim}"
                     }
                 }
-                set cmd [regsub {%i} $copt(cmd) $copt(label).$copt(chunk.ext)]
-                set cmd [regsub {%o} $cmd $copt(label).$copt(ext)]
+                set cmd [regsub -all {%i} $copt(cmd) $copt(label).$copt(chunk.ext)]
+                set cmd [regsub -all {%b} $cmd $copt(label)]                
+                set cmd [regsub -all {%o} $cmd $copt(label).$copt(ext)]
+                puts stderr $cmd
                 if {$copt(results) eq "show"} {
                     if {[regexp {LASTFILE} $bashinput]} {
                         set bashinput $lastbashinput
@@ -695,6 +697,12 @@ namespace eval ::tmdoc {
 #'     - adding support for kroki code chunks to create graphics for
 #'       tools like GraphViz dot, PlantUML using the [kroki.io](https://kroki.io) web service
 #'     - better support for Tcl man pages (images, code examples)
+#' - 2025-07-07 Release 0.10.0
+#'     - support for text output for shell commands
+#'     - more examples added, 
+#' - 2025-09-1X Release 0.11.0
+#'     - support for %b, the basename of the input file
+#'     - C examples updated
 #'
 #' ## <a name='todo'>TODO</a>
 #'
