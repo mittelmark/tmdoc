@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250914.1748>
+#  Last Modified : <250916.1052>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -43,7 +43,9 @@ proc ::tmdoc::interpReset {} {
     interp eval intp {rename puts puts.orig}
     interp eval intp {
         set nfig 0
+        set ntab 0
         array set figs [list]
+        array set tabs [list]
         proc puts {args} {
             # TODO: catch if channel stdout is given
             set l [llength $args]
@@ -139,6 +141,21 @@ proc ::tmdoc::interpReset {} {
                 return NN
             }
         }
+        proc ntab {{label ""}} {
+            global ntab
+            incr ntab 1
+            if {$label ne ""} {
+                set ::tabs($label) $ntab
+            }
+            return $nfig
+        }
+        proc rtab {label} {
+            if {[info exists ::tabs($label)]} {
+                return $::tabs($label)
+            } else {
+                return NN
+            }
+        }
     }
     interp eval intp {
         proc gputs {} {
@@ -160,6 +177,8 @@ proc ::tmdoc::interpReset {} {
     interp eval try {proc list2mdtab {header data} {}}
     interp eval try {proc nfig {{label ""}} {}}    
     interp eval try {proc rfig {label} {}}        
+    interp eval try {proc ntab {{label ""}} {}}    
+    interp eval try {proc rtab {label} {}}        
 }
 
 proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {
