@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : MicroEmacs User
 #  Created       : 2025-01-04 18:30:01
-#  Last Modified : <250914.1453>
+#  Last Modified : <250916.1025>
 #
 #  Description	
 #
@@ -33,6 +33,7 @@
 TCL9=~/.local/opt/bin/tclsh9.0
 TCL=tclsh
 TCLLIB=https://raw.githubusercontent.com/tcltk/tcllib/refs/heads/master/modules
+CITER=https://raw.githubusercontent.com/mittelmark/citer/refs/heads/main
 default:
 	echo "Usage: make app|docu|test"
 app:
@@ -68,7 +69,8 @@ fileutil: lib
 			wget -q $(TCLLIB)/$@/$$file -O modules/$@/$$file; \
 		fi \
 	done
-cmdline:
+## just package index file and module.tcl file	
+cmdline bibtex markdown:
 	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
 	for file in $@.tcl pkgIndex.tcl ; do \
 		if [ ! -f modules/$@/$$file ]; then \
@@ -83,19 +85,19 @@ yaml:
 		fi \
 	done
 			
-markdown:
-	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
-	for file in $@.tcl pkgIndex.tcl ; do \
-		if [ ! -f modules/$@/$$file ]; then \
-			wget -q $(TCLLIB)/$@/$$file -O modules/$@/$$file; \
-		fi \
-	done
-
 textutil:
 	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
 	for file in $@.tcl pkgIndex.tcl adjust.tcl expander.tcl patch.tcl repeat.tcl split.tcl string.tcl tabify.tcl trim.tcl wcswidth.tcl; do \
 		if [ ! -f modules/$@/$$file ]; then \
 			wget -q $(TCLLIB)/$@/$$file -O modules/$@/$$file; \
+		fi \
+	done
+
+citer:
+	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
+	for file in $@.tcl pkgIndex.tcl citer_main.tcl citer_api.tcl; do \
+		if [ ! -f modules/$@/$$file ]; then \
+			wget -q $(CITER)/$@/$$file -O modules/$@/$$file; \
 		fi \
 	done
 			

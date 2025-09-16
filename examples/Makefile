@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <250914.1725>
+#  Last Modified : <250916.1031>
 #
 #  Description	 :
 #
@@ -36,7 +36,7 @@ default: ## ause lang=c|cpp|py for processing
 	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - $(lang).html --css tmdoc.css
 	
 
-c cpp dot emf py:      ## process C examples
+c cpp dot emf py literature:      ## process C examples
 	TCLLIBPATH=~/workspace/tmdoc/modules ../apps/tmdoc --mode weave $@.tmd $@.md
 	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc $@.md $@.html --css tmdoc.css
 

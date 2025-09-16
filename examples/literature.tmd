@@ -1,0 +1,29 @@
+---
+title: "Example for Tmd files using the citer package"
+author: Detlef Groth, University of Potsdam, Germany
+date: 2025-09-16 10:38
+---
+
+## Introduction
+
+This text will provide an introduction to the use of references with Tcl.
+
+```{.tcl results=asis}
+package require citer
+citer::refstyle \
+    -article "{author} ({year}). {title}. _{journal}_ {volume}: {pages}" \
+    -incollection "{author} ({year}). {title}. In: _{booktitle}_, {publisher}. {volume}: {pages}." \
+    -default "{author} ({year}). {title}. {publisher}." 
+citer::bibliography literature.bib
+puts [citer::getReference literature.bib Groth2013]
+```
+
+Now  let's  use an a  inline  reference  for  this  paper.  I cite  
+`tcl  citer::cite Groth2013` which is an existing reference. And I cite 
+`tcl citer::cite Dummy1999` and non existing reference.
+
+Let's now embed the citation list:
+
+__References:__
+
+`tcl citer::bibliography`
