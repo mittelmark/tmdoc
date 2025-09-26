@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250916.1052>
+#  Last Modified : <250926.2013>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -200,7 +200,7 @@ proc ::tmdoc::url2crc32file {url {folder .} {ext png}} {
         if {![file isdirectory $folder]} {
             file mkdir $folder
         }
-        exec {*}[list wget $url -O $filename]
+        catch { exec {*}[list wget -q $url -O $filename] }
         return $filename
     }
 }
@@ -257,14 +257,20 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set tclcode ""
     set bashinput ""
     set krokiinput ""
+    set mtexinput ""
     set lastbashinput ""
     array set dopt [list echo true results show fig false include true \
         fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png chunk.ext txt]
+    ## bash / shell
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
         fig.width 12cm label chunk-nn ext png chunk.ext txt]
+    ## kroki
     array set kdopt [list echo true eval true results show fig true include true \
-        fig.width 12cm label chunk-nn ext png dia ditaa \
-        imagepath .]
+                     fig.width 12cm label chunk-nn ext png dia ditaa \
+                     imagepath .]
+    ## mtex
+    array set tdopt [list echo true eval true results show fig true include true \
+        label chunk-nn imagepath mtexfig]
     interpReset
     if [catch {open $filename r} infh] {
         return -code error "Cannot open $filename: $infh"
@@ -294,6 +300,13 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 incr chunki
                 array set copt [array get kdopt]
                 # TODO: spaces in fig.cap etc
+                ::tmdoc::GetOpts 
+                continue
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(mtex)(\s*.*)\}} $line -> tp opts])} {
+                puts stderr hi
+                set mode mtex
+                incr chunki
+                array set copt [array get tdopt]
                 ::tmdoc::GetOpts 
                 continue
             } elseif {$mode eq "shell" && [regexp {```} $line]} {
@@ -416,10 +429,40 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 set krokiinput ""
                 set mode text
+            } elseif {$mode eq "mtex" && [regexp {```} $line]} {
+                if {$copt(echo)} {
+                    if {$inmode eq "md"} {
+                        puts -nonewline $out "```\n${mtexinput}"
+                        puts $out "```"
+                    } elseif {$inmode eq "man"} {
+                        puts $out ""
+                        puts -nonewline $out "\[example_begin\]\n\n$mtexinput\n\n\[example_end\]\n"
+                        puts $out ""
+                    } else {
+                        puts $out "\\begin{lcverbatim}"
+                        puts -nonewline $out $mtexinput
+                        puts $out "\\end{lcverbatim}"
+                    }
+                }
+                set url https://math.vercel.app?from=[ue ${mtexinput}].svg
+                set filename [url2crc32file $url $copt(imagepath) svg]
+                if {$copt(include)} {
+                    if {$inmode eq "md"} {
+                        puts $out "!\[\]($filename)"
+                    } elseif {$inmode eq "man"} {
+                        puts $out "\n\[image [file rootname $filename]\]n"
+                    } elseif {$inmode eq "latex"} {
+                        puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{[file rootname $filename]}\n"
+                    }
+                }
+                set mtexinput ""
+                set mode text
             } elseif {$mode eq "shell"} {
                append bashinput "$line\n"
             } elseif {$mode eq "kroki"} {
                append krokiinput "$line\n"
+            } elseif {$mode eq "mtex"} {
+               append mtexinput "$line\n"
             } elseif {$mode eq "code" && [regexp {```} $line]} {
                 if {$copt(echo)} {
                     if {$inmode eq "md"} {
@@ -614,6 +657,22 @@ proc ::tmdoc::tmeval {text} {
     return $ret
 }
 
+proc tmdoc::ue_init {} {
+   lappend d + { }
+   for {set i 0} {$i < 256} {incr i} {
+      set c [format %c $i]
+      set x %[format %02x $i]
+      if {![string match {[a-zA-Z0-9]} $c]} {
+         lappend e $c $x
+         lappend d $x $c
+      }
+   }
+   set ::ue_map $e
+   set ::ud_map $d
+}
+tmdoc::ue_init
+proc tmdoc::ue {s} { string map $::ue_map $s }
+proc tmdoc::ud {s} { string map $::ud_map $s }
 proc ::tmdoc::main {argv} {
     global argv0
     set APP $argv0

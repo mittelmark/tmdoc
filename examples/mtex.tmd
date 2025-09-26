@@ -1,0 +1,47 @@
+---
+title: Long Title
+author: Detlef Groth
+date: 2025-09-26 20:14
+abstract: >
+    Some abstract ...
+    on several lines ...
+include-before: |
+    <style>
+    body { max-width: 1000px; font-family: Candara, sans-serif; }
+    pre  { font-family: Consolas; monospaced; }
+    table { min-width: 400px; border-spacing: 5px;  border-collapse: collapse; }
+    </style>
+    <center>some links on top</center>
+---
+
+## Introduction
+
+Here an example for an equation:
+
+```{.mtex}
+E = mc^2  \tag{1}
+```
+
+Here an example for a matrix:
+
+```{.mtex}
+\begin{bmatrix}
+1 & 2 & 3 \\      \tag{2}
+4 & 5 & 6 
+\end{bmatrix}
+```
+
+## Chunk options
+
+Let's now try to hide the LaTeX code with the code chunk option echo=false:
+
+
+```{.mtex echo=false}
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\  \tag{3}
+5 & 6 & 7
+\end{bmatrix}
+```
+
+
