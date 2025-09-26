@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250926.2013>
+#  Last Modified : <250926.2029>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -25,6 +25,8 @@ exec tclsh "$0" "$@"
 #                  2025-06-07 version 0.10.0 support for textual tool output, for example
 #                                            from programming code
 #                  2025-09-14 version 0.11.0 support for %b basename of input file
+#                  2025-09-XX version 0.12.0 support for LaTeX quations using https://math.vercel.app
+#                                            suport for embedding Youtube videos
 package require Tcl 8.6-
 package require fileutil
 package provide tmdoc::tmdoc 0.11.0
@@ -126,6 +128,17 @@ proc ::tmdoc::interpReset {} {
                 return $res
             }
         }
+        proc youtube {video args} {
+            set html {<div class="video">}
+            append html "<iframe src=\"https://www.youtube.com/embed/$video?rel=0\""
+            foreach arg $args {
+                append html " $arg"
+            }
+            append html allowfullscreen></iframe>
+            append html </div>
+            return $html
+        }
+
         proc nfig {{label ""}} {
             global nfig
             incr nfig 1
@@ -179,6 +192,7 @@ proc ::tmdoc::interpReset {} {
     interp eval try {proc rfig {label} {}}        
     interp eval try {proc ntab {{label ""}} {}}    
     interp eval try {proc rtab {label} {}}        
+    interp eval try {proc youtube {video args} {}}            
 }
 
 proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {

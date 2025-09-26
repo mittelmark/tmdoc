@@ -1,10 +1,7 @@
 ---
-title: Long Title
+title: Example for Tex Equations and Youtube video embedding.
 author: Detlef Groth
-date: 2025-09-26 20:14
-abstract: >
-    Some abstract ...
-    on several lines ...
+date: 2025-09-26 20:54
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }
@@ -44,4 +41,17 @@ Let's now try to hide the LaTeX code with the code chunk option echo=false:
 \end{bmatrix}
 ```
 
+## Videos
+
+Youtube videos can be embedded like this:
+
+Video about AsciiDoc:
+
+`tcl youtube EhXpJo3YbKg width=640 height=480`
+
+Video about Quarkdown:
+
+`tcl youtube iHVkJQkZwDM width=640 height=480`
+
+`tcl youtube ZRuWJ0hIU9I width=640 height=480`
 
