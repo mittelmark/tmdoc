@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.10.0]
+[vset VERSION 0.12.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -20,6 +20,8 @@ code written in various programming languages can be embedded, compiled and exec
 
 Conversion of the created Markdown documents can be done by using Tcllib's [package Markdown] package.
 
+[section "Tcl code Embedding"]
+
 The embedded Tcl code starts with three backticks and a language marker like this:
 
 [example {
@@ -35,6 +37,8 @@ single backticks like this:
 This document was generated at \\
     `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"` MET.
 }]
+
+[section "Shell Code Embedding"]
 
 The embedded Shell code chunks start as well with three backticks then the [arg .shell] indicator and 
 a [arg cmd] code chunk argument which explains how to process the input in the code chunk like this:
@@ -54,6 +58,8 @@ the basename of the inputfile, so the input filename without the file extension.
 If the text from the previous code chunk just needs
 to be reused again in the next one, you can use the string 'LASTFILE' as a
 place holder.
+
+[section "Embedding Programming Languages"]
 
 Programming code can be as well executed, even programming languages requiring
 an compilation step can be embedded. Here is an example for the Python
@@ -80,6 +86,8 @@ int main() {
 Please note, that the compilation step is separated by the execution step
 using the _&&_ and operator of the Bash shell.
 
+[section "Embedding Diagram Code Using Kroki Webservice"]
+
 Embedded diagram chunks using the [uri https://kroki.io kroki.io] web service are done like this:
 
 [example {
@@ -92,6 +100,19 @@ digraph g {
 
 Other file extensions are svg and pdf. Other diagram tools are plantuml, ditaa
 and many others. For details look at the kroki.io website.
+
+[section "LaTeX Equations"]
+
+Since version 0.12.0 there is as well support for embedding LaTeX equations as SVG images using the 
+[uri https://math.vercel.app] webservice. The equations are hashed as CRC32 hashes and then downloaded 
+if [cmd wget] is installed to avoid refetching the images again and again. if [cmd wget] is not
+available just the link to math.vercel.app image is embedded. Here an example:
+
+[example {
+```{.mtex echo=false}
+E = mc^2
+```
+}]
 
 
 [section Functions]
@@ -147,22 +168,6 @@ set x
 
 [list_end]
 
-[section Examples]
-
-[para] Here is such an example which will be executed by the Tcl interpreter
-
-[example {
-
-The code chunk below will be executed:
-
-```{.tcl}
-set x 1
-expr {$x*2}
-```
-
-Some more Markup text ...
-
-}]
 
 [section "Code Chunk Options"]
 
@@ -350,6 +355,22 @@ digraph g {
 ```
 }]
 
+[section Examples]
+
+[para] Here is such an example which will be executed by the Tcl interpreter
+
+[example {
+
+The code chunk below will be executed:
+
+```{.tcl}
+set x 1
+expr {$x*2}
+```
+
+Some more Markup text ...
+
+}]
 
 [section Filetypes] 
 

@@ -8,7 +8,7 @@
 #  Author        : $Author$
 #  Created By    : MicroEmacs User
 #  Created       : 2025-01-04 18:30:01
-#  Last Modified : <250916.1025>
+#  Last Modified : <250927.0614>
 #
 #  Description	
 #
@@ -54,8 +54,8 @@ app:
 	tclsh app-build/tmdoc.tapp --help
 	cp app-build/tmdoc.tapp bin/tmdoc-`tclsh app-build/tmdoc.tapp --version`.bin	
 docu:
-	dtplite -o modules/tmdoc/tmdoc.html html modules/tmdoc/tmdoc.man 
-	dtplite -o apps/tmdoc.html html apps/tmdoc.man 
+	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o modules/tmdoc/tmdoc.html html modules/tmdoc/tmdoc.man 
+	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o apps/tmdoc.html html apps/tmdoc.man 
 test:
 	TCLLIBPATH=modules tclsh modules/tmdoc/tmdoc.test	
 

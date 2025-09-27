@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250926.2029>
+#  Last Modified : <250927.0647>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -29,7 +29,7 @@ exec tclsh "$0" "$@"
 #                                            suport for embedding Youtube videos
 package require Tcl 8.6-
 package require fileutil
-package provide tmdoc::tmdoc 0.11.0
+package provide tmdoc::tmdoc 0.12.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {}
 
@@ -317,7 +317,6 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 ::tmdoc::GetOpts 
                 continue
             } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(mtex)(\s*.*)\}} $line -> tp opts])} {
-                puts stderr hi
                 set mode mtex
                 incr chunki
                 array set copt [array get tdopt]
@@ -811,9 +810,13 @@ namespace eval ::tmdoc {
 #' - 2025-07-07 Release 0.10.0
 #'     - support for text output for shell commands
 #'     - more examples added, 
-#' - 2025-09-1X Release 0.11.0
+#' - 2025-09-16 Release 0.11.0
 #'     - support for %b, the basename of the input file
 #'     - C and C++ examples updated
+#' - 2025-09-XX Release 0.12.0
+#'     - support for embedding LaTeX equations using [math.vercel.app](https://math.vercel.app) 
+#'       webservice
+#'     - support for embedding Youtube videos
 #'
 #' ## <a name='todo'>TODO</a>
 #'
@@ -823,7 +826,7 @@ namespace eval ::tmdoc {
 #'
 #' ## <a name='license'>LICENSE AND COPYRIGHT</a>
 #'
-#' Tcl Markdown processor tmdoc::tmdoc, version 0.8.0
+#' Tcl Markdown processor tmdoc::tmdoc, version 0.12.0
 #'
 #' Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany E-mail: <dgroth(at)uni(minus)potsdam(dot)de>
 #'

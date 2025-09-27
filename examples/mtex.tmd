@@ -1,7 +1,7 @@
 ---
 title: Example for Tex Equations and Youtube video embedding.
 author: Detlef Groth
-date: 2025-09-26 20:54
+date: 2025-09-27 06:46
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }
@@ -10,6 +10,8 @@ include-before: |
     </style>
     <center>some links on top</center>
 ---
+
+`tcl include header.md`
 
 ## Introduction
 
