@@ -1,7 +1,7 @@
 ---
 title: Long Title
 author: Detlef Groth
-date: 2025-09-28 15:48
+date: 2025-09-28 16:08
 abstract: >
     Some abstract ...
     on several lines ...
@@ -19,11 +19,63 @@ include-before: |
 
 ## Introduction
 
-Now let's write a sheet:
+Now let's  write a shee, here  there  code  (replace  the single  quote at the
+beginning of the code blocks with a backtick:
+
+```
+'``{.shell cmd="abcm2ps -g %i -O fff&&cp fff001.svg %b.svg" chunk.ext=abc ext=svg}
+X:1
+T:The Legacy Jig
+M:6/8
+L:1/8
+R:jig
+K:G
+GFG BAB | gfg gab | GFG BAB | d2A AFD |
+GFG BAB | gfg gab | age edB |1 dBA AFD :|2 dBA ABd |:
+efe edB | dBA ABd | efe edB | gdB ABd |
+efe edB | d2d def | gfe edB |1 dBA ABd :|2 dBA AFD |]
+'``
+```
+
+And here the output:
 
 ```{.shell cmd="abcm2ps -g %i -O fff&&cp fff001.svg %b.svg" chunk.ext=abc ext=svg}
 X:1
 T:The Legacy Jig
+M:6/8
+L:1/8
+R:jig
+K:G
+GFG BAB | gfg gab | GFG BAB | d2A AFD |
+GFG BAB | gfg gab | age edB |1 dBA AFD :|2 dBA ABd |:
+efe edB | dBA ABd | efe edB | gdB ABd |
+efe edB | d2d def | gfe edB |1 dBA ABd :|2 dBA AFD |]
+```
+
+
+Let's try to hide the code using `echo=false`:
+
+```
+'``{.shell cmd="abcm2ps -g %i -O ggg&&cp ggg001.svg %b.svg" chunk.ext=abc ext=svg echo=false}
+X:1
+T:The Legacy Jig 2
+M:6/8
+L:1/8
+R:jig
+K:G
+GFG BAB | gfg gab | GFG BAB | d2A AFD |
+GFG BAB | gfg gab | age edB |1 dBA AFD :|2 dBA ABd |:
+efe edB | dBA ABd | efe edB | gdB ABd |
+efe edB | d2d def | gfe edB |1 dBA ABd :|2 dBA AFD |]
+'``
+```
+
+And here the output:
+
+
+```{.shell cmd="abcm2ps -g %i -O ggg&&cp ggg001.svg %b.svg" chunk.ext=abc ext=svg echo=false}
+X:1
+T:The Legacy Jig 2
 M:6/8
 L:1/8
 R:jig
