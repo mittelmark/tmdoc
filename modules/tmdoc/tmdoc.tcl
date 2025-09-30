@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250930.0912>
+#  Last Modified : <250930.0919>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -27,6 +27,7 @@ exec tclsh "$0" "$@"
 #                  2025-09-14 version 0.11.0 support for %b basename of input file
 #                  2025-09-XX version 0.12.0 support for LaTeX quations using https://math.vercel.app
 #                                            suport for embedding Youtube videos
+#                                            support %f as input filename
 package require Tcl 8.6-
 package require fileutil
 package provide tmdoc::tmdoc 0.12.0
@@ -292,9 +293,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set chunki 0
         while {[gets $infh line] >= 0} {
             if {$mode eq "text" && [regexp {\[@[@,\w]+\]} $line]} {
-                puts stderr "before: $line"
                 set line [regsub -all {\[@([@\w,]+)\]} $line "`tcl citer::cite \\1`"]
-                puts stderr "after: $line"
             }
             if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?tcl\s*\}} $line -> opts])} {
                 set mode code
@@ -343,6 +342,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     }
                 }
                 set cmd [regsub -all {%i} $copt(cmd) $copt(label).$copt(chunk.ext)]
+                set cmd [regsub -all {%f} $copt(cmd) $copt(label).$copt(chunk.ext)]                
                 set cmd [regsub -all {%b} $cmd $copt(label)]                
                 set cmd [regsub -all {%o} $cmd $copt(label).$copt(ext)]
                 puts stderr $cmd
@@ -819,9 +819,11 @@ namespace eval ::tmdoc {
 #'     - support for %b, the basename of the input file
 #'     - C and C++ examples updated
 #' - 2025-09-XX Release 0.12.0
+#'     - support for %f (for the input filename, so same as %i)
 #'     - support for embedding LaTeX equations using [math.vercel.app](https://math.vercel.app) 
 #'       webservice
-#'     - support for embedding Youtube videos
+#'     - support for embedding Youtube videos inside iframes
+#'     - adding abc music examples
 #'
 #' ## <a name='todo'>TODO</a>
 #'
