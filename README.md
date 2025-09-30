@@ -263,13 +263,14 @@ tclmain -m tmdoc --help
 - 2025-09-14 0.11.0    
 - 2025-09-XX 0.12.0 
     - support for LaTeX quations using [https://math.vercel.app](https://math.vercel.app)
-    - suport for embedding Youtube videos creating an iframe
+    - support for embedding Youtube videos creating an iframe
+    - support for embedding citations based on BibteX files
       
 ## TODO
 
 - kroki code chunk support  (done)
-- bibtex citation support (citer package) using `[@ref]` syntax
-- test cases with examples for Markdown, LaTeX, and Tcl Man page format.
+- bibtex citation support (citer package) using `[@ref]` syntax (done)
+- test cases with examples for Markdown, LaTeX, and Tcl Man page format (done).
 - R code chunk with default opening a png file and adding dev.off so automatic 
   generation  of, as well  use of  save.image  and load for  keeping  sessions
   between chunks
