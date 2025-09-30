@@ -1,32 +1,11 @@
 ##-*- makefile -*-############################################################
 #
-#  System        : 
-#  Module        : 
-#  Object Name   : $RCSfile$
-#  Revision      : $Revision$
-#  Date          : $Date$
-#  Author        : $Author$
-#  Created By    : MicroEmacs User
+#  Created By    : Detlef Groth, University of Potsdam
 #  Created       : 2025-01-04 18:30:01
-#  Last Modified : <250927.0614>
+#  Last Modified : <250930.0706>
 #
-#  Description	
+#  Description	 : Makefile for tmdoc project
 #
-#  Notes
-#
-#  History
-#	
-#  $Log$
-#
-##############################################################################
-#
-#  Copyright (c) 2025 MicroEmacs User.
-# 
-#  All Rights Reserved.
-# 
-#  This  document  may  not, in  whole  or in  part, be  copied,  photocopied,
-#  reproduced,  translated,  or  reduced to any  electronic  medium or machine
-#  readable form without prior written consent from MicroEmacs User.
 #
 ##############################################################################
 
@@ -37,13 +16,25 @@ CITER=https://raw.githubusercontent.com/mittelmark/citer/refs/heads/main
 default:
 	echo "Usage: make app|docu|test"
 app:
-	test -d app-build && rm -rf app-build
+	-test -d app-build && rm -rf app-build
+	-test -d bin || mkdir bin
 	mkdir app-build
 	cd app-build && mkdir -p tmdoc.vfs/lib/tmdoc
+	cd app-build && mkdir -p tmdoc.vfs/lib/bibtex
+	cd app-build && mkdir -p tmdoc.vfs/lib/citer
 	cd app-build && mkdir -p tmdoc.vfs/lib/cmdline
+	cd app-build && mkdir -p tmdoc.vfs/lib/fileutil
+	cd app-build && mkdir -p tmdoc.vfs/lib/markdown		
 	cd app-build && mkdir -p tmdoc.vfs/lib/textutil
-	cd app-build && mkdir -p tmdoc.vfs/lib/fileutil	
-	cd app-build && cp ../modules/tmdoc/*.tcl tmdoc.vfs/lib/tmdoc
+	cd app-build && mkdir -p tmdoc.vfs/lib/yaml	
+	cd app-build && cp ../modules/tmdoc/*.tcl tmdoc.vfs/lib/tmdoc/
+	cd app-build && cp ../modules/bibtex/*.tcl tmdoc.vfs/lib/bibtex/
+	cd app-build && cp ../modules/citer/*.tcl tmdoc.vfs/lib/citer/	
+	cd app-build && cp ../modules/cmdline/*.tcl tmdoc.vfs/lib/cmdline/
+	cd app-build && cp ../modules/fileutil/*.tcl tmdoc.vfs/lib/fileutil/	
+	cd app-build && cp ../modules/markdown/*.tcl tmdoc.vfs/lib/markdown/			
+	cd app-build && cp ../modules/textutil/*.tcl tmdoc.vfs/lib/textutil/		
+	cd app-build && cp ../modules/yaml/*.tcl tmdoc.vfs/lib/yaml/				
 	cd app-build && cp ~/workspace/tcllib/modules/cmdline/*.tcl tmdoc.vfs/lib/cmdline/
 	cd app-build && cp ~/workspace/tcllib/modules/textutil/*.tcl tmdoc.vfs/lib/textutil/	
 	cd app-build && cp ~/workspace/tcllib/modules/fileutil/*.tcl tmdoc.vfs/lib/fileutil/		
