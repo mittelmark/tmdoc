@@ -10,30 +10,60 @@
 [![Tutorial](https://img.shields.io/badge/Docu-Tutorial-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
 [![Wiki](https://img.shields.io/badge/Docu-Wiki-blue)](https://wiki.tcl-lang.org/page/tmdoc%3A%3Atmdoc)
 
-Literate programming with Tcl. Embed Tcl code into Markdown or LaTeX
-documents with code evaluation.
+Literate  programming with Tcl. Embed Diagram code and the output, LaTeX equation, literature
+references, shell script output, Youtube videos  and Tcl code with the  evaluation  results into  Markdown or LaTeX
+documents.
 
 ## Description
 
-The package _tmdoc_  provides a command to evaluate  embedded Tcl code in code
-chunks within  documents of Markup  languages  like Markdown and LaTeX and add
+The package  _tmdoc_  provides a command to evaluate  embedded  Diagram, LaTeX
+and Tcl code in code chunks within  documents of Markup  languages  like Markdown and LaTeX and add
 the  resulting  output to the  document  for  creating  dynamic  documents,  a
 technique  as well known as  literate  programming.  The latter uses  Tcllib's
-Markdown  package.  The  embedded  Tcl code  starts with three backticks  and a
-language marker like this (replace single ticks with backticks):
+Markdown  package.  
+
+## Features
+
+### Installation
+
+On a Unix system with installed Tcl interpreter just download the file  tmdoc-0.12.0.bin, save it to your
+hard disk and then make it executable like this:
+
+```bash
+### download to your local bin folder
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.12.0/tmdoc-0.12.0.bin \
+  -O ~/.local/bin/tmdoc
+### make the Tcl script executable
+chmod 755 ~/.local/bin/tmdoc
+### check the installation
+tmdoc --version
+## 0.12.0
+```
+
+If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
+
+That approach  should as well work on  Windows-Cygwin  or  Windows-Msys2  with
+installed Tcl interpreter.
+
+### Tcl Code
+
+Embedded  Tcl code  starts with three backticks  and a
+language marker like this (remove the single ticks before the three backticks):
 
 ```
-    '''{.tcl}
+'```{.tcl}
     puts "Hello World"
-    '''
+'```
 ```
    
 Shorter  Tcl code  fragments  can be embedded  directly  within the text using
 single backticks like this (replace single ticks with backticks):
 
 ```
-    This document was generated at 'tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"' MET.
+This document was generated at 'tcl clock format [clock seconds] -format "%Y-%m-%d %H:%m"' MET.
 ```
+
+### Diagram Code
 
 Furthermore  since  version  0.8.0 you can embed code chunks for command  line
 tools          like           [GraphViz](https://www.graphviz.org)          or
@@ -41,11 +71,11 @@ tools          like           [GraphViz](https://www.graphviz.org)          or
 like this:
 
 ```
-   '''{.shell cmd="dot -Tpng %i -o%o" echo=false}
-   digraph g {
-      A -> B 
-   }
-   '''
+'```{.shell cmd="dot -Tpng %i -o%o" echo=false}
+digraph g {
+   A -> B 
+}
+'```
 ```
 
 Since    version   0.9.0   as   well   creation   of   diagrams    using   the
@@ -53,14 +83,16 @@ Since    version   0.9.0   as   well   creation   of   diagrams    using   the
 how to process Tmd documents to html using tmdoc and mkdoc.
 
 ```
-'''{.kroki dia=graphviz imagepath=kroki ext=png}
+'```{.kroki dia=graphviz imagepath=kroki ext=png}
 digraph g {
   node[height=1.2,width=1.5,style=filled,shape=box,fillcolor=beige]
   TMD -> MD[label="tmdoc"]
   MD -> HTML[label="mkdoc"]
 }
-'''
+'```
 ```
+
+### Shell Code
 
 Since  version  0.10.0 the  support for  embedding  tools which  provide  text
 output. This can be used as well to embed and execute the code for programming
@@ -75,6 +107,66 @@ int main() {
 }
 '``
 ```
+
+### LaTeX Equations
+
+Since version  0.12.0 there is as well support for embedding  LaTeX  equations
+using the  [https://math.vercel.app](https://math.vercel.app)  webservice. You
+simply add the equation in a `mtex` source code block:
+
+```
+'``{.mtex}
+E = mc^2  \tag{1}
+'``
+```
+
+There is as well support for matrix displays:
+
+```
+'``{.mtex}
+\begin{bmatrix}
+1 & 2 & 3 \\      \tag{2}
+4 & 5 & 6 
+\end{bmatrix}
+'``
+```
+
+### Youtube Videos
+
+Since  version  0.12.0 you can as well embed  Youtube  videos like this (again
+replace the single ticks with backticks):
+
+```
+'tcl youtube EhXpJo3YbKg width=640 height=480'
+```
+
+### Bibliography Entries
+
+Since version 0.12.0 it as well possible to embed literature  references which
+are based on BibTeX files.
+
+Here an example:
+
+```
+'``
+### load the bibliography file
+citer::bibliography literature.bib
+'``
+```
+
+Now in the text you can cite with the [@key] syntax light this: 
+
+`Clustal  Omega is a multiple  sequence
+aligner   which   offers  a  good   trade-off   between   speed  and   accuracy
+[@Sievers2011].`
+
+Then, to display the references:
+
+```
+`tcl citer::bibliography`
+```
+
+## Document Processing
 
 Documents  generated  with  tmdoc  can be then  processed  from the  generated
 Markdown to HTML or PDF using tools like [mkdoc](https://github.com/mittelmark/mkdoc/),

@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250930.0919>
+#  Last Modified : <250930.2120>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -342,7 +342,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     }
                 }
                 set cmd [regsub -all {%i} $copt(cmd) $copt(label).$copt(chunk.ext)]
-                set cmd [regsub -all {%f} $copt(cmd) $copt(label).$copt(chunk.ext)]                
+                set cmd [regsub -all {%f} $cmd $copt(label).$copt(chunk.ext)]                
                 set cmd [regsub -all {%b} $cmd $copt(label)]                
                 set cmd [regsub -all {%o} $cmd $copt(label).$copt(ext)]
                 puts stderr $cmd
@@ -383,7 +383,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         }
                         if {$err ne ""} {
                             if {$inmode eq "md"} {
-                                puts -nonewline $out "\n\n```{error}\n$err\n\n$cnt"
+                                puts -nonewline $out "\n\n```{error}\n$err\n\n"
                                 puts $out "```"
                             } elseif {$inmode eq "man"} {
                                 puts $out ""

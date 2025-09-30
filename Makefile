@@ -2,7 +2,7 @@
 #
 #  Created By    : Detlef Groth, University of Potsdam
 #  Created       : 2025-01-04 18:30:01
-#  Last Modified : <250930.0907>
+#  Last Modified : <250930.2149>
 #
 #  Description	 : Makefile for tmdoc project
 #
@@ -13,6 +13,7 @@ TCL9=~/.local/opt/bin/tclsh9.0
 TCL=tclsh
 TCLLIB=https://raw.githubusercontent.com/tcltk/tcllib/refs/heads/master/modules
 CITER=https://raw.githubusercontent.com/mittelmark/citer/refs/heads/main
+TDOT=https://raw.githubusercontent.com/mittelmark/tdot/refs/heads/main
 default:
 	echo "Usage: make app|docu|test"
 app:
@@ -27,6 +28,7 @@ app:
 	cd app-build && mkdir -p tmdoc.vfs/lib/markdown		
 	cd app-build && mkdir -p tmdoc.vfs/lib/textutil
 	cd app-build && mkdir -p tmdoc.vfs/lib/yaml	
+	cd app-build && mkdir -p tmdoc.vfs/lib/tdot
 	cd app-build && cp ../modules/tmdoc/*.tcl tmdoc.vfs/lib/tmdoc/
 	cd app-build && cp ../modules/bibtex/*.tcl tmdoc.vfs/lib/bibtex/
 	cd app-build && cp ../modules/citer/*.tcl tmdoc.vfs/lib/citer/	
@@ -34,6 +36,7 @@ app:
 	cd app-build && cp ../modules/fileutil/*.tcl tmdoc.vfs/lib/fileutil/	
 	cd app-build && cp ../modules/markdown/*.tcl tmdoc.vfs/lib/markdown/			
 	cd app-build && cp ../modules/textutil/*.tcl tmdoc.vfs/lib/textutil/		
+	cd app-build && cp ../modules/tdot/*.tcl tmdoc.vfs/lib/tdot/			
 	cd app-build && cp ../modules/yaml/*.tcl tmdoc.vfs/lib/yaml/				
 	cd app-build && cp ~/workspace/tcllib/modules/cmdline/*.tcl tmdoc.vfs/lib/cmdline/
 	cd app-build && cp ~/workspace/tcllib/modules/textutil/*.tcl tmdoc.vfs/lib/textutil/	
@@ -89,6 +92,13 @@ citer:
 	for file in $@.tcl pkgIndex.tcl citer_main.tcl citer_api.tcl; do \
 		if [ ! -f modules/$@/$$file ]; then \
 			wget -q $(CITER)/$@/$$file -O modules/$@/$$file; \
+		fi \
+	done
+tdot tsvg:
+	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
+	for file in $@.tcl pkgIndex.tcl; do \
+		if [ ! -f modules/$@/$$file ]; then \
+			wget -q https://raw.githubusercontent.com/mittelmark/$@/refs/heads/main/$@/$$file -O modules/$@/$$file; \
 		fi \
 	done
 			
