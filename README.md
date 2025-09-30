@@ -76,7 +76,6 @@ int main() {
 '``
 ```
 
-
 Documents  generated  with  tmdoc  can be then  processed  from the  generated
 Markdown to HTML or PDF using tools like [mkdoc](https://github.com/mittelmark/mkdoc/),
 [pandoc](https:///www.pandoc.org), [WeasyPrint](https://pypi.org/project/weasyprint/) or
@@ -169,6 +168,10 @@ tclmain -m tmdoc --help
 - 2025-06-09 0.10.0    
     - support for embedded code of different programming languages like 
       C, C++, Python etc and displaying text output from the code
+- 2025-09-14 0.11.0    
+- 2025-09-XX 0.12.0 
+    - support for LaTeX quations using [https://math.vercel.app](https://math.vercel.app)
+    - suport for embedding Youtube videos creating an iframe
       
 ## TODO
 

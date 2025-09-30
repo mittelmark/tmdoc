@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250927.0647>
+#  Last Modified : <250930.0912>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -291,6 +291,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     } else {
         set chunki 0
         while {[gets $infh line] >= 0} {
+            if {$mode eq "text" && [regexp {\[@[@,\w]+\]} $line]} {
+                puts stderr "before: $line"
+                set line [regsub -all {\[@([@\w,]+)\]} $line "`tcl citer::cite \\1`"]
+                puts stderr "after: $line"
+            }
             if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?tcl\s*\}} $line -> opts])} {
                 set mode code
                 incr chunki

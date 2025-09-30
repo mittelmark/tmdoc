@@ -1,7 +1,7 @@
 ---
 title: "Example for Tmd files using the citer package"
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-09-27 06:44
+date: 2025-09-30 09:11
 ---
 
 `tcl include header.md`
@@ -27,6 +27,13 @@ puts [citer::getReference literature.bib Groth2013]
 Now  let's  use an  inline  reference  for  this  paper.  I cite  
 `tcl citer::cite Groth2013` which is an existing reference. And I cite 
 `tcl citer::cite Dummy1999` and non existing reference.
+
+Let's now try to new  bracket  syntax.  Clustal  Omega is a multiple  sequence
+aligner   which   offers  a  good   trade-off   between   speed  and   accuracy
+[@Sievers2011].
+
+It  should  be since version 0.12.0  as  well   possible   to  combine   two  or more citations   like  so
+[@Sievers,@Yachdav2016].
 
 Let's now embed the citation list:
 
