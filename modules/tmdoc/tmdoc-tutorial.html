@@ -77,6 +77,8 @@ Tcl packages and other types of documentation.</p>
 <li><a href="#latex">LaTeX Equations and Matrices</a></li>
 <li><a href="#programming">Programming Examples (C, C++, Python)</a></li>
 <li><a href="#references">References with BibTeX Files</a></li>
+<li><a href="#abbrev">Abbreviations</a></li>
+<li><a href="#alerts">Alerts</a></li>
 <li><a href="#options">Code Chunk Options</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#install">Installation</a></li>
@@ -133,7 +135,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-10-01 17:22</p>
+<p>The curent date and time is: 2025-10-01 22:06</p>
 
 <hr />
 
@@ -717,7 +719,50 @@ citer::bibliography'. Here the output:</p>
 
 </li></ul>
 
-<h2>Alerts</h2>
+<h2><a name="abbrev">Abbreviations</a></h2>
+
+<p>Abbreviations can be defined in a separate Yaml file which should be mentioned in the document preamble like so:</p>
+
+<pre class='code'><code>---
+...
+abbreviations: abbrev.yml
+...</code></pre>
+
+<p><strong>Here the text:</strong></p>
+
+<pre class='code'><code>This is an abbrev {DG} and this is another for the 
+Author: {author}. The document was created at {date}. 
+This an empty abbreviation {empty}.
+
+Now an abbreviation which is in the `abbrev.yml` file 
+- tmdoc is: '{tmdoc}'!</code></pre>
+
+<p><strong>And here the output:</strong></p>
+
+<p>This is an abbrev Detlef Groth, University of Potsdam, Germany and this is another for the Author: Detlef Groth, University of Potsdam, Germany. 
+The document was created at 2025-10-01 22:04. This an empty abbreviation {empty}.</p>
+
+<p>Now an abbreviation which is in the <code>abbrev.yml</code> file - tmdoc is: 'Tcl Markdown document processor'!</p>
+
+<h2><a name="alerts">Alerts</a></h2>
+
+<p>Since version 0.13.0 tmdoc as well supports Alerts for the Markdown output. Alerts are following the same syntax as the 
+<a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts">Github alerts</a>:</p>
+
+<p>Here an example:</p>
+
+<pre class='code'><code>&gt; [!NOTE]
+&gt; This is the note text. Note note!!
+
+&gt; [!TIP]
+&gt; Do not overload the text with alerts like this!</code></pre>
+
+<p>Highlighting is completely managed by the stylesheet. The alerts are placed in
+a div tag  with  the name  side-altername  where  alertname  is the  lowercase
+version of the altername. See the file <a href="tmdoc.css">tmdoc.css</a> for a stylesheet
+based implementation. The advantage of this approach is that for instance <em>weasyprint</em> can properly convert these to the PDF format.</p>
+
+<p>Here some example:</p>
 
 <div class="side-note"><p><b>Note:</b> 
 This is the note text. Note note!!
@@ -751,7 +796,7 @@ An error happend!
 <div class="side-caution"><p><b>Caution:</b> 
 This might have consequences!  
 An error can happen!  
-_Can we have a third line?_
+Can we have a third line?
 </p></div>
 
 <h2><a name='options'>Code Chunk Options</a></h2>
@@ -896,9 +941,9 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 <li>ukaz 
 </li></ul>
 
-<p>Document was processed at: 2025-10-01 17:22</p>
+<p>Document was processed at: 2025-10-01 22:06</p>
 
-<p>Document processing was done within: 1669 milliseconds.</p>
+<p>Document processing was done within: 1672 milliseconds.</p>
 
 <p>Let's destroy the Tk application at the end.</p>
 

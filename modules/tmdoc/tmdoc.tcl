@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251001.1737>
+#  Last Modified : <251001.2209>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -34,6 +34,7 @@ exec tclsh "$0" "$@"
 #                                            extending tmdoc tutorial
 package require Tcl 8.6-
 package require fileutil
+package require yaml
 package provide tmdoc::tmdoc 0.12.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {}
@@ -47,6 +48,7 @@ proc ::tmdoc::interpReset {} {
     }
     interp create intp
     interp eval intp " set pres {} ;  set auto_path {$::auto_path}"
+    interp eval intp "package require yaml"
     interp eval intp {rename puts puts.orig}
     interp eval intp {
         set nfig 0
@@ -188,8 +190,12 @@ proc ::tmdoc::interpReset {} {
     # we first check statements and only if they are ok
     # the real interpreter intp will be used
     interp create try
+    interp eval try { set yamltext "" }
     interp eval try {rename puts puts.orig}
+    interp eval try " set pres {} ;  set auto_path {$::auto_path}"
+    interp eval try "package require yaml"
     # todo handle puts options
+    
     interp eval try {proc puts {args} {}}
     interp eval try {proc include {filename} {}}
     interp eval try {proc list2mdtab {header data} {}}
@@ -227,6 +233,25 @@ proc ::tmdoc::url2crc32file {url {folder .} {ext png}} {
     }
 }
 
+proc ::tmdoc::extractAbbreviations {str} {
+    set result {}
+    set start 0
+    
+    # Pattern to match content inside curly braces
+    set pattern {\{(\w+)\}}
+    # Use regexp with -inline and -all to directly get all matches of content inside braces
+    set matches [regexp -all -inline {\{(\w+)\}} $str]
+    
+    # Extract only the inner part without braces
+    foreach match $matches {
+        if {[regexp $pattern $match]} {
+            # match looks like "{A}", so strip the first and last character
+            set element [string range $match 1 end-1]
+            lappend result $element
+        }
+    }
+    return $result
+}
 # public functions - the main function process the files
 
 proc ::tmdoc::tmdoc {filename outfile args} {
@@ -300,8 +325,38 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     } else {
         set chunki 0
         set lnr 0
+        set yamlflag false
+        set yaml false
+        set yamltext ""
+        
         while {[gets $infh line] >= 0} {
             incr lnr
+            if {$yamlflag && [regexp {^---} $line]} {
+                set yamlflag false
+                set abbrev [dict create {*}[yaml::yaml2dict $yamltext]]
+                if {[dict exists $abbrev abbreviations]} {
+                    if {[file exists [dict get $abbrev abbreviations]]} {
+                        set afile [open [dict get $abbrev abbreviations] r]
+                        append yamltext [read $afile]
+                        close $afile
+                        set abbrev [dict create {*}[yaml::yaml2dict $yamltext]]
+                    }
+                }
+                set yamltext ""
+                set yaml true
+            } 
+            if {$yamlflag} {
+                append yamltext "$line\n"
+            }
+            if {!$yamlflag && $lnr < 3 && [regexp {^---} $line]} {
+                set yamlflag true
+            } 
+            if {$mode eq "text" && $yaml && ![regexp {```} $line] && [regexp {\{\w+\}} $line]} {
+                set abbrevs [tmdoc::extractAbbreviations $line]
+                foreach key [dict keys $abbrev] {
+                    set line [regsub -all "\{$key\}" $line [dict get $abbrev $key]]
+                }
+            }
             if {$mode eq "text" && [regexp {\[@[@,\w]+\]} $line]} {
                 set line [regsub -all {\[@([@\w,]+)\]} $line "`tcl citer::cite \\1`"]
             }
@@ -859,11 +914,13 @@ namespace eval ::tmdoc {
 #'       webservice
 #'     - support for embedding Youtube videos inside iframes
 #'     - adding abc music examples
-#' - 2025-10-XX Release 0.12.1
-#'     - fixing tcl code chunk option eval=false
-#'     - fixing resetting default of code chunks
+#' - 2025-10-XX Release 0.13.0
+#'     - adding abbreviations in yaml header or yaml file
+#'     - adding alert boxes for Markdown output
 #'     - adding bibliography file entry in YAML header
 #'     - extending tmdoc tutorial for citation use
+#'     - fixing tcl code chunk option eval=false
+#'     - fixing resetting default of code chunks
 #'
 #' ## <a name='todo'>TODO</a>
 #'

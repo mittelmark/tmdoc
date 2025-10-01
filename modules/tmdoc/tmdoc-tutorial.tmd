@@ -1,8 +1,10 @@
 ---
 title: tmdoc::tmdoc 0.12.1 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: `tcl clock format [clock seconds] -format "%Y-%m-%d"`
+date: 2025-10-01 22:04
 bibliography: ../../examples/literature.bib
+abbreviations: abbrev.yml
+DG: Detlef Groth, University of Potsdam, Germany
 ---
 
 ```{.tcl label=start1 echo=false results=hide eval=false}
@@ -63,6 +65,8 @@ Tcl packages and other types of documentation.
 - [LaTeX Equations and Matrices](#latex)
 - [Programming Examples (C, C++, Python)](#programming)
 - [References with BibTeX Files](#references)
+- [Abbreviations](#abbrev)
+- [Alerts](#alerts)
 - [Code Chunk Options](#options)
 - [Summary](#summary)
 - [Installation](#install)
@@ -919,7 +923,57 @@ __References:__
 
 `tcl citer::bibliography`
 
-## Alerts
+## <a name="abbrev">Abbreviations</a>
+
+Abbreviations can be defined in a separate Yaml file which should be mentioned in the document preamble like so:
+
+```
+---
+...
+abbreviations: abbrev.yml
+...
+```
+
+__Here the text:__
+
+```
+This is an abbrev {DG} and this is another for the 
+Author: {author}. The document was created at {date}. 
+This an empty abbreviation {empty}.
+
+Now an abbreviation which is in the `abbrev.yml` file 
+- tmdoc is: '{tmdoc}'!
+```
+
+__And here the output:__
+
+This is an abbrev {DG} and this is another for the Author: {author}. 
+The document was created at {date}. This an empty abbreviation {empty}.
+
+Now an abbreviation which is in the `abbrev.yml` file - tmdoc is: '{tmdoc}'!
+
+## <a name="alerts">Alerts</a>
+
+Since version 0.13.0 tmdoc as well supports Alerts for the Markdown output. Alerts are following the same syntax as the 
+[Github alerts](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts):
+
+Here an example:
+
+```
+> [!NOTE]
+> This is the note text. Note note!!
+
+> [!TIP]
+> Do not overload the text with alerts like this!
+```
+
+Highlighting is completely managed by the stylesheet. The alerts are placed in
+a div tag  with  the name  side-altername  where  alertname  is the  lowercase
+version of the altername. See the file [tmdoc.css](tmdoc.css) for a stylesheet
+based implementation. The advantage of this approach is that for instance _weasyprint_ can properly convert these to the PDF format.
+
+Here some example:
+
 
 > [!NOTE]
 > This is the note text. Note note!!
