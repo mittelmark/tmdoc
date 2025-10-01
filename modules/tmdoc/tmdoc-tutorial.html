@@ -3,10 +3,10 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="title" content="tmdoc::tmdoc 0.12.0 - Tcl Markdown processor tutorial">
+<meta name="title" content="tmdoc::tmdoc 0.12.1 - Tcl Markdown processor tutorial">
 <meta name="author" content="Detlef Groth, University of Potsdam, Germany">
     
-<title>tmdoc::tmdoc 0.12.0 - Tcl Markdown processor tutorial</title>
+<title>tmdoc::tmdoc 0.12.1 - Tcl Markdown processor tutorial</title>
     
     
 
@@ -21,9 +21,9 @@
 
 
 
-<h1 class="title">tmdoc::tmdoc 0.12.0 - Tcl Markdown processor tutorial</h1>
+<h1 class="title">tmdoc::tmdoc 0.12.1 - Tcl Markdown processor tutorial</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-09-30</h2>
+<h2 class="date">2025-10-01</h2>
 
 <h2><a name="abstract">Abstract</a></h2>
 
@@ -61,17 +61,23 @@ Tcl packages and other types of documentation.</p>
 <ul>
 <li><a href="#intro">Introduction</a></li>
 <li><a href="#codes">Color Codes</a></li>
+<li><a href="#block">Tcl code chunks</a>
+<ul>
 <li><a href="#block">Standard Code Blocks</a></li>
 <li><a href="#puts">The puts Statement</a></li>
 <li><a href="#inline">Inline Codes</a></li>
 <li><a href="#errors">Error Handling</a></li>
 <li><a href="#tables">Creating Tables</a></li>
 <li><a href="#include">Including Files</a></li>
-<li><a href="#images">Writing Images with tsvg</a></li>
-<li><a href="#clp">Other Command Line Tools</a></li>
-<li><a href="#kroki">Kroki Webservice Diagrams</a></li>
-<li><a href="#latex">LaTeX Equations</a></li>
-<li><a href="#programming">Programming</a></li>
+<li><a href="#images">Writing Images with tsvg</a></li></ul>
+
+</li>
+<li><a href="#clp">Command Line Tools (GraphViz, GO games ...) </a></li>
+<li><a href="#kroki">Kroki Diagrams (GraphViz, PlantUML, ...)</a></li>
+<li><a href="#latex">LaTeX Equations and Matrices</a></li>
+<li><a href="#programming">Programming Examples (C, C++, Python)</a></li>
+<li><a href="#references">References with BibTeX Files</a></li>
+<li><a href="#options">Code Chunk Options</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#install">Installation</a></li>
 <li><a href="#seealso">See Also</a></li>
@@ -103,16 +109,17 @@ currently viewing using <a href="tmdoc">https://github.com/mittelmark/tmdoc</a> 
 <p>With the <a href="https://pandoc.org/">pandoc</a> command line application yo can as well convert the Markdown output of <em>tmdoc</em> to many other formats. 
 The pipeline is then the following:</p>
 
-<pre class='code'><code class='std'>      tmdoc        pandoc
+<pre class='code'><code class='std'>      tmdoc         pandoc
 TMD --------&gt; MD ----------&gt; HTML/PDF/DOCX</code></pre>
 
 <p>Now the mandatory &quot;Hello World!&quot; example. If you embed the following text
 into your Markdown document with the extension, <code>.tmd</code>, <em>tmdoc</em> will produce, after converting the document
-from Markdown to HTML via <em>mkdoc</em> or <em>pandoc</em>, the following input (without the leading four spaces, nessessary here to avoid interpretation by <em>tmdoc</em>)</p>
+from  Markdown to HTML via <em>mkdoc</em> or <em>pandoc</em>, the following  input  (replace
+the leading single quote with a backtick, necessary here to avoid interpretation by <em>tmdoc</em>)</p>
 
-<pre class='code'><code class='std'>    ```{.tcl}
-    puts &quot;Hello World!&quot;
-    ```</code></pre>
+<pre class='code'><code class='std'>'``{.tcl}
+puts &quot;Hello World!&quot;
+'``</code></pre>
 
 <p>will produce this output:</p>
 
@@ -126,7 +133,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-09-30 22:25</p>
+<p>The curent date and time is: 2025-10-01 08:20</p>
 
 <hr />
 
@@ -153,14 +160,14 @@ in blue is the output of the creme tcl code before. Red code lines indicate code
 line and in curly brace the string tcl. Separated by a space might follow
 several evaluation options which will be described later in more detail.</p>
 
-<p>Here the Tcl-Markdown input (without the leading four spaces):</p>
+<p>Here the Tcl-Markdown input (replace the single quote with a backtick):</p>
 
-<pre class='code'><code class='std'>    ```{tcl echo=true}
-    set x 1
-    set a 1
-    set a
-    set x
-    ```</code></pre>
+<pre class='code'><code class='std'>'``{tcl echo=true}
+set x 1
+set a 1
+set a
+set x
+'``</code></pre>
 
 <p>Please note that the indentation is neccessary only for the example here, as
 tmdoc is processing tmdoc inside tmdoc. So in fact there should be no four
@@ -222,9 +229,9 @@ set a &quot;&quot;</code></pre>
 
 <p>Alternatively you can supress the output at all by giving an option <code>results=hide</code> to the code chunk</p>
 
-<pre class='code'><code class='std'>    ```{.tcl results=hide}
-    set a 1
-    ```</code></pre>
+<pre class='code'><code class='std'>'``{.tcl results=hide}
+set a 1
+'``</code></pre>
 
 <pre class='code'><code class='tclcode'>set a 1</code></pre>
 
@@ -233,11 +240,11 @@ set a &quot;&quot;</code></pre>
 <p>You can as well supress both showing the Tcl code and the output of the Tcl
 code by specifying <code>results=hide</code> and <code>echo=false</code> as shown in the following example:</p>
 
-<pre class='code'><code class='std'>    ```{tcl results=hide,echo=false}
-    set a 2
-    ```
+<pre class='code'><code class='std'>'``{tcl results=hide,echo=false}
+set a 2
+'``
     
-   Our variable a has now a value of `tcl set a` although we don't know why as the programming code is hidden.</code></pre>
+Our variable a has now a value of `tcl set a` although we don't know why as the programming code is hidden.</code></pre>
 
 <p>Our variable a has now a value of 2 although we don't know why.</p>
 
@@ -281,11 +288,11 @@ set z</code></pre><pre class='code'><code class='tclerr'>can't read &quot;z&quot
 <p>Since  <em>tmdoc</em>  version  0.7.0 there is as well  support for tables  using the
 <code>results=asis</code> option. Here an example:</p>
 
-<pre class='code'><code class='std'>    ```{.tcl results=asis,echo=false}
-    set h [list A B C]
-    set d [list 1 2 3 4 5 6 7 8 9]
-    puts [list2mdtab $h $d]
-    ```</code></pre>
+<pre class='code'><code class='std'>'``{.tcl results=asis,echo=false}
+set h [list A B C]
+set d [list 1 2 3 4 5 6 7 8 9]
+puts [list2mdtab $h $d]
+'``</code></pre>
 
 <table class="table">
 <thead>
@@ -384,8 +391,6 @@ tsvg text -x 23 -y 65 World2!
 
 <p>And here the output, only the image should be displayed:</p>
 
-<p><img src="data:image/png;base64, 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"></img></p>
-
 <h2>Pandoc compatible code syntax</h2>
 
 <p>Since tmdoc version 0.5 as well Pandoc compatible code chunk options are
@@ -395,10 +400,10 @@ approach.</p>
 
 <p>Here an example:</p>
 
-<pre class='code'><code class='.unindent'>    ``` {.tcl}  
-    set x 3
-    puts $x
-    ```</code></pre>
+<pre class='code'><code class='.unindent'>'`` {.tcl}  
+set x 3
+puts $x
+'``</code></pre>
 
 <p>And here the output:</p>
 
@@ -418,15 +423,16 @@ code  chunks, for  instance using tools like
 <a href="https://www.graphviz.org">GraphViz dot</a>, <a href="https://pikchr.org">Pikchr</a> or 
 <a href="https://www.plantuml.com">PlantUML</a> or even <a href="https://www.r-project.org">R</a>.  To do this you add code chunks with the
 <code>.shell</code> tag and provide the command to process in the code chunk  options the
-command to process the content with the <code>cmd</code> attribute. There are as well two
-placeholders,  one for the input filename <code>%i</code> and one for an optional  output
+command to process the content with the <code>cmd</code> attribute. There are as well 
+placeholders,  two for the input  filename  <code>%i</code> or '%f', one for the basename
+of the input file, so the filename without the extension '%b' and one for the output
 filename: <code>%o</code>. Here an example for using the dot executable:</p>
 
-<pre class='code'><code>    ```{.shell cmd=&quot;dot -Tpng %i -o%o&quot; echo=false}
-    digraph g {
-      A -&gt; B
-    }
-    ```</code></pre>
+<pre class='code'><code>'``{.shell cmd=&quot;dot -Tpng %i -o%o&quot; echo=false}
+digraph g {
+   A -&gt; B
+}
+'``</code></pre>
 
 <p>And here the output:</p>
 
@@ -436,23 +442,23 @@ filename: <code>%o</code>. Here an example for using the dot executable:</p>
 Here the output  filename is guessed  from the input  filename, so there is no
 need to give the <code>%o</code> argument.</p>
 
-<pre class='code'><code>    ```{.shell cmd=&quot;plantuml -tpng %i&quot; echo=false}
-    @startuml
-    class A { }
-    class B { }
-      A -&gt; B
-    @enduml
-    ```</code></pre>
+<pre class='code'><code>'``{.shell cmd=&quot;plantuml -tpng %i&quot; echo=false}
+@startuml
+class A { }
+class B { }
+A -&gt; B
+@enduml
+'``</code></pre>
 
 <p>And here the output:</p>
 
 <p><img src="data:image/png;base64, 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"></img></p>
 
-<p>Some  times you would  like to use the same input as in the graphi  before but
+<p>Some  times you would  like to use the same input presented in the code block before but
 with  different  command line  arguments. In this case you can add as well the
 term  <code>LASTFILE</code>  on the first  line of the code chunk to reuse  this. Here an
-example to display different moments of a Go game. So instead of writing again
-and again the same game record in the code chunk you just write the short text
+example to display different moments of a Go board game. So instead of writing again
+and again the same long game record in the code chunk you just write the short text
 <code>LASTFILE</code>  into it. Here an example for this approach  displaying the initial
 phase of a 13x13 board game but with  different  command  line options for the
 display using the command line tool <a href="https://github.com/julianandrews/sgf-render">sgf-render</a>:</p>
@@ -528,17 +534,17 @@ GraphViz code, like a missing curly brace at the end:</p>
     rankdir=&quot;LR&quot;
     node[shape=box,style=filled,fillcolor=orange1]
     A -&gt; B -&gt; C
-</code></pre><p><img src="chunk-23.png"></img></p>
+</code></pre><p><img src="chunk-24.png"></img></p>
 
-Error: Cannot open '/home/groth/workspace/tmdoc/modules/tmdoc/chunk-23.png'!
+Error: Cannot open '/home/groth/workspace/tmdoc/modules/tmdoc/chunk-24.png'!
 
 
 
-<pre class='code'><code class='error'>Error: chunk-23.txt: syntax error in line 6
+<pre class='code'><code class='error'>Error: dot: can't open chunk-24.txt: No such file or directory
     while executing
 &quot;exec {*}$cmd&quot;
 
-Error: chunk-23.txt: syntax error in line 6
+Error: dot: can't open chunk-24.txt: No such file or directory
 </code></pre>
 
 <h2><a name="kroki">Kroki Webservice Diagrams</a></h2>
@@ -596,8 +602,8 @@ digraph a {
 <h2><a name="latex">LaTeX Equations</h2>
 
 <p>The  <a href="https://math.vercel.app">https://math.vercel.app</a>  webservice allows you
-to embed LaTeX  equations into your  documents. The equation is downloaded and
-cached in the local file system, only if the  equations is changed the file is
+to embed LaTeX  equations into your  documents. The equation svg file is downloaded and
+cached in the local file system, only if the  equation is changed the file is
 downloaded again. Here an example:</p>
 
 <pre class='code'><code>'``{.mtex}
@@ -624,7 +630,7 @@ E = mc^2  \tag{1}
 4 &amp; 5 &amp; 6 
 \end{bmatrix}</code></pre><p><img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyIgPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjAvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIvMjAwMS9SRUMtU1ZHLTIwMDEwOTA0L0RURC9zdmcxMC5kdGQiPgo8c3ZnIHN0eWxlPSJ2ZXJ0aWNhbC1hbGlnbjogLTIuMTQ5ZXg7IG1pbi13aWR0aDogMTkuNzFleCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSI1LjQzZXgiIHJvbGU9ImltZyIgZm9jdXNhYmxlPSJmYWxzZSI+CjxzdHlsZT4KICAqIHsKICAgIGZpbGw6IGJsYWNrOwogICAgYmFja2dyb3VuZC1jb2xvcjogdHJhbnNwYXJlbnQ7CiAgfQo8L3N0eWxlPjxnIHN0cm9rZT0iY3VycmVudENvbG9yIiBmaWxsPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMCIgdHJhbnNmb3JtPSJzY2FsZSgwLjAxODEsLTAuMDE4MSkgdHJhbnNsYXRlKDAsIC0xNDUwKSI+PGcgZGF0YS1tbWwtbm9kZT0ibWF0aCI+PGcgZGF0YS1tbWwtbm9kZT0ibXRhYmxlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDc4LDApIHRyYW5zbGF0ZSgtMjA3OCwwKSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxNDUwKSBtYXRyaXgoMSAwIDAgLTEgMCAwKSBzY2FsZSg1NS4yNSkiPjxzdmcgZGF0YS10YWJsZT0idHJ1ZSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQiIHZpZXdCb3g9IjIyNzggLTE0NTAgMSAyNDAwIj48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAwIDApIj48ZyBkYXRhLW1tbC1ub2RlPSJtbGFiZWxlZHRyIj48ZyBkYXRhLW1tbC1ub2RlPSJtdGQiPjxnIGRhdGEtbW1sLW5vZGU9Im1yb3ciPjxnIGRhdGEtbW1sLW5vZGU9Im1vIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC0wLjUpIj48cGF0aCBkYXRhLWM9IjVCIiBkPSJNMjQ3IC05NDlWMTQ1MEg1MTZWMTM4OEgzMDlWLTg4N0g1MTZWLTk0OUgyNDdaIj48L3BhdGg+PC9nPjxnIGRhdGEtbW1sLW5vZGU9Im10YWJsZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTI4LDApIj48ZyBkYXRhLW1tbC1ub2RlPSJtdHIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsNzAwKSI+PGcgZGF0YS1tbWwtbm9kZT0ibXRkIj48ZyBkYXRhLW1tbC1ub2RlPSJtbiI+PHBhdGggZGF0YS1jPSIzMSIgZD0iTTIxMyA1NzhMMjAwIDU3M1ExODYgNTY4IDE2MCA1NjNUMTAyIDU1Nkg4M1Y2MDJIMTAyUTE0OSA2MDQgMTg5IDYxN1QyNDUgNjQxVDI3MyA2NjNRMjc1IDY2NiAyODUgNjY2UTI5NCA2NjYgMzAyIDY2MFYzNjFMMzAzIDYxUTMxMCA1NCAzMTUgNTJUMzM5IDQ4VDQwMSA0Nkg0MjdWMEg0MTZRMzk1IDMgMjU3IDNRMTIxIDMgMTAwIDBIODhWNDZIMTE0UTEzNiA0NiAxNTIgNDZUMTc3IDQ3VDE5MyA1MFQyMDEgNTJUMjA3IDU3VDIxMyA2MVY1NzhaIj48L3BhdGg+PC9nPjwvZz48ZyBkYXRhLW1tbC1ub2RlPSJtdGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE1MDAsMCkiPjxnIGRhdGEtbW1sLW5vZGU9Im1uIj48cGF0aCBkYXRhLWM9IjMyIiBkPSJNMTA5IDQyOVE4MiA0MjkgNjYgNDQ3VDUwIDQ5MVE1MCA1NjIgMTAzIDYxNFQyMzUgNjY2UTMyNiA2NjYgMzg3IDYxMFQ0NDkgNDY1UTQ0OSA0MjIgNDI5IDM4M1QzODEgMzE1VDMwMSAyNDFRMjY1IDIxMCAyMDEgMTQ5TDE0MiA5M0wyMTggOTJRMzc1IDkyIDM4NSA5N1EzOTIgOTkgNDA5IDE4NlYxODlINDQ5VjE4NlE0NDggMTgzIDQzNiA5NVQ0MjEgM1YwSDUwVjE5VjMxUTUwIDM4IDU2IDQ2VDg2IDgxUTExNSAxMTMgMTM2IDEzN1ExNDUgMTQ3IDE3MCAxNzRUMjA0IDIxMVQyMzMgMjQ0VDI2MSAyNzhUMjg0IDMwOFQzMDUgMzQwVDMyMCAzNjlUMzMzIDQwMVQzNDAgNDMxVDM0MyA0NjRRMzQzIDUyNyAzMDkgNTczVDIxMiA2MTlRMTc5IDYxOSAxNTQgNjAyVDExOSA1NjlUMTA5IDU1MFExMDkgNTQ5IDExNCA1NDlRMTMyIDU0OSAxNTEgNTM1VDE3MCA0ODlRMTcwIDQ2NCAxNTQgNDQ3VDEwOSA0MjlaIj48L3BhdGg+PC9nPjwvZz48ZyBkYXRhLW1tbC1ub2RlPSJtdGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwMDAsMCkiPjxnIGRhdGEtbW1sLW5vZGU9Im1uIj48cGF0aCBkYXRhLWM9IjMzIiBkPSJNMTI3IDQ2M1ExMDAgNDYzIDg1IDQ4MFQ2OSA1MjRRNjkgNTc5IDExNyA2MjJUMjMzIDY2NVEyNjggNjY1IDI3NyA2NjRRMzUxIDY1MiAzOTAgNjExVDQzMCA1MjJRNDMwIDQ3MCAzOTYgNDIxVDMwMiAzNTBMMjk5IDM0OFEyOTkgMzQ3IDMwOCAzNDVUMzM3IDMzNlQzNzUgMzE1UTQ1NyAyNjIgNDU3IDE3NVE0NTcgOTYgMzk1IDM3VDIzOCAtMjJRMTU4IC0yMiAxMDAgMjFUNDIgMTMwUTQyIDE1OCA2MCAxNzVUMTA1IDE5M1ExMzMgMTkzIDE1MSAxNzVUMTY5IDEzMFExNjkgMTE5IDE2NiAxMTBUMTU5IDk0VDE0OCA4MlQxMzYgNzRUMTI2IDcwVDExOCA2N0wxMTQgNjZRMTY1IDIxIDIzOCAyMVEyOTMgMjEgMzIxIDc0UTMzOCAxMDcgMzM4IDE3NVYxOTVRMzM4IDI5MCAyNzQgMzIyUTI1OSAzMjggMjEzIDMyOUwxNzEgMzMwTDE2OCAzMzJRMTY2IDMzNSAxNjYgMzQ4UTE2NiAzNjYgMTc0IDM2NlEyMDIgMzY2IDIzMiAzNzFRMjY2IDM3NiAyOTQgNDEzVDMyMiA1MjVWNTMzUTMyMiA1OTAgMjg3IDYxMlEyNjUgNjI2IDI0MCA2MjZRMjA4IDYyNiAxODEgNjE1VDE0MyA1OTJUMTMyIDU4MEgxMzVRMTM4IDU3OSAxNDMgNTc4VDE1MyA1NzNUMTY1IDU2NlQxNzUgNTU1VDE4MyA1NDBUMTg2IDUyMFExODYgNDk4IDE3MiA0ODFUMTI3IDQ2M1oiPjwvcGF0aD48L2c+PC9nPjwvZz48ZyBkYXRhLW1tbC1ub2RlPSJtdHIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTcwMCkiPjxnIGRhdGEtbW1sLW5vZGU9Im10ZCI+PGcgZGF0YS1tbWwtbm9kZT0ibW4iPjxwYXRoIGRhdGEtYz0iMzQiIGQ9Ik00NjIgMFE0NDQgMyAzMzMgM1EyMTcgMyAxOTkgMEgxOTBWNDZIMjIxUTI0MSA0NiAyNDggNDZUMjY1IDQ4VDI3OSA1M1QyODYgNjFRMjg3IDYzIDI4NyAxMTVWMTY1SDI4VjIxMUwxNzkgNDQyUTMzMiA2NzQgMzM0IDY3NVEzMzYgNjc3IDM1NSA2NzdIMzczTDM3OSA2NzFWMjExSDQ3MVYxNjVIMzc5VjExNFEzNzkgNzMgMzc5IDY2VDM4NSA1NFEzOTMgNDcgNDQyIDQ2SDQ3MVYwSDQ2MlpNMjkzIDIxMVY1NDVMNzQgMjEyTDE4MyAyMTFIMjkzWiI+PC9wYXRoPjwvZz48L2c+PGcgZGF0YS1tbWwtbm9kZT0ibXRkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTAwLDApIj48ZyBkYXRhLW1tbC1ub2RlPSJtbiI+PHBhdGggZGF0YS1jPSIzNSIgZD0iTTE2NCAxNTdRMTY0IDEzMyAxNDggMTE3VDEwOSAxMDFIMTAyUTE0OCAyMiAyMjQgMjJRMjk0IDIyIDMyNiA4MlEzNDUgMTE1IDM0NSAyMTBRMzQ1IDMxMyAzMTggMzQ5UTI5MiAzODIgMjYwIDM4MkgyNTRRMTc2IDM4MiAxMzYgMzE0UTEzMiAzMDcgMTI5IDMwNlQxMTQgMzA0UTk3IDMwNCA5NSAzMTBROTMgMzE0IDkzIDQ4NVY2MTRROTMgNjY0IDk4IDY2NFExMDAgNjY2IDEwMiA2NjZRMTAzIDY2NiAxMjMgNjU4VDE3OCA2NDJUMjUzIDYzNFEzMjQgNjM0IDM4OSA2NjJRMzk3IDY2NiA0MDIgNjY2UTQxMCA2NjYgNDEwIDY0OFY2MzVRMzI4IDUzOCAyMDUgNTM4UTE3NCA1MzggMTQ5IDU0NEwxMzkgNTQ2VjM3NFExNTggMzg4IDE2OSAzOTZUMjA1IDQxMlQyNTYgNDIwUTMzNyA0MjAgMzkzIDM1NVQ0NDkgMjAxUTQ0OSAxMDkgMzg1IDQ0VDIyOSAtMjJRMTQ4IC0yMiA5OSAzMlQ1MCAxNTRRNTAgMTc4IDYxIDE5MlQ4NCAyMTBUMTA3IDIxNFExMzIgMjE0IDE0OCAxOTdUMTY0IDE1N1oiPjwvcGF0aD48L2c+PC9nPjxnIGRhdGEtbW1sLW5vZGU9Im10ZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAwMCwwKSI+PGcgZGF0YS1tbWwtbm9kZT0ibW4iPjxwYXRoIGRhdGEtYz0iMzYiIGQ9Ik00MiAzMTNRNDIgNDc2IDEyMyA1NzFUMzAzIDY2NlEzNzIgNjY2IDQwMiA2MzBUNDMyIDU1MFE0MzIgNTI1IDQxOCA1MTBUMzc5IDQ5NVEzNTYgNDk1IDM0MSA1MDlUMzI2IDU0OFEzMjYgNTkyIDM3MyA2MDFRMzUxIDYyMyAzMTEgNjI2UTI0MCA2MjYgMTk0IDU2NlExNDcgNTAwIDE0NyAzNjRMMTQ4IDM2MFExNTMgMzY2IDE1NiAzNzNRMTk3IDQzMyAyNjMgNDMzSDI2N1EzMTMgNDMzIDM0OCA0MTRRMzcyIDQwMCAzOTYgMzc0VDQzNSAzMTdRNDU2IDI2OCA0NTYgMjEwVjE5MlE0NTYgMTY5IDQ1MSAxNDlRNDQwIDkwIDM4NyAzNFQyNTMgLTIyUTIyNSAtMjIgMTk5IC0xNFQxNDMgMTZUOTIgNzVUNTYgMTcyVDQyIDMxM1pNMjU3IDM5N1EyMjcgMzk3IDIwNSAzODBUMTcxIDMzNVQxNTQgMjc4VDE0OCAyMTZRMTQ4IDEzMyAxNjAgOTdUMTk4IDM5UTIyMiAyMSAyNTEgMjFRMzAyIDIxIDMyOSA1OVEzNDIgNzcgMzQ3IDEwNFQzNTIgMjA5UTM1MiAyODkgMzQ3IDMxNlQzMjkgMzYxUTMwMiAzOTcgMjU3IDM5N1oiPjwvcGF0aD48L2c+PC9nPjwvZz48L2c+PGcgZGF0YS1tbWwtbm9kZT0ibW8iIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQwMjgsMCkgdHJhbnNsYXRlKDAgLTAuNSkiPjxwYXRoIGRhdGEtYz0iNUQiIGQ9Ik0xMSAxMzg4VjE0NTBIMjgwVi05NDlIMTFWLTg4N0gyMThWMTM4OEgxMVoiPjwvcGF0aD48L2c+PC9nPjwvZz48L2c+PC9nPjwvc3ZnPjxzdmcgZGF0YS1sYWJlbHM9InRydWUiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNYXhZTWlkIiB2aWV3Qm94PSIxMjc4IC0xNDUwIDEgMjQwMCI+PGcgZGF0YS1sYWJlbHM9InRydWUiIHRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIC0xIDAgMCkiPjxnIGRhdGEtbW1sLW5vZGU9Im10ZCIgaWQ9Im1qeC1lcW46MiI+PGcgZGF0YS1tbWwtbm9kZT0ibXRleHQiPjxwYXRoIGRhdGEtYz0iMjgiIGQ9Ik05NCAyNTBROTQgMzE5IDEwNCAzODFUMTI3IDQ4OFQxNjQgNTc2VDIwMiA2NDNUMjQ0IDY5NVQyNzcgNzI5VDMwMiA3NTBIMzE1SDMxOVEzMzMgNzUwIDMzMyA3NDFRMzMzIDczOCAzMTYgNzIwVDI3NSA2NjdUMjI2IDU4MVQxODQgNDQzVDE2NyAyNTBUMTg0IDU4VDIyNSAtODFUMjc0IC0xNjdUMzE2IC0yMjBUMzMzIC0yNDFRMzMzIC0yNTAgMzE4IC0yNTBIMzE1SDMwMkwyNzQgLTIyNlExODAgLTE0MSAxMzcgLTE0VDk0IDI1MFoiPjwvcGF0aD48cGF0aCBkYXRhLWM9IjMyIiBkPSJNMTA5IDQyOVE4MiA0MjkgNjYgNDQ3VDUwIDQ5MVE1MCA1NjIgMTAzIDYxNFQyMzUgNjY2UTMyNiA2NjYgMzg3IDYxMFQ0NDkgNDY1UTQ0OSA0MjIgNDI5IDM4M1QzODEgMzE1VDMwMSAyNDFRMjY1IDIxMCAyMDEgMTQ5TDE0MiA5M0wyMTggOTJRMzc1IDkyIDM4NSA5N1EzOTIgOTkgNDA5IDE4NlYxODlINDQ5VjE4NlE0NDggMTgzIDQzNiA5NVQ0MjEgM1YwSDUwVjE5VjMxUTUwIDM4IDU2IDQ2VDg2IDgxUTExNSAxMTMgMTM2IDEzN1ExNDUgMTQ3IDE3MCAxNzRUMjA0IDIxMVQyMzMgMjQ0VDI2MSAyNzhUMjg0IDMwOFQzMDUgMzQwVDMyMCAzNjlUMzMzIDQwMVQzNDAgNDMxVDM0MyA0NjRRMzQzIDUyNyAzMDkgNTczVDIxMiA2MTlRMTc5IDYxOSAxNTQgNjAyVDExOSA1NjlUMTA5IDU1MFExMDkgNTQ5IDExNCA1NDlRMTMyIDU0OSAxNTEgNTM1VDE3MCA0ODlRMTcwIDQ2NCAxNTQgNDQ3VDEwOSA0MjlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzODksMCkiPjwvcGF0aD48cGF0aCBkYXRhLWM9IjI5IiBkPSJNNjAgNzQ5TDY0IDc1MFE2OSA3NTAgNzQgNzUwSDg2TDExNCA3MjZRMjA4IDY0MSAyNTEgNTE0VDI5NCAyNTBRMjk0IDE4MiAyODQgMTE5VDI2MSAxMlQyMjQgLTc2VDE4NiAtMTQzVDE0NSAtMTk0VDExMyAtMjI3VDkwIC0yNDZRODcgLTI0OSA4NiAtMjUwSDc0UTY2IC0yNTAgNjMgLTI1MFQ1OCAtMjQ3VDU1IC0yMzhRNTYgLTIzNyA2NiAtMjI1UTIyMSAtNjQgMjIxIDI1MFQ2NiA3MjVRNTYgNzM3IDU1IDczOFE1NSA3NDYgNjAgNzQ5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODg5LDApIj48L3BhdGg+PC9nPjwvZz48L2c+PC9zdmc+PC9nPjwvZz48L2c+PC9nPjwvc3ZnPg=="></img></p>
 
-<p>Using the option echo=false you can hide the LaTeX code:</p>
+<p>Using the option <code>echo=false</code> you can hide the LaTeX code:</p>
 
 <pre class='code'><code>'``{.mtex echo=false}
 \begin{bmatrix}
@@ -635,7 +641,7 @@ E = mc^2  \tag{1}
 '``</code></pre>
 
 <p>And here the output  where you only should see the  equation but not the LaTeX
-code:</p>
+code as <code>echo</code> was set to false:</p>
 
 <p><img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyIgPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjAvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIvMjAwMS9SRUMtU1ZHLTIwMDEwOTA0L0RURC9zdmcxMC5kdGQiPgo8c3ZnIHN0eWxlPSJ2ZXJ0aWNhbC1hbGlnbjogLTMuNzMzZXg7IG1pbi13aWR0aDogMjAuMzM5ZXgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iOC41OTdleCIgcm9sZT0iaW1nIiBmb2N1c2FibGU9ImZhbHNlIj4KPHN0eWxlPgogICogewogICAgZmlsbDogYmxhY2s7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICB9Cjwvc3R5bGU+PGcgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIGZpbGw9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIwIiB0cmFuc2Zvcm09InNjYWxlKDAuMDE4MSwtMC4wMTgxKSB0cmFuc2xhdGUoMCwgLTIxNTApIj48ZyBkYXRhLW1tbC1ub2RlPSJtYXRoIj48ZyBkYXRhLW1tbC1ub2RlPSJtdGFibGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwNzgsMCkgdHJhbnNsYXRlKC0yMDc4LDApIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDIxNTApIG1hdHJpeCgxIDAgMCAtMSAwIDApIHNjYWxlKDU1LjI1KSI+PHN2ZyBkYXRhLXRhYmxlPSJ0cnVlIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCIgdmlld0JveD0iMjQxNyAtMjE1MCAxIDM4MDAiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIC0xIDAgMCkiPjxnIGRhdGEtbW1sLW5vZGU9Im1sYWJlbGVkdHIiPjxnIGRhdGEtbW1sLW5vZGU9Im10ZCI+PGcgZGF0YS1tbWwtbm9kZT0ibXJvdyI+PGcgZGF0YS1tbWwtbm9kZT0ibW8iPjxwYXRoIGRhdGEtYz0iMjNBMSIgZD0iTTMxOSAtNjQ1VjExNTRINjY2VjEwNzBINDAzVi02NDVIMzE5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCw5OTYpIj48L3BhdGg+PHBhdGggZGF0YS1jPSIyM0EzIiBkPSJNMzE5IC02NDRWMTE1NUg0MDNWLTU2MEg2NjZWLTY0NEgzMTlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC0xMDA2KSI+PC9wYXRoPjxzdmcgd2lkdGg9IjY2NyIgaGVpZ2h0PSI0MDIiIHk9IjQ5IiB4PSIwIiB2aWV3Qm94PSIwIDEwMC41IDY2NyA0MDIiPjxwYXRoIGRhdGEtYz0iMjNBMiIgZD0iTTMxOSAwVjYwMkg0MDNWMEgzMTlaIiB0cmFuc2Zvcm09InNjYWxlKDEsMS4wMDIpIj48L3BhdGg+PC9zdmc+PC9nPjxnIGRhdGEtbW1sLW5vZGU9Im10YWJsZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjY3LDApIj48ZyBkYXRhLW1tbC1ub2RlPSJtdHIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsMTQwMCkiPjxnIGRhdGEtbW1sLW5vZGU9Im10ZCI+PGcgZGF0YS1tbWwtbm9kZT0ibW4iPjxwYXRoIGRhdGEtYz0iMzEiIGQ9Ik0yMTMgNTc4TDIwMCA1NzNRMTg2IDU2OCAxNjAgNTYzVDEwMiA1NTZIODNWNjAySDEwMlExNDkgNjA0IDE4OSA2MTdUMjQ1IDY0MVQyNzMgNjYzUTI3NSA2NjYgMjg1IDY2NlEyOTQgNjY2IDMwMiA2NjBWMzYxTDMwMyA2MVEzMTAgNTQgMzE1IDUyVDMzOSA0OFQ0MDEgNDZINDI3VjBINDE2UTM5NSAzIDI1NyAzUTEyMSAzIDEwMCAwSDg4VjQ2SDExNFExMzYgNDYgMTUyIDQ2VDE3NyA0N1QxOTMgNTBUMjAxIDUyVDIwNyA1N1QyMTMgNjFWNTc4WiI+PC9wYXRoPjwvZz48L2c+PGcgZGF0YS1tbWwtbm9kZT0ibXRkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTAwLDApIj48ZyBkYXRhLW1tbC1ub2RlPSJtbiI+PHBhdGggZGF0YS1jPSIzMiIgZD0iTTEwOSA0MjlRODIgNDI5IDY2IDQ0N1Q1MCA0OTFRNTAgNTYyIDEwMyA2MTRUMjM1IDY2NlEzMjYgNjY2IDM4NyA2MTBUNDQ5IDQ2NVE0NDkgNDIyIDQyOSAzODNUMzgxIDMxNVQzMDEgMjQxUTI2NSAyMTAgMjAxIDE0OUwxNDIgOTNMMjE4IDkyUTM3NSA5MiAzODUgOTdRMzkyIDk5IDQwOSAxODZWMTg5SDQ0OVYxODZRNDQ4IDE4MyA0MzYgOTVUNDIxIDNWMEg1MFYxOVYzMVE1MCAzOCA1NiA0NlQ4NiA4MVExMTUgMTEzIDEzNiAxMzdRMTQ1IDE0NyAxNzAgMTc0VDIwNCAyMTFUMjMzIDI0NFQyNjEgMjc4VDI4NCAzMDhUMzA1IDM0MFQzMjAgMzY5VDMzMyA0MDFUMzQwIDQzMVQzNDMgNDY0UTM0MyA1MjcgMzA5IDU3M1QyMTIgNjE5UTE3OSA2MTkgMTU0IDYwMlQxMTkgNTY5VDEwOSA1NTBRMTA5IDU0OSAxMTQgNTQ5UTEzMiA1NDkgMTUxIDUzNVQxNzAgNDg5UTE3MCA0NjQgMTU0IDQ0N1QxMDkgNDI5WiI+PC9wYXRoPjwvZz48L2c+PGcgZGF0YS1tbWwtbm9kZT0ibXRkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMDAwLDApIj48ZyBkYXRhLW1tbC1ub2RlPSJtbiI+PHBhdGggZGF0YS1jPSIzMyIgZD0iTTEyNyA0NjNRMTAwIDQ2MyA4NSA0ODBUNjkgNTI0UTY5IDU3OSAxMTcgNjIyVDIzMyA2NjVRMjY4IDY2NSAyNzcgNjY0UTM1MSA2NTIgMzkwIDYxMVQ0MzAgNTIyUTQzMCA0NzAgMzk2IDQyMVQzMDIgMzUwTDI5OSAzNDhRMjk5IDM0NyAzMDggMzQ1VDMzNyAzMzZUMzc1IDMxNVE0NTcgMjYyIDQ1NyAxNzVRNDU3IDk2IDM5NSAzN1QyMzggLTIyUTE1OCAtMjIgMTAwIDIxVDQyIDEzMFE0MiAxNTggNjAgMTc1VDEwNSAxOTNRMTMzIDE5MyAxNTEgMTc1VDE2OSAxMzBRMTY5IDExOSAxNjYgMTEwVDE1OSA5NFQxNDggODJUMTM2IDc0VDEyNiA3MFQxMTggNjdMMTE0IDY2UTE2NSAyMSAyMzggMjFRMjkzIDIxIDMyMSA3NFEzMzggMTA3IDMzOCAxNzVWMTk1UTMzOCAyOTAgMjc0IDMyMlEyNTkgMzI4IDIxMyAzMjlMMTcxIDMzMEwxNjggMzMyUTE2NiAzMzUgMTY2IDM0OFExNjYgMzY2IDE3NCAzNjZRMjAyIDM2NiAyMzIgMzcxUTI2NiAzNzYgMjk0IDQxM1QzMjIgNTI1VjUzM1EzMjIgNTkwIDI4NyA2MTJRMjY1IDYyNiAyNDAgNjI2UTIwOCA2MjYgMTgxIDYxNVQxNDMgNTkyVDEzMiA1ODBIMTM1UTEzOCA1NzkgMTQzIDU3OFQxNTMgNTczVDE2NSA1NjZUMTc1IDU1NVQxODMgNTQwVDE4NiA1MjBRMTg2IDQ5OCAxNzIgNDgxVDEyNyA0NjNaIj48L3BhdGg+PC9nPjwvZz48L2c+PGcgZGF0YS1tbWwtbm9kZT0ibXRyIj48ZyBkYXRhLW1tbC1ub2RlPSJtdGQiPjxnIGRhdGEtbW1sLW5vZGU9Im1uIj48cGF0aCBkYXRhLWM9IjM0IiBkPSJNNDYyIDBRNDQ0IDMgMzMzIDNRMjE3IDMgMTk5IDBIMTkwVjQ2SDIyMVEyNDEgNDYgMjQ4IDQ2VDI2NSA0OFQyNzkgNTNUMjg2IDYxUTI4NyA2MyAyODcgMTE1VjE2NUgyOFYyMTFMMTc5IDQ0MlEzMzIgNjc0IDMzNCA2NzVRMzM2IDY3NyAzNTUgNjc3SDM3M0wzNzkgNjcxVjIxMUg0NzFWMTY1SDM3OVYxMTRRMzc5IDczIDM3OSA2NlQzODUgNTRRMzkzIDQ3IDQ0MiA0Nkg0NzFWMEg0NjJaTTI5MyAyMTFWNTQ1TDc0IDIxMkwxODMgMjExSDI5M1oiPjwvcGF0aD48L2c+PC9nPjxnIGRhdGEtbW1sLW5vZGU9Im10ZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUwMCwwKSI+PGcgZGF0YS1tbWwtbm9kZT0ibW4iPjxwYXRoIGRhdGEtYz0iMzUiIGQ9Ik0xNjQgMTU3UTE2NCAxMzMgMTQ4IDExN1QxMDkgMTAxSDEwMlExNDggMjIgMjI0IDIyUTI5NCAyMiAzMjYgODJRMzQ1IDExNSAzNDUgMjEwUTM0NSAzMTMgMzE4IDM0OVEyOTIgMzgyIDI2MCAzODJIMjU0UTE3NiAzODIgMTM2IDMxNFExMzIgMzA3IDEyOSAzMDZUMTE0IDMwNFE5NyAzMDQgOTUgMzEwUTkzIDMxNCA5MyA0ODVWNjE0UTkzIDY2NCA5OCA2NjRRMTAwIDY2NiAxMDIgNjY2UTEwMyA2NjYgMTIzIDY1OFQxNzggNjQyVDI1MyA2MzRRMzI0IDYzNCAzODkgNjYyUTM5NyA2NjYgNDAyIDY2NlE0MTAgNjY2IDQxMCA2NDhWNjM1UTMyOCA1MzggMjA1IDUzOFExNzQgNTM4IDE0OSA1NDRMMTM5IDU0NlYzNzRRMTU4IDM4OCAxNjkgMzk2VDIwNSA0MTJUMjU2IDQyMFEzMzcgNDIwIDM5MyAzNTVUNDQ5IDIwMVE0NDkgMTA5IDM4NSA0NFQyMjkgLTIyUTE0OCAtMjIgOTkgMzJUNTAgMTU0UTUwIDE3OCA2MSAxOTJUODQgMjEwVDEwNyAyMTRRMTMyIDIxNCAxNDggMTk3VDE2NCAxNTdaIj48L3BhdGg+PC9nPjwvZz48ZyBkYXRhLW1tbC1ub2RlPSJtdGQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwMDAsMCkiPjxnIGRhdGEtbW1sLW5vZGU9Im1uIj48cGF0aCBkYXRhLWM9IjM2IiBkPSJNNDIgMzEzUTQyIDQ3NiAxMjMgNTcxVDMwMyA2NjZRMzcyIDY2NiA0MDIgNjMwVDQzMiA1NTBRNDMyIDUyNSA0MTggNTEwVDM3OSA0OTVRMzU2IDQ5NSAzNDEgNTA5VDMyNiA1NDhRMzI2IDU5MiAzNzMgNjAxUTM1MSA2MjMgMzExIDYyNlEyNDAgNjI2IDE5NCA1NjZRMTQ3IDUwMCAxNDcgMzY0TDE0OCAzNjBRMTUzIDM2NiAxNTYgMzczUTE5NyA0MzMgMjYzIDQzM0gyNjdRMzEzIDQzMyAzNDggNDE0UTM3MiA0MDAgMzk2IDM3NFQ0MzUgMzE3UTQ1NiAyNjggNDU2IDIxMFYxOTJRNDU2IDE2OSA0NTEgMTQ5UTQ0MCA5MCAzODcgMzRUMjUzIC0yMlEyMjUgLTIyIDE5OSAtMTRUMTQzIDE2VDkyIDc1VDU2IDE3MlQ0MiAzMTNaTTI1NyAzOTdRMjI3IDM5NyAyMDUgMzgwVDE3MSAzMzVUMTU0IDI3OFQxNDggMjE2UTE0OCAxMzMgMTYwIDk3VDE5OCAzOVEyMjIgMjEgMjUxIDIxUTMwMiAyMSAzMjkgNTlRMzQyIDc3IDM0NyAxMDRUMzUyIDIwOVEzNTIgMjg5IDM0NyAzMTZUMzI5IDM2MVEzMDIgMzk3IDI1NyAzOTdaIj48L3BhdGg+PC9nPjwvZz48L2c+PGcgZGF0YS1tbWwtbm9kZT0ibXRyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC0xNDAwKSI+PGcgZGF0YS1tbWwtbm9kZT0ibXRkIj48ZyBkYXRhLW1tbC1ub2RlPSJtbiI+PHBhdGggZGF0YS1jPSIzNSIgZD0iTTE2NCAxNTdRMTY0IDEzMyAxNDggMTE3VDEwOSAxMDFIMTAyUTE0OCAyMiAyMjQgMjJRMjk0IDIyIDMyNiA4MlEzNDUgMTE1IDM0NSAyMTBRMzQ1IDMxMyAzMTggMzQ5UTI5MiAzODIgMjYwIDM4MkgyNTRRMTc2IDM4MiAxMzYgMzE0UTEzMiAzMDcgMTI5IDMwNlQxMTQgMzA0UTk3IDMwNCA5NSAzMTBROTMgMzE0IDkzIDQ4NVY2MTRROTMgNjY0IDk4IDY2NFExMDAgNjY2IDEwMiA2NjZRMTAzIDY2NiAxMjMgNjU4VDE3OCA2NDJUMjUzIDYzNFEzMjQgNjM0IDM4OSA2NjJRMzk3IDY2NiA0MDIgNjY2UTQxMCA2NjYgNDEwIDY0OFY2MzVRMzI4IDUzOCAyMDUgNTM4UTE3NCA1MzggMTQ5IDU0NEwxMzkgNTQ2VjM3NFExNTggMzg4IDE2OSAzOTZUMjA1IDQxMlQyNTYgNDIwUTMzNyA0MjAgMzkzIDM1NVQ0NDkgMjAxUTQ0OSAxMDkgMzg1IDQ0VDIyOSAtMjJRMTQ4IC0yMiA5OSAzMlQ1MCAxNTRRNTAgMTc4IDYxIDE5MlQ4NCAyMTBUMTA3IDIxNFExMzIgMjE0IDE0OCAxOTdUMTY0IDE1N1oiPjwvcGF0aD48L2c+PC9nPjxnIGRhdGEtbW1sLW5vZGU9Im10ZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTUwMCwwKSI+PGcgZGF0YS1tbWwtbm9kZT0ibW4iPjxwYXRoIGRhdGEtYz0iMzYiIGQ9Ik00MiAzMTNRNDIgNDc2IDEyMyA1NzFUMzAzIDY2NlEzNzIgNjY2IDQwMiA2MzBUNDMyIDU1MFE0MzIgNTI1IDQxOCA1MTBUMzc5IDQ5NVEzNTYgNDk1IDM0MSA1MDlUMzI2IDU0OFEzMjYgNTkyIDM3MyA2MDFRMzUxIDYyMyAzMTEgNjI2UTI0MCA2MjYgMTk0IDU2NlExNDcgNTAwIDE0NyAzNjRMMTQ4IDM2MFExNTMgMzY2IDE1NiAzNzNRMTk3IDQzMyAyNjMgNDMzSDI2N1EzMTMgNDMzIDM0OCA0MTRRMzcyIDQwMCAzOTYgMzc0VDQzNSAzMTdRNDU2IDI2OCA0NTYgMjEwVjE5MlE0NTYgMTY5IDQ1MSAxNDlRNDQwIDkwIDM4NyAzNFQyNTMgLTIyUTIyNSAtMjIgMTk5IC0xNFQxNDMgMTZUOTIgNzVUNTYgMTcyVDQyIDMxM1pNMjU3IDM5N1EyMjcgMzk3IDIwNSAzODBUMTcxIDMzNVQxNTQgMjc4VDE0OCAyMTZRMTQ4IDEzMyAxNjAgOTdUMTk4IDM5UTIyMiAyMSAyNTEgMjFRMzAyIDIxIDMyOSA1OVEzNDIgNzcgMzQ3IDEwNFQzNTIgMjA5UTM1MiAyODkgMzQ3IDMxNlQzMjkgMzYxUTMwMiAzOTcgMjU3IDM5N1oiPjwvcGF0aD48L2c+PC9nPjxnIGRhdGEtbW1sLW5vZGU9Im10ZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzAwMCwwKSI+PGcgZGF0YS1tbWwtbm9kZT0ibW4iPjxwYXRoIGRhdGEtYz0iMzciIGQ9Ik01NSA0NThRNTYgNDYwIDcyIDU2N0w4OCA2NzRRODggNjc2IDEwOCA2NzZIMTI4VjY3MlExMjggNjYyIDE0MyA2NTVUMTk1IDY0NlQzNjQgNjQ0SDQ4NVY2MDVMNDE3IDUxMlE0MDggNTAwIDM4NyA0NzJUMzYwIDQzNVQzMzkgNDAzVDMxOSAzNjdUMzA1IDMzMFQyOTIgMjg0VDI4NCAyMzBUMjc4IDE2MlQyNzUgODBRMjc1IDY2IDI3NSA1MlQyNzQgMjhWMTlRMjcwIDIgMjU1IC0xMFQyMjEgLTIyUTIxMCAtMjIgMjAwIC0xOVQxNzkgMFQxNjggNDBRMTY4IDE5OCAyNjUgMzY4UTI4NSA0MDAgMzQ5IDQ4OUwzOTUgNTUySDMwMlExMjggNTUyIDExOSA1NDZRMTEzIDU0MyAxMDggNTIyVDk4IDQ3OUw5NSA0NThWNDU1SDU1VjQ1OFoiPjwvcGF0aD48L2c+PC9nPjwvZz48L2c+PGcgZGF0YS1tbWwtbm9kZT0ibW8iIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQxNjcsMCkiPjxwYXRoIGRhdGEtYz0iMjNBNCIgZD0iTTAgMTA3MFYxMTU0SDM0N1YtNjQ1SDI2M1YxMDcwSDBaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLDk5NikiPjwvcGF0aD48cGF0aCBkYXRhLWM9IjIzQTYiIGQ9Ik0yNjMgLTU2MFYxMTU1SDM0N1YtNjQ0SDBWLTU2MEgyNjNaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC0xMDA2KSI+PC9wYXRoPjxzdmcgd2lkdGg9IjY2NyIgaGVpZ2h0PSI0MDIiIHk9IjQ5IiB4PSIwIiB2aWV3Qm94PSIwIDEwMC41IDY2NyA0MDIiPjxwYXRoIGRhdGEtYz0iMjNBNSIgZD0iTTI2MyAwVjYwMkgzNDdWMEgyNjNaIiB0cmFuc2Zvcm09InNjYWxlKDEsMS4wMDIpIj48L3BhdGg+PC9zdmc+PC9nPjwvZz48L2c+PC9nPjwvZz48L3N2Zz48c3ZnIGRhdGEtbGFiZWxzPSJ0cnVlIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWF4WU1pZCIgdmlld0JveD0iMTI3OCAtMjE1MCAxIDM4MDAiPjxnIGRhdGEtbGFiZWxzPSJ0cnVlIiB0cmFuc2Zvcm09Im1hdHJpeCgxIDAgMCAtMSAwIDApIj48ZyBkYXRhLW1tbC1ub2RlPSJtdGQiIGlkPSJtangtZXFuOjMiPjxnIGRhdGEtbW1sLW5vZGU9Im10ZXh0Ij48cGF0aCBkYXRhLWM9IjI4IiBkPSJNOTQgMjUwUTk0IDMxOSAxMDQgMzgxVDEyNyA0ODhUMTY0IDU3NlQyMDIgNjQzVDI0NCA2OTVUMjc3IDcyOVQzMDIgNzUwSDMxNUgzMTlRMzMzIDc1MCAzMzMgNzQxUTMzMyA3MzggMzE2IDcyMFQyNzUgNjY3VDIyNiA1ODFUMTg0IDQ0M1QxNjcgMjUwVDE4NCA1OFQyMjUgLTgxVDI3NCAtMTY3VDMxNiAtMjIwVDMzMyAtMjQxUTMzMyAtMjUwIDMxOCAtMjUwSDMxNUgzMDJMMjc0IC0yMjZRMTgwIC0xNDEgMTM3IC0xNFQ5NCAyNTBaIj48L3BhdGg+PHBhdGggZGF0YS1jPSIzMyIgZD0iTTEyNyA0NjNRMTAwIDQ2MyA4NSA0ODBUNjkgNTI0UTY5IDU3OSAxMTcgNjIyVDIzMyA2NjVRMjY4IDY2NSAyNzcgNjY0UTM1MSA2NTIgMzkwIDYxMVQ0MzAgNTIyUTQzMCA0NzAgMzk2IDQyMVQzMDIgMzUwTDI5OSAzNDhRMjk5IDM0NyAzMDggMzQ1VDMzNyAzMzZUMzc1IDMxNVE0NTcgMjYyIDQ1NyAxNzVRNDU3IDk2IDM5NSAzN1QyMzggLTIyUTE1OCAtMjIgMTAwIDIxVDQyIDEzMFE0MiAxNTggNjAgMTc1VDEwNSAxOTNRMTMzIDE5MyAxNTEgMTc1VDE2OSAxMzBRMTY5IDExOSAxNjYgMTEwVDE1OSA5NFQxNDggODJUMTM2IDc0VDEyNiA3MFQxMTggNjdMMTE0IDY2UTE2NSAyMSAyMzggMjFRMjkzIDIxIDMyMSA3NFEzMzggMTA3IDMzOCAxNzVWMTk1UTMzOCAyOTAgMjc0IDMyMlEyNTkgMzI4IDIxMyAzMjlMMTcxIDMzMEwxNjggMzMyUTE2NiAzMzUgMTY2IDM0OFExNjYgMzY2IDE3NCAzNjZRMjAyIDM2NiAyMzIgMzcxUTI2NiAzNzYgMjk0IDQxM1QzMjIgNTI1VjUzM1EzMjIgNTkwIDI4NyA2MTJRMjY1IDYyNiAyNDAgNjI2UTIwOCA2MjYgMTgxIDYxNVQxNDMgNTkyVDEzMiA1ODBIMTM1UTEzOCA1NzkgMTQzIDU3OFQxNTMgNTczVDE2NSA1NjZUMTc1IDU1NVQxODMgNTQwVDE4NiA1MjBRMTg2IDQ5OCAxNzIgNDgxVDEyNyA0NjNaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzODksMCkiPjwvcGF0aD48cGF0aCBkYXRhLWM9IjI5IiBkPSJNNjAgNzQ5TDY0IDc1MFE2OSA3NTAgNzQgNzUwSDg2TDExNCA3MjZRMjA4IDY0MSAyNTEgNTE0VDI5NCAyNTBRMjk0IDE4MiAyODQgMTE5VDI2MSAxMlQyMjQgLTc2VDE4NiAtMTQzVDE0NSAtMTk0VDExMyAtMjI3VDkwIC0yNDZRODcgLTI0OSA4NiAtMjUwSDc0UTY2IC0yNTAgNjMgLTI1MFQ1OCAtMjQ3VDU1IC0yMzhRNTYgLTIzNyA2NiAtMjI1UTIyMSAtNjQgMjIxIDI1MFQ2NiA3MjVRNTYgNzM3IDU1IDczOFE1NSA3NDYgNjAgNzQ5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODg5LDApIj48L3BhdGg+PC9nPjwvZz48L2c+PC9zdmc+PC9nPjwvZz48L2c+PC9nPjwvc3ZnPg=="></img></p>
 
@@ -649,9 +655,9 @@ for compilation and separated with two <code>&amp;&amp;</code> symbols the comma
 program. Here a simple &quot;Hello World!&quot; script written in the Python programming
 language.</p>
 
-<pre class='code'><code>       ```{.shell cmd=&quot;python3 %i &gt; %o&quot; chunk.ext=py ext=txt}
-       print(&quot;Hello Python World!&quot;)
-       ```</code></pre>
+<pre class='code'><code>'``{.shell cmd=&quot;python3 %i &gt; %o&quot; chunk.ext=py ext=txt}
+print(&quot;Hello Python World!&quot;)
+'``</code></pre>
 
 <p>Here the output:</p>
 
@@ -659,13 +665,13 @@ language.</p>
 
 <p>Here an example for a C program:</p>
 
-<pre class='code'><code>    ```{.shell cmd=&quot;gcc %i -o hello&amp;&amp;./hello &gt; %o&quot; chunk.ext=c ext=txt}
-    #include &lt;stdio.h&gt;
-    int main() {
-        printf(&quot;Hello C World!\n&quot;);
-        return(0);
-    }
-    ```</code></pre>
+<pre class='code'><code>'``{.shell cmd=&quot;gcc %i -o hello&amp;&amp;./hello &gt; %o&quot; chunk.ext=c ext=txt}
+#include &lt;stdio.h&gt;
+int main() {
+    printf(&quot;Hello C World!\n&quot;);
+    return(0);
+}
+'``</code></pre>
 
 <p>And here the output:</p>
 
@@ -675,35 +681,50 @@ int main() {
     return(0);
 }</code></pre><pre class='code'><code class='out'>Hello C World!</code></pre>
 
-<h2><a name="summary">Summary</a></h2>
+<h2><a name='references'>References</a></h2>
 
-<p>The <code>tmdoc::tmdoc</code>  package provides a literate  programming  proccessor which
-extracts and  evaluates Tcl or command line  applicatons  code or input within
-code  chunks of a Markdown  documents.  The code chunks are  evaluated  by the
-<code>tmdoc</code>  processor  and replaced  with their output. The code or input and the
-output can be shown or hidden due to  specific  configuration  options for the
-code chunk. There is as well the  possibility to display images created by Tcl
-within  the  document  and  inline  evaluation  of short Tcl  commands  within
-backtick  where the first backtick is followed by the character  sequence like
-here: <code>'tcl set x 1'</code> (replace single quotes with backticks).</p>
+<p>Since  version  0.12.0  tmdoc as well  supports the  inclusion of  references.
+References can be included like this:</p>
 
-<p>Code chunks start on lines with three backticks and the character sequence tcl
-after  a curly  brace.  They  end at the  next  line  which  has  again  three
-backticks.</p>
+<pre class='code'><code>This is a references of a paper by Author  [@Author2021].  </code></pre>
 
-<pre class='code'><code class='std'>    ```{.tcl}
-    set x 1
-    ```
-    or Pandoc style
-    ``` {.tcl}
-    set x 2
-    ```</code></pre>
+<p>The author key must be available in a BibTeX file which can be either provided
+in the document header in the Yaml section (since tmdoc 0.13.0) like this:</p>
+
+<pre class='code'><code>---
+...
+bibliography: filename.bib
+...
+---</code></pre>
+
+<p>Alternatively it can be provided within the text like this:</p>
+
+<pre class='code'><code class='tclcode'>package require citer
+citer::bibliography filename.bib</code></pre>
+
+<p>Here  an  example  for a  citation.  Groth et. al.  have  written  a  nice  PCA  review
+[Groth2013]. In contrast  Sievers et. al. described the Clustal Omega command
+line application to align multiple sequences [Sievers2011].</p>
+
+<p>The  list  of  citations  can be  then  displayed  using  the  tcl  code  'tcl
+citer::bibliography'. Here the output:</p>
+
+<p><strong>References:</strong></p>
+
+<ul>
+<li><strong>[Groth2013]</strong> - Groth, D., Hartmann, S., Klie, S., Selbig, J. (2013). Principal Components Analysis. In: Computational Toxicology, Humana Press. 930: 527-547.</li>
+<li><strong>[Sievers2011]</strong> - Sievers, F., Wilm, A., Dineen, D., Gibson, T. J., Karplus, K., Li, W., Lopez, R., McWilliam, H., Remmert, M., Soding, J., Thompson, J. D., Higgins, D. G. (2011). Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Mol. Syst. Biol. 7: 539.
+
+</li></ul>
+
+<h2><a name='options'>Code Chunk Options</a></h2>
 
 <p>The following  options for Tcl code chunks which are
 declared with as <em>{.tcl}</em> are currently  available:</p>
 
 <ul>
 <li><em>echo</em>: Should the Tcl code be shown, true or false, default: true.</li>
+<li><em>eval</em>: Sgould the code chunk be evaluated, default: true</li>
 <li><em>fig</em>: Does the code chunk  produces a graphic,  default: false for Tcl code
   If this feature is used there must be a <code>figure</code> procedure with a filename argument which writes the figure.</li>
 <li><em>include</em>: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.</li>
@@ -719,7 +740,7 @@ declared with <em>{.cmd}</em>  or <em>{.shell}</em> as chunks:</p>
 <li><em>cmd</em>: the command line to process the input in the code chunk, the  following
   place holders are available
 <ul>
-<li><em>%i</em> - the input filename</li>
+<li><em>%i</em>, <em>%f</em> - the input filename</li>
 <li><em>%o</em> - the output filename</li>
 <li><em>%b</em> - the basename of the input filename</li></ul>
 
@@ -743,12 +764,12 @@ code chunk should be filled with the text string <em>LASTFILE</em>.</p>
 
 <p>Here an example:</p>
 
-<pre class='code'><code class='std'>    ```{.cmd cmd=&quot;dot -Tpng -o%o %i&quot; echo=false}
-    digraph g { A -&gt; B }
-    ```
-    ```{.cmd cmd=&quot;dot -Tpng -Nshape=box -Nstyle=filled -o%o %i&quot; echo=false}
-    LASTFILE
-    ```</code></pre>
+<pre class='code'><code class='std'>'``{.cmd cmd=&quot;dot -Tpng -o%o %i&quot; echo=false}
+digraph g { rankdir=&quot;LR&quot;; A -&gt; B -&gt; C }
+'``
+'``{.cmd cmd=&quot;dot -Tpng -Nshape=box -Nstyle=filled -o%o %i&quot; echo=false}
+LASTFILE
+'``</code></pre>
 
 <p>Here the output:</p>
 
@@ -771,7 +792,36 @@ declared with <em>{.kroki}</em> :</p>
   &quot;asis&quot; or &quot;show&quot;, default: &quot;show&quot;.</li>
 <li><em>include</em>: Should the created figure automatically displayed, default: true.
   If set to false it is as well recommended to give the chunk a label, which will be used to create the image filename.
+
 </li></ul>
+
+<h2><a name="summary">Summary</a></h2>
+
+<p>The <code>tmdoc::tmdoc</code>  package provides a literate  programming  proccessor which
+extracts and  evaluates Tcl, Shell, LaTeX equations or Diagram code within
+code  chunks of Markdown  documents.  The code chunks are  evaluated  by the
+<code>tmdoc</code>  processor  and replaced  with their output. The code or input and the
+output can be shown or hidden due to  specific  configuration  options for the
+code chunk.There is as well the  possibility to display images created by Tcl
+within  the  document  and  inline  evaluation  of short Tcl  commands  within
+backtick  where the first backtick is followed by the character  sequence like
+here:  <code>'tcl  set x 1'</code>  (replace  single  quotes with  backticks).
+Further  more  there  exists  code to  include  other  files into the  current
+document and to work with references stored in BibTeX files.</p>
+
+<p>Code chunks for Tcl code start on lines with three backticks and the character sequence tcl
+after  a curly  brace.  They  end at the  next  line  which  has  again  three
+backticks (replace the initial single quote with one backticks).</p>
+
+<pre class='code'><code class='std'>'``{.tcl}
+set x 1
+'``
+
+or Pandoc style
+
+'`` {.tcl}
+set x 2
+'``</code></pre>
 
 <h2><a name="install">Installation</a></h2>
 
@@ -781,11 +831,11 @@ your PATH variable.</p>
 
 <p>Here an example:</p>
 
-<pre class='code'><code>wget https://github.com/mittelmark/tmdoc/releases/download/v0.10.0/tmdoc-0.10.0.bin \
+<pre class='code'><code>wget https://github.com/mittelmark/tmdoc/releases/download/v0.12.0/tmdoc-0.12.0.bin \
     -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.10.0</code></pre>
+## 0.12.0</code></pre>
 
 <p>To install the library copy the folder <em>modules/tmdoc</em> to a folder belonging to
 your TCLLIBPATH variable. If this variable does not exists you can set it for instance to <code>~/.local/lib/Tcl8.6</code> and place the code therein.</p>
@@ -803,15 +853,15 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 
 <ul>
 <li>Tcl/Tk 8.6.14 </li>
-<li>tmdoc::tmdoc 0.12.0</li>
+<li>tmdoc::tmdoc 0.12.1</li>
 <li>canvas::snap </li>
 <li>tclgd </li>
 <li>ukaz 
 </li></ul>
 
-<p>Document was processed at: 2025-09-30 22:25</p>
+<p>Document was processed at: 2025-10-01 08:20</p>
 
-<p>Document processing was done within: 2236 milliseconds.</p>
+<p>Document processing was done within: 1688 milliseconds.</p>
 
 <p>Let's destroy the Tk application at the end.</p>
 

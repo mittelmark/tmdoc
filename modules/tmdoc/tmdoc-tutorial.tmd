@@ -1,12 +1,18 @@
 ---
-title: tmdoc::tmdoc 0.12.0 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.12.1 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
 date: `tcl clock format [clock seconds] -format "%Y-%m-%d"`
+bibliography: ../../examples/literature.bib
 ---
 
-```{.tcl echo=false,results=hide}
+```{.tcl label=start1 echo=false results=hide eval=false}
 set start [clock milliseconds]
-lappend auto_path /home/groth/workspace/delfgroth/mytcl/libs
+lappend auto_path ..
+```
+
+```{.tcl label=start2,echo=false,results=hide,eval=true}
+set start [clock milliseconds]
+lappend auto_path ..
 ```
 
 ## <a name="abstract">Abstract</a>
@@ -44,17 +50,20 @@ Tcl packages and other types of documentation.
 
 - [Introduction](#intro)
 - [Color Codes](#codes)
-- [Standard Code Blocks](#block)
-- [The puts Statement](#puts)
-- [Inline Codes](#inline)
-- [Error Handling](#errors)
-- [Creating Tables](#tables)
-- [Including Files](#include)
-- [Writing Images with tsvg](#images)
-- [Other Command Line Tools](#clp)
-- [Kroki Webservice Diagrams](#kroki)
-- [LaTeX Equations](#latex)
-- [Programming](#programming)
+- [Tcl code chunks](#block)
+    - [Standard Code Blocks](#block)
+    - [The puts Statement](#puts)
+    - [Inline Codes](#inline)
+    - [Error Handling](#errors)
+    - [Creating Tables](#tables)
+    - [Including Files](#include)
+    - [Writing Images with tsvg](#images)
+- [Command Line Tools (GraphViz, GO games ...) ](#clp)
+- [Kroki Diagrams (GraphViz, PlantUML, ...)](#kroki)
+- [LaTeX Equations and Matrices](#latex)
+- [Programming Examples (C, C++, Python)](#programming)
+- [References with BibTeX Files](#references)
+- [Code Chunk Options](#options)
 - [Summary](#summary)
 - [Installation](#install)
 - [See Also](#seealso)
@@ -88,18 +97,19 @@ With the [pandoc](https://pandoc.org/) command line application yo can as well c
 The pipeline is then the following:
 
 ```{std}
-      tmdoc        pandoc
+      tmdoc         pandoc
 TMD --------> MD ----------> HTML/PDF/DOCX
 ```
 
 Now the mandatory "Hello World!" example. If you embed the following text
 into your Markdown document with the extension, `.tmd`, *tmdoc* will produce, after converting the document
-from Markdown to HTML via *mkdoc* or *pandoc*, the following input (without the leading four spaces, nessessary here to avoid interpretation by *tmdoc*) 
+from  Markdown to HTML via *mkdoc* or *pandoc*, the following  input  (replace
+the leading single quote with a backtick, necessary here to avoid interpretation by *tmdoc*) 
 
 ```{std}
-    ```{.tcl}
-    puts "Hello World!"
-    ```
+'``{.tcl}
+puts "Hello World!"
+'``
 ```
 
 will produce this output:
@@ -153,15 +163,15 @@ Standard code block are started with three tickmarts at the beginning of a
 line and in curly brace the string tcl. Separated by a space might follow
 several evaluation options which will be described later in more detail.
 
-Here the Tcl-Markdown input (without the leading four spaces):
+Here the Tcl-Markdown input (replace the single quote with a backtick):
 
 ```{std}
-    ```{tcl echo=true}
-    set x 1
-    set a 1
-    set a
-    set x
-    ```
+'``{tcl echo=true}
+set x 1
+set a 1
+set a
+set x
+'``
 ```
 
 Please note that the indentation is neccessary only for the example here, as
@@ -229,9 +239,9 @@ set a ""
 Alternatively you can supress the output at all by giving an option `results=hide` to the code chunk
 
 ```{std}
-    ```{.tcl results=hide}
-    set a 1
-    ```
+'``{.tcl results=hide}
+set a 1
+'``
 ```
 
 ```{.tcl results=hide}
@@ -245,11 +255,11 @@ code by specifying `results=hide` and `echo=false` as shown in the following exa
 
 
 ```{std}
-    ```{tcl results=hide,echo=false}
-    set a 2
-    ```
+'``{tcl results=hide,echo=false}
+set a 2
+'``
     
-   Our variable a has now a value of `tcl set a` although we don't know why as the programming code is hidden.
+Our variable a has now a value of `tcl set a` although we don't know why as the programming code is hidden.
 ```
 
 ```{.tcl results=hide,echo=false}
@@ -309,11 +319,11 @@ Since  _tmdoc_  version  0.7.0 there is as well  support for tables  using the
 `results=asis` option. Here an example:
 
 ```{std}
-    ```{.tcl results=asis,echo=false}
-    set h [list A B C]
-    set d [list 1 2 3 4 5 6 7 8 9]
-    puts [list2mdtab $h $d]
-    ```
+'``{.tcl results=asis,echo=false}
+set h [list A B C]
+set d [list 1 2 3 4 5 6 7 8 9]
+puts [list2mdtab $h $d]
+'``
 ```
 
 ```{.tcl results=asis,echo=false}
@@ -347,7 +357,6 @@ Some text - indented and emphasized.
  
 Some more text.
     
-
 
 
 ## <a name="images">Writing Images</a>
@@ -411,10 +420,10 @@ approach.
 Here an example:
 
 ```{.unindent}
-    ``` {.tcl}  
-    set x 3
-    puts $x
-    ```
+'`` {.tcl}  
+set x 3
+puts $x
+'``
 ```
 
 And here the output:
@@ -440,16 +449,17 @@ code  chunks, for  instance using tools like
 [GraphViz dot](https://www.graphviz.org), [Pikchr](https://pikchr.org) or 
 [PlantUML](https://www.plantuml.com) or even [R](https://www.r-project.org).  To do this you add code chunks with the
 `.shell` tag and provide the command to process in the code chunk  options the
-command to process the content with the `cmd` attribute. There are as well two
-placeholders,  one for the input filename `%i` and one for an optional  output
+command to process the content with the `cmd` attribute. There are as well 
+placeholders,  two for the input  filename  `%i` or '%f', one for the basename
+of the input file, so the filename without the extension '%b' and one for the output
 filename: `%o`. Here an example for using the dot executable:
 
 ```
-    ```{.shell cmd="dot -Tpng %i -o%o" echo=false}
-    digraph g {
-      A -> B
-    }
-    ```
+'``{.shell cmd="dot -Tpng %i -o%o" echo=false}
+digraph g {
+   A -> B
+}
+'``
 ```
 
 And here the output:
@@ -466,13 +476,13 @@ Here the output  filename is guessed  from the input  filename, so there is no
 need to give the `%o` argument.
 
 ```
-    ```{.shell cmd="plantuml -tpng %i" echo=false}
-    @startuml
-    class A { }
-    class B { }
-      A -> B
-    @enduml
-    ```
+'``{.shell cmd="plantuml -tpng %i" echo=false}
+@startuml
+class A { }
+class B { }
+A -> B
+@enduml
+'``
 ```
 
 And here the output:
@@ -485,11 +495,11 @@ A -> B
 @enduml
 ```
 
-Some  times you would  like to use the same input as in the graphi  before but
+Some  times you would  like to use the same input presented in the code block before but
 with  different  command line  arguments. In this case you can add as well the
 term  `LASTFILE`  on the first  line of the code chunk to reuse  this. Here an
-example to display different moments of a Go game. So instead of writing again
-and again the same game record in the code chunk you just write the short text
+example to display different moments of a Go board game. So instead of writing again
+and again the same long game record in the code chunk you just write the short text
 `LASTFILE`  into it. Here an example for this approach  displaying the initial
 phase of a 13x13 board game but with  different  command  line options for the
 display using the command line tool [sgf-render](https://github.com/julianandrews/sgf-render):
@@ -767,8 +777,8 @@ digraph a {
 ## <a name="latex">LaTeX Equations
 
 The  [https://math.vercel.app](https://math.vercel.app)  webservice allows you
-to embed LaTeX  equations into your  documents. The equation is downloaded and
-cached in the local file system, only if the  equations is changed the file is
+to embed LaTeX  equations into your  documents. The equation svg file is downloaded and
+cached in the local file system, only if the  equation is changed the file is
 downloaded again. Here an example:
 
 ```
@@ -803,7 +813,7 @@ and here the output again:
 \end{bmatrix}
 ```
 
-Using the option echo=false you can hide the LaTeX code:
+Using the option `echo=false` you can hide the LaTeX code:
 
 ```
 '``{.mtex echo=false}
@@ -816,7 +826,7 @@ Using the option echo=false you can hide the LaTeX code:
 ```
 
 And here the output  where you only should see the  equation but not the LaTeX
-code:
+code as `echo` was set to false:
 
 ```{.mtex echo=false}
 \begin{bmatrix}
@@ -838,9 +848,9 @@ program. Here a simple "Hello World!" script written in the Python programming
 language.
 
 ```
-       ```{.shell cmd="python3 %i > %o" chunk.ext=py ext=txt}
-       print("Hello Python World!")
-       ```
+'``{.shell cmd="python3 %i > %o" chunk.ext=py ext=txt}
+print("Hello Python World!")
+'``
 ```
 
 Here the output:
@@ -852,13 +862,13 @@ print("Hello Python World!")
 Here an example for a C program:
 
 ```
-    ```{.shell cmd="gcc %i -o hello&&./hello > %o" chunk.ext=c ext=txt}
-    #include <stdio.h>
-    int main() {
-        printf("Hello C World!\n");
-        return(0);
-    }
-    ```
+'``{.shell cmd="gcc %i -o hello&&./hello > %o" chunk.ext=c ext=txt}
+#include <stdio.h>
+int main() {
+    printf("Hello C World!\n");
+    return(0);
+}
+'``
 ```
 
 And here the output:
@@ -871,37 +881,51 @@ int main() {
 }
 ```
 
+## <a name='references'>References</a>
 
-## <a name="summary">Summary</a>
+Since  version  0.12.0  tmdoc as well  supports the  inclusion of  references.
+References can be included like this:
 
-The `tmdoc::tmdoc`  package provides a literate  programming  proccessor which
-extracts and  evaluates Tcl or command line  applicatons  code or input within
-code  chunks of a Markdown  documents.  The code chunks are  evaluated  by the
-`tmdoc`  processor  and replaced  with their output. The code or input and the
-output can be shown or hidden due to  specific  configuration  options for the
-code chunk. There is as well the  possibility to display images created by Tcl
-within  the  document  and  inline  evaluation  of short Tcl  commands  within
-backtick  where the first backtick is followed by the character  sequence like
-here: <code>'tcl set x 1'</code> (replace single quotes with backticks).
-
-Code chunks start on lines with three backticks and the character sequence tcl
-after  a curly  brace.  They  end at the  next  line  which  has  again  three
-backticks.
-
-```{std}
-    ```{.tcl}
-    set x 1
-    ```
-    or Pandoc style
-    ``` {.tcl}
-    set x 2
-    ```
 ```
+This is a references of a paper by Author  [@Author2021].  
+```
+
+The author key must be available in a BibTeX file which can be either provided
+in the document header in the Yaml section (since tmdoc 0.13.0) like this:
+
+```
+---
+...
+bibliography: filename.bib
+...
+---
+```
+
+Alternatively it can be provided within the text like this:
+
+```{.tcl label=citer eval=false}
+package require citer
+citer::bibliography filename.bib
+```
+
+Here  an  example  for a  citation.  Groth et. al.  have  written  a  nice  PCA  review
+[@Groth2013]. In contrast  Sievers et. al. described the Clustal Omega command
+line application to align multiple sequences [@Sievers2011].
+
+The  list  of  citations  can be  then  displayed  using  the  tcl  code  'tcl
+citer::bibliography'. Here the output:
+
+__References:__
+
+`tcl citer::bibliography`
+
+## <a name='options'>Code Chunk Options</a>
 
 The following  options for Tcl code chunks which are
 declared with as _{.tcl}_ are currently  available:
 
 - _echo_: Should the Tcl code be shown, true or false, default: true.
+- _eval_: Sgould the code chunk be evaluated, default: true
 - _fig_: Does the code chunk  produces a graphic,  default: false for Tcl code
   If this feature is used there must be a `figure` procedure with a filename argument which writes the figure.
 - _include_: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
@@ -915,7 +939,7 @@ declared with _{.cmd}_  or _{.shell}_ as chunks:
 
 - _cmd_: the command line to process the input in the code chunk, the  following
   place holders are available
-    - _%i_ - the input filename
+    - _%i_, _%f_ - the input filename
     - _%o_ - the output filename
     - _%b_ - the basename of the input filename
 -  _chunk.ext_ - file  filename  extension  for the code chunk, the default is
@@ -937,12 +961,12 @@ code chunk should be filled with the text string _LASTFILE_.
 Here an example:
 
 ```{std}
-    ```{.cmd cmd="dot -Tpng -o%o %i" echo=false}
-    digraph g { A -> B }
-    ```
-    ```{.cmd cmd="dot -Tpng -Nshape=box -Nstyle=filled -o%o %i" echo=false}
-    LASTFILE
-    ```
+'``{.cmd cmd="dot -Tpng -o%o %i" echo=false}
+digraph g { rankdir="LR"; A -> B -> C }
+'``
+'``{.cmd cmd="dot -Tpng -Nshape=box -Nstyle=filled -o%o %i" echo=false}
+LASTFILE
+'``
 ```
 
 Here the output:
@@ -972,6 +996,37 @@ declared with _{.kroki}_ :
 - _include_: Should the created figure automatically displayed, default: true.
   If set to false it is as well recommended to give the chunk a label, which will be used to create the image filename.
 
+
+## <a name="summary">Summary</a>
+
+The `tmdoc::tmdoc`  package provides a literate  programming  proccessor which
+extracts and  evaluates Tcl, Shell, LaTeX equations or Diagram code within
+code  chunks of Markdown  documents.  The code chunks are  evaluated  by the
+`tmdoc`  processor  and replaced  with their output. The code or input and the
+output can be shown or hidden due to  specific  configuration  options for the
+code chunk.There is as well the  possibility to display images created by Tcl
+within  the  document  and  inline  evaluation  of short Tcl  commands  within
+backtick  where the first backtick is followed by the character  sequence like
+here:  <code>'tcl  set x 1'</code>  (replace  single  quotes with  backticks).
+Further  more  there  exists  code to  include  other  files into the  current
+document and to work with references stored in BibTeX files.
+
+Code chunks for Tcl code start on lines with three backticks and the character sequence tcl
+after  a curly  brace.  They  end at the  next  line  which  has  again  three
+backticks (replace the initial single quote with one backticks).
+
+```{std}
+'``{.tcl}
+set x 1
+'``
+
+or Pandoc style
+
+'`` {.tcl}
+set x 2
+'``
+```
+
 ## <a name="install">Installation</a>
 
 To install the command line application, just download the latest bin file from the release page of the Github project,
@@ -981,11 +1036,11 @@ your PATH variable.
 Here an example:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.10.0/tmdoc-0.10.0.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.12.0/tmdoc-0.12.0.bin \
     -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.10.0
+## 0.12.0
 ```
 
 To install the library copy the folder _modules/tmdoc_ to a folder belonging to

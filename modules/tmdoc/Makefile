@@ -9,3 +9,6 @@ test:
 	tclsh tmdoc.test
 	tclsh ../../apps/tmdoc test-man.tman test-man.man
 
+tmdoc:
+	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd out.md
+

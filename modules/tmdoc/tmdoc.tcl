@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <250930.2120>
+#  Last Modified : <251001.0819>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -25,12 +25,16 @@ exec tclsh "$0" "$@"
 #                  2025-06-07 version 0.10.0 support for textual tool output, for example
 #                                            from programming code
 #                  2025-09-14 version 0.11.0 support for %b basename of input file
-#                  2025-09-XX version 0.12.0 support for LaTeX quations using https://math.vercel.app
+#                  2025-09-30 version 0.12.0 support for LaTeX quations using https://math.vercel.app
 #                                            suport for embedding Youtube videos
 #                                            support %f as input filename
+#                  2025-10-XX version 0.12.1 fixing tcl code chunk option eval=false
+#                                            fixing resetting default of code chunks
+#                                            adding bibliography entry in YAML header
+#                                            extending tmdoc tutorial
 package require Tcl 8.6-
 package require fileutil
-package provide tmdoc::tmdoc 0.12.0
+package provide tmdoc::tmdoc 0.12.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {}
 
@@ -194,6 +198,9 @@ proc ::tmdoc::interpReset {} {
     interp eval try {proc ntab {{label ""}} {}}    
     interp eval try {proc rtab {label} {}}        
     interp eval try {proc youtube {video args} {}}            
+    interp eval try {namespace eval citer { } }
+    interp eval try {proc citer::bibliography {{filename ""}} {}}
+    interp eval try {proc citer::cite {key} {}}        
 }
 
 proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {
@@ -274,7 +281,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set krokiinput ""
     set mtexinput ""
     set lastbashinput ""
-    array set dopt [list echo true results show fig false include true \
+    array set dopt [list eval true echo true results show fig false include true \
         fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png chunk.ext txt]
     ## bash / shell
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
@@ -291,9 +298,19 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         return -code error "Cannot open $filename: $infh"
     } else {
         set chunki 0
+        set lnr 0
         while {[gets $infh line] >= 0} {
+            incr lnr
             if {$mode eq "text" && [regexp {\[@[@,\w]+\]} $line]} {
                 set line [regsub -all {\[@([@\w,]+)\]} $line "`tcl citer::cite \\1`"]
+            }
+            if {$lnr < 20 && $mode eq "text" && [regexp {^bibliography: } $line]} {
+                interp eval intp {lappend auto_path ..; package require citer }
+                set bibfile [regsub {bibliography:\s+([^\s]+).*} $line "\\1"]
+                if {![file exists $bibfile]} {
+                    error "Error: BibTeX file $bibfile does not exists!"
+                }
+                interp eval intp "citer::bibliography $bibfile"
             }
             if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?tcl\s*\}} $line -> opts])} {
                 set mode code
@@ -345,7 +362,6 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set cmd [regsub -all {%f} $cmd $copt(label).$copt(chunk.ext)]                
                 set cmd [regsub -all {%b} $cmd $copt(label)]                
                 set cmd [regsub -all {%o} $cmd $copt(label).$copt(ext)]
-                puts stderr $cmd
                 if {$copt(results) eq "show"} {
                     if {[regexp {LASTFILE} $bashinput]} {
                         set bashinput $lastbashinput
@@ -419,6 +435,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 set bashinput ""
                 set mode text
+                array unset copt
             } elseif {$mode eq "kroki" && [regexp {```} $line]} {
                 if {$copt(echo)} {
                     if {$inmode eq "md"} {
@@ -447,6 +464,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 set krokiinput ""
                 set mode text
+                array unset copt                
             } elseif {$mode eq "mtex" && [regexp {```} $line]} {
                 if {$copt(echo)} {
                     if {$inmode eq "md"} {
@@ -475,102 +493,105 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 set mtexinput ""
                 set mode text
+                array unset copt
             } elseif {$mode eq "shell"} {
                append bashinput "$line\n"
             } elseif {$mode eq "kroki"} {
                append krokiinput "$line\n"
             } elseif {$mode eq "mtex"} {
                append mtexinput "$line\n"
-            } elseif {$mode eq "code" && [regexp {```} $line]} {
-                if {$copt(echo)} {
-                    if {$inmode eq "md"} {
-                        puts $out "```{tclcode}"
-                        puts -nonewline $out $tclcode
-                        puts $out "```"
-                    } elseif {$inmode eq "man"} {
-                        puts $out ""
-                        puts -nonewline $out "\n\[example_begin\]\n$tclcode\n\[example_end\]\n"
-                        puts $out ""
-                    } else {
-                        puts $out "\\begin{lcverbatim}"
-                        puts -nonewline $out $tclcode
+           } elseif {$mode eq "code" && [regexp {```} $line]} {
+               if {$copt(echo)} {
+                   if {$inmode eq "md"} {
+                       puts $out "```{tclcode}"
+                       puts -nonewline $out $tclcode
+                       puts $out "```"
+                   } elseif {$inmode eq "man"} {
+                       puts $out ""
+                       puts -nonewline $out "\n\[example_begin\]\n$tclcode\n\[example_end\]\n"
+                       puts $out ""
+                   } else {
+                       puts $out "\\begin{lcverbatim}"
+                       puts -nonewline $out $tclcode
                         puts $out "\\end{lcverbatim}"
                     }
                 }
-                if {[catch {interp eval try $tclcode} res]} {
-                    if {$inmode eq "md"} {
-                        puts $out "```{tclerr}\n$res\n```\n"
-                    } elseif {$inmode eq "man"} {
-                        puts $out "\n\[example_begin\]\nError:\n$res\n\[example_end\]\n"
-                    } else {
-                        puts $out "\n\\begin{lrverbatim}\n$res\n\\end{lrverbatim}\n"
-                    }
-                } else {
-                    set res [interp eval intp $tclcode]
-                    set pres [interp eval intp gputs]
-                    if {$copt(results) eq "asis"} {
-                        puts -nonewline $out $pres
-                    } elseif {$copt(results) eq "show"} {
+                if {$copt(eval)} {
+                    if {[catch {interp eval try $tclcode} res]} {
                         if {$inmode eq "md"} {
-                            if {$res ne "" || $pres ne ""} {
-                                puts $out "```{tclout}"
-                            }
-                            if {$pres ne ""} {
-                                puts -nonewline $out "$pres"
-                            }
-                            if {$res ne ""} {
-                                puts $out "==> $res"
-                            }
-                            if {$res ne "" || $pres ne ""} {
-                                puts $out "```"
-                            }
-                        } elseif {$inmode eq "man"} { 
-                            if {$pres ne ""} {
-                                puts -nonewline $out "==> $pres"
-                            }
-                            if {$res ne ""} {
-                                puts $out "==> $res"
-                            }
+                            puts $out "```{tclerr}\n$res\n```\n"
+                        } elseif {$inmode eq "man"} {
+                            puts $out "\n\[example_begin\]\nError:\n$res\n\[example_end\]\n"
                         } else {
-                            if {$res ne "" || $pres ne ""} {
-                                puts $out "\\begin{lbverbatim}"
-                            }
-                            if {$pres ne ""} {
-                                puts -nonewline $out "$pres"
-                            }
-                            if {$res ne ""} {
-                                puts $out "==> $res"
-                            }
-                            if {$res ne "" || $pres ne ""} {
-                                puts $out "\\end{lbverbatim}"
-                            }
-                            
+                            puts $out "\n\\begin{lrverbatim}\n$res\n\\end{lrverbatim}\n"
                         }
-                    }
-                    if {$copt(fig)} {
-                        set imgfile [file tail [file rootname $filename]]-$copt(label).$copt(ext)
-                        if {[interp eval intp "info commands figure"] eq ""} {
+                    } else {
+                        set res [interp eval intp $tclcode]
+                        set pres [interp eval intp gputs]
+                        if {$copt(results) eq "asis"} {
+                            puts -nonewline $out $pres
+                        } elseif {$copt(results) eq "show"} {
                             if {$inmode eq "md"} {
-                                puts $out "```{tclerr}\nYou need to define a figure procedure \nwhich gets a filename as argument"
-                                puts $out "proc figure {filename} { }\n\nwhere within you create the image file```\n"
-                            } elseif {$inmode eq "man"} {
-                                puts $out "\n\[example_begin\]"
-                                puts $out "\nYou need to define a figure procedure \nwhich gets a filename as argument"
-                                puts $out "proc figure {filename} { }\n\nwhere within you create the image file\n"
-                                puts $out "\n\[example_end\]"
+                                if {$res ne "" || $pres ne ""} {
+                                    puts $out "```{tclout}"
+                                }
+                                if {$pres ne ""} {
+                                    puts -nonewline $out "$pres"
+                                }
+                                if {$res ne ""} {
+                                    puts $out "==> $res"
+                                }
+                                if {$res ne "" || $pres ne ""} {
+                                    puts $out "```"
+                                }
+                            } elseif {$inmode eq "man"} { 
+                                if {$pres ne ""} {
+                                    puts -nonewline $out "==> $pres"
+                                }
+                                if {$res ne ""} {
+                                    puts $out "==> $res"
+                                }
                             } else {
-                                puts $out "\n\\begin{lrverbatim}\n\nYou need to define a figure procedure \nwhich gets a filename as argument\n"
-                                puts $out "proc figure {filename} { }\n\nwhere within you create the image file\\end{lrverbatim}\n"
+                                if {$res ne "" || $pres ne ""} {
+                                    puts $out "\\begin{lbverbatim}"
+                                }
+                                if {$pres ne ""} {
+                                    puts -nonewline $out "$pres"
+                                }
+                                if {$res ne ""} {
+                                    puts $out "==> $res"
+                                }
+                                if {$res ne "" || $pres ne ""} {
+                                    puts $out "\\end{lbverbatim}"
+                                }
+                            
                             }
-                        } else {
-                            interp eval intp [list figure $imgfile]
-                            if {$copt(include)} {
-                                if {$inmode eq "md"} {
-                                    puts $out "\n!\[\]($imgfile)\n"
-                                } elseif {$inmode eq "man"} {
-                                    puts $out "\n\[image [file rootname $imgfile]\]\n"
+                            if {$copt(fig)} {
+                                set imgfile [file tail [file rootname $filename]]-$copt(label).$copt(ext)
+                                if {[interp eval intp "info commands figure"] eq ""} {
+                                    if {$inmode eq "md"} {
+                                        puts $out "```{tclerr}\nYou need to define a figure procedure \nwhich gets a filename as argument"
+                                        puts $out "proc figure {filename} { }\n\nwhere within you create the image file```\n"
+                                    } elseif {$inmode eq "man"} {
+                                        puts $out "\n\[example_begin\]"
+                                        puts $out "\nYou need to define a figure procedure \nwhich gets a filename as argument"
+                                        puts $out "proc figure {filename} { }\n\nwhere within you create the image file\n"
+                                        puts $out "\n\[example_end\]"
+                                    } else {
+                                        puts $out "\n\\begin{lrverbatim}\n\nYou need to define a figure procedure \nwhich gets a filename as argument\n"
+                                        puts $out "proc figure {filename} { }\n\nwhere within you create the image file\\end{lrverbatim}\n"
+                                    }
                                 } else {
-                                    puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$imgfile}\n"
+                                    interp eval intp [list figure $imgfile]
+                                    if {$copt(include)} {
+                                        if {$inmode eq "md"} {
+                                            puts $out "\n!\[\]($imgfile)\n"
+                                        } elseif {$inmode eq "man"} {
+                                            puts $out "\n\[image [file rootname $imgfile]\]\n"
+                                        } else {
+                                            puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$imgfile}\n"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -578,6 +599,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 set tclcode ""
                 set mode text
+                array unset copt
                 continue
             } elseif {$mode eq "text" && [regexp {[> ]{0,2}```} $line]} {
                 set mode pretext
@@ -642,6 +664,7 @@ proc ::tmdoc::GetOpts {} {
             set opts ${before}${match}${after}
         }
         set opts [regsub -all {,+} [regsub -all { +} $opts ,] ,]
+        
         foreach opt [split $opts ","] {
             set opt [string trim [regsub -nocase false [regsub -nocase true $opt true] false]]
             set o [split $opt =] 
@@ -649,7 +672,6 @@ proc ::tmdoc::GetOpts {} {
             set value [regsub {"(.+)"} [lindex $o 1] "\\1"]
             set value [regsub -all {%20} $value " "]
             set value [regsub -all {%3d} $value "="]
-            
             set copt($key) $value
         }
         # setting default label if no label was given
@@ -818,12 +840,17 @@ namespace eval ::tmdoc {
 #' - 2025-09-16 Release 0.11.0
 #'     - support for %b, the basename of the input file
 #'     - C and C++ examples updated
-#' - 2025-09-XX Release 0.12.0
+#' - 2025-09-30 Release 0.12.0
 #'     - support for %f (for the input filename, so same as %i)
 #'     - support for embedding LaTeX equations using [math.vercel.app](https://math.vercel.app) 
 #'       webservice
 #'     - support for embedding Youtube videos inside iframes
 #'     - adding abc music examples
+#' - 2025-10-XX Release 0.12.1
+#'     - fixing tcl code chunk option eval=false
+#'     - fixing resetting default of code chunks
+#'     - adding bibliography file entry in YAML header
+#'     - extending tmdoc tutorial for citation use
 #'
 #' ## <a name='todo'>TODO</a>
 #'
@@ -833,7 +860,7 @@ namespace eval ::tmdoc {
 #'
 #' ## <a name='license'>LICENSE AND COPYRIGHT</a>
 #'
-#' Tcl Markdown processor tmdoc::tmdoc, version 0.12.0
+#' Tcl Markdown processor tmdoc::tmdoc, version 0.12.1
 #'
 #' Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany E-mail: <dgroth(at)uni(minus)potsdam(dot)de>
 #'
