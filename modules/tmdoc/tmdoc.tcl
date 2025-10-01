@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251001.0819>
+#  Last Modified : <251001.1737>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -276,6 +276,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         return
     }
     set mode text
+    set alt false
     set tclcode ""
     set bashinput ""
     set krokiinput ""
@@ -311,6 +312,18 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     error "Error: BibTeX file $bibfile does not exists!"
                 }
                 interp eval intp "citer::bibliography $bibfile"
+            }
+            if {$mode eq "text" && $alt && [regexp {^\s*$} $line]} {
+                set line "</p></div>\n\n"
+                set alt false
+            } 
+            if {$mode eq "text" && $alt && [regexp {^> (.+)} $line -> txt]} {
+                set line $txt
+            } 
+            if {$mode eq "text" && [regexp {^> \[!([A-Z]+)\]} $line -> alert]} {
+                set alt true
+                set alert [string tolower $alert 1 end]
+                set line "<div class=\"side-[string tolower $alert]\"><p><b>${alert}:</b> "
             }
             if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?tcl\s*\}} $line -> opts])} {
                 set mode code

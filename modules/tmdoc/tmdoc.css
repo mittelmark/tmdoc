@@ -50,3 +50,131 @@ table tr td {
   text-align: left; 
   padding: 5px;
 }
+
+/* Alerts: */
+
+.side-warning, .side-caution, .side-info, .side-question, .side-error, .side-note, .side-tip, .side-important {
+  color: var(--used-color);
+  margin-bottom: 32px;
+  margin-top: 16px;
+  padding: 16px;
+  padding-left: 48px;
+  border-radius: 5px 0 0 5px;
+  position: relative;  
+}
+.side-error, .side-caution {
+  border-left: solid 7px #aa3322;
+  border-top: solid 1px #fff0f0; 
+  border-right: solid 1px #fff0f0; 
+  border-bottom: solid 1px #fff0f0; 
+  background-color: #fff0f0;
+  
+}
+
+.side-important {
+  border-left: solid 7px #aa33aa;
+  border-top: solid 1px #fff0ff; 
+  border-right: solid 1px #fff0ff; 
+  border-bottom: solid 1px #fff0ff; 
+  background-color: #fff0ff;
+}
+
+.side-note, .side-tip {
+  border-left: solid 7px #223399;
+  border-top: solid 1px #f0f7ff; 
+  border-right: solid 1px #f0f7ff; 
+  border-bottom: solid 1px #f0f7ff; 
+  background-color: #f0f7ff;
+  
+}
+
+.side-info {
+  border-left: solid 7px #339922;
+  border-top: solid 1px #f7fff0; 
+  border-right: solid 1px #f7fff0; 
+  border-bottom: solid 1px #f7fff0; 
+  background-color: #f7fff0;
+  
+}
+.side-question {
+  border-left: solid 7px #999922;
+  border-top: solid 1px #fffff0; 
+  border-right: solid 1px #fffff0; 
+  border-bottom: solid 1px #fffff0; 
+  background-color: #fffff0;
+}
+.side-warning {
+  border-left: solid 7px #ff9933;
+  border-top: solid 1px #fff7f0; 
+  border-right: solid 1px #fff7f0; 
+  border-bottom: solid 1px #fff7f0; 
+  background-color: #fff7f0;
+}
+
+.side-info::before, .side-warning::before, .side-caution::before, .side-question::before, .side-error::before, .side-note::before, .side-tip::before, .side-important::before {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: 700;
+  height: 24px;
+  justify-content: center;
+  left: 12px;
+  line-height: 1;
+  position: absolute;
+  top: 15px;
+  width: 24px;
+}
+
+.side-note::before, .side-tip::before {
+  background-color: #223399;
+  color: #fff;
+  content: "N";
+  
+}
+
+.side-important::before {
+  background-color: #993399;
+  color: #fff;
+  content: "!";
+}
+
+.side-tip::before {
+  background-color: #223399; 
+  content: "\261B";
+  font-size: 110%;
+  
+}
+
+.side-info::before {
+  background-color: #339922;
+  color: #fff;
+  content: "i";
+  
+}
+.side-error::before {
+  background-color: #fff0f0;
+  color: #fff;
+  content: "\26D4";
+  font-size: 120%;
+}
+.side-caution::before {
+  background-color: #aa3322;
+  color: #fff;
+  content: "!";
+}
+
+.side-question::before {
+  background-color: #999922;
+  color: #fff;
+  content: "?";
+  
+}
+
+.side-warning::before {
+  background-color: #dd6622;
+  color: #fff;
+  content: "!";
+  
+}

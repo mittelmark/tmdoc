@@ -919,6 +919,35 @@ __References:__
 
 `tcl citer::bibliography`
 
+## Alerts
+
+> [!NOTE]
+> This is the note text. Note note!!
+
+> [!TIP]
+> Do not overload the text with alerts like this!
+
+> [!IMPORTANT]
+> That is very important! Or not??
+
+> [!WARNING]
+> This is a warning, warn, warn! This is a warning, warn, warn! This is a warning, warn, warn! This is a warning, warn, warn!
+
+> [!INFO]
+> This is an info, info, info! This is an info, info, info!  
+> This is an info, info, info!  This is an info, info, info!!!
+
+> [!QUESTION]
+> Be or not to be! That is the question!!
+
+> [!ERROR]
+> An error happend!
+
+> [!CAUTION]
+> This might have consequences!  
+> An error can happen!  
+> Can we have a third line?
+
 ## <a name='options'>Code Chunk Options</a>
 
 The following  options for Tcl code chunks which are
