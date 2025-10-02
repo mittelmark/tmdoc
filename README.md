@@ -37,18 +37,18 @@ technique  as well known as  literate  programming.
 
 ### Installation
 
-On a Unix system with installed Tcl interpreter just download the file  tmdoc-0.12.0.bin, save it to your
+On a Unix system with installed Tcl interpreter just download the file  tmdoc-0.13.0.bin, save it to your
 hard disk and then make it executable like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.12.0/tmdoc-0.12.0.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.13.0/tmdoc-0.13.0.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.12.0
+## 0.13.0
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -276,7 +276,7 @@ tclmain -m tmdoc --help
     - support for LaTeX quations using [https://math.vercel.app](https://math.vercel.app)
     - support for embedding Youtube videos creating an iframe
     - support for embedding citations based on BibteX files
-- 2025-10-XX 0.13.0 
+- 2025-10-02 0.13.0 
     - support for abbreviations declared in the YAML header or in YAML files
     - support for [Markdown alerts](https://github.com/orgs/community/discussions/16925)
     - support for embedding CSV data for creating Markdown tables
