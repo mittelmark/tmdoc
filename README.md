@@ -16,13 +16,24 @@ documents.
 
 ## Description
 
-The package  _tmdoc_  provides a command to evaluate  embedded  Diagram, LaTeX
-and Tcl code in code chunks within  documents of Markup  languages  like Markdown and LaTeX and add
-the  resulting  output to the  document  for  creating  dynamic  documents,  a
-technique  as well known as  literate  programming.  The latter uses  Tcllib's
-Markdown  package.  
+The package _tmdoc_ and the standalone application of it provide facilities to
+evaluate  embedded Diagram code, LaTeX equations, YAML defined  abbreviations,
+or Tcl code within  documents of Markup languages like Markdown and LaTeX and
+add the  resulting  output to the document for creating  dynamic  documents, a
+technique  as well known as  literate  programming. 
 
-## Features
+## Main Features
+
+- __Abbreviations:__ expand YAML defined abbreviations
+- __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925)
+- __Citations:__ reference management using BibTeX files
+- __CSV Tables:__ create tables using CSV data
+- __Diagrams:__ evaluate diagram code and embed create graphics using the [Kroki webservice](https:://kroki.io)
+- __Graphic generation:__ create graphics using the [tsvg package](https://github.com/mittelmark/tsv)
+- __Includes:__ Markdown file includes
+- __LaTeX equations:__ can be embedded using the [math.vercel.app](https://math.vercel.app) web servcie
+- __Shell code:__ evaluate embedded shell code to create graphics or text to be used within the output
+- __Tcl programming:__ evaluate Tcl and other programming language code
 
 ### Installation
 
