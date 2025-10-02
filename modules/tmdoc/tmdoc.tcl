@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251002.0644>
+#  Last Modified : <251002.0803>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -578,7 +578,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 array unset copt                
             } elseif {$mode eq "mtex" && [regexp {```} $line]} {
                 if {$copt(echo)} {
-                    set cont [tmdoc::block $inmode $mtexinput]
+                    set cont [tmdoc::block $mtexinput $inmode]
                     puts $out $cont
                 }
                 set url https://math.vercel.app?from=[ue ${mtexinput}].svg
