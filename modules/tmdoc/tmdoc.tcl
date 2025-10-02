@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251002.0803>
+#  Last Modified : <251002.1057>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -40,6 +40,7 @@ package require fileutil
 package require yaml
 package provide tmdoc::tmdoc 0.13.0
 package provide tmdoc [package provide tmdoc::tmdoc]
+source [file join [file dirname [info script]] filter-pipe.tcl]
 namespace eval ::tmdoc {}
 
 # clear all variables and defintions
@@ -442,13 +443,23 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode $nmode
                 array set copt [array get mopt]
                 ::tmdoc::GetOpts 
+                puts stderr "[array get copt]"
                 continue
-            } elseif {$mode in [list csv] && [regexp {```} $line]} {
+            } elseif {$mode in [list csv pipe] && [regexp {```} $line]} {
+                puts stderr "fetching for mode $mode and inmode $inmode"
+                puts stderr "ginput is $ginput"
                 if {$copt(echo)} {
                     puts $out [tmdoc::block $ginput $inmode]
                 }
-                if {$copt(results) eq "asis"}  {
-                    puts $out [tmdoc::csv $ginput]
+                if {$mode eq "csv"} {
+                    if {$copt(results) eq "asis"}  {
+                        puts $out [tmdoc::csv $ginput]
+                    }
+                } elseif {$mode eq "pipe"} {
+                    set res [filter-pipe $ginput [dict create {*}[array get copt]]]
+                    if {$copt(results) eq "show"} {
+                        puts $out [tmdoc::block [lindex $res 0] $inmode]
+                    }
                 }
                 set ginput ""
                 set mode text
@@ -601,7 +612,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 append krokiinput "$line\n"
             } elseif {$mode eq "mtex"} {
                 append mtexinput "$line\n"
-            } elseif {$mode in [list csv]} {
+            } elseif {$mode in [list csv pipe]} {
                 append ginput "$line\n"
             } elseif {$mode eq "code" && [regexp {```} $line]} {
                if {$copt(echo)} {
@@ -739,6 +750,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     }
 
                 }
+                while {[regexp {(.*?)`r ([^`]+)`(.*)$} $line -> pre t post]} {
+                    set res [lindex [split [lindex [filter-pipe $t [dict create pipe R eval true]] 0] " "] end]
+                    set line [regsub -all {_}  "$pre$res$post" {\\_}]
+                }
+
                 puts $out $line
             } elseif {$mode eq "pretext"} {
                 puts $out $line

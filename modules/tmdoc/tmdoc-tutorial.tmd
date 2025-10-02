@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.13.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-02 07:04
+date: 2025-10-02 10:36
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1034,6 +1034,33 @@ col1,col2,col3,col4
 19,20,21,22
 ```
 
+## R Code Evaluation
+
+```{.pipe pipe="R" results="show"}
+data(iris)
+png("testr.png")
+boxplot(iris$Sepal.Length ~ iris$Species,col=2:4)
+dev.off()
+print(2)
+x=3
+```
+
+![testr.png](testr.png)
+
+Now the next chunk of code:
+
+```{.pipe pipe=R results=show echo=false}
+print(x)
+```
+
+Now again an other chunk of code:
+
+```{.pipe pipe=R results=show echo=false}
+x=x+1
+print(x)
+```
+
+Now let's show what x is. The variable x has a value of: `r x`.
 
 ## <a name='options'>Code Chunk Options</a>
 
