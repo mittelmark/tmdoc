@@ -261,10 +261,14 @@ tclmain -m tmdoc --help
     - support for embedded code of different programming languages like 
       C, C++, Python etc and displaying text output from the code
 - 2025-09-14 0.11.0    
-- 2025-09-XX 0.12.0 
+- 2025-09-30 0.12.0 
     - support for LaTeX quations using [https://math.vercel.app](https://math.vercel.app)
     - support for embedding Youtube videos creating an iframe
     - support for embedding citations based on BibteX files
+- 2025-10-XX 0.13.0 
+    - support for abbreviations declared in the YAML header or in YAML files
+    - support for [Markdown alerts](https://github.com/orgs/community/discussions/16925)
+    - support for embedding CSV data for creating Markdown tables
       
 ## TODO
 
@@ -278,7 +282,7 @@ tclmain -m tmdoc --help
 ## See Also
 
 - [mkdoc](https://github.com/mittelmark/mkdoc) - converting Markdown output of
-  tmdoc to HTML or extracting Markdown documentagtion from sourc code files
+  tmdoc to HTML or extracting Markdown documentation from source code files
 - [pantcl](https://github.com/mittelmark/pantcl)  - combines functionality of
   pandoc, mkdoc, tmdoc and brings many filter for code blocks like for GraphViz,
   PlantUML, Shell, R and Python
