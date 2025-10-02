@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.12.0]
+[vset VERSION 0.13.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -13,10 +13,14 @@ The package [package tmdoc] provides a command to evaluate embedded Tcl and
 Shell code in code chunks within documents of Markup languages like Markdown
 and LaTeX and add the resulting output to the document for creating dynamic
 documents, a technique as well known as literate programming. Further it can
-use the kroki.io webservice to embed diagrams for this web service wven if
-diagram tools like GraphViz or PlantUML are not installed locally. Since version 0.10.0 as well
-code written in various programming languages can be embedded, compiled and executed making 
-[package tmdoc] an useful utility to write programming tutorials.
+use the kroki.io webservice to embed diagrams for this web service if diagram
+tools like GraphViz or PlantUML are not installed locally. Since version
+0.10.0 as well code written in various programming languages can be embedded,
+compiled and executed making [package tmdoc] an useful utility to write
+programming tutorials. Further since version 0.12.0 LaTeX equations and
+Youtube videos can be embedded and since version 0.13.0 there is as well
+support for defining abbreviations in YAML files or in the YAML header,
+[uri https://github.com/orgs/community/discussions/16925 {Markdown alerts}] and embedding tables as CSV code.
 
 Conversion of the created Markdown documents can be done by using Tcllib's [package Markdown] package.
 
@@ -104,7 +108,7 @@ and many others. For details look at the kroki.io website.
 [section "LaTeX Equations"]
 
 Since version 0.12.0 there is as well support for embedding LaTeX equations as SVG images using the 
-[uri https://math.vercel.app] webservice. The equations are hashed as CRC32 hashes and then downloaded 
+[uri https://math.vercel.app math.vercel.app] webservice. The equations are hashed as CRC32 hashes and then downloaded 
 if [cmd wget] is installed to avoid refetching the images again and again. if [cmd wget] is not
 available just the link to math.vercel.app image is embedded. Here an example:
 
@@ -114,6 +118,57 @@ E = mc^2
 ```
 }]
 
+[section "CSV Tables"]
+
+Since version 0.13.0 there is as well support for embedding CSV data within code chunks and 
+displaying them as Markdown tables. Here an example:
+
+[example {
+```{.csv echo=false results=asis}
+col1,col2,col3
+1,2,3
+4,5,6
+7,8,9
+```
+}]
+
+
+[section "Abbreviations"]
+
+Since version 0.13.0 there is as well support for embedding abbreviations either in the YAML header of the document
+or in an external file which must be then referenced in the YAML header like this:
+
+[example {
+---
+abbreviations: abbrev.yml
+DG: Detlef Groth, University of Potsdam, Germany
+---
+
+Inside the of the text the abbreviations can be then expanded using
+curly braces like here: This text was written by {DG}!
+
+
+Here an abbreviation which will be expanded based on the YAML data in abbrev.yml.
+
+{lipsum}
+}]
+
+[section "Markdown Alerts"]
+
+Since version 0.13.0 there is as well support for adding [uri https://github.com/orgs/community/discussions/16925 {Markdown alerts}]. 
+These alerts are only visible as such by styline the style sheet acordingly. 
+Please have a look at the file [cmd tmdoc.css] for the styling of the alerts which
+can be seen in the tutorial. Here an example:
+
+[example {
+
+> [!NOTE]
+> This is a note.
+
+
+> [!WARNING]
+> This is a warning!!
+}]
 
 [section Functions]
 

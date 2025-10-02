@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251001.2209>
+#  Last Modified : <251002.0644>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -28,14 +28,17 @@ exec tclsh "$0" "$@"
 #                  2025-09-30 version 0.12.0 support for LaTeX quations using https://math.vercel.app
 #                                            suport for embedding Youtube videos
 #                                            support %f as input filename
-#                  2025-10-XX version 0.12.1 fixing tcl code chunk option eval=false
+#                  2025-10-XX version 0.13.0 fixing tcl code chunk option eval=false
 #                                            fixing resetting default of code chunks
 #                                            adding bibliography entry in YAML header
 #                                            extending tmdoc tutorial
+#                                            adding alert messages in Markdown ouput
+#                                            adding abbreviations
+#                                            adding csv based  table creation  
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.12.1
+package provide tmdoc::tmdoc 0.13.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 namespace eval ::tmdoc {}
 
@@ -252,6 +255,26 @@ proc ::tmdoc::extractAbbreviations {str} {
     }
     return $result
 }
+proc tmdoc::block {txt inmode {style ""}} {
+    set res ""
+    if {$style ne ""} {
+        set style "{${style}}"
+    }
+    if {$inmode eq "md"} {
+        append res "```${style}\n${txt}"
+        append res "```\n"
+    } elseif {$inmode eq "man"} {
+        append res "\n"
+        append res "\[example_begin\]\n\n$txt\n\n\[example_end\]\n"
+        append res "\n"
+    } else {
+        append res "\\begin{lcverbatim}\n"
+        append res "$txt"
+        append res "\\end{lcverbatim}"
+    }
+    return $res
+}
+
 # public functions - the main function process the files
 
 proc ::tmdoc::tmdoc {filename outfile args} {
@@ -307,6 +330,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set krokiinput ""
     set mtexinput ""
     set lastbashinput ""
+    set ginput ""
+    array set mopt [list eval true echo true results show fig false include true label chunk-nn\
+                    ext png chunk.ext txt]
     array set dopt [list eval true echo true results show fig false include true \
         fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png chunk.ext txt]
     ## bash / shell
@@ -360,7 +386,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             if {$mode eq "text" && [regexp {\[@[@,\w]+\]} $line]} {
                 set line [regsub -all {\[@([@\w,]+)\]} $line "`tcl citer::cite \\1`"]
             }
-            if {$lnr < 20 && $mode eq "text" && [regexp {^bibliography: } $line]} {
+            if {$mode eq "text" && $lnr < 20 && [regexp {^bibliography: } $line]} {
                 interp eval intp {lappend auto_path ..; package require citer }
                 set bibfile [regsub {bibliography:\s+([^\s]+).*} $line "\\1"]
                 if {![file exists $bibfile]} {
@@ -410,6 +436,23 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 incr chunki
                 array set copt [array get tdopt]
                 ::tmdoc::GetOpts 
+                continue
+            } elseif {$mode eq "text" && [regexp {^ {0,3}```\{\.([a-z0-9]+)(\s*.*)\}} $line -> nmode opts]} {
+                incr chunki
+                set mode $nmode
+                array set copt [array get mopt]
+                ::tmdoc::GetOpts 
+                continue
+            } elseif {$mode in [list csv] && [regexp {```} $line]} {
+                if {$copt(echo)} {
+                    puts $out [tmdoc::block $ginput $inmode]
+                }
+                if {$copt(results) eq "asis"}  {
+                    puts $out [tmdoc::csv $ginput]
+                }
+                set ginput ""
+                set mode text
+                array unset copt
                 continue
             } elseif {$mode eq "shell" && [regexp {```} $line]} {
                 if {$copt(echo)} {
@@ -535,18 +578,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 array unset copt                
             } elseif {$mode eq "mtex" && [regexp {```} $line]} {
                 if {$copt(echo)} {
-                    if {$inmode eq "md"} {
-                        puts -nonewline $out "```\n${mtexinput}"
-                        puts $out "```"
-                    } elseif {$inmode eq "man"} {
-                        puts $out ""
-                        puts -nonewline $out "\[example_begin\]\n\n$mtexinput\n\n\[example_end\]\n"
-                        puts $out ""
-                    } else {
-                        puts $out "\\begin{lcverbatim}"
-                        puts -nonewline $out $mtexinput
-                        puts $out "\\end{lcverbatim}"
-                    }
+                    set cont [tmdoc::block $inmode $mtexinput]
+                    puts $out $cont
                 }
                 set url https://math.vercel.app?from=[ue ${mtexinput}].svg
                 set filename [url2crc32file $url $copt(imagepath) svg]
@@ -563,12 +596,14 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode text
                 array unset copt
             } elseif {$mode eq "shell"} {
-               append bashinput "$line\n"
+                append bashinput "$line\n"
             } elseif {$mode eq "kroki"} {
-               append krokiinput "$line\n"
+                append krokiinput "$line\n"
             } elseif {$mode eq "mtex"} {
-               append mtexinput "$line\n"
-           } elseif {$mode eq "code" && [regexp {```} $line]} {
+                append mtexinput "$line\n"
+            } elseif {$mode in [list csv]} {
+                append ginput "$line\n"
+            } elseif {$mode eq "code" && [regexp {```} $line]} {
                if {$copt(echo)} {
                    if {$inmode eq "md"} {
                        puts $out "```{tclcode}"
@@ -676,6 +711,15 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             } elseif {$mode eq "pretext" && [regexp {[> ]{0,2}```} $line]} {
                 puts $out $line
                 set mode text
+            } elseif {$mode ne "text" && [regexp {^\s{0,3}```} $line]} { 
+                if {$copt(echo)} {
+                    set cont [tmdoc::block $ginput $inmode $mode]
+                    puts $out $cont
+                }
+                set ginput ""
+                set mode text
+                array unset copt
+                continue
             } elseif {$mode eq "text"} {
                 # todo check for `tcl fragments`
                 while {[regexp {(.*?)`tcl ([^`]+)`(.*)$} $line -> pre t post]} {
@@ -706,7 +750,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     append tclcode "$line\n"
                 }
             } else {
-                error "error on '$line' should be not reachable"
+                puts $out $line
+                #error "error on '$line' should be not reachable"
             }
             
         }
@@ -765,6 +810,23 @@ proc ::tmdoc::tmeval {text} {
     return $ret
 }
 
+proc tmdoc::csv {txt} {
+    set res ""
+    set x 0
+    foreach line [split $txt \n] {
+        if {[regexp {^\s*$} $line]} {
+            continue
+        }
+        incr x
+        set nline [regsub -all {[,;\t]} $line " | "]
+        append res "| $nline |\n"
+        if {$x == 1} {
+            append hrule [regsub -all {[^\s|]} $nline "-"]
+            append res "| $hrule |\n"
+        } 
+    }
+    return $res
+}
 proc tmdoc::ue_init {} {
    lappend d + { }
    for {set i 0} {$i < 256} {incr i} {
@@ -918,6 +980,7 @@ namespace eval ::tmdoc {
 #'     - adding abbreviations in yaml header or yaml file
 #'     - adding alert boxes for Markdown output
 #'     - adding bibliography file entry in YAML header
+#'     - adding csv based table creation
 #'     - extending tmdoc tutorial for citation use
 #'     - fixing tcl code chunk option eval=false
 #'     - fixing resetting default of code chunks

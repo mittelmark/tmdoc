@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.12.1 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.13.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-01 22:04
+date: 2025-10-02 07:04
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -67,6 +67,7 @@ Tcl packages and other types of documentation.
 - [References with BibTeX Files](#references)
 - [Abbreviations](#abbrev)
 - [Alerts](#alerts)
+- [CSV Display](#csv)
 - [Code Chunk Options](#options)
 - [Summary](#summary)
 - [Installation](#install)
@@ -423,7 +424,7 @@ approach.
 
 Here an example:
 
-```{.unindent}
+```{unindent}
 '`` {.tcl}  
 set x 3
 puts $x
@@ -952,6 +953,16 @@ The document was created at {date}. This an empty abbreviation {empty}.
 
 Now an abbreviation which is in the `abbrev.yml` file - tmdoc is: '{tmdoc}'!
 
+Even longer abbreviations can be displayed like:
+
+```
+> _{lipsum}_
+```
+
+Here the output:
+
+> _{lipsum}_
+
 ## <a name="alerts">Alerts</a>
 
 Since version 0.13.0 tmdoc as well supports Alerts for the Markdown output. Alerts are following the same syntax as the 
@@ -1001,6 +1012,28 @@ Here some example:
 > This might have consequences!  
 > An error can happen!  
 > Can we have a third line?
+
+## <a name='csv'>CSV Display</a>
+
+Since version 0.13.0 it is as well to embed CSV (Comma Separated Values) data into the documents and return
+the data as text. Here an example:
+
+```{.csv results=asis}
+col1,col2,col3,col4
+1,2,3,4
+5,6,7,8
+9,10,11,12
+```
+
+As with other code chunks you can as well hide the input by using `echo=false`. Here data from an other table:
+
+```{.csv results=asis echo=false}
+col1,col2,col3,col4
+11,12,13,14
+15,16,17,18
+19,20,21,22
+```
+
 
 ## <a name='options'>Code Chunk Options</a>
 

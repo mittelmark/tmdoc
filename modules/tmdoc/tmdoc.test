@@ -124,5 +124,63 @@ Some text
 
 }
 
+tcltest::test tmdoc-test-1.8 {
+    Calling my tmdoc::tmeval with results=asis 
+    to display a table using csv input
+} -body {
+     tmdoc::tmeval "
+Some text
+
+```{.csv echo=false, results=asis}
+col1,col2,col3
+1,2,3
+4,5,6
+7,8,9
+```"
+
+} -result {
+Some text
+
+| col1 | col2 | col3 |
+| ---- | ---- | ---- |
+| 1 | 2 | 3 |
+| 4 | 5 | 6 |
+| 7 | 8 | 9 |
+
+}
+
+tcltest::test tmdoc-test-1.9 {
+    Calling my tmdoc::tmeval with alert message
+    for a note
+} -body {
+     string trim [tmdoc::tmeval "> \[!NOTE\]
+> This is a note!     
+"]
+} -result {<div class="side-note"><p><b>Note:</b> 
+This is a note!     
+</p></div>}
+
+
+tcltest::test tmdoc-test-1.10 {
+    Checking abbreviations in the YAML header.
+} -body {
+    string trim [tmdoc::tmeval "---
+title: This is test
+author: Max Musterman
+---
+
+# {title}
+
+{author}
+"]
+} -result {---
+title: This is test
+author: Max Musterman
+---
+
+# This is test
+
+Max Musterman}
+
 ::tcltest::cleanupTests 0
 
