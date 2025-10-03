@@ -3,10 +3,10 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="title" content="tmdoc::tmdoc 0.13.0 - Tcl Markdown processor tutorial">
+<meta name="title" content="tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial">
 <meta name="author" content="Detlef Groth, University of Potsdam, Germany">
     
-<title>tmdoc::tmdoc 0.13.0 - Tcl Markdown processor tutorial</title>
+<title>tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial</title>
     
     
 
@@ -21,9 +21,9 @@
 
 
 
-<h1 class="title">tmdoc::tmdoc 0.13.0 - Tcl Markdown processor tutorial</h1>
+<h1 class="title">tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-10-02</h2>
+<h2 class="date">2025-10-03</h2>
 
 <h2><a name="abstract">Abstract</a></h2>
 
@@ -136,7 +136,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-10-02 10:57</p>
+<p>The curent date and time is: 2025-10-03 09:23</p>
 
 <hr />
 
@@ -745,7 +745,7 @@ Now an abbreviation which is in the `abbrev.yml` file
 <p><strong>And here the output:</strong></p>
 
 <p>This is an abbrev Detlef Groth, University of Potsdam, Germany and this is another for the Author: Detlef Groth, University of Potsdam, Germany. 
-The document was created at 2025-10-02 10:36. This an empty abbreviation {empty}.</p>
+The document was created at 2025-10-03 09:23. This an empty abbreviation {empty}.</p>
 
 <p>Now an abbreviation which is in the <code>abbrev.yml</code> file - tmdoc is: 'Tcl Markdown document processor'!</p>
 
@@ -926,6 +926,59 @@ null device
 <p>Now let's show what x is. The variable x has a value of: 4
 .</p>
 
+<p>The advantage of this pipe based  approach to the shell based  approach  shown
+before for executing R code is that the  application  status is continued into
+the next code chunk. See here:</p>
+
+<pre class='code'><code>&gt; ls()
+[1] &quot;df2md&quot; &quot;iris&quot;  &quot;x&quot;    
+&gt; print(x)
+[1] 4</code></pre>
+
+<p>This allows comprehensive analysis in statistical reports.
+Usually you should use R packages  like knitr and  rmarkdown for this purpose,
+however they are much more demanding. If you install these packages using your
+package  manager  you might fill up your hard disk with 2GB of files,  whereas
+you can accomplish this with the little <strong>tmdoc</strong> binary by a single around 200KB large file.</p>
+
+<h2>Python Code Evaluation</h2>
+
+<p>As we can use R we can as well use Python in a similar way using the pipe code chunk. Here an example:</p>
+
+<pre class='code'><code>def hello():
+    print(&quot;Hello Python World!\n&quot;)
+
+hello()
+x=2</code></pre>
+
+<pre class='code'><code>&gt;&gt;&gt; def hello():
+...     print(&quot;Hello Python World!\n&quot;)
+... 
+&gt;&gt;&gt; hello()
+Hello Python World!
+&gt;&gt;&gt; x=2
+</code></pre>
+
+<p>Again we can use variables declared in the previous code chunks:</p>
+
+<pre class='code'><code>print(x)</code></pre>
+
+<pre class='code'><code>&gt;&gt;&gt; print(x)
+2
+</code></pre>
+
+<p>We can as well hide the code and only display the session data using the option
+<code>echo=false</code>.</p>
+
+<pre class='code'><code>&gt;&gt;&gt; print(x+1)
+3
+&gt;&gt;&gt; x=x+1
+</code></pre>
+
+<p>It is as well possible to embed inline python code. So the value of Pythons x is
+3
+.</p>
+
 <h2><a name='options'>Code Chunk Options</a></h2>
 
 <p>The following  options for Tcl code chunks which are
@@ -933,7 +986,7 @@ declared with as <em>{.tcl}</em> are currently  available:</p>
 
 <ul>
 <li><em>echo</em>: Should the Tcl code be shown, true or false, default: true.</li>
-<li><em>eval</em>: Sgould the code chunk be evaluated, default: true</li>
+<li><em>eval</em>: Should the code chunk be evaluated, default: true</li>
 <li><em>fig</em>: Does the code chunk  produces a graphic,  default: false for Tcl code
   If this feature is used there must be a <code>figure</code> procedure with a filename argument which writes the figure.</li>
 <li><em>include</em>: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.</li>
@@ -1058,26 +1111,18 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 
 <h2><a name="process">Processing Information</a></h2>
 
+<pre class='code'><code class='tclerr'>can't read &quot;argv&quot;: no such variable</code></pre>
+
 <p>For generating the document the following Tcl version and Tcl packages were used:</p>
 
 <ul>
 <li>Tcl/Tk 8.6.14 </li>
-<li>tmdoc::tmdoc 0.13.0</li>
-<li>canvas::snap </li>
-<li>tclgd </li>
-<li>ukaz 
+<li>tmdoc::tmdoc 
 </li></ul>
 
-<p>Document was processed at: 2025-10-02 10:57</p>
+<p>Document was processed at: 2025-10-03 09:23</p>
 
-<p>Document processing was done within: 3121 milliseconds.</p>
-
-<p>Let's destroy the Tk application at the end.</p>
-
-<p>TODO: Do this below automatically at the end !? Might be not good if it is loaded as package inside an application as this destroy probably as well the main application, not only the toplevel of the slave interpreter.</p>
-
-<pre class='code'><code class='tclcode'>after 10
-#destroy .</code></pre>
+<p>Document processing was done within: 8068 milliseconds.</p>
 
 
 

@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.13.0 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-02 10:36
+date: 2025-10-03 09:23
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1062,13 +1062,59 @@ print(x)
 
 Now let's show what x is. The variable x has a value of: `r x`.
 
+The advantage of this pipe based  approach to the shell based  approach  shown
+before for executing R code is that the  application  status is continued into
+the next code chunk. See here:
+
+```{.pipe pipe=R results=show echo=false}
+ls()
+print(x)
+```
+
+This allows comprehensive analysis in statistical reports.
+Usually you should use R packages  like knitr and  rmarkdown for this purpose,
+however they are much more demanding. If you install these packages using your
+package  manager  you might fill up your hard disk with 2GB of files,  whereas
+you can accomplish this with the little __tmdoc__ binary by a single around 200KB large file.
+
+
+## Python Code Evaluation
+
+As we can use R we can as well use Python in a similar way using the pipe code chunk. Here an example:
+
+```{.pipe pipe=python}
+def hello():
+    print("Hello Python World!\n")
+
+hello()
+x=2
+```
+  
+Again we can use variables declared in the previous code chunks:
+ 
+```{.pipe pipe=python}
+print(x)
+``` 
+
+We can as well hide the code and only display the session data using the option
+`echo=false`.
+
+```{.pipe pipe=python echo=false}
+print(x+1)
+x=x+1
+``` 
+
+
+It is as well possible to embed inline python code. So the value of Pythons x is
+`py print(x)`.
+
 ## <a name='options'>Code Chunk Options</a>
 
 The following  options for Tcl code chunks which are
 declared with as _{.tcl}_ are currently  available:
 
 - _echo_: Should the Tcl code be shown, true or false, default: true.
-- _eval_: Sgould the code chunk be evaluated, default: true
+- _eval_: Should the code chunk be evaluated, default: true
 - _fig_: Does the code chunk  produces a graphic,  default: false for Tcl code
   If this feature is used there must be a `figure` procedure with a filename argument which writes the figure.
 - _include_: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
@@ -1196,7 +1242,7 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 
 ## <a name="process">Processing Information</a>
 
-```{tcl results=hide,echo=false}
+```{tcl results=hide echo=false}
 package require tmdoc
 ```
 
@@ -1205,20 +1251,9 @@ For generating the document the following Tcl version and Tcl packages were used
 
 * Tcl/Tk `tcl set tcl_patchLevel` 
 * tmdoc::tmdoc `tcl package provide tmdoc::tmdoc`
-* canvas::snap `tcl package provide canvas::snap`
-* tclgd `tcl package provide tclgd`
-* ukaz `tcl package provide ukaz`
 
 Document was processed at: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`
 
 Document processing was done within: `tcl expr {[clock milliseconds] - $start}` milliseconds.
 
-Let's destroy the Tk application at the end.
-
-TODO: Do this below automatically at the end !? Might be not good if it is loaded as package inside an application as this destroy probably as well the main application, not only the toplevel of the slave interpreter.
-
-```{.tcl results=hide}
-after 10
-#destroy .
-```
 

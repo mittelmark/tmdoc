@@ -1,7 +1,7 @@
 ---
-title: Tmdoc - examples for the Python programming language
+title: tmdoc - examples for the Python programming language
 author: Detlef Groth
-date: 2025-06-10 09:58
+date: 2025-10-03 09:26
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }

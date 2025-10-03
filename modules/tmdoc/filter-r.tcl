@@ -27,7 +27,7 @@ proc piperead {pipe args} {
         if {$got ne "flush(stdout)"} {
             # not sure why python does this
             if {[regexp {^>>>} $got]} {
-                append ::fpipe::pipecode [regsub {^.*>>> } "$got" ""]
+                append ::fpipe::pipecode [regsub {^} {^.+>>> } "$got" ""]
             } else {
                 # R and Octave
                 if {[regexp "### SHOW OFF" $got]} {
@@ -99,12 +99,10 @@ proc ::fpipe::filter-pipe-R-df2md {} {
     flush $::fpipe::rpipe
 }
 proc filter-pipe {cont dict} {
-    puts stderr $cont
-    puts stderr $dict
     incr ::fpipe::n
     set ::fpipe::pipecode ""
     set def [dict create results show eval false label null \
-             include true pipe python3 terminal true wait 100]
+             include true pipe python3 terminal true wait 300]
     set dict [dict merge $def $dict]
     if {[dict get $dict eval]} {
         if {$::fpipe::pypipe eq "" && [string range [dict get $dict pipe] 0 1] eq "py"} {
@@ -210,6 +208,7 @@ proc filter-pipe {cont dict} {
     #  dirty fix for R pipe sometimes without starting greater sign
     if {[dict get $dict pipe] eq "R" && ![regexp {^> } $res]} {
         set res "> $res"
-    }
+    } 
     return [list $res ""]
 }
+

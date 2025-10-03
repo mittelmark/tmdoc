@@ -1,0 +1,29 @@
+---
+title: Python Example
+author: Detlef Groth, University of Potsdam, Germany
+date: 2025-10-03 09:24
+---
+
+## Python Code Evaluation
+
+As we can use R we can as well use Python in a similar way using the pipe code
+chunk. Here an example:
+
+```{.pipe pipe=python}
+def hello():
+    print("Hello Python World!\n")
+
+hello()
+x=2
+```
+   
+```{.pipe pipe=python}
+print(x)
+``` 
+
+Inlining Python code fragments should as well work:
+
+The value of x is `py print(x)`.
+
+
+

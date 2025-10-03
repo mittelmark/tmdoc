@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251002.1057>
+#  Last Modified : <251003.0917>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -28,19 +28,22 @@ exec tclsh "$0" "$@"
 #                  2025-09-30 version 0.12.0 support for LaTeX quations using https://math.vercel.app
 #                                            suport for embedding Youtube videos
 #                                            support %f as input filename
-#                  2025-10-XX version 0.13.0 fixing tcl code chunk option eval=false
+#                  2025-10-02 version 0.13.0 fixing tcl code chunk option eval=false
 #                                            fixing resetting default of code chunks
 #                                            adding bibliography entry in YAML header
 #                                            extending tmdoc tutorial
 #                                            adding alert messages in Markdown ouput
 #                                            adding abbreviations
 #                                            adding csv based  table creation  
+#                  2025-10-02 version 0.13.0 adding support for Python and R code embedding
+#
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.13.0
+package provide tmdoc::tmdoc 0.14.0
 package provide tmdoc [package provide tmdoc::tmdoc]
-source [file join [file dirname [info script]] filter-pipe.tcl]
+source [file join [file dirname [info script]] filter-r.tcl]
+source [file join [file dirname [info script]] filter-python.tcl]
 namespace eval ::tmdoc {}
 
 # clear all variables and defintions
@@ -443,11 +446,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode $nmode
                 array set copt [array get mopt]
                 ::tmdoc::GetOpts 
-                puts stderr "[array get copt]"
                 continue
             } elseif {$mode in [list csv pipe] && [regexp {```} $line]} {
-                puts stderr "fetching for mode $mode and inmode $inmode"
-                puts stderr "ginput is $ginput"
                 if {$copt(echo)} {
                     puts $out [tmdoc::block $ginput $inmode]
                 }
@@ -456,10 +456,15 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         puts $out [tmdoc::csv $ginput]
                     }
                 } elseif {$mode eq "pipe"} {
-                    set res [filter-pipe $ginput [dict create {*}[array get copt]]]
+                    if {$copt(pipe) eq "python"} {
+                        set res [tmdoc::python::filter $ginput [dict create {*}[array get copt]]]
+                    } else {
+                        set res [filter-pipe $ginput [dict create {*}[array get copt]]]
+                    }
                     if {$copt(results) eq "show"} {
                         puts $out [tmdoc::block [lindex $res 0] $inmode]
                     }
+
                 }
                 set ginput ""
                 set mode text
@@ -754,6 +759,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set res [lindex [split [lindex [filter-pipe $t [dict create pipe R eval true]] 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
+                while {[regexp {(.*?)`py ([^`]+)`(.*)$} $line -> pre t post]} {
+                    set res [python::filter $t [dict create pipe python eval true echo false terminal false]]
+                    set res [lindex [split [lindex $res 0] " "] end]
+                    set line [regsub -all {_}  "$pre$res$post" {\\_}]
+                }
 
                 puts $out $line
             } elseif {$mode eq "pretext"} {
@@ -992,7 +1002,7 @@ namespace eval ::tmdoc {
 #'       webservice
 #'     - support for embedding Youtube videos inside iframes
 #'     - adding abc music examples
-#' - 2025-10-XX Release 0.13.0
+#' - 2025-10-02 Release 0.13.0
 #'     - adding abbreviations in yaml header or yaml file
 #'     - adding alert boxes for Markdown output
 #'     - adding bibliography file entry in YAML header
@@ -1000,6 +1010,8 @@ namespace eval ::tmdoc {
 #'     - extending tmdoc tutorial for citation use
 #'     - fixing tcl code chunk option eval=false
 #'     - fixing resetting default of code chunks
+#' - 2025-10-XX Release 0.14.0
+#'     - adding support for Python and R code embedding
 #'
 #' ## <a name='todo'>TODO</a>
 #'

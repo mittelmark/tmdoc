@@ -182,5 +182,30 @@ author: Max Musterman
 
 Max Musterman}
 
+tcltest::test tmdoc-test-1.11 {
+    Checking Python pipe.
+} -body {
+    string trim [tmdoc::tmeval "```{.pipe pipe=python}
+x=1
+print(x)
+```
+
+X is `py print(x)`
+"]
+} -result {```
+x=1
+print(x)
+```
+
+```
+>>> x=1
+>>> print(x)
+1
+
+```
+
+
+X is 1}
+
 ::tcltest::cleanupTests 0
 
