@@ -207,5 +207,39 @@ print(x)
 
 X is 1}
 
+tcltest::test tmdoc-test-1.12 {
+    Checking Octave pipe.
+} -body {
+    string trim [tmdoc::tmeval "```{.pipe pipe=\"octave\"}  
+x=1;
+disp(x);
+y=2;
+disp(y);
+```
+
+X is `oc disp(x);`!
+"]
+} -result {```
+x=1;
+disp(x);
+y=2;
+disp(y);
+```
+
+```
+octave> x=1;
+octave> disp(x);
+1
+octave> y=2;
+octave> disp(y);
+2
+```
+
+
+X is 1
+!}
+
+
 ::tcltest::cleanupTests 0
+
 

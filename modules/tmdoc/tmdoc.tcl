@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251003.0917>
+#  Last Modified : <251004.1119>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -44,6 +44,7 @@ package provide tmdoc::tmdoc 0.14.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
+source [file join [file dirname [info script]] filter-octave.tcl]
 namespace eval ::tmdoc {}
 
 # clear all variables and defintions
@@ -458,6 +459,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 } elseif {$mode eq "pipe"} {
                     if {$copt(pipe) eq "python"} {
                         set res [tmdoc::python::filter $ginput [dict create {*}[array get copt]]]
+                    } elseif {$copt(pipe) eq "octave"} {
+                        set res [tmdoc::octave::filter $ginput [dict create {*}[array get copt]]]
                     } else {
                         set res [filter-pipe $ginput [dict create {*}[array get copt]]]
                     }
@@ -761,6 +764,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 while {[regexp {(.*?)`py ([^`]+)`(.*)$} $line -> pre t post]} {
                     set res [python::filter $t [dict create pipe python eval true echo false terminal false]]
+                    set res [lindex [split [lindex $res 0] " "] end]
+                    set line [regsub -all {_}  "$pre$res$post" {\\_}]
+                }
+                while {[regexp {(.*?)`oc ([^`]+)`(.*)$} $line -> pre t post]} {
+                    set res [octave::filter $t [dict create pipe octave eval true echo false terminal false]]
                     set res [lindex [split [lindex $res 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }

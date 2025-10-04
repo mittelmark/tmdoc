@@ -6,8 +6,8 @@ default:
 	weasyprint -s small.css tmdoc.html tmdoc.pdf
 	dtplite -o ../../apps/tmdoc.html html ../../apps/tmdoc.man
 test:
-	tclsh tmdoc.test
-	tclsh ../../apps/tmdoc test-man.tman test-man.man
+	TCLLIBPATH=.. tclsh tmdoc.test
+	TCLLIBPATH=.. tclsh ../../apps/tmdoc test-man.tman test-man.man
 
 tmdoc:
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd out.md
