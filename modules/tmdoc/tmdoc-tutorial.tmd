@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-04 11:18
+date: 2025-10-04 12:08
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1061,6 +1061,12 @@ print(x)
 ```
 
 Now let's show what x is. The variable x has a value of: `r x`.
+
+Let'd now display a data frame as a table using the df2md R function:
+
+```{.pipe pipe=R results=asis echo=false}
+df2md(head(iris))
+```
 
 The advantage of this pipe based  approach to the shell based  approach  shown
 before for executing R code is that the  application  status is continued into

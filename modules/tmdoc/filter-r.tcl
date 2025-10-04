@@ -1,60 +1,16 @@
 #!/usr/bin/env tclsh
-##############################################################################
-#
-# Copyright (C) 2025 MicroEmacs User.
-#
-# All rights reserved.
-#
-# Synopsis:    
-# Authors:     MicroEmacs User
-#
-##############################################################################
-
-
-namespace eval ::fpipe {
-    variable n 0
-    variable pipecode ""
-    variable pypipe ""
-    variable rpipe ""
-    variable opipe ""
-    variable show true
-    #set n 0
-    #set pipecode ""
-}
-proc piperead {pipe args} {
-    if {![eof $pipe]} {
-        set got [gets $pipe]
-        if {$got ne "flush(stdout)"} {
-            # not sure why python does this
-            if {[regexp {^>>>} $got]} {
-                append ::fpipe::pipecode [regsub {^} {^.+>>> } "$got" ""]
-            } else {
-                # R and Octave
-                if {[regexp "### SHOW OFF" $got]} {
-                    set ::fpipe::show false
-                } 
-                if {$::fpipe::show && $got ni [list "" "> "]} {
-                    append ::fpipe::pipecode "$got\n"
-                }
-                if {[regexp "### SHOW ON" $got]} {
-                    set ::fpipe::show true
-                }
-            }
-            
-        }
-    } else {
-        close $pipe
-    }
-}
-
-
-# TODO: 
-# * namespace vars
-# * cleanup pipes if blocking true
-# * trace add execution exit enter YourCleanupProc
-
-proc ::fpipe::filter-pipe-R-df2md {} {
-    puts $::fpipe::rpipe {### SHOW OFF
+namespace eval tmdoc { }
+namespace eval tmdoc::r { 
+    variable pipe 
+    variable res
+    variable show
+    set pipe ""
+    set res ""
+    set show true
+    variable dict
+    proc df2md {} {
+        variable pipe
+        puts $pipe {### SHOW OFF
         df2md <- function(df,caption='',rownames=TRUE) {
             cn <- colnames(df)
             if (is.null(cn[1])) {
@@ -96,119 +52,100 @@ proc ::fpipe::filter-pipe-R-df2md {} {
             cat(fin)
         }
         ### SHOW ON}
-    flush $::fpipe::rpipe
-}
-proc filter-pipe {cont dict} {
-    incr ::fpipe::n
-    set ::fpipe::pipecode ""
-    set def [dict create results show eval false label null \
-             include true pipe python3 terminal true wait 300]
-    set dict [dict merge $def $dict]
-    if {[dict get $dict eval]} {
-        if {$::fpipe::pypipe eq "" && [string range [dict get $dict pipe] 0 1] eq "py"} {
-            set ::fpipe::pypipe [open "|python3 -qui 2>@1" r+]
-            fconfigure $::fpipe::pypipe -buffering line -blocking false
-            fileevent $::fpipe::pypipe readable [list piperead $::fpipe::pypipe]
+        flush $pipe
+    }
+    
+    # Open a pipe to Python interpreter for reading and writing
+    proc getCode {filename} {
+        set fileId [open $filename r]
+        set codeLines [list]
+        while {[gets $fileId line] >= 0} {
+            lappend codeLines $line
         }
-        if {$::fpipe::opipe eq "" && [string range [dict get $dict pipe] 0 1] eq "oc"} {
-            set ::fpipe::opipe [open "|octave --interactive --no-gui --norc --silent 2>@1" r+]
-            fconfigure $::fpipe::opipe -buffering none -blocking false
-            fileevent $::fpipe::opipe readable [list piperead $::fpipe::opipe]
-            puts $::fpipe::opipe {PS1("")}
-            puts $::fpipe::opipe "page_screen_output(1);"
-            puts $::fpipe::opipe "page_output_immediately(1);"
-            puts $::fpipe::opipe "fflush(stdout)"
-            flush $::fpipe::opipe
-            after [dict get $dict wait] [list append wait ""]
-            vwait wait
-            set ::fpipe::pipecode ""
+        close $fileId
+        return $codeLines
+    }
+    proc piperead {pipe} {
+        variable res
+        variable show
+        if {![eof $pipe]} {
+            set got [gets $pipe]
+            if {[regexp "### SHOW OF" $got]} {
+                set show false
+            } 
+            if {$show && $got ni [list "" "> "]} {
+                append res "$got\n"
+            }
+            if {[regexp "### SHOW ON" $got]} {
+                set show true
+            }
+        } else {
+            close $pipe
+            set ::tmdoc::r::pipe ""
         }
-        #  
-        if {$::fpipe::rpipe eq "" && [string range [dict get $dict pipe] 0 0] eq "R"} {
+    }
+    proc pipestart {codeLines} {
+        variable pipe
+        variable res
+        variable dict
+        set res ""
+        if {$pipe eq ""} {
             if {[auto_execok Rterm] != ""} {
                 # Windows, MSYS
-                set ::fpipe::rpipe [open "|Rterm -q --vanilla 2>@1" r+]
+                set pipe [open "|Rterm -q --vanilla 2>@1" r+]
             } else {
-                set ::fpipe::rpipe [open "|R -q --vanilla --interactive 2>@1" r+]
+                set pipe [open "|R -q --vanilla --interactive 2>@1" r+]
             }
-            fconfigure $::fpipe::rpipe -buffering line -blocking false
-            fileevent $::fpipe::rpipe readable [list piperead $::fpipe::rpipe]
-            ::fpipe::filter-pipe-R-df2md
-            
+            fconfigure $pipe -buffering line -blocking false
+            fileevent $::tmdoc::r::pipe readable [list tmdoc::r::piperead $pipe]
+            df2md
+            flush $pipe
+            after [dict get $dict wait] [list append wait ""]
+            vwait wait
+            #set ::pipecode ""
         }
-        set wait [list]
-        set term ">>>"
-        if {[string range [dict get $dict pipe] 0 1] eq "oc"} {
-            set term "octave>"
+        foreach line $codeLines {
+            #if {[dict get $dict terminal]} {
+            #    if {[regexp {^  } $line] || [regexp  {^ *$} $line]} {
+            #        append res "+ $line\n"
+            #    } else {
+            #        append res "> $line\n"
+            #    }
+            #}
+            puts $pipe "$line"
+            flush $pipe
+            after 100 [list append wait ""]
+            vwait wait
         }
-        if {[string range [dict get $dict pipe] 0 0] ne "X"} {
-            foreach line [split $cont \n] {
-                #  && [string range [dict get $dict pipe] 0 0] ne "R"
-                if {[dict get $dict terminal] && [string range [dict get $dict pipe] 0 1] in [list "py" "oc"]}  {
-                    append ::fpipe::pipecode "$term $line\n" 
-                
-                }
-                if {[string range [dict get $dict pipe] 0 1] eq "py"} {
-                    puts $::fpipe::pypipe "$line"
-                }
-                if {[string range [dict get $dict pipe] 0 1] eq "oc"} {
-                    puts $::fpipe::opipe "$line"
-                    flush $::fpipe::opipe
-                }
-                if {[string range [dict get $dict pipe] 0 0] eq "R"} {
-                    puts $::fpipe::rpipe "$line"
-                    flush $::fpipe::rpipe
-                }
-                if {[regexp {^[^\s]} $line]} {
-                    # delay only if first letter is non-whitespace
-                    # to allow to flush output
-                    after [dict get $dict wait] [list append wait ""]
-                    vwait wait
-                }
-            }
-        }
-        after [dict get $dict wait] [list append wait ""]
-        vwait wait
-        set res $::fpipe::pipecode
-    } else {
+        ## skip last empty line > \n
+        #if {[dict get $dict terminal]} {
+        #    set res "[string range $res 0 end-4]\n"
+        #}
+        return [regsub {.{1,3}K>} $res ">"]
+    }
+    proc start {filename} {
+        set codeLines [getCode $filename]
+        pipestart $codeLines
+        # Write the code lines to Python's stdin through the pipe
+    }
+    proc filter {cnt cdict} {
+        variable dict
         set res ""
-    }
-    # TODO: dict app using
-    if {!([dict get $dict results] in [list show asis])} {
-        set res ""
-    } 
-    if {[dict get $dict results] eq "asis" && [string range [dict get $dict pipe] 0 0] in [list "R" "python"]} {
-        set nres ""
-        set res [regsub -- {\|\|---:} $res "|\n|---:"]
-        foreach line [split $res \n] {
-            ## not sure where this K comes from ...
-            if {![regexp {^[+>]} $line] && ![regexp {^.\[K>} $line]} {
-                append nres "$line\n"
-            }
+        set def [dict create results show eval false label null \
+                 include true terminal true wait 500]
+        set dict [dict merge $def $cdict]
+        
+        set codeLines [list]
+        foreach line [split $cnt \n] {
+            lappend codeLines $line
         }
-        set res $nres
-     } else {
-        set res [regsub {^.\[K> } $res ""]
+        if {[dict get $dict eval]} {
+            set res [pipestart $codeLines]
+        } 
+        return [list $res ""]
     }
-    if {[dict get $dict results] in [list show asis] && [string range [dict get $dict pipe] 0 1] eq "oc"} {
-        set nres ""
-        set i 0
-        foreach line [split $res \n] {
-            if {![regexp {^.*ans = 0\s*$} $line] && ![regexp {^>\s*$} $line]} {
-                append nres "$line\n"
-            } elseif {$i == 2  && [regexp {^\s*$} $line]} {
-                continue
-            } else {
-                set i 1
-            }
-            incr i
-        }
-        set res $nres
-    }
-    #  dirty fix for R pipe sometimes without starting greater sign
-    if {[dict get $dict pipe] eq "R" && ![regexp {^> } $res]} {
-        set res "> $res"
-    } 
-    return [list $res ""]
+
 }
+
+
 

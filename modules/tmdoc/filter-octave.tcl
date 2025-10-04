@@ -51,7 +51,7 @@ namespace eval tmdoc::octave {
             flush $pipe
             after [dict get $dict wait] [list append wait ""]
             vwait wait
-            set ::fpipe::pipecode ""
+            #set ::fpipe::pipecode ""
         }
         foreach line $codeLines {
             if {[dict get $dict terminal]} {

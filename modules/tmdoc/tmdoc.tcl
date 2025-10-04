@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251004.1119>
+#  Last Modified : <251004.1206>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -35,14 +35,14 @@ exec tclsh "$0" "$@"
 #                                            adding alert messages in Markdown ouput
 #                                            adding abbreviations
 #                                            adding csv based  table creation  
-#                  2025-10-02 version 0.13.0 adding support for Python and R code embedding
+#                  2025-10-XX version 0.13.0 adding support for Octave, Python and R code embedding
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
 package provide tmdoc::tmdoc 0.14.0
 package provide tmdoc [package provide tmdoc::tmdoc]
-source [file join [file dirname [info script]] filter-r.tcl]
+source [file join [file dirname [info script]] filter-r2.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
 source [file join [file dirname [info script]] filter-octave.tcl]
 namespace eval ::tmdoc {}
@@ -462,10 +462,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     } elseif {$copt(pipe) eq "octave"} {
                         set res [tmdoc::octave::filter $ginput [dict create {*}[array get copt]]]
                     } else {
-                        set res [filter-pipe $ginput [dict create {*}[array get copt]]]
+                        set res [tmdoc::r::filter $ginput [dict create {*}[array get copt]]]
                     }
                     if {$copt(results) eq "show"} {
                         puts $out [tmdoc::block [lindex $res 0] $inmode]
+                    } elseif {$copt(results) eq "asis"} {
+                        puts $out [lindex $res 0]
                     }
 
                 }
@@ -759,7 +761,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
 
                 }
                 while {[regexp {(.*?)`r ([^`]+)`(.*)$} $line -> pre t post]} {
-                    set res [lindex [split [lindex [filter-pipe $t [dict create pipe R eval true]] 0] " "] end]
+                    set res [lindex [split [lindex [r::filter $t [dict create pipe R eval true]] 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`py ([^`]+)`(.*)$} $line -> pre t post]} {
