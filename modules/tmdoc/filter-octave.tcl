@@ -41,6 +41,7 @@ namespace eval tmdoc::octave {
         variable dict
         set res ""
         if {$pipe eq ""} {
+            set res ""
             set pipe [open "|octave --interactive --no-gui --norc --silent 2>@1" r+]
             fconfigure $::tmdoc::octave::pipe -buffering none -blocking false
             fileevent $::tmdoc::octave::pipe readable [list ::tmdoc::octave::piperead $pipe]
@@ -52,6 +53,12 @@ namespace eval tmdoc::octave {
             after [dict get $dict wait] [list append wait ""]
             vwait wait
             #set ::fpipe::pipecode ""
+        }
+        if  {[dict get $dict fig]} {
+            puts $pipe "aux = figure('visible','off');"
+            flush $pipe
+            after [dict get $dict wait] [list append wait ""]
+            vwait wait
         }
         foreach line $codeLines {
             if {[dict get $dict terminal]} {
@@ -70,6 +77,10 @@ namespace eval tmdoc::octave {
         if {[dict get $dict terminal]} {
             set res "[string range $res 0 end-4]\n"
         }
+        if {[dict get $dict fig]} {
+            puts $pipe "print(aux,'[dict get $dict label].[dict get $dict ext]','-d[dict get $dict ext]','-S[dict get $dict fig.width],[dict get $dict fig.height]');"
+            flush $pipe
+        }
         return $res
     }
     proc start {filename} {
@@ -80,8 +91,9 @@ namespace eval tmdoc::octave {
     proc filter {cnt cdict} {
         variable dict
         set res ""
-        set def [dict create results show eval false label null \
-                 include true terminal true wait 500]
+        set def [dict create results show eval true label null ext png \
+                 include true terminal true wait 200 fig false \
+                 fig.width 600 fig.height 600]
         set dict [dict merge $def $cdict]
         
         set codeLines [list]
@@ -91,7 +103,12 @@ namespace eval tmdoc::octave {
         if {[dict get $dict eval]} {
             set res [pipestart $codeLines]
         } 
-        return [list $res ""]
+        set img ""
+        if {[dict get $dict fig]} {
+            set img "[dict get $dict label].[dict get $dict ext]"
+        }
+
+        return [list $res $img]
     }
 
 }

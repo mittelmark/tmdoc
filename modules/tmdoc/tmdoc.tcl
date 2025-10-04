@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251004.1206>
+#  Last Modified : <251004.2118>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -42,7 +42,7 @@ package require fileutil
 package require yaml
 package provide tmdoc::tmdoc 0.14.0
 package provide tmdoc [package provide tmdoc::tmdoc]
-source [file join [file dirname [info script]] filter-r2.tcl]
+source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
 source [file join [file dirname [info script]] filter-octave.tcl]
 namespace eval ::tmdoc {}
@@ -388,6 +388,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set line [regsub -all "\{$key\}" $line [dict get $abbrev $key]]
                 }
             }
+            if {$mode eq "text" && [regexp {```\{\.?(r|oc|py).*\}} $line]} {
+                set line [regsub -nocase {\{\.?r(.*)\}} $line "{.pipe pipe=R\\1}"]
+                set line [regsub -nocase {\{\.?oc[a-z]*(.*)\}} $line "{.pipe pipe=octave\\1}"]                
+                set line [regsub -nocase {\{\.?py[a-z]*(.*)\}} $line "{.pipe pipe=python\\1}"]                                
+            }
             if {$mode eq "text" && [regexp {\[@[@,\w]+\]} $line]} {
                 set line [regsub -all {\[@([@\w,]+)\]} $line "`tcl citer::cite \\1`"]
             }
@@ -462,12 +467,16 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     } elseif {$copt(pipe) eq "octave"} {
                         set res [tmdoc::octave::filter $ginput [dict create {*}[array get copt]]]
                     } else {
+                        ## R
                         set res [tmdoc::r::filter $ginput [dict create {*}[array get copt]]]
                     }
                     if {$copt(results) eq "show"} {
                         puts $out [tmdoc::block [lindex $res 0] $inmode]
                     } elseif {$copt(results) eq "asis"} {
                         puts $out [lindex $res 0]
+                    } 
+                    if {$copt(fig)} {
+                        puts $out "\n\n!\[ \]([lindex $res 1])"
                     }
 
                 }
@@ -761,17 +770,18 @@ proc ::tmdoc::tmdoc {filename outfile args} {
 
                 }
                 while {[regexp {(.*?)`r ([^`]+)`(.*)$} $line -> pre t post]} {
-                    set res [lindex [split [lindex [r::filter $t [dict create pipe R eval true]] 0] " "] end]
+                    set res [r::filter $t [dict create pipe R eval true echo false]]
+                    set res [string trim [lindex [split [lindex $res 0] " "] end]]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`py ([^`]+)`(.*)$} $line -> pre t post]} {
                     set res [python::filter $t [dict create pipe python eval true echo false terminal false]]
-                    set res [lindex [split [lindex $res 0] " "] end]
+                    set res [lindex [split [lindex [lindex $res 0] 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`oc ([^`]+)`(.*)$} $line -> pre t post]} {
                     set res [octave::filter $t [dict create pipe octave eval true echo false terminal false]]
-                    set res [lindex [split [lindex $res 0] " "] end]
+                    set res [lindex [split [lindex [lindex $res 0] 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
 

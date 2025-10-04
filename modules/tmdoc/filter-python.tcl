@@ -44,6 +44,7 @@ namespace eval tmdoc::python {
             set pipe [open "|python -qui" r+]
             fconfigure $pipe -buffering line -blocking 0
             fileevent $pipe readable [list ::tmdoc::python::piperead $pipe]
+            set res ""
         }
         foreach line $codeLines {
             if {[dict get $dict terminal]} {
