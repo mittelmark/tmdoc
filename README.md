@@ -230,10 +230,10 @@ Thereafter make the file executable and check that it is correctly installed lik
 this:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.10.0/tmdoc-0.10.0.bin -O ~/.local/bin/tmdoc
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.13.0/tmdoc-0.13.0.bin -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.10.0
+## 0.13.0
 ```
 
 To install the  package just  download  the latest Zip or Tar-Gz  archive from the release page and

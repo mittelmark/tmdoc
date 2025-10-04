@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-04 19:51
+date: 2025-10-04 21:40
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1291,6 +1291,15 @@ Using the option `fig=true` we can avoid adding the to code lines which open the
 figure and the print command to save the image and use the current chunk name.
 
 Here an example:
+
+```
+'```{.pipe pipe=octave label=oct1 fig=true eval=true}
+x = -10:0.1:10;
+plot (x, sin (x));
+'```
+```
+
+And here the output:
 
 ```{.pipe pipe=octave label=oct1 fig=true eval=true}
 x = -10:0.1:10;

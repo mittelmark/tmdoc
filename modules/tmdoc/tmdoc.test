@@ -236,9 +236,32 @@ octave> disp(y);
 ```
 
 
-X is 1
-!}
+X is 1!}
 
+tcltest::test tmdoc-test-1.13 {
+    Checking Python pipe with py code name.
+} -body {
+    string trim [tmdoc::tmeval "```{py}
+x=2
+print(x)
+```
+
+X is `py print(x)`
+"]
+} -result {```
+x=2
+print(x)
+```
+
+```
+>>> x=2
+>>> print(x)
+2
+
+```
+
+
+X is 2}
 
 ::tcltest::cleanupTests 0
 
