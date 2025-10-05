@@ -1,4 +1,5 @@
 #!/usr/bin/env tclsh
+
 namespace eval tmdoc { }
 namespace eval tmdoc::r { 
     variable pipe 
@@ -134,14 +135,18 @@ namespace eval tmdoc::r {
     proc start {filename} {
         set codeLines [getCode $filename]
         pipestart $codeLines
-        # Write the code lines to Python's stdin through the pipe
     }
     proc filter {cnt cdict} {
         variable dict
         set res ""
-        set def [dict create results show eval false label null fig false \
+        if {$::tcl_platform(os) eq "windows"} {
+            set r Rterm
+        } else {
+            set r R
+        }
+        set def [dict create pipe $r results show eval false label null fig false \
                  fig.width 600 fig.height 600 \
-                 include true terminal true wait 200]
+                 include true terminal true wait 100]
         set dict [dict merge $def $cdict]
         set codeLines [list]
         foreach line [split $cnt \n] {
@@ -151,11 +156,11 @@ namespace eval tmdoc::r {
             set res [pipestart $codeLines]
         } 
         set img ""
-        if {[dict get $dict fig]} {
+        if {[dict get $dict fig] && [dict get $dict include]} {
             set img "[dict get $dict label].[dict get $dict ext]"
         }
         
-        return [list "\n$res" "$img"]
+        return [list "$res" "$img"]
     }
 
 }

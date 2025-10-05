@@ -1,3 +1,5 @@
+##-*- makefile -*-############################################################
+
 default:
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd - | \
 	TCLLIBPATH="~/workspace/mkdoc .." tclsh ../../../mkdoc/apps/mkdoc - tmdoc-tutorial.html --css tmdoc.css
@@ -11,4 +13,10 @@ test:
 
 tmdoc:
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd out.md
+
+filter-r:
+	test -d images || mkdir images
+	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave $@.tmd - | \
+	TCLLIBPATH="~/workspace/mkdoc .." tclsh ../../../mkdoc/apps/mkdoc - $@.html --css tmdoc.css
+	
 

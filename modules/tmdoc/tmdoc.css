@@ -36,7 +36,7 @@ table {
   border-collapse: collapse;
   border-bottom: 2px solid;
   border-spacing: 5px;
-  min-width: 300px;
+  min-width: 500px;
 }
 table thead tr th { 
   background-color: #fde9d9;

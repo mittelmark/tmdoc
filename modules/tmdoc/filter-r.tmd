@@ -1,0 +1,113 @@
+---
+title: filter-r.tcl documentation
+author: Detlef Groth, Caputh-Schwielowsee, Germany
+date: 2025-10-05 11:14
+---
+
+------
+
+```{.tcl eval=true results="asis" echo=false}
+include header.md
+```
+
+------
+
+## Name
+
+_filter-r.tcl_ - Filter which can be used to execute R code
+using a pipe mechanism using the Tcl package tmdoc and showing or hiding the output. 
+
+## Usage
+
+The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:
+
+```
+tmdoc --mode weave filename.tmd - | \
+	mkdoc - filename.html --css tmdoc.css
+```
+
+The file `filter-r.tcl` is not used directly but sourced automatically by the `tmdoc` application
+which contains the Tcl file.
+If code blocks with the `.pipe pipe=R` or the `r` are found, the contents in the code block is processed via
+a shell pipe either using the R (Unix) or the Rterm (Windows) command line application.
+
+The following options can be given via code chunks or in the YAML header.
+
+> - eval - should the code in the code block be evaluated, default: false/0
+  - echo - should the input code been shown, default: true/1
+  - pipe - the programming language to be used, here R
+  - results - should the output of the command line application been shown, should be asis, show or hide, default: show
+  - wait - the timeout (ms) after every code evaluation to wait for the pipe to
+           read, try to decrease the time to get a speedup, increase of you
+           observe output at wrong places, default: 100
+
+To change the defaults the YAML header can be used. Here an example to set the 
+default pipe command to R and evaluate all code chunks. Please note that you
+should write `eval: 1` and not(!) `eval: true`
+
+```
+ ----
+ title: "some research text"
+ author: "Detlef Groth, University of Potsdam, Germany"
+ date: 2022-01-01
+ pipe:
+     pipe: R
+     eval: 1
+ ----
+```
+
+## Examples
+
+```
+'``{.pipe pipe="R" results="show"}
+data(iris)
+png("images/testr.png")
+boxplot(iris$Sepal.Length ~ iris$Species,col=2:4)
+dev.off()
+'``
+```
+
+![](images/testr.png)
+
+The filter itself provides a litte R function, without the need
+to install an additional library,`df2md`, to convert data frames
+or matrices into Markdown tables. Here an example for its usage:
+
+```{.pipe pipe="R" results="asis"}
+data(mtcars)
+df2md(head(mtcars[, 1:4],n=4))
+```
+
+You can as well hide the rownames or give a caption like this.
+
+```{.pipe pipe="R" results="asis"}
+df2md(head(mtcars[, 1:4],n=4),rownames=FALSE,caption="**Table 1:** mtcars data")
+```
+
+For matrices or data frames without row names or column names just the line
+and columnnumbers will be displayed:
+
+```{.pipe pipe="R" results="asis"}
+M=matrix(round(rnorm(100,mean=10),2),ncol=5)
+df2md(head(M,n=6),caption="**Table 2:** Matrix example")
+```
+
+There is as well the possibility to display inline R code. So for instance we can use the nrow function to 
+get the number of cars in the dataset. Using code like this:
+
+```
+The mtchars dataset has `r nrow(mtcars)` cars!
+```
+
+The mtchars dataset has `r nrow(mtcars)` cars!
+
+Let's now simulate an R error:
+
+```{.pipe pipe="R"}
+x=3+2
+print(ls())
+x
+print(y)
+2+3
+```
+

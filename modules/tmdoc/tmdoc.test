@@ -182,7 +182,7 @@ author: Max Musterman
 
 Max Musterman}
 
-tcltest::test tmdoc-test-1.11 {
+tcltest::test tmdoc-python-1.1 {
     Checking Python pipe.
 } -body {
     string trim [tmdoc::tmeval "```{.pipe pipe=python}
@@ -207,7 +207,33 @@ print(x)
 
 X is 1}
 
-tcltest::test tmdoc-test-1.12 {
+tcltest::test tmdoc-python-1.2 {
+    Checking Python pipe with py code name.
+} -body {
+    string trim [tmdoc::tmeval "```{py}
+x=2
+print(x)
+```
+
+X is `py print(x)`
+"]
+} -result {```
+x=2
+print(x)
+```
+
+```
+>>> x=2
+>>> print(x)
+2
+
+```
+
+
+X is 2}
+
+
+tcltest::test tmdoc-octave-1.1 {
     Checking Octave pipe.
 } -body {
     string trim [tmdoc::tmeval "```{.pipe pipe=\"octave\"}  
@@ -238,32 +264,31 @@ octave> disp(y);
 
 X is 1!}
 
-tcltest::test tmdoc-test-1.13 {
-    Checking Python pipe with py code name.
+tcltest::test tmdoc-octave-1.2 {
+    Checking Octave pipe code with oc code name.
 } -body {
-    string trim [tmdoc::tmeval "```{py}
-x=2
-print(x)
+    string trim [tmdoc::tmeval "```{oc}
+x=4;
+disp(x);
 ```
 
-X is `py print(x)`
+X is `oc disp(x);`!
 "]
 } -result {```
-x=2
-print(x)
+x=4;
+disp(x);
 ```
 
 ```
->>> x=2
->>> print(x)
-2
-
+octave> x=4;
+octave> disp(x);
+4
 ```
 
 
-X is 2}
+X is 4!}
 
-tcltest::test tmdoc-test-1.14 {
+tcltest::test tmdoc-r-1.1 {
     Checking R pipe code with r code name.
 } -body {
     string trim [tmdoc::tmeval "```{r}
@@ -287,29 +312,49 @@ print(x)
 
 X is 3!}
 
-tcltest::test tmdoc-test-1.15 {
-    Checking Octave pipe code with oc code name.
-} -body {
-    string trim [tmdoc::tmeval "```{oc}
-x=4;
-disp(x);
-```
 
-X is `oc disp(x);`!
+tcltest::test tmdoc-r-1.2 {
+    Checking R pipe code with continuation lines.
+} -body {
+    string trim [tmdoc::tmeval "```{r results=show echo=false}
+for (i in 1:4) {
+    print(i)
+}
+```
 "]
 } -result {```
-x=4;
-disp(x);
+> for (i in 1:4) {
++     print(i)
++ }
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+```}
+
+tcltest::test tmdoc-r-1.3 {
+    Checking R pipe code with image creation.
+} -body {
+    string trim [tmdoc::tmeval "```{r label=testlab results=show echo=false fig=true}
+plot(1)
+```
+"]
+} -result {```
+> plot(1)
 ```
 
-```
-octave> x=4;
-octave> disp(x);
-4
-```
+![ ](testlab.png)}
 
-
-X is 4!}
+tcltest::test tmdoc-r-1.4 {
+    Checking R pipe code with image creation and include=false.
+} -body {
+    string trim [tmdoc::tmeval "```{r label=testlab results=show echo=false fig=true include=false}
+plot(1)
+```
+"]
+} -result {```
+> plot(1)
+```}
 
 ::tcltest::cleanupTests 0
 

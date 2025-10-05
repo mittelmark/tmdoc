@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251004.2118>
+#  Last Modified : <251005.0828>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -475,8 +475,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     } elseif {$copt(results) eq "asis"} {
                         puts $out [lindex $res 0]
                     } 
-                    if {$copt(fig)} {
-                        puts $out "\n\n!\[ \]([lindex $res 1])"
+                    if {$copt(fig) && $copt(include)} {
+                        puts $out "!\[ \]([lindex $res 1])"
                     }
 
                 }
