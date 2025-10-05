@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="title" content="filter-mtex documentation">
+<meta name="author" content="Detlef Groth, University of Potsdam, Germany">
+    
+<title>filter-mtex documentation</title>
+    
+    
+
+<style>
+@import url("data:text/css;base64,CmJvZHkgewogICAgcGFkZGluZzogMzBweDsKICAgIG1heC13aWR0aDogMTIwMHB4OwogICAgZm9udDogQWxlZ3JleWEsIEdlb3JnaWEsIHNlcmlmOwp9CgpoMS50aXRsZSwgcC5hdXRob3IsIHAuZGF0ZSwgaDIuYXV0aG9yLCBoMi5kYXRlIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKfQphIHsgdGV4dC1kZWNvcmF0aW9uOiBub25lIDsgfQpwcmUgewogICAgcGFkZGluZzogMTBweCA7CiAgICBib3JkZXItdG9wOiAycHggc29saWQgI0NDQ0NDQzsKICAgIGJvcmRlci1ib3R0b206IDJweCBzb2xpZCAjQ0NDQ0NDOyAKICAgIGZvbnQ6IE1vbmFjbywgbW9ub3NwYWNlOwp9CnByZTpoYXMoY29kZSkgewogICAgYmFja2dyb3VuZDogI2VmZWZlZjsKfQpwcmU6aGFzKGNvZGUudGNsY29kZSkgewogICAgYmFja2dyb3VuZDogY29ybnNpbGs7ICAgCn0KCnByZTpoYXMoY29kZS50Y2xvdXQpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjQ0NFRUZGOwp9CnByZTpoYXMoY29kZS50Y2xlcnIpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjRkZDQ0NDOwp9CnByZTpoYXMoY29kZS5lcnJvcikgeyAgICAKICAgIGJhY2tncm91bmQ6ICNGRkNDQ0M7Cn0KCnRhYmxlIHsgICAgCiAgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTsKICBib3JkZXItYm90dG9tOiAycHggc29saWQ7CiAgYm9yZGVyLXNwYWNpbmc6IDVweDsKICBtaW4td2lkdGg6IDUwMHB4Owp9CnRhYmxlIHRoZWFkIHRyIHRoIHsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZkZTlkOTsKICB0ZXh0LWFsaWduOiBsZWZ0OyAKICBwYWRkaW5nOiA1cHg7CiAgYm9yZGVyLXRvcDogMnB4IHNvbGlkOwogIGJvcmRlci1ib3R0b206IDJweCBzb2xpZDsKfQp0YWJsZSB0ciB0ZCB7IAogIGJhY2tncm91bmQtY29sb3I6ICNmNmY2ZjY7CiAgdGV4dC1hbGlnbjogbGVmdDsgCiAgcGFkZGluZzogNXB4Owp9CgovKiBBbGVydHM6ICovCgouc2lkZS13YXJuaW5nLCAuc2lkZS1jYXV0aW9uLCAuc2lkZS1pbmZvLCAuc2lkZS1xdWVzdGlvbiwgLnNpZGUtZXJyb3IsIC5zaWRlLW5vdGUsIC5zaWRlLXRpcCwgLnNpZGUtaW1wb3J0YW50IHsKICBjb2xvcjogdmFyKC0tdXNlZC1jb2xvcik7CiAgbWFyZ2luLWJvdHRvbTogMzJweDsKICBtYXJnaW4tdG9wOiAxNnB4OwogIHBhZGRpbmc6IDE2cHg7CiAgcGFkZGluZy1sZWZ0OiA0OHB4OwogIGJvcmRlci1yYWRpdXM6IDVweCAwIDAgNXB4OwogIHBvc2l0aW9uOiByZWxhdGl2ZTsgIAp9Ci5zaWRlLWVycm9yLCAuc2lkZS1jYXV0aW9uIHsKICBib3JkZXItbGVmdDogc29saWQgN3B4ICNhYTMzMjI7CiAgYm9yZGVyLXRvcDogc29saWQgMXB4ICNmZmYwZjA7IAogIGJvcmRlci1yaWdodDogc29saWQgMXB4ICNmZmYwZjA7IAogIGJvcmRlci1ib3R0b206IHNvbGlkIDFweCAjZmZmMGYwOyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmMGYwOwogIAp9Cgouc2lkZS1pbXBvcnRhbnQgewogIGJvcmRlci1sZWZ0OiBzb2xpZCA3cHggI2FhMzNhYTsKICBib3JkZXItdG9wOiBzb2xpZCAxcHggI2ZmZjBmZjsgCiAgYm9yZGVyLXJpZ2h0OiBzb2xpZCAxcHggI2ZmZjBmZjsgCiAgYm9yZGVyLWJvdHRvbTogc29saWQgMXB4ICNmZmYwZmY7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZmYwZmY7Cn0KCi5zaWRlLW5vdGUsIC5zaWRlLXRpcCB7CiAgYm9yZGVyLWxlZnQ6IHNvbGlkIDdweCAjMjIzMzk5OwogIGJvcmRlci10b3A6IHNvbGlkIDFweCAjZjBmN2ZmOyAKICBib3JkZXItcmlnaHQ6IHNvbGlkIDFweCAjZjBmN2ZmOyAKICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggI2YwZjdmZjsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2YwZjdmZjsKICAKfQoKLnNpZGUtaW5mbyB7CiAgYm9yZGVyLWxlZnQ6IHNvbGlkIDdweCAjMzM5OTIyOwogIGJvcmRlci10b3A6IHNvbGlkIDFweCAjZjdmZmYwOyAKICBib3JkZXItcmlnaHQ6IHNvbGlkIDFweCAjZjdmZmYwOyAKICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggI2Y3ZmZmMDsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2Y3ZmZmMDsKICAKfQouc2lkZS1xdWVzdGlvbiB7CiAgYm9yZGVyLWxlZnQ6IHNvbGlkIDdweCAjOTk5OTIyOwogIGJvcmRlci10b3A6IHNvbGlkIDFweCAjZmZmZmYwOyAKICBib3JkZXItcmlnaHQ6IHNvbGlkIDFweCAjZmZmZmYwOyAKICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggI2ZmZmZmMDsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZmZmMDsKfQouc2lkZS13YXJuaW5nIHsKICBib3JkZXItbGVmdDogc29saWQgN3B4ICNmZjk5MzM7CiAgYm9yZGVyLXRvcDogc29saWQgMXB4ICNmZmY3ZjA7IAogIGJvcmRlci1yaWdodDogc29saWQgMXB4ICNmZmY3ZjA7IAogIGJvcmRlci1ib3R0b206IHNvbGlkIDFweCAjZmZmN2YwOyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmN2YwOwp9Cgouc2lkZS1pbmZvOjpiZWZvcmUsIC5zaWRlLXdhcm5pbmc6OmJlZm9yZSwgLnNpZGUtY2F1dGlvbjo6YmVmb3JlLCAuc2lkZS1xdWVzdGlvbjo6YmVmb3JlLCAuc2lkZS1lcnJvcjo6YmVmb3JlLCAuc2lkZS1ub3RlOjpiZWZvcmUsIC5zaWRlLXRpcDo6YmVmb3JlLCAuc2lkZS1pbXBvcnRhbnQ6OmJlZm9yZSB7CiAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICBib3JkZXItcmFkaXVzOiA1MCU7CiAgZGlzcGxheTogZmxleDsKICBmb250LWZhbWlseTogbW9ub3NwYWNlOwogIGZvbnQtc2l6ZTogMTZweDsKICBmb250LXdlaWdodDogNzAwOwogIGhlaWdodDogMjRweDsKICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsKICBsZWZ0OiAxMnB4OwogIGxpbmUtaGVpZ2h0OiAxOwogIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICB0b3A6IDE1cHg7CiAgd2lkdGg6IDI0cHg7Cn0KCi5zaWRlLW5vdGU6OmJlZm9yZSwgLnNpZGUtdGlwOjpiZWZvcmUgewogIGJhY2tncm91bmQtY29sb3I6ICMyMjMzOTk7CiAgY29sb3I6ICNmZmY7CiAgY29udGVudDogIk4iOwogIAp9Cgouc2lkZS1pbXBvcnRhbnQ6OmJlZm9yZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogIzk5MzM5OTsKICBjb2xvcjogI2ZmZjsKICBjb250ZW50OiAiISI7Cn0KCi5zaWRlLXRpcDo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjIzMzk5OyAKICBjb250ZW50OiAiXDI2MUIiOwogIGZvbnQtc2l6ZTogMTEwJTsKICAKfQoKLnNpZGUtaW5mbzo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjMzM5OTIyOwogIGNvbG9yOiAjZmZmOwogIGNvbnRlbnQ6ICJpIjsKICAKfQouc2lkZS1lcnJvcjo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmMGYwOwogIGNvbG9yOiAjZmZmOwogIGNvbnRlbnQ6ICJcMjZENCI7CiAgZm9udC1zaXplOiAxMjAlOwp9Ci5zaWRlLWNhdXRpb246OmJlZm9yZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogI2FhMzMyMjsKICBjb2xvcjogI2ZmZjsKICBjb250ZW50OiAiISI7Cn0KCi5zaWRlLXF1ZXN0aW9uOjpiZWZvcmUgewogIGJhY2tncm91bmQtY29sb3I6ICM5OTk5MjI7CiAgY29sb3I6ICNmZmY7CiAgY29udGVudDogIj8iOwogIAp9Cgouc2lkZS13YXJuaW5nOjpiZWZvcmUgewogIGJhY2tncm91bmQtY29sb3I6ICNkZDY2MjI7CiAgY29sb3I6ICNmZmY7CiAgY29udGVudDogIiEiOwogIAp9Cg==");
+</style>
+
+    
+</head>
+<body>
+    
+
+
+
+<h1 class="title">filter-mtex documentation</h1>
+<h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
+<h2 class="date">2025-10-05</h2>
+
+<hr />
+
+<p><center>
+<a href="filter-octave.html">filter-octave</a>      -     <a href="filter-r.html">filter-r</a>     -
+<a href="filter-python.html">filter-python</a> <br/>
+<a href="filter-mtex.html">filter-mtex</a> <br/>
+<a href="tmdoc-tutorial.html">tmdoc-tutorial</a>
+</center></p>
+
+<hr />
+
+<h2>Name</h2>
+
+<p><em>filter-mtex</em> - tmdoc Filter which can be used to execute include LaTeX equations
+using the <a href="https://latex.codecogs.com">https://latex.codecogs.com</a> web service.</p>
+
+<p>Equations  <a title="CodeCogs.com" href="https://www.codecogs.com">
+<img src="https://www.codecogs.com/images/poweredbycodecogs.png" border="0" 
+title="CodeCogs - An Open Source Scientific Library" 
+alt="Powered by CodeCogs">
+        </a></p>
+
+<h2>Usage</h2>
+
+<p>The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:</p>
+
+<pre class='code'><code>tmdoc --mode weave filename.tmd - | \
+    mkdoc - filename.html --css tmdoc.css</code></pre>
+
+<p>The following options can be given via code chunks or in the YAML header.</p>
+
+<blockquote>
+<ul>
+<li>eval - should the code in the code block be evaluated, default: true/1</li>
+<li>echo - should the input code been shown, default: true/1</li>
+<li>results - should the output of the command  line  application  been shown,
+should be show or hide, default: show</li>
+<li>ext -  file extension  for the downloaded  file, default: png</li></ul>
+
+
+</blockquote>
+
+<p>If <code>eval</code> is set to <code>true</code>, The equation png file is downloaded and
+cached in the local file system, only if the  equation is changed the file is
+downloaded  again.</p>
+
+<pre class='code'><code>'``{.mtex}
+E = mc^2  \tag{1}
+'``</code></pre>
+
+<p>Here the output:</p>
+
+<pre class='code'><code>E = mc^2  \tag{1}</code></pre>
+
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAUoAAAAWBAMAAABUPMgOAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAid3vmau7RHYyVGYizRAHtTi9AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABxklEQVRIDc2Wv0vDQBTHv7W/YhMTI7h06l8gHYpu0g6uUgUHcbCTODh0cBKELg7qYMDBSdvJwYpEQQdxcBG7JV0dtG6CSx0FUd+lJHCQhBb00oNc3nvfl3w/OcIlQPjIXBbDG4ZCbWFhKDjCIY5xE94wJKoeHcebYy0580RBnywEoqhTgdK/C2XHQS2yU6oCbLLAdyQN37KIolQFtsm+ycy0GtBbVT/rXcWvKqQ2BrTqRElngAWZINt0NfgBgq75qzpbQ43gYg0KDiAH39f6+QgW/1nZoPszynSZgjU88Hby/vv1ydkyrfDtOa+IzfJkxyjBgmm97bjPLdFge/jjoZl5wimwEu2WniMWh7ILKJ84cii9qXEFOYcdSDYuvKL4QLHJ06GcBeQuDDQ4iBKSNaxDM7mq6GTUo6QtO0mJwlPOIG6oX7A6osE4PzVHqftexseBBJO991LpwoJsV+uAyoSoRp6MXUqrCvDfatmmX4xEzRy5x11UhMz3mQ6N6JQKYi8lffGbg5FMZJHOQsk2O5wgONkDXlfbBmRTsPFAdu42nuoMdJngZpfOpRVs36edUuw1zvfZH1HbluMrGxHZ92nb+2mk+Rdog1RjkXMzngAAAABJRU5ErkJggg=="></img></p>
+
+<p>Here an example for a matrix:</p>
+
+<pre class='code'><code>'``{.mtex}
+\begin{bmatrix}
+1 &amp; 2 &amp; 3 \\      \tag{2}
+4 &amp; 5 &amp; 6 
+\end{bmatrix}
+'``</code></pre>
+
+<p>and here the output again:</p>
+
+<pre class='code'><code>\begin{bmatrix}
+1 &amp; 2 &amp; 3 \\      \tag{2}
+4 &amp; 5 &amp; 6 
+\end{bmatrix}</code></pre>
+
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAUoAAAAsBAMAAADx3ezFAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAdlSJRM0yIhCrmbtm3e8bClPiAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACa0lEQVRYCe3ZT2sTQRgG8Cdssrs2myYaUCrVzlkKCkLF4p8Q+gGEinjwsCcPuZirp6yfwH4Dl+JBLcUgiB639KRUyEm8GfGgBcEq1kMprO/M7uxEWttb5w04sJuZncD+eN5kZ0Iwk/7EAa2apgfMHtlU87A71Q97w1HMj4+yfMvk0VwRxWBjqgFwydI7+buAOV1/Vw+cBD/4KAGjrIVYLZR9bPJUTia4rpWAzJVLxUezJOFLoyzd4Kr0TPmDZwTmmWUlMVkGr7kqrxikqj7LLAMT5bEQzyOeFW8j0GH2BB5xqvgvDYP7eOGcHjiR/8mq8oGSlOhM67h/eXtOyybTdEf30ZwSVpVLSuLHSlmo9u3Y+/aUWijNvwBmWSsrwCU8TECvjHdulOF7TAzgCM7KV8A3OFsoL3FWDuX3pEpbiSFn5UAqeyGwxVjpUYrAHTq+Mla6Ukm/F4APjJW+rPgGHbw/l0OgLJAwV94GOgvtGF4/q7h7QQYrm7e4Ro+pvAXHT9lcx08A39M0Bm0m1dpTizXM+7jZ1X0s46lN5f0cUo0y5RujFIUR5T7u2lSSTjXSyizdTpyNqeJC94BaIvv29kReLO8PPMmUwUSshnTyptdbul+fXRc2lWgrSRBmysQo/QbtQ/LWi0G7O3tZwlMQeaaKu6FR0pWVHIl7Cd5ZVWqIUgb4S3lWT/ZaOB/ZzFJDlPLtxauLYX6lJjCjJ+uCk5I2cbGWVbqm4tUGzvCp+KgyiPwvWuwOcJOR0r32uVhw1uaLLjqnW4yUOrx9Xy0+iYyH8W9Ig8zW8ZHxnu7/LPdE8q8L41HxsfiH7w8dlXjH5NMqiwAAAABJRU5ErkJggg=="></img></p>
+
+<p>Using the option <code>echo=false</code> you can hide the LaTeX code:</p>
+
+<pre class='code'><code>'``{.mtex echo=false}
+\begin{bmatrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 \\  \tag{3}
+5 &amp; 6 &amp; 7
+\end{bmatrix}
+'``</code></pre>
+
+<p>And here the output  where you only should see the  equation but not the LaTeX
+code as <code>echo</code> was set to false:</p>
+
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAUwAAABCBAMAAADOPfKoAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAZkQyzSJ2EImrmbtU3e8fr21CAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADN0lEQVRoBe3aP2gTURwH8O/lerk0Mc2pUGpFCJk7HGbrYtDBjlmdGvEPrVTNJE7aIvgXtSA4CQYdRKuYQXFxuK4uFhwc7eKfbvEPCiKcv3t3L+/Su2RoIfcr3IO8/PLetfnwfZfLvVKUXLeDAa3ouj8HTA9rqrSnUh70XnqlwoJpD0KKOTbMzBFlnVtxui92zzeo5sI0TihJrm5+l8ychd+MmOHAijZedJltbDBljlm4K5mASFZFrSaGXZXER6hH8koZsjWqeybV3FCrKNNQLO2ZZ1GvhyrrebMoc8RSB2hv2DKXlBLwTgCWaWoqzFEbL5tMmVPQZJyzDh6ySvOHlEF/VHknX+Sa5hdGTPPGryuSNua6f2WNuXmHEbPLii/4fITifcFoyhwYT3jSv7yHRyJ1mmYkkn4DaZr9ktnKeJrmVlLr9zOs07wg1FnqWTOXBdNsSaa+KAaoM2bGX8sa2ulTVCd23cyWoY3fB1Yls9iSNOPTRl3WeI6nSTJHgCWUGqBnf9H3KabTRSLTRjVJJqV4C2PLyDk+U5+OZRb9G/nEFl2cfZctZJZ9ppZXzOMTZUpQtNLqhENFYsx1T3GSHus+01JMs4EP3qzXZlt4S0+JMdfozSdb1HUEU7cVkwZX6CHaIQsHqEiKadQ8xf4m8FUwNfQwz3mzXpst4z0dlBRTr3mIAvUfBXPy+u0Z2xuiVnRw3q/oKuAkyjRp0e8h/6d7bqLQkrSRulr0QgNnaTypNOmTY/zDaCeOqTXNz5Ksr+FwksyjwDVcasBoi0WHfudbXdrGb3ZLTJ8pJ8lcALJXHwD0hxjOtx7HgugKTdZM4olGXM5pGi2f+YQ3E1OCqdnMmYZgej3nRfeXXPQpMxTGtss0zW1HGPoFXpoxu0lxRG6hUqHpxG49NjOju0lxxKjruhYjpqPcwW5SDOToq58KNmmGmMFuUjAzwCInZnQ3KZh0C1VnxIzZTQbMi94zl0UnyubdZMB8zIy5eTcZMDucmDG7SZ+5a50TM2Y36TPzNU7MmN2kzyy0OTER3U36zPwiK6aP6tczuiD1I6ZpDkomMrdTbov3Vu2IPTSgVw+yODd3xL+Z/gfCHeSOm4N0xQAAAABJRU5ErkJggg=="></img></p>
+
+
+
+</body>
+</html>
+

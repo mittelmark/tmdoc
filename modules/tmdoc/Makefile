@@ -14,7 +14,7 @@ test:
 tmdoc:
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd out.md
 
-filter-r filter-python filter-octave:
+filter-r filter-python filter-octave filter-mtex:
 	test -d images || mkdir images
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave $@.tmd - | \
 	TCLLIBPATH="~/workspace/mkdoc .." tclsh ../../../mkdoc/apps/mkdoc - $@.html --css tmdoc.css

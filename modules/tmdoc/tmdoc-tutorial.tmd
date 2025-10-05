@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-05 12:08
+date: 2025-10-05 20:31
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -785,12 +785,20 @@ digraph a {
 }
 ```
 
-## <a name="latex">LaTeX Equations
+## <a name="latex">LaTeX Equations 
 
-The  [https://math.vercel.app](https://math.vercel.app)  webservice allows you
-to embed LaTeX  equations into your  documents. The equation svg file is downloaded and
+<a title="CodeCogs.com" href="https://www.codecogs.com">
+<img src="https://www.codecogs.com/images/poweredbycodecogs.png" border="0" 
+title="CodeCogs - An Open Source Scientific Library" 
+alt="Powered by CodeCogs">
+		</a>
+
+
+The  [https://editor.codecogs.com](https://editor.codecogs.com)  webservice allows you
+to embed LaTeX  equations into your  documents. The equation png file is downloaded and
 cached in the local file system, only if the  equation is changed the file is
 downloaded again. Here an example:
+
 
 ```
 '``{.mtex}

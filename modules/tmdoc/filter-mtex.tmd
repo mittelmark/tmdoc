@@ -1,0 +1,97 @@
+---
+title: filter-mtex documentation
+author: Detlef Groth, University of Potsdam, Germany
+date: 2025-10-05 20:28
+---
+
+`tcl include header.md`
+
+## Name
+
+_filter-mtex_ - tmdoc Filter which can be used to execute include LaTeX equations
+using the [https://latex.codecogs.com](https://latex.codecogs.com) web service.
+
+Equations  <a title="CodeCogs.com" href="https://www.codecogs.com">
+<img src="https://www.codecogs.com/images/poweredbycodecogs.png" border="0" 
+title="CodeCogs - An Open Source Scientific Library" 
+alt="Powered by CodeCogs">
+		</a>
+		
+## Usage
+
+The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:
+
+```
+tmdoc --mode weave filename.tmd - | \
+	mkdoc - filename.html --css tmdoc.css
+```
+
+The following options can be given via code chunks or in the YAML header.
+
+> - eval - should the code in the code block be evaluated, default: true/1
+  - echo - should the input code been shown, default: true/1
+  - results - should the output of the command  line  application  been shown,
+    should be show or hide, default: show
+  - ext -  file extension  for the downloaded  file, default: png
+
+If `eval` is set to `true`, The equation png file is downloaded and
+cached in the local file system, only if the  equation is changed the file is
+downloaded  again. 
+
+```
+'``{.mtex}
+E = mc^2  \tag{1}
+'``
+```
+
+Here the output:
+
+```{.mtex}
+E = mc^2  \tag{1}
+```
+
+
+
+Here an example for a matrix:
+
+```
+'``{.mtex}
+\begin{bmatrix}
+1 & 2 & 3 \\      \tag{2}
+4 & 5 & 6 
+\end{bmatrix}
+'``
+```
+
+and here the output again:
+
+```{.mtex}
+\begin{bmatrix}
+1 & 2 & 3 \\      \tag{2}
+4 & 5 & 6 
+\end{bmatrix}
+```
+
+Using the option `echo=false` you can hide the LaTeX code:
+
+```
+'``{.mtex echo=false}
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\  \tag{3}
+5 & 6 & 7
+\end{bmatrix}
+'``
+```
+
+And here the output  where you only should see the  equation but not the LaTeX
+code as `echo` was set to false:
+
+```{.mtex echo=false}
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\  \tag{3}
+5 & 6 & 7
+\end{bmatrix}
+```
+

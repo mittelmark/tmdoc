@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251005.1705>
+#  Last Modified : <251005.2020>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -280,6 +280,27 @@ proc tmdoc::block {txt inmode {style ""}} {
     return $res
 }
 
+proc tmdoc::cairosvg {filename dict} {
+    array set opt $dict
+    set fname [file rootname $filename]
+    if {$opt(ext) in [list "pdf" "png"]} {
+        if {[auto_execok cairosvg] eq ""} {
+            return [list "Error: pdf and png conversion needs cairosvg, please install cairosvg https://www.cairosvg.org !" ""]
+        }
+    }
+    if {[dict get $dict ext] eq "pdf"} {
+        exec cairosvg $fname.svg -o $fname.pdf ;# -W $opt(width) -H $opt(height)
+        return ${fname}.pdf
+    } elseif {[dict get $dict ext] eq "png"} {
+        exec cairosvg $fname.svg -o $fname.png ;#-W $opt(width) -H $opt(height)
+        return ${fname}.png
+    } elseif {[dict get $dict ext] ne "svg"} {
+        return "Error unkown extension name valid values are svg, pdf, png"
+    } else {
+        return $filename
+    }
+}
+
 # public functions - the main function process the files
 
 proc ::tmdoc::tmdoc {filename outfile args} {
@@ -349,7 +370,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                      imagepath .]
     ## mtex
     array set tdopt [list echo true eval true results show fig true include true \
-        label chunk-nn imagepath mtexfig]
+        label chunk-nn imagepath mtexfig ext png]
     interpReset
     if [catch {open $filename r} infh] {
         return -code error "Cannot open $filename: $infh"
@@ -618,8 +639,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set cont [tmdoc::block $mtexinput $inmode]
                     puts $out $cont
                 }
-                set url https://math.vercel.app?from=[ue ${mtexinput}].svg
-                set filename [url2crc32file $url $copt(imagepath) svg]
+                #set url https://math.vercel.app?from=[ue ${mtexinput}].svg
+                set url https://latex.codecogs.com/png.image?[ue ${mtexinput}]
+                set filename [url2crc32file $url $copt(imagepath) $copt(ext)]
+                #if {$copt(ext) eq "svg"} {
+                #    set filename [tmdoc::cairosvg $filename [array get copt]]
+                #}
                 if {$copt(include)} {
                     if {$inmode eq "md"} {
                         puts $out "!\[\]($filename)"
