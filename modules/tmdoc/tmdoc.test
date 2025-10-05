@@ -356,6 +356,20 @@ plot(1)
 > plot(1)
 ```}
 
-::tcltest::cleanupTests 0
 
+tcltest::test tmdoc-r-1.5 {
+    Checking R pipe code with df2md command results=asis.
+} -body {
+    string trim [tmdoc::tmeval {```{.pipe pipe="R" results="asis" echo=false}
+data(mtcars)
+df2md(head(mtcars[, 1:4],n=4))
+```}]
+} -result {||mpg|cyl|disp|hp|
+|---|---|---|---|---|
+|**Mazda RX4**|21|6|160|110|
+|**Mazda RX4 Wag**|21|6|160|110|
+|**Datsun 710**|22.8|4|108|93|
+|**Hornet 4 Drive**|21.4|6|258|110|}
+
+::tcltest::cleanupTests 0
 

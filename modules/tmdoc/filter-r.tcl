@@ -76,7 +76,7 @@ namespace eval tmdoc::r {
                 set show false
             } 
             if {$show && $got ni [list "" "> "]} {
-                if {!([dict get $dict results] eq "asis" && [regexp {^>} $got])} {
+                if {!([dict get $dict results] eq "asis" && ([regexp {^>} $got] | [regexp {^.{1,3}K>} $got]))} {
                     append res "$got\n"
                 }
             }

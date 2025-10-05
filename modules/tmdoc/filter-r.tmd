@@ -1,20 +1,15 @@
 ---
 title: filter-r.tcl documentation
 author: Detlef Groth, Caputh-Schwielowsee, Germany
-date: 2025-10-05 11:14
+date: 2025-10-05 12:43
 ---
 
-------
 
-```{.tcl eval=true results="asis" echo=false}
-include header.md
-```
-
-------
+`tcl include header.md`
 
 ## Name
 
-_filter-r.tcl_ - Filter which can be used to execute R code
+_filter-r.tcl_ - tmdoc Filter which can be used to execute R code
 using a pipe mechanism using the Tcl package tmdoc and showing or hiding the output. 
 
 ## Usage
@@ -58,6 +53,9 @@ should write `eval: 1` and not(!) `eval: true`
 
 ## Examples
 
+Here an example to create a png image plot  (replace the single  quote  before
+the back-ticks with a back-tick):
+
 ```
 '``{.pipe pipe="R" results="show"}
 data(iris)
@@ -67,13 +65,32 @@ dev.off()
 '``
 ```
 
+And here the ouput.
+
+```{.pipe pipe="R" results="show"}
+data(iris)
+png("images/testr.png")
+boxplot(iris$Sepal.Length ~ iris$Species,col=2:4)
+dev.off()
+```
+
+The generated image can be include using standard Markdown syntax:
+
+```
+'``
+![ ](images/testr.png)
+'``
+```
+
+Here the image:
+
 ![](images/testr.png)
 
 The filter itself provides a litte R function, without the need
 to install an additional library,`df2md`, to convert data frames
 or matrices into Markdown tables. Here an example for its usage:
 
-```{.pipe pipe="R" results="asis"}
+```{.pipe pipe="R" results="asis" echo=false}
 data(mtcars)
 df2md(head(mtcars[, 1:4],n=4))
 ```

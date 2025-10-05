@@ -92,7 +92,7 @@ namespace eval tmdoc::octave {
         variable dict
         set res ""
         set def [dict create results show eval true label null ext png \
-                 include true terminal true wait 200 fig false \
+                 include true terminal true wait 300 fig false \
                  fig.width 600 fig.height 600]
         set dict [dict merge $def $cdict]
         
