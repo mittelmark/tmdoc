@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251005.0828>
+#  Last Modified : <251005.1705>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -338,7 +338,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set ginput ""
     array set mopt [list eval true echo true results show fig false include true label chunk-nn\
                     ext png chunk.ext txt]
-    array set dopt [list eval true echo true results show fig false include true \
+    array set dopt [list eval true echo true results show fig false include true pipe python3 \
         fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png chunk.ext txt]
     ## bash / shell
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
@@ -447,6 +447,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 array set copt [array get tdopt]
                 ::tmdoc::GetOpts 
                 continue
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(pipe)(\s*.*)\}} $line -> tp opts])} {
+                set mode pipe
+                incr chunki
+                array set copt [array get dopt]
+                ::tmdoc::GetOpts 
+                continue
             } elseif {$mode eq "text" && [regexp {^ {0,3}```\{\.([a-z0-9]+)(\s*.*)\}} $line -> nmode opts]} {
                 incr chunki
                 set mode $nmode
@@ -462,7 +468,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         puts $out [tmdoc::csv $ginput]
                     }
                 } elseif {$mode eq "pipe"} {
-                    if {$copt(pipe) eq "python"} {
+                    
+                    if {$copt(pipe) eq "python" || $copt(pipe) eq "python3"} {
                         set res [tmdoc::python::filter $ginput [dict create {*}[array get copt]]]
                     } elseif {$copt(pipe) eq "octave"} {
                         set res [tmdoc::octave::filter $ginput [dict create {*}[array get copt]]]

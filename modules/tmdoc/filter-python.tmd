@@ -1,0 +1,146 @@
+---
+title: filter-python.tcl documentation
+author: Detlef Groth, University of Potsdam, Germany
+date: 2025-10-05 16:47
+pipe:
+    pipe: python
+    eval: 1    
+---
+
+
+`tcl include header.md`
+
+## Name
+
+_filter-python.tcl_ - tmdoc Filter which can be used to execute Python code
+using a pipe mechanism using the Tcl package tmdoc and showing or hiding the output. 
+
+## Usage
+
+The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:
+
+```
+tmdoc --mode weave filename.tmd - | \
+	mkdoc - filename.html --css tmdoc.css
+```
+
+The file `filter-python.tcl` is not used directly but sourced automatically by the `tmdoc` application
+which contains the Tcl file.
+If code blocks with the `.pipe pipe=python` or the `py` are found, the contents in the code block is processed via
+a shell pipe either using the python command line application.
+
+The following options can be given via code chunks or in the YAML header.
+
+> - eval - should the code in the code block be evaluated, default: false/0
+  - echo - should the input code been shown, default: true/1
+  - pipe - the programming language to be used, here R
+  - results - should the output of the command line application been shown, should be asis, show or hide, default: show
+  - wait - the timeout (ms) after every code evaluation to wait for the pipe to
+           read, try to decrease the time to get a speedup, increase of you
+           observe output at wrong places, default: 100
+
+To change the defaults the YAML header can be used. Here an example to set the 
+default pipe command to python3 and evaluate all code chunks. Please note that you
+should write `eval: 1` and not(!) `eval: true`
+
+```
+ ----
+ title: "some research text"
+ author: "Detlef Groth, University of Potsdam, Germany"
+ date: 2022-01-01
+ pipe:
+     pipe: python3
+     eval: 1
+ ----
+```
+
+## Examples
+
+Here an example for very simple python code.
+
+```{.pipe pipe="python3" results="show" terminal=true}
+x=1
+print(x)
+y=x+1
+print(y)
+```
+
+In contrast to the [.cmd filter](filter-cmd.html) the code chunks are
+in the same session, so we can continue to add more Python code which knows about the existing variables from the session before.
+
+Here an example declaring a function:
+
+```{.pipe pipe="python3" results="show" terminal=true}
+def test (x):
+    return(x+1)
+
+print(test(y))
+```
+
+We can as well omit the terminal mode by setting the chunk option "terminal to false". You will then only see the output.
+
+```{.pipe terminal=false}
+def test2 (x):
+    return(x+2)
+
+print(test2(y))
+```
+
+Let's finish the Python section with an image created with *matplotlib* (`{.pipe terminal=false results="hide"}`).
+
+```{.pipe terminal=false results="hide"}
+import matplotlib.pyplot as plt
+ 
+# frequencies
+ages = [2,5,70,40,30,45,50,45,43,40,44,
+        60,7,13,57,18,90,77,32,21,20,40]
+ 
+# setting the ranges and no. of intervals
+range = (0, 100)
+bins = 10
+ 
+# plotting a histogram
+plt.hist(ages, bins, range, color = 'skyblue',
+        histtype = 'bar', rwidth = 0.8)
+ 
+# x-axis label
+plt.xlabel('age')
+# frequency label
+plt.ylabel('No. of people')
+# plot title
+plt.title('My histogram')
+
+# save the file
+plt.savefig('images/pyhist.png')
+```
+
+We then just display the image file using standard Markdown.
+ 
+![](images/pyhist.png)
+
+There is as well the possibility to add inline Python code to display the values of variables or the output of short python commands here an example:
+
+```{.pipe pipe="python3"}
+l = [1,2,3,4]
+g = [1,2,3,4,5]
+print(len(l))
+```
+
+```{.pipe pipe="python3"}
+g.append(6)
+print(len(g))
+```
+
+Let's now display the length of the list g, g has a length 
+of `py print(len(g));`!
+
+Another trial: *py 3+2=* `py 3+2`? Should be five!
+
+Let's finish with Python code containing an error:
+
+```{.pipe pipe="python3"}
+y=3
+# a type
+print(y00)
+```
+
