@@ -1,0 +1,95 @@
+---
+title: filter-octave.tcl documentation
+author: Detlef Groth, University of Potsdam, Germany
+date: 2025-10-05 17:18
+pipe:
+    pipe: python
+    eval: 1    
+---
+
+
+`tcl include header.md`
+
+## Name
+
+_filter-octave.tcl_ - tmdoc Filter which can be used to execute Octave code
+using a pipe mechanism using the Tcl package tmdoc and showing or hiding the output. 
+
+## Usage
+
+The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:
+
+```
+tmdoc --mode weave filename.tmd - | \
+	mkdoc - filename.html --css tmdoc.css
+```
+
+The file `filter-octave.tcl` is not used directly but sourced automatically by the `tmdoc` application
+which contains the Tcl file.
+If code blocks with the `.pipe pipe=octave` or the `oc` are found, the contents in the code block is processed via
+a shell pipe either using the python command line application.
+
+The following options can be given via code chunks or in the YAML header.
+
+> - eval - should the code in the code block be evaluated, default: false/0
+  - echo - should the input code been shown, default: true/1
+  - pipe - the programming language to be used, here octave
+  - results - should the output of the command line application been shown, should be asis, show or hide, default: show
+  - wait - the timeout (ms) after every code evaluation to wait for the pipe to
+           read, try to decrease the time to get a speedup, increase of you
+           observe output at wrong places, default: 300
+
+To change the defaults the YAML header can be used. Here an example to set the 
+default pipe command to octave and evaluate all code chunks. Please note that you
+should write `eval: 1` and not(!) `eval: true`
+
+```
+ ----
+ title: "some research text"
+ author: "Detlef Groth, University of Potsdam, Germany"
+ date: 2022-01-01
+ pipe:
+     pipe: octave
+     eval: 1
+     wait: 300
+ ----
+```
+
+## Examples
+
+```{.pipe pipe="octave"}  
+x=1;
+disp(x);
+y=2;
+disp(y);
+```
+
+Now let's do a plot:
+
+```{.pipe pipe="octave"}
+aux=figure('visible','off');
+tx = ty = linspace (-8, 8, 41);
+[xx, yy] = meshgrid (tx, ty);
+r = sqrt (xx .^ 2 + yy .^ 2) + eps;
+tz = sin (r) ./ r;
+mesh (tx, ty, tz);
+saveas(aux, 'images/mesh-octave.png', 'png');
+```
+
+![](images/mesh-octave.png)
+
+What about inline code? What is the value of y? 
+It should be `oc disp(y)`.  Hmm, not yet working.
+
+```{.pipe pipe="octave"}
+z=x+y
+disp(z)
+```
+
+Let's now do an Octave error:
+
+```{.pipe pipe="octave"}
+z
+disp(k)
+```
+

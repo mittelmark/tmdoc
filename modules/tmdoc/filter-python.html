@@ -28,7 +28,7 @@
 <hr />
 
 <p><center>
-<a href="filter-r.html">filter-r</a> - <a href="filter-python.html">filter-python</a> <br/>
+<a href="filter-octave.html">filter-octave</a> - <a href="filter-r.html">filter-r</a> - <a href="filter-python.html">filter-python</a> <br/>
 <a href="tmdoc-tutorial.html">tmdoc-tutorial</a>
 </center></p>
 
@@ -57,7 +57,7 @@ a shell pipe either using the python command line application.</p>
 <ul>
 <li>eval - should the code in the code block be evaluated, default: false/0</li>
 <li>echo - should the input code been shown, default: true/1</li>
-<li>pipe - the programming language to be used, here R</li>
+<li>pipe - the programming language to be used, here python</li>
 <li>results - should the output of the command line application been shown, should be asis, show or hide, default: show</li>
 <li>wait - the timeout (ms) after every code evaluation to wait for the pipe to
        read, try to decrease the time to get a speedup, increase of you
@@ -161,6 +161,7 @@ print(len(l))</code></pre>
 <pre class='code'><code>&gt;&gt;&gt; l = [1,2,3,4]
 &gt;&gt;&gt; g = [1,2,3,4,5]
 &gt;&gt;&gt; print(len(l))
+4
 </code></pre>
 
 <pre class='code'><code>g.append(6)
@@ -168,12 +169,13 @@ print(len(g))</code></pre>
 
 <pre class='code'><code>&gt;&gt;&gt; g.append(6)
 &gt;&gt;&gt; print(len(g))
+6
 </code></pre>
 
 <p>Let's now display the length of the list g, g has a length 
-of !</p>
+of 6!</p>
 
-<p>Another trial: <em>py 3+2=</em> ? Should be five!</p>
+<p>Another trial: <em>py 3+2=</em> 5? Should be five!</p>
 
 <p>Let's finish with Python code containing an error:</p>
 
@@ -183,15 +185,7 @@ print(y00)</code></pre>
 
 <pre class='code'><code>&gt;&gt;&gt; y=3
 &gt;&gt;&gt; # a type
-(array([3., 2., 2., 2., 7., 2., 1., 2., 0., 1.]), array([  0.,  10.,  20.,  30.,  40.,  50.,  60.,  70.,  80.,  90., 100.]), &lt;BarContainer object of 10 artists&gt;)
-Text(0.5, 0, 'age')
-Text(0, 0.5, 'No. of people')
-Text(0.5, 1.0, 'My histogram')
 &gt;&gt;&gt; print(y00)
-4
-6
-6
-5
 </code></pre>
 
 
