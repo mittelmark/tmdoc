@@ -1,0 +1,73 @@
+---
+title: filter-tcl documentation
+author: Detlef Groth, University of Potsdam, Germany
+date: 2025-10-06 04:47
+---
+
+`tcl include header.md`
+
+## Name
+
+_filter-tcl_ - tmdoc Filter which can be used to execute Tcl code
+within  Markdown or LaTeX  document using the Tcl package tmdoc and showing or
+hiding the output of these code chunks. 
+
+## Usage
+
+The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:
+
+```
+tmdoc --mode weave filename.tmd - | \
+	mkdoc - filename.html --css tmdoc.css
+```
+
+If code blocks with the `.tcl` or `tcl` are found, the contents in the code block is processed via
+a separate Tcl interpreter.
+
+The following options can be given via code chunks or in the YAML header.
+
+> - _eval_ - should the code in the code block be evaluated, default: false/0
+  - _echo_ - should the input code been shown, default: true/1
+  - _fig_  - does the code chunk  produces a graphic,  default:  false for Tcl
+    code. If this feature is used there must be a `figure` procedure with a filename argument which writes the figure.
+  - _include_: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.
+  - _label_: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
+  - _results_: Should the output of the Tcl code evaluation be shown, either "hide",  "asis" or "show", default: "show".
+
+Now the mandatory "Hello World!" example. If you embed the following text
+into your Markdown document with the extension, `.tmd`, *tmdoc* will produce, after converting the document
+from  Markdown to HTML via *mkdoc* or *pandoc*, the following  input  (replace
+the leading single quote with a backtick, necessary here to avoid interpretation by *tmdoc*) 
+
+```{std}
+'``{.tcl}
+puts "Hello World!"
+'``
+```
+
+will produce this output:
+
+```{.tcl}
+puts "Hello World!"
+```
+
+Code block and/or the output can be as well hidden using chunk arguments, that
+will be described later in more detail. Short code fragments can be 
+directly embedded into the text. Here an example for this approach:
+
+```{std}
+The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`
+```
+
+This is the output:
+
+The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`
+
+## See Also
+
+* [filter-r](filter-r.html)
+* [filter-py](filter-python.html)
+* [filter-octave](filter-octave.html)
+
+`tcl include footer.md`
+

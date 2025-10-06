@@ -42,6 +42,7 @@ technique  as well known as  literate  programming.
 - __Shell code:__ evaluate embedded shell code to create graphics or text to be used within the output
 - __Tcl programming:__ evaluate Tcl and other programming language code
   [![Tcl Filter](https://img.shields.io/badge/Docu-Tcl-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
+
 ### Installation
 
 On a Unix system with installed Tcl interpreter just download the file  tmdoc-0.14.0.bin, save it to your
@@ -62,6 +63,16 @@ If the folder `~/.local/bin` does not exists you should create it and add this t
 
 That approach  should as well work on  Windows-Cygwin  or  Windows-Msys2  with
 installed Tcl interpreter.
+
+To install the  package just  download  the latest Zip or Tar-Gz  archive from the release page and
+unpack these files, then  you just copy the  _modules/tmdoc_  folder to a folder
+belonging to your _TCLLIBPATH_ variable. Therafter you can as well execute the
+command  line  application  using  the   [tclmain](https://github.com/mittelmark/tclmain)
+utility like this:
+
+```
+tclmain -m tmdoc --help
+```
 
 ### Tcl Code
 
@@ -303,30 +314,6 @@ as example for such embedded documentation.
 * [Latest Release](https://github.com/mittelmark/tmdoc/releases)
 * [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
-## Installation
-
-On Linux, MacOS and on Windows with installed Msys2 or Cyvwin download the latest
-[tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (150-200kb in size), rename
-thh bin file to _tmdoc_ and copy the file to a folder belonging to your PATH variable. 
-Thereafter make the file executable and check that it is correctly installed like
-this:
-
-```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.14.0/tmdoc-0.14.0.bin -O ~/.local/bin/tmdoc
-chmod 755 ~/.local/bin/tmdoc
-tmdoc --version
-## 0.14.0
-```
-
-To install the  package just  download  the latest Zip or Tar-Gz  archive from the release page and
-unpack these files, then  you just copy the  _modules/tmdoc_  folder to a folder
-belonging to your _TCLLIBPATH_ variable. Therafter you can as well execute the
-command  line  application  using  the   [tclmain](https://github.com/mittelmark/tclmain)
-utility like this:
-
-```
-tclmain -m tmdoc --help
-```
 
 ## Changes
 
