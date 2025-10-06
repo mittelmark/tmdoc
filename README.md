@@ -18,12 +18,13 @@ documents.
 
 The package _tmdoc_ and the standalone application of it provide facilities to
 evaluate  embedded Diagram code, LaTeX equations, YAML defined  abbreviations,
-or Tcl code within  documents of Markup languages like Markdown and LaTeX and
+or R, Python, Octave, Shell or Tcl code within  documents of Markup languages like Markdown and LaTeX and
 add the  resulting  output to the document for creating  dynamic  documents, a
 technique  as well known as  literate  programming. 
 
 ## Main Features
 
+- __single file approach:__ the required small (approx. 200kb) single file (_tmdoc-0.14.0.bin_) just requires an existing Tcl/Tk installation
 - __Abbreviations:__ expand YAML defined abbreviations
 - __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925)
 - __Citations:__ reference management using BibTeX files
