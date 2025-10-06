@@ -50,8 +50,13 @@ technique  as well known as  literate  programming.
 On Linux, MacOS and on Windows with installed Msys2 or Cyvwin download the latest
 [tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (150-200kb in size), rename
 the bin file to _tmdoc_ and copy the file to a folder belonging to your PATH variable. 
-Thereafter make the file executable and check that it is correctly installed like
-this:
+Thereafter make the file executable and check that it is correctly installed. Since version 0.14.0 there is an install script which installs both tmdoc and mkdoc into ~/.local/bin. You can execute it like this:
+
+```bash
+/bin/sh -c "$(curl -fsSL https://github.com/mittelmark/tmdoc/releases/latest/download/install-tmdoc.sh)"
+```
+
+You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
@@ -75,7 +80,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-06 10:04
+date: 2025-10-06 18:22
 ---
 
 ## Testing Tmdoc Installation
@@ -117,17 +122,8 @@ Hello Tcl World!
 
 This file can be then converted to HTML or PDF using standard tools like pandoc as well using the [mkdoc](https://github.com/mittelmark/mkdoc) command line application.
 
-To install the  _tmdoc_ package just  download  the latest Zip or Tar-Gz  archive from the release page and
-unpack these files, then  you just copy the  _modules/tmdoc_  folder to a folder
-belonging to your _TCLLIBPATH_ variable. Therafter you can as well execute the
-command  line  application  using  the   [tclmain](https://github.com/mittelmark/tclmain)
-utility like this:
-
-```
-tclmain -m tmdoc --help
-```
-
-If you like to use as well a Tcl based converter of Markdown documents to HTML documents, you can install the mkdoc application in a similar way like this:
+If you like to use as well a Tcl based converter of Markdown documents to HTML
+documents, you can install the mkdoc application in a similar way like this:
 
 
 ```bash
@@ -141,6 +137,17 @@ mkdoc --version
 ## 0.11.3
 ```  
 
+To install the  _tmdoc_ package just  download  the latest Zip or Tar-Gz  archive from the release page and
+unpack these files, then  you just copy the  _modules/tmdoc_  folder to a folder
+belonging to your _TCLLIBPATH_ variable. Therafter you can as well execute the
+command  line  application  using  the   [tclmain](https://github.com/mittelmark/tclmain)
+utility like this:
+
+```
+tclmain -m tmdoc --help
+```
+
+
 
 ### Tcl Code
 
@@ -149,7 +156,7 @@ language marker like this (remove the single ticks before the three backticks):
 
 ```
 '```{.tcl}
-    puts "Hello World"
+puts "Hello World"
 '```
 ```
    
