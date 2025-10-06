@@ -1,4 +1,4 @@
-## tmdoc
+# tmdoc
 
 [![license](https://img.shields.io/badge/license-BSD-lightgray.svg)](https://opensource.org/license/bsd)
 [![Release](https://img.shields.io/github/v/release/mittelmark/tmdoc.svg?label=current+release)](https://github.com/mittelmark/tmdoc/releases)
@@ -31,24 +31,31 @@ technique  as well known as  literate  programming.
 - __Diagrams:__ evaluate diagram code and embed create graphics using the [Kroki webservice](https:://kroki.io)
 - __Graphic generation:__ create graphics using the [tsvg package](https://github.com/mittelmark/tsv)
 - __Includes:__ Markdown file includes
-- __LaTeX equations:__ can be embedded using the [math.vercel.app](https://math.vercel.app) web servcie
+- __LaTeX equations:__ can be embedded using the [latex.codecs.com](https://latex.codecogs.com/) web servcie
+    [![LaTeX Filter](https://img.shields.io/badge/Docu-LaTeX-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-mtex.html)
+- __Octave reports:__ writing statistical reports using the Octave programming
+  language [![Octave Filter](https://img.shields.io/badge/Docu-Octave-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-octave.html)
+- __Python reports:__ writing statistical reports using the Python programming 
+   language [![Python Filter](https://img.shields.io/badge/Docu-Python-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-python.html)
+- __R reports:__ writing statistical reports using the R programming language
+   [![R Filter](https://img.shields.io/badge/Docu-R-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-r.html)
 - __Shell code:__ evaluate embedded shell code to create graphics or text to be used within the output
 - __Tcl programming:__ evaluate Tcl and other programming language code
-
+  [![Tcl Filter](https://img.shields.io/badge/Docu-Tcl-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
 ### Installation
 
-On a Unix system with installed Tcl interpreter just download the file  tmdoc-0.13.0.bin, save it to your
+On a Unix system with installed Tcl interpreter just download the file  tmdoc-0.14.0.bin, save it to your
 hard disk and then make it executable like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.13.0/tmdoc-0.13.0.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.14.0/tmdoc-0.14.0.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.13.0
+## 0.14.0
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -122,7 +129,8 @@ int main() {
 ### LaTeX Equations
 
 Since version  0.12.0 there is as well support for embedding  LaTeX  equations
-using the  [https://math.vercel.app](https://math.vercel.app)  webservice. You
+using the  [https://math.vercel.app](https://math.vercel.app)  webservice. In version 0.14.0 we switched to [latex.codecs.com](https://latex.codecogs.com/)  as math.vercel.app svg
+files can't be converted to png due to missing size information. The procedure to add LaTeX equations still stays the same. You
 simply add the equation in a `mtex` source code block:
 
 ```
@@ -177,6 +185,80 @@ Then, to display the references:
 `tcl citer::bibliography`
 ```
 
+## Abbreviations
+
+Since version 0.13.0 there is as well support for YAML based abbreviations. You can either provide an YAML abbreviation file in the YAML header or you simply declare a few abbreviatons within the Markdown file itself.
+
+Here an example:
+
+```
+---
+title: hello title
+author: Some Author
+DG: Detlef Groth, University of Potsdam, Germany
+abbreviations: abbrev.yml
+...
+```
+
+__Here the text:__
+
+```
+This is an abbrev {DG} and this is another for the 
+Author: {author}. The document was created at {date}. 
+This an empty abbreviation {empty}.
+
+Now an abbreviation which is in the `abbrev.yml` file 
+- tmdoc is: '{tmdoc}'!
+```
+
+## CSV Tables
+
+Since version 0.13.0 there is as well support for embedding simple comma separated tables which are then displayed as Markdown tables.
+
+Here an example:
+
+```
+'``{.csv results=asis echo=false}
+col1,col2,col3,col4
+11,12,13,14
+15,16,17,18
+19,20,21,22
+'``
+```
+
+## Statistical Reports
+
+Since version 0.14.0 there is as well support for writing  statistical reports
+using  either  Octave, R or Python. In  contrast  to the shell based  approach
+introduced in version 0.10.0 the state of the interpreter is saved between the
+different  code chunks  allowing to write  statistical  reports with  stepwise
+analysis steps.
+
+To include code you can do something like the following:
+
+```
+'``{r fig=true}
+data(iris)
+plot(iris$Sepal.Length ~ iris$Species,col=2:4)
+x=1
+'``
+
+In our data set we have `r nrow(species)` plants.
+
+In the next code  chunk we use a variable defined before.
+
+'```{r}
+print(x)
+'```
+```
+
+
+The same can be done using the Octave or the Python programming languages. For more details look at the filter documentation pages:
+
+* [filter-octave](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-octave.html)
+* [filter-python](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-python.html)
+* [filter-r](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-r.html)
+
 ## Document Processing
 
 Documents  generated  with  tmdoc  can be then  processed  from the  generated
@@ -230,10 +312,10 @@ Thereafter make the file executable and check that it is correctly installed lik
 this:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.13.0/tmdoc-0.13.0.bin -O ~/.local/bin/tmdoc
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.14.0/tmdoc-0.14.0.bin -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.13.0
+## 0.14.0
 ```
 
 To install the  package just  download  the latest Zip or Tar-Gz  archive from the release page and
@@ -280,15 +362,22 @@ tclmain -m tmdoc --help
     - support for abbreviations declared in the YAML header or in YAML files
     - support for [Markdown alerts](https://github.com/orgs/community/discussions/16925)
     - support for embedding CSV data for creating Markdown tables
-      
+- 2025-05-06 0.14.0
+    - support for statistical reports in R,  Python or Octave
+    -  switching  to   https://latex.codecogs.com/   for  LaTeX  equations  as
+    math.vercel.app  svgs can't be converted  to PNG needed for inclusion into
+    pdf documents
+    - documentation updates, docu for each filter started
 ## TODO
 
-- kroki code chunk support  (done)
-- bibtex citation support (citer package) using `[@ref]` syntax (done)
-- test cases with examples for Markdown, LaTeX, and Tcl Man page format (done).
-- R code chunk with default opening a png file and adding dev.off so automatic 
+- [x] kroki code chunk support  (done)
+- [x] bibtex citation support (citer package) using `[@ref]` syntax (done)
+- [x] test cases with examples for Markdown, LaTeX, and Tcl Man page format (done).
+- [x] R code chunk with default opening a png file and adding dev.off so automatic 
   generation  of, as well  use of  save.image  and load for  keeping  sessions
-  between chunks
+  between chunks (done)
+- [ ] adding tcrd filter for sheet music display and adding string instrument chords  
+- [ ] documentation for filter abbreviation, csv, kroki, alerts, shell code
   
 ## See Also
 
