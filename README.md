@@ -80,7 +80,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-06 18:22
+date: 2025-10-06 18:28
 ---
 
 ## Testing Tmdoc Installation
@@ -89,7 +89,6 @@ Remove the single qotes for the code block below:
 
 '```{.tcl}
 puts "Hello Tcl World!"
-```
 '```
 ```
 
