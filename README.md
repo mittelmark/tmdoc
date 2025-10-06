@@ -44,10 +44,14 @@ technique  as well known as  literate  programming.
 - __Tcl programming:__ evaluate Tcl and other programming language code
   [![Tcl Filter](https://img.shields.io/badge/Docu-Tcl-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
 
-### Installation
 
-On a Unix system with installed Tcl interpreter just download the file  tmdoc-0.14.0.bin, save it to your
-hard disk and then make it executable like this:
+## Installation
+
+On Linux, MacOS and on Windows with installed Msys2 or Cyvwin download the latest
+[tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (150-200kb in size), rename
+the bin file to _tmdoc_ and copy the file to a folder belonging to your PATH variable. 
+Thereafter make the file executable and check that it is correctly installed like
+this:
 
 ```bash
 ### download to your local bin folder
@@ -65,7 +69,55 @@ If the folder `~/.local/bin` does not exists you should create it and add this t
 That approach  should as well work on  Windows-Cygwin  or  Windows-Msys2  with
 installed Tcl interpreter.
 
-To install the  package just  download  the latest Zip or Tar-Gz  archive from the release page and
+To check the document processing create a simple file, let's say `test.tmd` with the following content:
+
+```
+---
+title: Test file for tmdoc
+author: Max Musterman
+date: 2025-10-06 10:04
+---
+
+## Testing Tmdoc Installation
+
+Remove the single qotes for the code block below:
+
+'```{.tcl}
+puts "Hello Tcl World!"
+```
+'```
+```
+
+Thereafter you can process the file  like this:
+
+```
+tmdoc test.tmd test.md
+```
+
+which should create the file test.md with the following content:
+
+```
+---
+title: Test file for tmdoc
+author: Max Musterman
+date: 2025-10-06 10:02
+---
+
+## Testing Tmdoc Installation
+
+Remove the single qotes for the code block below:
+
+'```{tclcode}
+puts "Hello Tcl World!"
+'```
+'```{tclout}
+Hello Tcl World!
+'```
+```
+
+This file can be then converted to HTML or PDF using standard tools like pandoc as well using the [mkdoc](https://github.com/mittelmark/mkdoc) command line application.
+
+To install the  _tmdoc_ package just  download  the latest Zip or Tar-Gz  archive from the release page and
 unpack these files, then  you just copy the  _modules/tmdoc_  folder to a folder
 belonging to your _TCLLIBPATH_ variable. Therafter you can as well execute the
 command  line  application  using  the   [tclmain](https://github.com/mittelmark/tclmain)
@@ -74,6 +126,21 @@ utility like this:
 ```
 tclmain -m tmdoc --help
 ```
+
+If you like to use as well a Tcl based converter of Markdown documents to HTML documents, you can install the mkdoc application in a similar way like this:
+
+
+```bash
+### download to your local bin folder
+wget https://github.com/mittelmark/mkdoc/releases/download/v0.11.3/mkdoc-0.11.3.bin \
+  -O ~/.local/bin/mkdoc
+### make the file executable  
+chmod 755 ~/.local/bin/mkdoc
+### check the installation
+mkdoc --version
+## 0.11.3
+```  
+
 
 ### Tcl Code
 
@@ -364,6 +431,7 @@ as example for such embedded documentation.
 - [x] R code chunk with default opening a png file and adding dev.off so automatic 
   generation  of, as well  use of  save.image  and load for  keeping  sessions
   between chunks (done)
+- [ ] adding Julia language support using pipe
 - [ ] adding tcrd filter for sheet music display and adding string instrument chords  
 - [ ] documentation for filter abbreviation, csv, kroki, alerts, shell code
   
