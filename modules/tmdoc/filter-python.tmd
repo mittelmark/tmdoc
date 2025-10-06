@@ -1,7 +1,7 @@
 ---
 title: filter-python.tcl documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-10-05 17:12
+date: 2025-10-06 04:51
 pipe:
     pipe: python
     eval: 1    
@@ -143,4 +143,13 @@ y=3
 # a type
 print(y00)
 ```
+
+## See Also
+
+* [filter-octave](filter-octave.html)
+* [filter-r](filter-r.html)
+* [filter-tcl](filter-tcl.html)
+
+`tcl include footer.md`
+
 

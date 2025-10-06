@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-05 20:31
+date: 2025-10-06 04:52
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1486,5 +1486,14 @@ For generating the document the following Tcl version and Tcl packages were used
 Document was processed at: `tcl clock format [clock seconds] -format "%Y-%m-%d %H:%M"`
 
 Document processing was done within: `tcl expr {[clock milliseconds] - $start}` milliseconds.
+
+## See Also
+
+* [filter-python](filter-python.html)
+* [filter-r](filter-r.html)
+* [filter-tcl](filter-tcl.html)
+
+`tcl include footer.md`
+
 
 

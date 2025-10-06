@@ -309,33 +309,36 @@ tclmain -m tmdoc --help
 
 
 ```
-The following  terms apply to all files associated  with the software  unless
-explicitly disclaimed in individual files.
+BSD 3-Clause License
 
-The authors  hereby grant  permission  to use, copy, modify,  distribute,  and
-license this  software and its  documentation  for any purpose,  provided that
-existing  copyright notices are retained in all copies and that this notice is
-included  verbatim in any  distributions.  No written  agreement,  license, or
-royalty fee is required for any of the authorized uses.  Modifications to this
-software may be copyrighted by their authors and need not follow the licensing
-terms described here, provided that the new terms are clearly indicated on the
-first page of each file where they apply.
+Copyright (c) 2020-2025, Detlef Groth, University of Potsdam, Germany
 
-In no event  shall  the  authors  or  distributors  be liable to any party for
-direct, indirect, special, incidental, or consequential damages arising out of
-the use of this software, its documentation, or any derivatives  thereof, even
-if the authors have been advised of the possibility of such damage.
+All rights reserved.
 
-The authors and distributors  specifically disclaim any warranties, including,
-but not limited to, the implied warranties of  merchantability,  fitness for a
-particular purpose, and non-infringement.  This software is provided on an "as
-is" basis, and the  authors and  distributors  have no  obligation  to provide
-maintenance, support, updates, enhancements, or modifications.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-RESTRICTED RIGHTS: Use, duplication or disclosure by the government is subject
-to the restrictions as set forth in subparagraph (c) (1) (ii) of the Rights in
-Technical  Data and Computer  Software  Clause as DFARS  252.227-7013  and FAR
-52.227-19.
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
 

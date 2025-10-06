@@ -1,7 +1,7 @@
 ---
 title: filter-r.tcl documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-10-05 16:44
+date: 2025-10-06 04:51
 ---
 
 
@@ -127,4 +127,12 @@ x
 print(y)
 2+3
 ```
+
+## See Also
+
+* [filter-octave](filter-octave.html)
+* [filter-py](filter-python.html)
+* [filter-tcl](filter-tcl.html)
+
+`tcl include footer.md`
 

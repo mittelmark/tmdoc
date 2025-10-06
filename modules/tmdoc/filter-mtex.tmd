@@ -1,7 +1,7 @@
 ---
 title: filter-mtex documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-10-05 20:28
+date: 2025-10-06 04:54
 ---
 
 `tcl include header.md`
@@ -11,11 +11,10 @@ date: 2025-10-05 20:28
 _filter-mtex_ - tmdoc Filter which can be used to execute include LaTeX equations
 using the [https://latex.codecogs.com](https://latex.codecogs.com) web service.
 
-Equations  <a title="CodeCogs.com" href="https://www.codecogs.com">
+Equations  are <a title="CodeCogs.com" href="https://www.codecogs.com">
 <img src="https://www.codecogs.com/images/poweredbycodecogs.png" border="0" 
 title="CodeCogs - An Open Source Scientific Library" 
-alt="Powered by CodeCogs">
-		</a>
+alt="Powered by CodeCogs"></a>
 		
 ## Usage
 

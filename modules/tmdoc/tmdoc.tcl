@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251005.2020>
+#  Last Modified : <251005.2053>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -35,7 +35,7 @@ exec tclsh "$0" "$@"
 #                                            adding alert messages in Markdown ouput
 #                                            adding abbreviations
 #                                            adding csv based  table creation  
-#                  2025-10-XX version 0.13.0 adding support for Octave, Python and R code embedding
+#                  2025-10-XX version 0.14.0 adding support for Octave, Python and R code embedding
 #
 package require Tcl 8.6-
 package require fileutil
