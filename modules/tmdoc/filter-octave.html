@@ -30,7 +30,7 @@
 <p><center>
 <a href="filter-octave.html">filter-octave</a>      -  <a href="filter-python.html">filter-python</a>-   <a href="filter-r.html">filter-r</a>     -
 <a href="filter-tcl.html">filter-tcl</a> <br/>
-<a href="filter-mtex.html">filter-mtex</a> <br/>
+<a href="filter-abbrev.html">filter-abbrev</a> - <a href="filter-mtex.html">filter-mtex</a> <br/>
 <a href="tmdoc-tutorial.html">tmdoc-tutorial</a>
 </center></p>
 
@@ -91,10 +91,8 @@ disp(y);</code></pre>
 
 <pre class='code'><code>octave&gt; x=1;
 octave&gt; disp(x);
-1
 octave&gt; y=2;
-octave&gt; disp(y);
-2</code></pre>
+octave&gt; disp(y);</code></pre>
 
 <p>Now let's do a plot:</p>
 
@@ -107,6 +105,8 @@ mesh (tx, ty, tz);
 saveas(aux, 'images/mesh-octave.png', 'png');</code></pre>
 
 <pre class='code'><code>octave&gt; aux=figure('visible','off');
+1
+2
 octave&gt; tx = ty = linspace (-8, 8, 41);
 octave&gt; [xx, yy] = meshgrid (tx, ty);
 octave&gt; r = sqrt (xx .^ 2 + yy .^ 2) + eps;
@@ -123,9 +123,9 @@ It should be .  Hmm, not yet working.</p>
 disp(z)</code></pre>
 
 <pre class='code'><code>octave&gt; z=x+y
+octave&gt; disp(z)
 2
 z = 3
-octave&gt; disp(z)
 3</code></pre>
 
 <p>Let's now do an Octave error:</p>

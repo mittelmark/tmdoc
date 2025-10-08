@@ -3,10 +3,10 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="title" content="filter-tcl documentation">
+<meta name="title" content="filter-abbrev documentation">
 <meta name="author" content="Detlef Groth, University of Potsdam, Germany">
     
-<title>filter-tcl documentation</title>
+<title>filter-abbrev documentation</title>
     
     
 
@@ -21,9 +21,9 @@
 
 
 
-<h1 class="title">filter-tcl documentation</h1>
+<h1 class="title">filter-abbrev documentation</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-10-06</h2>
+<h2 class="date">2025-10-08</h2>
 
 <hr />
 
@@ -38,66 +38,47 @@
 
 <h2>Name</h2>
 
-<p><em>filter-tcl</em> - tmdoc Filter which can be used to execute Tcl code
-within  Markdown or LaTeX  document using the Tcl package tmdoc and showing or
-hiding the output of these code chunks.</p>
+<p><em>filter-abbrev</em> - tmdoc Filter which can be used to embed abbreviations placed
+within a pair of curly braces into
+your text documents and expand them based on your abbreviation lists which can
+be either defined in the YAML header or within an YAML abbreviation file which
+must be then declared in the YAML header.</p>
 
 <h2>Usage</h2>
 
-<p>The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:</p>
+<p>Abbreviations are defined within the YAML header or within YAML files. Here an
+example:</p>
+
+<pre class='code'><code>---
+title: This is a title
+author: Max Musterman
+date: 2025-01-01 10:00
+UM: University of Mustercity
+abbreviations: file.yml
+---
+
+In the text you can embed the abbreviations like this. In this article by
+{author} from {UM}.</code></pre>
+
+<p>The file <em>file.yml</em> can contain as well abbreviations. Multiline abbreviations
+can be defined like this:</p>
+
+<pre class='code'><code>lipsum: &gt;
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+    est laborum.</code></pre>
+
+<h2>Document Conversion</h2>
+
+<p>The  conversion of the Markdown  documents  containing the  abbreviations  via
+tmdoc/mkdoc should be done as follows:</p>
 
 <pre class='code'><code>tmdoc --mode weave filename.tmd - | \
     mkdoc - filename.html --css tmdoc.css</code></pre>
-
-<p>If code blocks with the <code>.tcl</code> or <code>tcl</code> are found, the contents in the code block is processed via
-a separate Tcl interpreter.</p>
-
-<p>The following options can be given via code chunks or in the YAML header.</p>
-
-<blockquote>
-<ul>
-<li><em>eval</em> - should the code in the code block be evaluated, default: false/0</li>
-<li><em>echo</em> - should the input code been shown, default: true/1</li>
-<li><em>fig</em>  - does the code chunk  produces a graphic,  default:  false for Tcl
-code. If this feature is used there must be a <code>figure</code> procedure with a filename argument which writes the figure.</li>
-<li><em>include</em>: Should the created figure automatically displayed, default: false.  It is as well recommended to give the chunk a label, which will be used to create the image filename.</li>
-<li><em>label</em>: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.</li>
-<li><em>results</em>: Should the output of the Tcl code evaluation be shown, either &quot;hide&quot;,  &quot;asis&quot; or &quot;show&quot;, default: &quot;show&quot;.</li></ul>
-
-
-</blockquote>
-
-<p>Now the mandatory &quot;Hello World!&quot; example. If you embed the following text
-into your Markdown document with the extension, <code>.tmd</code>, <em>tmdoc</em> will produce, after converting the document
-from  Markdown to HTML via <em>mkdoc</em> or <em>pandoc</em>, the following  input  (replace
-the leading single quote with a backtick, necessary here to avoid interpretation by <em>tmdoc</em>)</p>
-
-<pre class='code'><code class='std'>'``{.tcl}
-puts &quot;Hello World!&quot;
-'``</code></pre>
-
-<p>will produce this output:</p>
-
-<pre class='code'><code class='tclcode'>puts &quot;Hello World!&quot;</code></pre><pre class='code'><code class='tclout'>Hello World!</code></pre>
-
-<p>Code block and/or the output can be as well hidden using chunk arguments, that
-will be described later in more detail. Short code fragments can be 
-directly embedded into the text. Here an example for this approach:</p>
-
-<pre class='code'><code class='std'>The curent date and time is: `tcl clock format [clock seconds] -format &quot;%Y-%m-%d %H:%M&quot;`</code></pre>
-
-<p>This is the output:</p>
-
-<p>The curent date and time is: 2025-10-08 19:25</p>
-
-<h2>See Also</h2>
-
-<ul>
-<li><a href="filter-r.html">filter-r</a></li>
-<li><a href="filter-python.html">filter-py</a></li>
-<li><a href="filter-octave.html">filter-octave</a>
-
-</li></ul>
 
 <h2>Author and Copyright</h2>
 

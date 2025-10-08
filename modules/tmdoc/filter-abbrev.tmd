@@ -1,0 +1,62 @@
+---
+title: filter-abbrev documentation
+author: Detlef Groth, University of Potsdam, Germany
+date: 2025-10-08 19:23
+---
+
+`tcl include header.md`
+
+## Name
+
+_filter-abbrev_ - tmdoc Filter which can be used to embed abbreviations placed
+within a pair of curly braces into
+your text documents and expand them based on your abbreviation lists which can
+be either defined in the YAML header or within an YAML abbreviation file which
+must be then declared in the YAML header.
+
+## Usage
+
+Abbreviations are defined within the YAML header or within YAML files. Here an
+example:
+
+```
+---
+title: This is a title
+author: Max Musterman
+date: 2025-01-01 10:00
+UM: University of Mustercity
+abbreviations: file.yml
+---
+
+In the text you can embed the abbreviations like this. In this article by
+{author} from {UM}.
+```
+
+The file _file.yml_ can contain as well abbreviations. Multiline abbreviations
+can be defined like this:
+
+```
+lipsum: >
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+    est laborum.
+```
+
+## Document Conversion
+
+The  conversion of the Markdown  documents  containing the  abbreviations  via
+tmdoc/mkdoc should be done as follows:
+
+```
+tmdoc --mode weave filename.tmd - | \
+	mkdoc - filename.html --css tmdoc.css
+```
+
+
+`tcl include footer.md`
+
+

@@ -25,7 +25,7 @@ technique  as well known as  literate  programming.
 ## Main Features
 
 - __single file approach:__ the required small (approx. 200kb) single file (_tmdoc-0.14.0.bin_) just requires an existing Tcl/Tk installation
-- __Abbreviations:__ expand YAML defined abbreviations
+- __Abbreviations:__ expand YAML defined abbreviations - [Abbreviation Filter](https://img.shields.io/badge/Docu-LaTeX-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-abbrev.html)
 - __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925)
 - __Citations:__ reference management using BibTeX files
 - __CSV Tables:__ create tables using CSV data
@@ -80,7 +80,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-06 18:28
+date: 2025-10-08 19:28
 ---
 
 ## Testing Tmdoc Installation
