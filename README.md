@@ -26,7 +26,7 @@ technique  as well known as  literate  programming.
 
 - __single file approach:__ the required small (approx. 200kb) single file (_tmdoc-0.14.0.bin_) just requires an existing Tcl/Tk installation
 - __Abbreviations:__ expand YAML defined abbreviations - [Abbreviation Filter](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-abbrev.html)
-- __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925)
+- __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925) - [Alert Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#alerts)
 - __Citations:__ reference management using BibTeX files
 - __CSV Tables:__ create tables using CSV data
 - __Diagrams:__ evaluate diagram code and embed create graphics using the [Kroki webservice](https:://kroki.io)
@@ -47,7 +47,7 @@ technique  as well known as  literate  programming.
 
 ## Installation
 
-On Linux, MacOS and on Windows with installed Msys2 or Cyvwin download the latest
+On Linux, MacOS and on Windows with installed [Msys2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) download the latest
 [tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (150-200kb in size), rename
 the bin file to _tmdoc_ and copy the file to a folder belonging to your PATH variable. 
 Thereafter make the file executable and check that it is correctly installed. Since version 0.14.0 there is an install script which installs both tmdoc and mkdoc into ~/.local/bin. You can execute it like this:
@@ -80,7 +80,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-08 19:35
+date: 2025-10-08 20:10
 ---
 
 ## Testing Tmdoc Installation
