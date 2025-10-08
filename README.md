@@ -26,12 +26,12 @@ technique  as well known as  literate  programming.
 
 - __single file approach:__ the required small (approx. 200kb) single file (_tmdoc-0.14.0.bin_) just requires an existing Tcl/Tk installation
 - __Abbreviations:__ expand YAML defined abbreviations - [Abbreviation Filter](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-abbrev.html)
-- __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925) - [Alert Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#alerts)
-- __Citations:__ reference management using BibTeX files
-- __CSV Tables:__ create tables using CSV data
-- __Diagrams:__ evaluate diagram code and embed create graphics using the [Kroki webservice](https:://kroki.io)
-- __Graphic generation:__ create graphics using the [tsvg package](https://github.com/mittelmark/tsv)
-- __Includes:__ Markdown file includes
+- __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925) - [Alert Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#alerts)
+- __Citations:__ reference management using BibTeX files - [Citation Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#references)
+- __CSV Tables:__ create tables using CSV data - [CSV Tables Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#csv)
+- __Diagrams:__ evaluate diagram code and embed create graphics using the [Kroki webservice](https:://kroki.io) - [Kroki Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#kroki)
+- __Graphic generation:__ create graphics using the [tsvg package](https://github.com/mittelmark/tsv) - [tsvg section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#images)
+- __Includes:__ Markdown file includes - [include section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#include)
 - __LaTeX equations:__ can be embedded using the [latex.codecs.com](https://latex.codecogs.com/) web servcie
     [![LaTeX Filter](https://img.shields.io/badge/Docu-LaTeX-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-mtex.html)
 - __Octave reports:__ writing statistical reports using the Octave programming
@@ -40,7 +40,7 @@ technique  as well known as  literate  programming.
    language [![Python Filter](https://img.shields.io/badge/Docu-Python-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-python.html)
 - __R reports:__ writing statistical reports using the R programming language
    [![R Filter](https://img.shields.io/badge/Docu-R-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-r.html)
-- __Shell code:__ evaluate embedded shell code to create graphics or text to be used within the output
+- __Shell code:__ evaluate embedded shell code to create graphics or text to be used within the output - [shell section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#clp)
 - __Tcl programming:__ evaluate Tcl and other programming language code
   [![Tcl Filter](https://img.shields.io/badge/Docu-Tcl-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
 
@@ -80,7 +80,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-08 20:10
+date: 2025-10-08 20:17
 ---
 
 ## Testing Tmdoc Installation
