@@ -41,7 +41,7 @@ namespace eval tmdoc::python {
         variable dict
         set res ""
         if {$pipe eq ""} {
-            set pipe [open "|python -qui" r+]
+            set pipe [open "|python3 -qui" r+]
             fconfigure $pipe -buffering line -blocking 0
             fileevent $pipe readable [list ::tmdoc::python::piperead $pipe]
             set res ""

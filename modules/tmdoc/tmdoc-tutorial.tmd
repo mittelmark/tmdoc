@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.14.0 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.14.1 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-06 04:52
+date: 2025-10-13 07:10
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -922,7 +922,7 @@ bibliography: filename.bib
 
 Alternatively it can be provided within the text like this:
 
-```{.tcl label=citer eval=false}
+```{.tcl label=citer eval=false echo=true}
 package require citer
 citer::bibliography filename.bib
 ```
@@ -1105,15 +1105,15 @@ figure and the print command to save the image and use the current chunk name.
 Here an example:
 
 ```
-'```{.pipe pipe=R label=rfig fig=true eval=true}
+'```{.pipe pipe=R label=rfig fig=true eval=true fig.width=800 fig.height=600}
 pie(rep(1,each=6),col=rainbow(6))
 '```
 ```
 
 And here the output.
 
-```{.pipe pipe=R label=rfig fig=true eval=true}
-pie(rep(1,each=6),col=rainbow(6))
+```{.pipe pipe=R label=rfig fig=true eval=true fig.width=800 fig.height=600}
+pie(rep(1,each=6),col=rainbow(6)[)
 ```
 
 Now the next chunk of code which shows that the variable _x_ which was defined
@@ -1231,7 +1231,7 @@ for (i in 1:4) {
 
 As we can use R we can as well use Python in a similar way using the pipe code chunk. Here an example:
 
-```{.pipe pipe=python}
+```{.pipe pipe=python3}
 def hello():
     print("Hello Python World!\n")
 
@@ -1241,14 +1241,14 @@ x=2
   
 Again we can use variables declared in the previous code chunks:
  
-```{.pipe pipe=python}
+```{.pipe pipe=python3}
 print(x)
 ``` 
 
 We can as well hide the code and only display the session data using the option
 `echo=false`.
 
-```{.pipe pipe=python echo=false}
+```{.pipe pipe=python3 echo=false}
 print(x+1)
 x=x+1
 ``` 

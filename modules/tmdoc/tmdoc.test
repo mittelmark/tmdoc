@@ -13,6 +13,7 @@ set x 1; set x
 ```{tclcode}
 set x 1; set x
 ```
+
 ```{tclout}
 ==> 1
 ```

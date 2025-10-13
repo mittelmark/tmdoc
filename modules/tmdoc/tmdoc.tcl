@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251006.0543>
+#  Last Modified : <251013.0712>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -36,11 +36,12 @@ exec tclsh "$0" "$@"
 #                                            adding abbreviations
 #                                            adding csv based  table creation  
 #                  2025-10-06 version 0.14.0 adding support for Octave, Python and R code embedding
+#                  2025-10-13 version 0.14.1 python bin missing fix, as wel as png file size fix
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.14.0
+package provide tmdoc::tmdoc 0.14.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -359,8 +360,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set ginput ""
     array set mopt [list eval true echo true results show fig false include true label chunk-nn\
                     ext png chunk.ext txt]
+    ## r, python, octave
     array set dopt [list eval true echo true results show fig false include true pipe python3 \
-        fig.width 12cm fig.height 12cm fig.cap {} label chunk-nn ext png chunk.ext txt]
+        fig.width 600 fig.height 600 fig.cap {} label chunk-nn ext png chunk.ext txt]
     ## bash / shell
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
         fig.width 12cm label chunk-nn ext png chunk.ext txt]
@@ -412,7 +414,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             if {$mode eq "text" && [regexp {```\{\.?(r|oc|py).*\}} $line]} {
                 set line [regsub -nocase {\{\.?r(.*)\}} $line "{.pipe pipe=R\\1}"]
                 set line [regsub -nocase {\{\.?oc[a-z]*(.*)\}} $line "{.pipe pipe=octave\\1}"]                
-                set line [regsub -nocase {\{\.?py[a-z]*(.*)\}} $line "{.pipe pipe=python\\1}"]                                
+                set line [regsub -nocase {\{\.?py[a-z]*(.*)\}} $line "{.pipe pipe=python3\\1}"]                                
             }
             if {$mode eq "text" && [regexp {\[@[@,\w]+\]} $line]} {
                 set line [regsub -all {\[@([@\w,]+)\]} $line "`tcl citer::cite \\1`"]
@@ -445,6 +447,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode code
                 incr chunki
                 array set copt [array get dopt]
+
                 # TODO: spaces in fig.cap etc
                 ::tmdoc::GetOpts 
                 continue
@@ -514,18 +517,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 continue
             } elseif {$mode eq "shell" && [regexp {```} $line]} {
                 if {$copt(echo)} {
-                    if {$inmode eq "md"} {
-                        puts -nonewline $out "```{code}\n${bashinput}"
-                        puts $out "```"
-                    } elseif {$inmode eq "man"} {
-                        puts $out ""
-                        puts -nonewline $out "\[example_begin\]\n\n$bashinput\n\n\[example_end\]\n"
-                        puts $out ""
-                    } else {
-                        puts $out "\\begin{lcverbatim}"
-                        puts -nonewline $out $bashinput
-                        puts $out "\\end{lcverbatim}"
-                    }
+                    set cont [tmdoc::block $bashinput $inmode code]
+                    puts $out $cont
                 }
                 set cmd [regsub -all {%i} $copt(cmd) $copt(label).$copt(chunk.ext)]
                 set cmd [regsub -all {%f} $cmd $copt(label).$copt(chunk.ext)]                
@@ -607,18 +600,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 array unset copt
             } elseif {$mode eq "kroki" && [regexp {```} $line]} {
                 if {$copt(echo)} {
-                    if {$inmode eq "md"} {
-                        puts -nonewline $out "```\n${krokiinput}"
-                        puts $out "```"
-                    } elseif {$inmode eq "man"} {
-                        puts $out ""
-                        puts -nonewline $out "\[example_begin\]\n\n$krokiinput\n\n\[example_end\]\n"
-                        puts $out ""
-                    } else {
-                        puts $out "\\begin{lcverbatim}"
-                        puts -nonewline $out $krokiinput
-                        puts $out "\\end{lcverbatim}"
-                    }
+                    set cont [tmdoc::block $krokiinput $inmode kroki]
+                    puts $out $cont
                 }
                 set url [dia2kroki $krokiinput $copt(dia) $copt(ext)] 
                 set filename [url2crc32file $url $copt(imagepath) $copt(ext)]
@@ -636,7 +619,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 array unset copt                
             } elseif {$mode eq "mtex" && [regexp {```} $line]} {
                 if {$copt(echo)} {
-                    set cont [tmdoc::block $mtexinput $inmode]
+                    set cont [tmdoc::block $mtexinput $inmode mtex]
                     puts $out $cont
                 }
                 #set url https://math.vercel.app?from=[ue ${mtexinput}].svg
@@ -666,20 +649,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             } elseif {$mode in [list csv pipe]} {
                 append ginput "$line\n"
             } elseif {$mode eq "code" && [regexp {```} $line]} {
-               if {$copt(echo)} {
-                   if {$inmode eq "md"} {
-                       puts $out "```{tclcode}"
-                       puts -nonewline $out $tclcode
-                       puts $out "```"
-                   } elseif {$inmode eq "man"} {
-                       puts $out ""
-                       puts -nonewline $out "\n\[example_begin\]\n$tclcode\n\[example_end\]\n"
-                       puts $out ""
-                   } else {
-                       puts $out "\\begin{lcverbatim}"
-                       puts -nonewline $out $tclcode
-                        puts $out "\\end{lcverbatim}"
-                    }
+                if {$copt(echo)} {
+                    set cont [tmdoc::block $tclcode $inmode tclcode]
+                    puts $out $cont
                 }
                 if {$copt(eval)} {
                     if {[catch {interp eval try $tclcode} res]} {
@@ -807,12 +779,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`py ([^`]+)`(.*)$} $line -> pre t post]} {
-                    set res [python::filter $t [dict create pipe python eval true echo false terminal false]]
+                    set res [python::filter $t [dict create pipe python3 eval true echo false terminal false]]
                     set res [lindex [split [lindex [lindex $res 0] 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`oc ([^`]+)`(.*)$} $line -> pre t post]} {
-                    set res [octave::filter $t [dict create pipe octave eval true echo false terminal false]]
+                    set res [octave::filter $t [dict create pipe octave eval true echo false terminal false wait 500]]
                     set res [lindex [split [lindex [lindex $res 0] 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
@@ -855,7 +827,7 @@ proc ::tmdoc::GetOpts {} {
             set opts ${before}${match}${after}
         }
         set opts [regsub -all {,+} [regsub -all { +} $opts ,] ,]
-        
+        set opts [regsub {^,} $opts ""]
         foreach opt [split $opts ","] {
             set opt [string trim [regsub -nocase false [regsub -nocase true $opt true] false]]
             set o [split $opt =] 
@@ -1062,8 +1034,12 @@ namespace eval ::tmdoc {
 #'     - extending tmdoc tutorial for citation use
 #'     - fixing tcl code chunk option eval=false
 #'     - fixing resetting default of code chunks
-#' - 2025-10-XX Release 0.14.0
-#'     - adding support for Python and R code embedding
+#' - 2025-10-06 Release 0.14.0
+#'     - adding support for Python, Octave and R code embedding
+#' - 2025-10-06 Release 0.14.1
+#'     - fixing image size issue for fig=true for png images
+#'     - fix for modern Linux system with missing python binaries
+#'     - default set to python3
 #'
 #' ## <a name='todo'>TODO</a>
 #'
