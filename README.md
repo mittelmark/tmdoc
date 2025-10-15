@@ -53,7 +53,7 @@ the bin file to _tmdoc_ and copy the file to a folder belonging to your PATH var
 Thereafter make the file executable and check that it is correctly installed. Since version 0.14.0 there is an install script which installs both tmdoc and mkdoc into ~/.local/bin. You can execute it like this:
 
 ```bash
-/bin/sh -c "$(curl -fsSL https://github.com/mittelmark/tmdoc/releases/latest/download/install-tmdoc.sh)"
+/bin/bash -c "$(curl -fsSL https://github.com/mittelmark/tmdoc/releases/latest/download/install-tmdoc.sh)"
 ```
 
 You can as well just install tmdoc alone like this:
@@ -80,7 +80,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-15 18:46
+date: 2025-10-15 19:18
 ---
 
 ## Testing Tmdoc Installation
