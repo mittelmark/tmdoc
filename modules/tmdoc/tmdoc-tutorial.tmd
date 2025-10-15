@@ -1119,7 +1119,7 @@ pie(rep(1,each=6),col=rainbow(6))
 And here the output.
 
 ```{.pipe pipe=R label=rfig fig=true eval=true fig.width=800 fig.height=600}
-pie(rep(1,each=6),col=rainbow(6)[)
+pie(rep(1,each=6),col=rainbow(6))
 ```
 
 Now the next chunk of code which shows that the variable _x_ which was defined
