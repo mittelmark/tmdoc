@@ -24,7 +24,7 @@ technique  as well known as  literate  programming.
 
 ## Main Features
 
-- __single file approach:__ the required small (approx. 230kb) single file (_tmdoc-0.14.1.bin_) just requires an existing Tcl/Tk installation
+- __single file approach:__ the required small (approx. 230kb) single file (_tmdoc-0.14.2.bin_) just requires an existing Tcl/Tk installation
 - __Abbreviations:__ expand YAML defined abbreviations - [Abbreviation Filter](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-abbrev.html)
 - __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925) - [Alert Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#alerts)
 - __Citations:__ reference management using BibTeX files - [Citation Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#references)
@@ -60,13 +60,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.14.1/tmdoc-0.14.1.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.14.2/tmdoc-0.14.2.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.14.1
+## 0.14.2
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -80,7 +80,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-13 17:44
+date: 2025-10-15 18:46
 ---
 
 ## Testing Tmdoc Installation
@@ -433,6 +433,10 @@ as example for such embedded documentation.
     - fixes for fig=true for R pipes and setting the proper image size for png images
     - fix for new Linux distros having no `python` alias for `python3` anymore, `python3` is
       now the default for the Python pipe
+- 2025-10-15 0.14.2
+    - kroki filter now uses local installs of GraphViz (dot), PlantUML (plantuml) and Ditaa (ditaa)
+      command line applications avoding fetching kroki URL's if applications are available locally
+      
 
 ## TODO
 
@@ -442,9 +446,9 @@ as example for such embedded documentation.
 - [x] R code chunk with default opening a png file and adding dev.off so automatic 
   generation  of, as well  use of  save.image  and load for  keeping  sessions
   between chunks (done)
+- [x] documentation for filter abbreviation, csv, kroki, alerts, shell code (done)
 - [ ] adding Julia language support using pipe
 - [ ] adding tcrd filter for sheet music display and adding string instrument chords  
-- [x] documentation for filter abbreviation, csv, kroki, alerts, shell code (done)
   
 ## See Also
 
