@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251015.1526>
+#  Last Modified : <251015.1908>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -1090,7 +1090,6 @@ namespace eval ::tmdoc {
 #'     - fixing image size issue for fig=true for png images
 #'     - fix for modern Linux system with missing python binaries
 #'     - default set to python3
-#'
 #' - 2025-10-15 Release 0.14.2
 #'     - kroki chunks first check for local installs of dot, plantuml and ditaa
 #'
