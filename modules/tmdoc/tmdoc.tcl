@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251013.0712>
+#  Last Modified : <251015.1526>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -37,11 +37,12 @@ exec tclsh "$0" "$@"
 #                                            adding csv based  table creation  
 #                  2025-10-06 version 0.14.0 adding support for Octave, Python and R code embedding
 #                  2025-10-13 version 0.14.1 python bin missing fix, as wel as png file size fix
+#                  2025-10-15 version 0.14.2 kroki chunks first check for local installs of dot, plantuml and ditaa
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.14.1
+package provide tmdoc::tmdoc 0.14.2
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -223,6 +224,51 @@ proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {
     set uri https://kroki.io//$dia/$ext/$b64
 }
 
+proc ::tmdoc::diacheck {text {folder .} {dia graphviz} {ext svg}} {
+    array set dtype [list graphviz dot pikchr pik plantuml pml ditaa ditaa]
+    if {![file isdirectory $folder]} {
+        file mkdir $folder
+    }
+    set diafile [file join $folder [zlib crc32 $text].$dtype($dia)]
+    set filename [file join $folder [zlib crc32 $text].$ext]
+    if {[file exists $filename]} {
+        return $filename
+    }
+    set out [open $diafile w 0600]
+    puts $out $text
+    close $out
+    if {$dia eq "graphviz"} {
+        if {[auto_execok "dot"] eq ""} {
+            return ""
+        } else {
+            if {[catch {exec {*}[list dot -T$ext $diafile -o$filename]}]} {
+                return ""
+            } 
+            return $filename
+        }
+    }
+    if {$dia eq "plantuml"} {
+        if {[auto_execok "plantuml"] eq ""} {
+            return ""
+        } else {
+            if {[catch {exec {*}[list plantuml -t$ext $diafile]}]} {
+                return ""
+            } 
+            return $filename
+        }
+    }
+    if {$dia eq "ditaa"} {
+        if {[auto_execok "ditaa"] eq ""} {
+            return ""
+        } else {
+            if {[catch {exec {*}[list ditaa $diafile -o $filename]}]} {
+                return ""
+            } 
+            return $filename
+        }
+    }
+    return ""
+}
 proc ::tmdoc::url2crc32file {url {folder .} {ext png}} {
     
     if {[auto_execok wget] eq ""} {
@@ -603,8 +649,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set cont [tmdoc::block $krokiinput $inmode kroki]
                     puts $out $cont
                 }
-                set url [dia2kroki $krokiinput $copt(dia) $copt(ext)] 
-                set filename [url2crc32file $url $copt(imagepath) $copt(ext)]
+                ## check local installs of kroki, ditaa or plantuml first
+                set filename [diacheck $krokiinput $copt(imagepath) $copt(dia) $copt(ext)]
+                if {$filename eq ""} {
+                    set url [dia2kroki $krokiinput $copt(dia) $copt(ext)] 
+                    set filename [url2crc32file $url $copt(imagepath) $copt(ext)]
+                }
                 if {$copt(include)} {
                     if {$inmode eq "md"} {
                         puts $out "!\[\]($filename)"
@@ -1036,10 +1086,13 @@ namespace eval ::tmdoc {
 #'     - fixing resetting default of code chunks
 #' - 2025-10-06 Release 0.14.0
 #'     - adding support for Python, Octave and R code embedding
-#' - 2025-10-06 Release 0.14.1
+#' - 2025-10-13 Release 0.14.1
 #'     - fixing image size issue for fig=true for png images
 #'     - fix for modern Linux system with missing python binaries
 #'     - default set to python3
+#'
+#' - 2025-10-15 Release 0.14.2
+#'     - kroki chunks first check for local installs of dot, plantuml and ditaa
 #'
 #' ## <a name='todo'>TODO</a>
 #'

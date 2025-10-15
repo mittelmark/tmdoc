@@ -1,5 +1,5 @@
 ---
-title: tmdoc::tmdoc 0.14.1 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.14.2 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
 date: 2025-10-13 07:10
 bibliography: ../../examples/literature.bib
@@ -718,12 +718,18 @@ digraph g {
 
 ## <a name="kroki">Kroki Webservice Diagrams</a>
 
-The  [kroki.io](https://kroki.io)  webservice allows you to embed diagram code
-for many  diagram  tools into your  websites in form of base64  encoding. 
-Since  version  0.9.0  _tmdoc_  supports  embedding  of this using  kroki code
-chunks.  If the tool wget is  installed  on the users  machine  files  will be
-downloaded  and stored  locally,  these files are then used instead of the the
-web link. The download is only repeated if the code chunk content does change.
+The [kroki.io](https://kroki.io) webservice allows you to embed diagram code
+for many diagram tools into your websites in form of base64 encoding. Since
+version 0.9.0 _tmdoc_ supports embedding of this using kroki code chunks. If
+the tool wget is installed on the users machine files will be downloaded and
+stored locally, these files are then used instead of the the web link. The
+download is only repeated if the code chunk content does change. Since version
+0.14.2 firs tlocal installations of GraphViz (dot), PlantUML (plantuml) and
+Ditaa (ditaa) will be checked and if these tools are available locally as
+applications, they will be used instead of the webservice. So the Kroki
+webservice will be only used if the tools are not installed on the users
+machine.
+
 See here for some examples. 
 
 

@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.13.0]
+[vset VERSION 0.14.2]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -104,6 +104,9 @@ digraph g {
 
 Other file extensions are svg and pdf. Other diagram tools are plantuml, ditaa
 and many others. For details look at the kroki.io website.
+
+Since version 0.14.2 first local availability of the GraphViz dot, the plantuml and the ditaa command line applications are checked before the webservise is used.
+
 
 [section "LaTeX Equations"]
 
