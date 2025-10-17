@@ -51,16 +51,16 @@ technique  as well known as  literate  programming.
 
 | Code              | HTML-Output |
 |:-----------------:|:-----------:|
-| [abcmusic.tmd](examples/abcmusic.tmd) | [abcmusic.html](examples/abcmusic.html) |
-| [asciidoc.tdoc](examples/asciidoc.tdoc) | [asciidoc.html](examples/asciidoc.html) |
-| [c.tmd](examples/c.tmd) | [c.html](examples/c.html) |
-| [cpp.tmd](examples/cpp.tmd) | [cpp.html](examples/cpp.html) |
-| [dot.tmd](examples/dot.tmd) | [dot.html](examples/dot.html) |
-| [emf.tmd](examples/emf.tmd) | [emf.html](examples/emf.html) |
-| [literature.tmd](examples/literature.tmd) | [literature.html](examples/literature.html) |
-| [mtex.tmd](examples/mtex.tmd) | [mtex.html](examples/mtex.html) |
-| [pipe.tmd](examples/pipe.tmd) | [pipe.html](examples/pipe.html) |
-| [py.tmd](examples/py.tmd) | [py.html](examples/py.html) |
+| [abcmusic.tmd](examples/abcmusic.tmd) | [abcmusic.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/abcmusic.html) |
+| [asciidoc.tdoc](examples/asciidoc.tdoc) | [asciidoc.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/asciidoc.html) |
+| [c.tmd](examples/c.tmd) | [c.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/c.html) |
+| [cpp.tmd](examples/cpp.tmd) | [cpp.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/cpp.html) |
+| [dot.tmd](examples/dot.tmd) | [dot.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/dot.html) |
+| [emf.tmd](examples/emf.tmd) | [emf.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/emf.html) |
+| [literature.tmd](examples/literature.tmd) | [literature.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/literature.html) |
+| [mtex.tmd](examples/mtex.tmd) | [mtex.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/mtex.html) |
+| [pipe.tmd](examples/pipe.tmd) | [pipe.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/pipe.html) |
+| [py.tmd](examples/py.tmd) | [py.html](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/examples/py.html) |
 
 ## Installation
 
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-17 21:01
+date: 2025-10-17 21:03
 ---
 
 ## Testing Tmdoc Installation
