@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="title" content="Example for Tmd files using the citer package">
+<meta name="author" content="Detlef Groth, University of Potsdam, Germany">
+    
+<title>Example for Tmd files using the citer package</title>
+    
+    
+
+<style>
+@import url("data:text/css;base64,CmJvZHkgewogICAgcGFkZGluZzogMzBweDsKICAgIG1heC13aWR0aDogMTIwMHB4OwogICAgZm9udDogQWxlZ3JleWEsIEdlb3JnaWEsIHNlcmlmOwogICAgd2lkdGg6IDk4MHB4OyBtYXJnaW46IDAgYXV0bzsKfQoKI2hlYWRlciwgLnRleHQtY2VudGVyLC5kZXRhaWxzLCBoMS50aXRsZSwgcC5hdXRob3IsIHAuZGF0ZSwgaDIuYXV0aG9yLCBoMi5kYXRlIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKfQphIHsgdGV4dC1kZWNvcmF0aW9uOiBub25lIDsgfQpwcmUgewogICAgcGFkZGluZzogMTBweCA7CiAgICBib3JkZXItdG9wOiAycHggc29saWQgI0NDQ0NDQzsKICAgIGJvcmRlci1ib3R0b206IDJweCBzb2xpZCAjQ0NDQ0NDOyAKICAgIGZvbnQ6IE1vbmFjbywgbW9ub3NwYWNlOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtY29kZSkscHJlOmhhcyhjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiAjZWZlZmVmOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsY29kZSksIHByZTpoYXMoY29kZS50Y2xjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiBjb3Juc2lsazsgICAKfQoKcHJlLmhpZ2hsaWdodDpoYXMoY29kZS5sYW5ndWFnZS10Y2xvdXQpLHByZTpoYXMoY29kZS50Y2xvdXQpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjQ0NFRUZGOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsZXJyKSxwcmU6aGFzKGNvZGUudGNsZXJyKSB7ICAgIAogICAgYmFja2dyb3VuZDogI0ZGQ0NDQzsKfQpwcmUuaGlnaGxpZ2h0Omhhcyhjb2RlLmxhbmd1YWdlLWVycm9yKSxwcmU6aGFzKGNvZGUuZXJyb3IpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjRkZDQ0NDOwp9Cgp0YWJsZSB7ICAgIAogIGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7CiAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkOwogIGJvcmRlci1zcGFjaW5nOiA1cHg7CiAgbWluLXdpZHRoOiAzMDBweDsKfQp0YWJsZSB0aGVhZCB0ciB0aCB7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZGU5ZDk7CiAgdGV4dC1hbGlnbjogbGVmdDsgCiAgcGFkZGluZzogNXB4OwogIGJvcmRlci10b3A6IDJweCBzb2xpZDsKICBib3JkZXItYm90dG9tOiAycHggc29saWQ7Cn0KdGFibGUgdHIgdGQgeyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjZmNmY2OwogIHRleHQtYWxpZ246IGxlZnQ7IAogIHBhZGRpbmc6IDVweDsKfQo=");
+</style>
+
+    
+</head>
+<body>
+    
+
+
+
+<h1 class="title">Example for Tmd files using the citer package</h1>
+<h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
+<h2 class="date">2025-09-30</h2>
+
+<p><center>
+<a href="abcmusic.html">abcmusic</a> - <a href="asciidoc.html">asciidoc</a> - <a href="c.html">c</a>  -   <a href="cpp.html">c++</a>   -   <a href="dot.html">dot</a>   -  <a href="emf.html">emf</a>  -
+<a href="literature.html">literature</a> - <a href="mtex.html">mtex</a> - <a href="pipe.html">pipe</a> - <a href="py.html">py</a>
+</center></p>
+
+<h2>Introduction</h2>
+
+<p>This text will provide an  introduction to the use of references with Tcl. You
+will need two  packages  from Tcllib,  first the bibtex  package,  which again
+requires the cmdline package  and secondly the
+citer package</p>
+
+<pre class='code'><code class='tclcode'>package require bibtex
+package require citer
+citer::refstyle \
+    -article &quot;{author} ({year}). {title}. _{journal}_ {volume}: {pages}&quot; \
+    -incollection &quot;{author} ({year}). {title}. In: _{booktitle}_, {publisher}. {volume}: {pages}.&quot; \
+    -default &quot;{author} ({year}). {title}. {publisher}.&quot; 
+citer::bibliography literature.bib
+puts [citer::getReference literature.bib Groth2013]</code></pre>
+
+<p>Groth, D., Hartmann, S., Klie, S., Selbig, J. (2013). Principal Components Analysis. In: <em>Computational Toxicology</em>, Humana Press. 930: 527-547.</p>
+
+<p>Now  let's  use an  inline  reference  for  this  paper.  I cite<br/>
+[Groth2013] which is an existing reference. And I cite 
+[Dummy1999] and non existing reference.</p>
+
+<p>Let's now try to new  bracket  syntax.  Clustal  Omega is a multiple  sequence
+aligner   which   offers  a  good   trade-off   between   speed  and   accuracy
+[Sievers2011].</p>
+
+<p>It  should  be since version 0.12.0  as  well   possible   to  combine   two  or more citations   like  so
+[Sievers,Yachdav2016].</p>
+
+<p>Let's now embed the citation list:</p>
+
+<p><strong>References:</strong></p>
+
+<ul>
+<li><strong>[Dummy1999]</strong> - Error: Dummy1999 - reference not found!</li>
+<li><strong>[Groth2013]</strong> - Groth, D., Hartmann, S., Klie, S., Selbig, J. (2013). Principal Components Analysis. In: <em>Computational Toxicology</em>, Humana Press. 930: 527-547.</li>
+<li><strong>[Sievers]</strong> - Error: Sievers - reference not found!</li>
+<li><strong>[Sievers2011]</strong> - Sievers, F., Wilm, A., Dineen, D., Gibson, T. J., Karplus, K., Li, W., Lopez, R., McWilliam, H., Remmert, M., Soding, J., Thompson, J. D., Higgins, D. G. (2011). Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. <em>Mol. Syst. Biol.</em> 7: 539</li>
+<li><strong>[Yachdav2016]</strong> - Yachdav, G., Wilzbach, S., Rauscher, B., Sheridan, R., Sillitoe, I., Procter, J., Lewis, Suzanna E., Rost, B., Goldberg, T. (2016). MSAViewer: interactive JavaScript visualization of multiple sequence alignments. <em>Bioinformatics</em> 32: 3501</li></ul>
+
+
+
+
+
+</body>
+</html>
+

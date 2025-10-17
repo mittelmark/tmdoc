@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="title" content="Tmdoc - examples for the C++ programming language">
+<meta name="author" content="Detlef Groth">
+    
+<title>Tmdoc - examples for the C++ programming language</title>
+    
+    
+
+<style>
+@import url("data:text/css;base64,CmJvZHkgewogICAgcGFkZGluZzogMzBweDsKICAgIG1heC13aWR0aDogMTIwMHB4OwogICAgZm9udDogQWxlZ3JleWEsIEdlb3JnaWEsIHNlcmlmOwogICAgd2lkdGg6IDk4MHB4OyBtYXJnaW46IDAgYXV0bzsKfQoKI2hlYWRlciwgLnRleHQtY2VudGVyLC5kZXRhaWxzLCBoMS50aXRsZSwgcC5hdXRob3IsIHAuZGF0ZSwgaDIuYXV0aG9yLCBoMi5kYXRlIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKfQphIHsgdGV4dC1kZWNvcmF0aW9uOiBub25lIDsgfQpwcmUgewogICAgcGFkZGluZzogMTBweCA7CiAgICBib3JkZXItdG9wOiAycHggc29saWQgI0NDQ0NDQzsKICAgIGJvcmRlci1ib3R0b206IDJweCBzb2xpZCAjQ0NDQ0NDOyAKICAgIGZvbnQ6IE1vbmFjbywgbW9ub3NwYWNlOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtY29kZSkscHJlOmhhcyhjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiAjZWZlZmVmOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsY29kZSksIHByZTpoYXMoY29kZS50Y2xjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiBjb3Juc2lsazsgICAKfQoKcHJlLmhpZ2hsaWdodDpoYXMoY29kZS5sYW5ndWFnZS10Y2xvdXQpLHByZTpoYXMoY29kZS50Y2xvdXQpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjQ0NFRUZGOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsZXJyKSxwcmU6aGFzKGNvZGUudGNsZXJyKSB7ICAgIAogICAgYmFja2dyb3VuZDogI0ZGQ0NDQzsKfQpwcmUuaGlnaGxpZ2h0Omhhcyhjb2RlLmxhbmd1YWdlLWVycm9yKSxwcmU6aGFzKGNvZGUuZXJyb3IpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjRkZDQ0NDOwp9Cgp0YWJsZSB7ICAgIAogIGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7CiAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkOwogIGJvcmRlci1zcGFjaW5nOiA1cHg7CiAgbWluLXdpZHRoOiAzMDBweDsKfQp0YWJsZSB0aGVhZCB0ciB0aCB7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZGU5ZDk7CiAgdGV4dC1hbGlnbjogbGVmdDsgCiAgcGFkZGluZzogNXB4OwogIGJvcmRlci10b3A6IDJweCBzb2xpZDsKICBib3JkZXItYm90dG9tOiAycHggc29saWQ7Cn0KdGFibGUgdHIgdGQgeyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjZmNmY2OwogIHRleHQtYWxpZ246IGxlZnQ7IAogIHBhZGRpbmc6IDVweDsKfQo=");
+</style>
+
+    
+</head>
+<body>
+    
+
+
+
+<h1 class="title">Tmdoc - examples for the C++ programming language</h1>
+<h2 class="author">Detlef Groth</h2>
+<h2 class="date">2025-09-14</h2>
+
+<p><center>
+<a href="abcmusic.html">abcmusic</a> - <a href="asciidoc.html">asciidoc</a> - <a href="c.html">c</a>  -   <a href="cpp.html">c++</a>   -   <a href="dot.html">dot</a>   -  <a href="emf.html">emf</a>  -
+<a href="literature.html">literature</a> - <a href="mtex.html">mtex</a> - <a href="pipe.html">pipe</a> - <a href="py.html">py</a>
+</center></p>
+
+<h2>Introduction</h2>
+
+<p>Below are some C++ coding examples.</p>
+
+<h2>Hello World</h2>
+
+<pre class='code'><code class='code'>#include &lt;iostream&gt;
+int main() {
+    std::cout &lt;&lt; &quot;Hello C++ World!&quot; &lt;&lt; std::endl;
+    return(0);
+}</code></pre>
+
+<pre class='code'><code class='out'>Hello C++ World!</code></pre>
+
+<h2>Image Creation</h2>
+
+<p>Here   an    example    which    does    create    an    image    using    the
+<a href="https://cimg.eu">Cimg</a> library. On a Linux Debian based system you should be able to install the library like this:</p>
+
+<pre class='code'><code>sudo apt install cimg-dev imagemagic </code></pre>
+
+<p>The  imagemagick  tools are  required  to write for  instance  various  output
+formats like png in the following example.</p>
+
+<pre class='code'><code>'``{.shell  cmd=&quot;g++ -O2 %i -o cimg&amp;&amp;./cimg -lX11 -lpthread -lm &quot; chunk.ext=cpp ext=png include=false}
+... code ..
+'``</code></pre>
+
+<p>Output:</p>
+
+<pre class='code'><code class='code'>#include &lt;CImg.h&gt;
+using namespace cimg_library;
+
+int main(int argc, char **argv) {
+    // Create a 300x200 RGB image, initialized to black
+    CImg&lt;unsigned char&gt; img(300, 200, 1, 3, 0);
+
+    // Define colors
+    const unsigned char red[]   = {255, 0, 0};
+    const unsigned char white[] = {255, 255, 255};
+
+    // Draw a filled red rectangle (box) at (50,50) with size 200x100
+    img.draw_rectangle(50, 50, 249, 149, red);
+
+    // Draw &quot;Hello World&quot; in white, at position (90, 90)
+    img.draw_text(90, 90, &quot;Hello World&quot;, white);
+
+    // Display the image in a window
+    //img.display(&quot;Hello World Example&quot;);
+
+    // Optionally, save the image to a file
+    img.save(argv[1]);
+
+    return 0;
+}</code></pre>
+
+<p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAASwAAADIAgMAAAAvsTTGAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAJUExURQAAAP8AAP///2cZZB4AAAABYktHRAJmC3xkAAAAB3RJTUUH6QoREgUSzuY6ogAAAJZJREFUaN7t0zEKwjAUgOEu3s8lgXeAdPA+CbR7Bj2lVekBJEVUvn8IWfKRPMg0SZIkSZL0J53Su51ZLBaLxWKxWCwWa8Bq+6akOmLl7fjDqrV+mdV6yz2VbVnLZcy6LdEi0jxH9FIH77Ved6sOW0s60Hq+MeII6zX7iNzr4Oz9bRaLxWKxWCwWi8VifcaSJEmSJOnHugMupouSs82nvQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyNS0xMC0xN1QxODowNToxOCswMDowMIZNLuQAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjUtMTAtMTdUMTg6MDU6MTgrMDA6MDD3EJZYAAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDI1LTEwLTE3VDE4OjA1OjE4KzAwOjAwoAW3hwAAAABJRU5ErkJggg=="></img></p>
+
+
+
+</body>
+</html>
+
