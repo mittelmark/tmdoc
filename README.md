@@ -11,14 +11,16 @@
 [![Wiki](https://img.shields.io/badge/Docu-Wiki-blue)](https://wiki.tcl-lang.org/page/tmdoc%3A%3Atmdoc)
 
 Literate  programming with Tcl. Embed Diagram code and the output, LaTeX equation, literature
-references, shell script output, Youtube videos  and Tcl code with the  evaluation  results into  Markdown or LaTeX
+references,  shell  script  output,  Youtube  videos  and Tcl  code  with  the
+evaluation  results into  your Markdown, AsciiDoc or LaTeX
 documents.
 
 ## Description
 
 The package _tmdoc_ and the standalone application of it provide facilities to
 evaluate  embedded Diagram code, LaTeX equations, YAML defined  abbreviations,
-or R, Python, Octave, Shell or Tcl code within  documents of Markup languages like Markdown and LaTeX and
+or R, Python, Octave, Shell or Tcl code within  documents of Markup  languages
+like Markdown, AsciiDoc or LaTeX and
 add the  resulting  output to the document for creating  dynamic  documents, a
 technique  as well known as  literate  programming. 
 
@@ -80,7 +82,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-15 19:18
+date: 2025-10-17 20:38
 ---
 
 ## Testing Tmdoc Installation
@@ -354,6 +356,13 @@ document using Libreoffice.
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
 
+If your input document is an [AsciiDoc](https://asciidoc.org/)  document, for instance with a `.tdoc`
+extension you might convert this file with embedded  Tmdoc code chunks into an
+AsciiDoch  document and then use standard AsciiDoc tools like  [asciidoctor](https://asciidoctor.org/)
+for the conversion of that document. Here a typical pipeline.
+
+![](https://kroki.io/graphviz/svg/eNp1zM0KwjAQBOB7niLk3AriUSIIRTxUFOmt9JDmxy6N3ZIEVMR3NykUQfQ0zM7HKrg4MXb0Qp-EDqh07Tsxat7iPfPhYTU3YK1WWQqJFh2X6AYPts9uoELHl4tVsybUiaFX4DgrzyzWSqGk-YZuY9ZWtNpyFq6xsITTlaZ5Xx3KeRZeAsQhoPugaE7F7gfJR2VYQ8n04ouV0DqNxoDU06eZHIvqD3kR8gZ5gVYU)
+
 If you like to better retain the formatting of your HTML documents in your PDF
 output, you should use the Python package
 [WeasyPrint](https://pypi.org/project/weasyprint/).
@@ -425,9 +434,9 @@ as example for such embedded documentation.
     - support for embedding CSV data for creating Markdown tables
 - 2025-10-06 0.14.0
     - support for statistical reports in R,  Python or Octave
-    -  switching  to   https://latex.codecogs.com/   for  LaTeX  equations  as
-    math.vercel.app  svgs can't be converted  to PNG needed for inclusion into
-    pdf documents
+    - switching  to   https://latex.codecogs.com/   for  LaTeX  equations  as
+      math.vercel.app  svgs can't be converted  to PNG needed for inclusion into
+      pdf documents
     - documentation updates, docu for each filter started
 - 2025-10-13 0.14.1
     - fixes for fig=true for R pipes and setting the proper image size for png images
@@ -436,7 +445,8 @@ as example for such embedded documentation.
 - 2025-10-15 0.14.2
     - kroki filter now uses local installs of GraphViz (dot), PlantUML (plantuml) and Ditaa (ditaa)
       command line applications avoding fetching kroki URL's if applications are available locally
-      
+- 2025-10-XX 0.15.0
+    - support for AsciiDoc 
 
 ## TODO
 

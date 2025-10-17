@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <251002.1750>
+#  Last Modified : <251017.1949>
 #
 #  Description	 :
 #
@@ -33,12 +33,15 @@ tasks:  ## list all tasks
 
 default: ## ause lang=c|cpp|py for processing
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $(lang).tmd - | \
-	TCLLIBPATH=~/workspace/mkdoc tclsh ../../mkdoc/apps/mkdoc - $(lang).html --css tmdoc.css
-	
+	TCLLIBPATH=~/workspace/mndoc tclsh ../../mndoc/apps/mndoc - $(lang).html --css tmdoc.css
 
 c cpp dot emf mtex py pipe literature abcmusic:      ## process C examples
 	TCLLIBPATH=~/workspace/tmdoc/modules ../apps/tmdoc --mode weave $@.tmd $@.md
 	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc $@.md $@.html --css tmdoc.css
+adoc:
+	perl -pe 's/\[(.+?)\]\((.+?)\)/link:$$2\[$$1\]/g;s/<center>/[.text-center]/;s/<\/center>//g' header.md > header.adoc
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave asciidoc.tdoc asciidoc.adoc
+	asciidoctor asciidoc.adoc
 
 ## run with make c.html, make cpp.html, make emf, make py
 %.html: %.tmd mini.css ## that does not work

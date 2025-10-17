@@ -1,9 +1,9 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.14.2]
+[vset VERSION 0.15.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
-[titledesc {Evaluate embedded Tcl code or other command line tool input in Markdown or LaTeX documents}]
+[titledesc {Evaluate embedded Tcl code or other command line tool input in Markdown, AsciiDoc or LaTeX documents}]
 [category  {Text processing}]
 [require Tcl 8.6-]
 [require textutil 0.8]
@@ -11,7 +11,7 @@
 
 The package [package tmdoc] provides a command to evaluate embedded Tcl and
 Shell code in code chunks within documents of Markup languages like Markdown
-and LaTeX and add the resulting output to the document for creating dynamic
+AsciiDoc or LaTeX and add the resulting output to the document for creating dynamic
 documents, a technique as well known as literate programming. Further it can
 use the kroki.io webservice to embed diagrams for this web service if diagram
 tools like GraphViz or PlantUML are not installed locally. Since version
@@ -433,8 +433,9 @@ Some more Markup text ...
 [section Filetypes] 
 
 [para] Currently [cmd tmdoc] supports the filetypes Markdown which is assumed
-if you are using the file extension [file .tmd] and LaTeX if you use the file
-extensions [file .tnw].
+if you are using the file extension [file .tmd], 
+AsciiDoc if you use the [file .tdoc] extension
+and LaTeX if you use the file extensions [file .tnw].
 
 [section "See Also"]
 

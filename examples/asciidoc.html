@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="author" content="Doc Writer">
+<title>Hello, AsciiDoc!</title>
+<style>
+
+body {
+    padding: 30px;
+    max-width: 1200px;
+    font: Alegreya, Georgia, serif;
+    width: 980px; margin: 0 auto;
+}
+
+#header, .text-center,.details, h1.title, p.author, p.date, h2.author, h2.date {
+    text-align: center;
+}
+a { text-decoration: none ; }
+pre {
+    padding: 10px ;
+    border-top: 2px solid #CCCCCC;
+    border-bottom: 2px solid #CCCCCC; 
+    font: Monaco, monospace;
+}
+pre.highlight:has(code.language-code),pre:has(code) {
+    background: #efefef;
+}
+pre.highlight:has(code.language-tclcode), pre:has(code.tclcode) {
+    background: cornsilk;   
+}
+
+pre.highlight:has(code.language-tclout),pre:has(code.tclout) {    
+    background: #CCEEFF;
+}
+pre.highlight:has(code.language-tclerr),pre:has(code.tclerr) {    
+    background: #FFCCCC;
+}
+pre.highlight:has(code.language-error),pre:has(code.error) {    
+    background: #FFCCCC;
+}
+
+table {    
+  border-collapse: collapse;
+  border-bottom: 2px solid;
+  border-spacing: 5px;
+  min-width: 300px;
+}
+table thead tr th { 
+  background-color: #fde9d9;
+  text-align: left; 
+  padding: 5px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+}
+table tr td { 
+  background-color: #f6f6f6;
+  text-align: left; 
+  padding: 5px;
+}
+
+</style>
+</head>
+<body class="article">
+<div id="header">
+<h1>Hello, AsciiDoc!</h1>
+<div class="details">
+<span id="author" class="author">Doc Writer</span><br>
+<span id="email" class="email"><a href="mailto:doc@example.com">doc@example.com</a></span><br>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph text-center">
+<p><a href="abcmusic.html">abcmusic</a> - <a href="asciidoc.html">asciidoc</a> - <a href="c.html">c</a>  -   <a href="cpp.html">c++</a>   -   <a href="dot.html">dot</a>   -  <a href="emf.html">emf</a>  -
+<a href="literature.html">literature</a> - <a href="mtex.html">mtex</a> - <a href="pipe.html">pipe</a> - <a href="py.html">py</a></p>
+</div>
+<div class="paragraph">
+<p>An introduction to <a href="http://asciidoc.org">AsciiDoc</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_first_section">First Section</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>item 1</p>
+</li>
+<li>
+<p>item 2</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ruby" data-lang="ruby">puts "Hello, World!"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-tclcode" data-lang="tclcode">puts "Hello Tcl"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-tclout" data-lang="tclout">Hello Tcl</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-tclcode" data-lang="tclcode">lappend auto_path ../modules
+package require tsvg
+tsvg set width 100
+tsvg set height 100
+# Tcl like syntax without hyphens
+tsvg circle cx 50 cy 50 r 45 stroke black stroke-width 2 fill salmon
+tsvg text x 29 y 45 Hello
+tsvg text x 27 y 65 World!
+tsvg write hello-world.svg
+### cleanup
+tsvg set code ""
+puts done</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-tclout" data-lang="tclout">done</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="hello-world.svg" alt="hello world">
+</div>
+</div>
+<div class="paragraph">
+<p>An example equation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-mtex" data-lang="mtex">E = mc^2</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="mtexfig/156076891.png" alt="156076891">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-10-17 19:51:52 +0200
+</div>
+</div>
+</body>
+</html>

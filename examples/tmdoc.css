@@ -3,9 +3,10 @@ body {
     padding: 30px;
     max-width: 1200px;
     font: Alegreya, Georgia, serif;
+    width: 980px; margin: 0 auto;
 }
 
-h1.title, p.author, p.date, h2.author, h2.date {
+#header, .text-center,.details, h1.title, p.author, p.date, h2.author, h2.date {
     text-align: center;
 }
 a { text-decoration: none ; }
@@ -15,20 +16,20 @@ pre {
     border-bottom: 2px solid #CCCCCC; 
     font: Monaco, monospace;
 }
-pre:has(code) {
+pre.highlight:has(code.language-code),pre:has(code) {
     background: #efefef;
 }
-pre:has(code.tclcode) {
+pre.highlight:has(code.language-tclcode), pre:has(code.tclcode) {
     background: cornsilk;   
 }
 
-pre:has(code.tclout) {    
+pre.highlight:has(code.language-tclout),pre:has(code.tclout) {    
     background: #CCEEFF;
 }
-pre:has(code.tclerr) {    
+pre.highlight:has(code.language-tclerr),pre:has(code.tclerr) {    
     background: #FFCCCC;
 }
-pre:has(code.error) {    
+pre.highlight:has(code.language-error),pre:has(code.error) {    
     background: #FFCCCC;
 }
 

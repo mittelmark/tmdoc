@@ -1,0 +1,45 @@
+= Hello, AsciiDoc!
+Doc Writer <doc@example.com>
+:stylesheet: tmdoc.css
+
+`tcl include header.adoc`
+
+An introduction to http://asciidoc.org[AsciiDoc].
+
+== First Section
+
+* item 1
+* item 2
+
+[source,ruby]
+----
+puts "Hello, World!"
+----
+
+
+```{.tcl}
+puts "Hello Tcl"
+```
+
+```{.tcl}
+lappend auto_path ../modules
+package require tsvg
+tsvg set width 100
+tsvg set height 100
+# Tcl like syntax without hyphens
+tsvg circle cx 50 cy 50 r 45 stroke black stroke-width 2 fill salmon
+tsvg text x 29 y 45 Hello
+tsvg text x 27 y 65 World!
+tsvg write hello-world.svg
+### cleanup
+tsvg set code ""
+puts done
+```
+
+image::hello-world.svg[]
+
+An example equation:
+
+```{.mtex}
+E = mc^2
+```

@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251015.1908>
+#  Last Modified : <251017.2008>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -38,11 +38,12 @@ exec tclsh "$0" "$@"
 #                  2025-10-06 version 0.14.0 adding support for Octave, Python and R code embedding
 #                  2025-10-13 version 0.14.1 python bin missing fix, as wel as png file size fix
 #                  2025-10-15 version 0.14.2 kroki chunks first check for local installs of dot, plantuml and ditaa
+#                  2025-10-XX version 0.15.0 support for asciidoc files (tdoc-adoc)
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.14.2
+package provide tmdoc::tmdoc 0.15.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -309,15 +310,20 @@ proc ::tmdoc::extractAbbreviations {str} {
 }
 proc tmdoc::block {txt inmode {style ""}} {
     set res ""
+    set mstyle $style
     if {$style ne ""} {
-        set style "{${style}}"
+        set mstyle "{${style}}"
     }
     if {$inmode eq "md"} {
-        append res "```${style}\n${txt}"
+        append res "```${mstyle}\n${txt}"
         append res "```\n"
     } elseif {$inmode eq "man"} {
         append res "\n"
         append res "\[example_begin\]\n\n$txt\n\n\[example_end\]\n"
+        append res "\n"
+    } elseif {$inmode eq "adoc"} {
+        append res "\n"
+        append res "\[,${style}]\n----\n$txt\n----\n"
         append res "\n"
     } else {
         append res "\\begin{lcverbatim}\n"
@@ -327,6 +333,20 @@ proc tmdoc::block {txt inmode {style ""}} {
     return $res
 }
 
+proc tmdoc::iimage {} {
+    uplevel 1 {
+        if {$inmode eq "md"} {
+            puts $out "!\[\]($imgsrc)"
+        } elseif {$inmode eq "man"} {
+            puts $out "\n\[image [file rootname $imgsrc]\]\n"
+        } elseif {$inmode eq "adoc"} {
+            puts $out "\nimage::$imgsrc\[\]\n"
+        } elseif {$inmode eq "latex"} {
+            puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{[file rootname $imgsrc]}\n"
+        }
+        
+    }
+}
 proc tmdoc::cairosvg {filename dict} {
     array set opt $dict
     set fname [file rootname $filename]
@@ -355,7 +375,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set inmode latex
     } elseif {[string tolower [file extension $filename]] in [list .tan .man .tman]} {
         set inmode man
+    } elseif {[regexp {doc$} [string tolower [file extension $filename]]]} {
+        set inmode adoc
     } else {
+        ## default
         set inmode md
     }
     array set arg [list infile $filename outfile $outfile -mode weave]
@@ -598,26 +621,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 if {$copt(include)} {
                     if {$copt(ext) in [list png svg gif jpeg jpg]} {
-                        if {$inmode eq "md"} {
-                            puts $out "!\[\]($copt(label).$copt(ext))"
-                        } elseif {$inmode eq "man"} {
-                            puts $out "\n\[image $copt(label)\]n"
-                        } elseif {$inmode eq "latex"} {
-                            puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$copt(label)}\n"
-                        }
+                        set imgsrc "$copt(label).$copt(ext)"
+                        iimage
                         if {$err ne ""} {
-                            if {$inmode eq "md"} {
-                                puts -nonewline $out "\n\n```{error}\n$err\n\n"
-                                puts $out "```"
-                            } elseif {$inmode eq "man"} {
-                                puts $out ""
-                                puts -nonewline $out "\[example_begin\]\n\n$err\n\n\[example_end\]\n"
-                                puts $out ""
-                            } else {
-                                puts $out "\\begin{lcverbatim}"
-                                puts -nonewline $out $err
-                                puts $out "\\end{lcverbatim}"
-                            }
+                            set cont [tmdoc::block $err $inmode error]
+                            puts $out $cont
                         }
                             
                     } else {
@@ -627,18 +635,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                             set cnt [read $infh2]
                             close $infh2
                         }
-                        if {$inmode eq "md"} {
-                            puts -nonewline $out "```{out}\n$cnt"
-                            puts $out "```"
-                        } elseif {$inmode eq "man"} {
-                            puts $out ""
-                            puts -nonewline $out "\[example_begin\]\n\n$cnt\n\n\[example_end\]\n"
-                            puts $out ""
-                        } else {
-                            puts $out "\\begin{lcverbatim}"
-                            puts -nonewline $out $cnt
-                            puts $out "\\end{lcverbatim}"
-                        }
+                        set cont [tmdoc::block $cnt $inmode out]
+                        puts $out $cont
                     }
                 }
                 set bashinput ""
@@ -656,13 +654,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set filename [url2crc32file $url $copt(imagepath) $copt(ext)]
                 }
                 if {$copt(include)} {
-                    if {$inmode eq "md"} {
-                        puts $out "!\[\]($filename)"
-                    } elseif {$inmode eq "man"} {
-                        puts $out "\n\[image [file rootname $filename]\]n"
-                    } elseif {$inmode eq "latex"} {
-                        puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{[file rootname $filename]}\n"
-                    }
+                    set imgsrc $filename
+                    iimage
                 }
                 set krokiinput ""
                 set mode text
@@ -679,13 +672,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 #    set filename [tmdoc::cairosvg $filename [array get copt]]
                 #}
                 if {$copt(include)} {
-                    if {$inmode eq "md"} {
-                        puts $out "!\[\]($filename)"
-                    } elseif {$inmode eq "man"} {
-                        puts $out "\n\[image [file rootname $filename]\]n"
-                    } elseif {$inmode eq "latex"} {
-                        puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{[file rootname $filename]}\n"
-                    }
+                    set imgsrc $filename
+                    iimage
                 }
                 set mtexinput ""
                 set mode text
@@ -705,13 +693,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 if {$copt(eval)} {
                     if {[catch {interp eval try $tclcode} res]} {
-                        if {$inmode eq "md"} {
-                            puts $out "```{tclerr}\n$res\n```\n"
-                        } elseif {$inmode eq "man"} {
-                            puts $out "\n\[example_begin\]\nError:\n$res\n\[example_end\]\n"
-                        } else {
-                            puts $out "\n\\begin{lrverbatim}\n$res\n\\end{lrverbatim}\n"
-                        }
+                        puts $out [tmdoc::block $bashinput $inmode tclerr]
                     } else {
                         set res [interp eval intp $tclcode]
                         set pres [interp eval intp gputs]
@@ -730,6 +712,19 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                                 }
                                 if {$res ne "" || $pres ne ""} {
                                     puts $out "```"
+                                }
+                            } elseif {$inmode eq "adoc"} {
+                                if {$res ne "" || $pres ne ""} {
+                                    puts $out "\[,tclout\]\n----"
+                                }
+                                if {$pres ne ""} {
+                                    puts -nonewline $out "$pres"
+                                }
+                                if {$res ne ""} {
+                                    puts $out "==> $res"
+                                }
+                                if {$res ne "" || $pres ne ""} {
+                                    puts $out "----"
                                 }
                             } elseif {$inmode eq "man"} { 
                                 if {$pres ne ""} {
@@ -771,13 +766,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                                 } else {
                                     interp eval intp [list figure $imgfile]
                                     if {$copt(include)} {
-                                        if {$inmode eq "md"} {
-                                            puts $out "\n!\[\]($imgfile)\n"
-                                        } elseif {$inmode eq "man"} {
-                                            puts $out "\n\[image [file rootname $imgfile]\]\n"
-                                        } else {
-                                            puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{$imgfile}\n"
-                                        }
+                                        set imgsrc $imgfile
                                     }
                                 }
                             }
@@ -1092,6 +1081,8 @@ namespace eval ::tmdoc {
 #'     - default set to python3
 #' - 2025-10-15 Release 0.14.2
 #'     - kroki chunks first check for local installs of dot, plantuml and ditaa
+#' - 2025-10-XX Release 0.15.0
+#'     - support for AsciiDoc documents
 #'
 #' ## <a name='todo'>TODO</a>
 #'

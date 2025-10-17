@@ -1,7 +1,7 @@
 ---
 title: Tmdoc - examples for the C programming language
 author: Detlef Groth
-date: 2025-09-14 15:26
+date: 2025-10-17 20:00
 include-before: |
     <style>
     body { max-width: 1000px; font-family: Candara, sans-serif; }
@@ -95,27 +95,27 @@ Here example code:
 '``
 ```
 
-On debain the library seems not to be available. Here you can then install the library like this:
+On debian the library seems not to be available. Here you can then install the library like this:
 
 ```
 git clone https://github.com/sammycage/plutovg.git
 cd plutovg
 cmake -B build .
 cmake --build build
-cmake --install build
+sudo cmake --install build
 ```
 
 You the need to use the following chunk parameters to use the package:
 
 ```
-label=smiley cmd="gcc -I/usr/local/include/plutovg %i /usr/local/lib/libplutovg.a \
+label=smiley cmd="gcc -I/usr/local/include/plutovg %i /usr/local/lib64/libplutovg.a \
     -o %b -lm &&./%b %o" chunk.ext=c ext=png include=false
 ```    
 
 
 And here the output:
 
-```{.shell label=smiley cmd="gcc -I/usr/local/include/plutovg %i /usr/local/lib/libplutovg.a -o %b -lm &&./%b %o" chunk.ext=c ext=png include=false}
+```{.shell label=smiley cmd="gcc -I/usr/local/include/plutovg %i /usr/local/lib64/libplutovg.a -o %b -lm &&./%b %o" chunk.ext=c ext=png include=false}
 #include <plutovg/plutovg.h>
 
 int main(int argc, char **argv)
