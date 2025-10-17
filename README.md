@@ -47,6 +47,21 @@ technique  as well known as  literate  programming.
   [![Tcl Filter](https://img.shields.io/badge/Docu-Tcl-Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
 
 
+## Examples
+
+| Code              | HTML-Output |
+|:-----------------:|:-----------:|
+| [abcmusic.tmd](examples/abcmusic.tmd) | [abcmusic.html](examples/abcmusic.html) |
+| [asciidoc.tdoc](examples/asciidoc.tdoc) | [asciidoc.html](examples/asciidoc.html) |
+| [c.tmd](examples/c.tmd) | [c.html](examples/c.html) |
+| [cpp.tmd](examples/cpp.tmd) | [cpp.html](examples/cpp.html) |
+| [dot.tmd](examples/dot.tmd) | [dot.html](examples/dot.html) |
+| [emf.tmd](examples/emf.tmd) | [emf.html](examples/emf.html) |
+| [literature.tmd](examples/literature.tmd) | [literature.html](examples/literature.html) |
+| [mtex.tmd](examples/mtex.tmd) | [mtex.html](examples/mtex.html) |
+| [pipe.tmd](examples/pipe.tmd) | [pipe.html](examples/pipe.html) |
+| [py.tmd](examples/py.tmd) | [py.html](examples/py.html) |
+
 ## Installation
 
 On Linux, MacOS and on Windows with installed [Msys2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) download the latest
@@ -82,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-17 20:38
+date: 2025-10-17 21:01
 ---
 
 ## Testing Tmdoc Installation
