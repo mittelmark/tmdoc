@@ -82,3 +82,59 @@ col1,col2,col3,col4
 15,16,17,18
 19,20,21,22
 ```
+
+== Shell Chunks
+
+Here the code.  Replace the single quote with a back tick before the other two
+back ticks.
+
+[,shell]
+----
+'``{.shell label=dot2 cmd="dot -Tpng %i -o%o" chunk.ext=dot ext=png}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=skyblue,shape=box];
+    A -> B -> AsciiDoc
+}
+'``
+----
+
+Here the output:
+
+
+```{.shell label=dot2 cmd="dot -Tpng %i -o%o" chunk.ext=dot ext=png}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=skyblue,shape=box];
+    A -> B -> AsciiDoc
+}
+```
+
+Using the  option  `echo=false`  you can hide the input and only  display  the
+image:
+
+[,shell]
+----
+'``{.shell label=dot3 cmd="dot -Tpng %i -o%o" chunk.ext=dot ext=png echo=false}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=salmon,shape=box];
+    Tmdoc -> A -> B -> AsciiDoc 
+}
+'``
+----
+
+Here the output:
+
+
+```{.shell label=dot3 cmd="dot -Tpng %i -o%o" chunk.ext=dot ext=png echo=false}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=salmon,shape=box];
+    Tmdoc -> A -> B -> AsciiDoc
+}
+```
+
+
+
+

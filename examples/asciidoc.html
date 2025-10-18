@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <meta name="author" content="Doc Writer">
 <title>Hello, AsciiDoc!</title>
 <style>
@@ -61,7 +61,9 @@ table tr td {
   text-align: left; 
   padding: 5px;
 }
+/* fix for AsciiDoc tables with paragraphs */
 p.tableblock { padding: 0px; margin: 0px;}
+
 </style>
 </head>
 <body class="article">
@@ -293,10 +295,70 @@ the data as text. Here an example:</p>
 </table>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_shell_chunks">Shell Chunks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here the code.  Replace the single quote with a back tick before the other two
+back ticks.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">'``{.shell label=dot2 cmd="dot -Tpng %i -o%o" chunk.ext=dot ext=png}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=skyblue,shape=box];
+    A -&gt; B -&gt; AsciiDoc
+}
+'``</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here the output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-code" data-lang="code">digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=skyblue,shape=box];
+    A -&gt; B -&gt; AsciiDoc
+}</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="dot2.png" alt="dot2">
+</div>
+</div>
+<div class="paragraph">
+<p>Using the  option  <code>echo=false</code>  you can hide the input and only  display  the
+image:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">'``{.shell label=dot3 cmd="dot -Tpng %i -o%o" chunk.ext=dot ext=png echo=false}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=salmon,shape=box];
+    Tmdoc -&gt; A -&gt; B -&gt; AsciiDoc
+}
+'``</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here the output:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="dot3.png" alt="dot3">
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-10-18 09:27:06 +0200
+Last updated 2025-10-18 10:03:32 UTC
 </div>
 </div>
 </body>
