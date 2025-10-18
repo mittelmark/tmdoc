@@ -3,6 +3,7 @@ body {
     padding: 30px;
     max-width: 1200px;
     font: Alegreya, Georgia, serif;
+    width: 980px; margin: 0 auto;
 }
 
 h1.title, p.author, p.date, h2.author, h2.date {
