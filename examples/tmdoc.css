@@ -51,3 +51,5 @@ table tr td {
   text-align: left; 
   padding: 5px;
 }
+/* fix for AsciiDoc tables with paragraphs */
+p.tableblock { padding: 0px; margin: 0px;}

@@ -23,7 +23,7 @@
 
 <h1 class="title">tmdoc::tmdoc 0.14.2 - Tcl Markdown processor tutorial</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-10-13</h2>
+<h2 class="date">2025-10-18</h2>
 
 <hr />
 
@@ -156,7 +156,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-10-17 18:22</p>
+<p>The curent date and time is: 2025-10-18 09:18</p>
 
 <hr />
 
@@ -304,7 +304,7 @@ your major computations in the code blocks. Please note as well, that the inline
 <pre class='code'><code class='tclcode'>set y 2
 set z</code></pre>
 
-<pre class='code'><code class='tclerr'>can't read &quot;z&quot;: no such variable</code></pre>
+<pre class='code'><code class='tclerr'></code></pre>
 
 <p>Should given an error ... It does!</p>
 
@@ -798,7 +798,7 @@ Now an abbreviation which is in the `abbrev.yml` file
 <p><strong>And here the output:</strong></p>
 
 <p>This is an abbrev Detlef Groth, University of Potsdam, Germany and this is another for the Author: Detlef Groth, University of Potsdam, Germany. 
-The document was created at 2025-10-13 07:10. This an empty abbreviation {empty}.</p>
+The document was created at 2025-10-18 08:29. This an empty abbreviation {empty}.</p>
 
 <p>Now an abbreviation which is in the <code>abbrev.yml</code> file - tmdoc is: 'Tcl Markdown document processor'!</p>
 
@@ -1240,7 +1240,8 @@ disp(str);
 disp(str);</code></pre>
 
 <pre class='code'><code>octave&gt; str = 'Hello Octave World!';
-octave&gt; disp(str);</code></pre>
+octave&gt; disp(str);
+Hello Octave World!</code></pre>
 
 <p>Now comes the next code block where we have two <em>disp</em>  statements  to display
 the value of a variable:</p>
@@ -1251,7 +1252,6 @@ y=2;
 disp(y);</code></pre>
 
 <pre class='code'><code>octave&gt; x=1;
-Hello Octave World!
 octave&gt; disp(x);
 1
 octave&gt; y=2;
@@ -1437,12 +1437,12 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 
 <ul>
 <li>Tcl/Tk 8.6.14 </li>
-<li>tmdoc::tmdoc 0.14.2
+<li>tmdoc::tmdoc 0.15.0
 </li></ul>
 
-<p>Document was processed at: 2025-10-17 18:22</p>
+<p>Document was processed at: 2025-10-18 09:19</p>
 
-<p>Document processing was done within: 10896 milliseconds.</p>
+<p>Document processing was done within: 9231 milliseconds.</p>
 
 <h2>See Also</h2>
 

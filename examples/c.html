@@ -106,17 +106,17 @@ int main(int argc, char **argv) {
 ... Code ...
 '``</code></pre>
 
-<p>On debain the library seems not to be available. Here you can then install the library like this:</p>
+<p>On debian the library seems not to be available. Here you can then install the library like this:</p>
 
 <pre class='code'><code>git clone https://github.com/sammycage/plutovg.git
 cd plutovg
 cmake -B build .
 cmake --build build
-cmake --install build</code></pre>
+sudo cmake --install build</code></pre>
 
 <p>You the need to use the following chunk parameters to use the package:</p>
 
-<pre class='code'><code>label=smiley cmd=&quot;gcc -I/usr/local/include/plutovg %i /usr/local/lib/libplutovg.a \
+<pre class='code'><code>label=smiley cmd=&quot;gcc -I/usr/local/include/plutovg %i /usr/local/lib64/libplutovg.a \
     -o %b -lm &amp;&amp;./%b %o&quot; chunk.ext=c ext=png include=false</code></pre>
 
 <p>And here the output:</p>

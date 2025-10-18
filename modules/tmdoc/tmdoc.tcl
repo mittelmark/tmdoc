@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251017.2008>
+#  Last Modified : <251018.0919>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -94,7 +94,11 @@ proc ::tmdoc::interpReset {} {
             }
             return ""
         }
-        proc list2mdtab {header values} {
+        proc list2tab {header values} {
+            set inmode $::inmode
+            return [list2mdtab $header $values $inmode]
+        }
+        proc list2mdtab {header values {inmode md}} {
             set ncol [llength $header]
             set nval [llength $values]
             if {[llength [lindex $values 0]] > 1 && [llength [lindex $values 0]] != [llength $header]} {
@@ -102,34 +106,56 @@ proc ::tmdoc::interpReset {} {
             } elseif {[expr {int(fmod($nval, $ncol))}] != 0} {
                 error "Error: list2table - number of values is not a multiple of columns!"
             }
-            set res "\n|"
-            foreach h $header {
-                append res " $h |"
-            }
-            append res "\n|"
-            foreach h $header {
-                append res " ---- |"
-            }
-            append res "\n"
-            set c 0
-            foreach val $values {
-                if {[llength $val] > 1} {
-                    # nested list
-                    append res "| "
-                    foreach v $val {
-                        append res " $v |"
-                    }
-                    append res "\n"
-                } else {
-                    if {[expr {int(fmod($c, $ncol))}] == 0} {
-                        append res "| "
-                    }
-                    append res " $val |"
-                    incr c
-                    if {[expr {int(fmod($c, $ncol))}] == 0} {
+            if {$inmode eq "md"} {
+                set res "\n|"
+                foreach h $header {
+                    append res " $h |"
+                }
+                append res "\n|"
+                foreach h $header {
+                    append res " ---- |"
+                }
+                append res "\n"
+                set c 0
+                foreach val $values {
+                    if {[llength $val] > 1} {
+                        # nested list
+                        append res "|"
+                        foreach v $val {
+                            append res " $v |"
+                        }
                         append res "\n"
+                    } else {
+                        if {[expr {int(fmod($c, $ncol))}] == 0} {
+                            append res "|"
+                        }
+                        append res " $val |"
+                        incr c
+                        if {[expr {int(fmod($c, $ncol))}] == 0} {
+                            append res "\n"
+                        }
                     }
                 }
+            } elseif {$inmode eq "adoc"} {
+                set c ""
+                for {set i 1} {$i < $ncol} {incr i 1} {
+                    append c 1,
+                }
+                append c 1
+                append res "\[cols=\"$c\"\]\n|===\n"
+                foreach h $header {
+                    append res "| $h"
+                }
+                append res "\n\n"
+                foreach val $values {
+                    foreach v $val {
+                        append res "|$v"
+                    }
+                    append res "\n"
+                }
+                append res "|===\n"
+            } else {
+                return "Error: Currently only Markdown and AsciiDoc tables are supported!"
             }
             return $res
         }
@@ -209,6 +235,7 @@ proc ::tmdoc::interpReset {} {
     
     interp eval try {proc puts {args} {}}
     interp eval try {proc include {filename} {}}
+    interp eval try {proc list2tab {header data} {}}    
     interp eval try {proc list2mdtab {header data} {}}
     interp eval try {proc nfig {{label ""}} {}}    
     interp eval try {proc rfig {label} {}}        
@@ -314,7 +341,7 @@ proc tmdoc::block {txt inmode {style ""}} {
     if {$style ne ""} {
         set mstyle "{${style}}"
     }
-    if {$inmode eq "md"} {
+    if {$inmode eq "md" || $inmode eq "typst"} {
         append res "```${mstyle}\n${txt}"
         append res "```\n"
     } elseif {$inmode eq "man"} {
@@ -341,7 +368,9 @@ proc tmdoc::iimage {} {
             puts $out "\n\[image [file rootname $imgsrc]\]\n"
         } elseif {$inmode eq "adoc"} {
             puts $out "\nimage::$imgsrc\[\]\n"
-        } elseif {$inmode eq "latex"} {
+        } elseif {$inmode eq "typst"} {
+          puts $out "\n#image(\"$imgsrc\")\n"
+          } elseif {$inmode eq "latex"} {
             puts $out "\n\\includegraphics\[width=$copt(fig.width)\]{[file rootname $imgsrc]}\n"
         }
         
@@ -377,10 +406,13 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set inmode man
     } elseif {[regexp {doc$} [string tolower [file extension $filename]]]} {
         set inmode adoc
+    } elseif {[regexp {(typ|typst)$} [string tolower [file extension $filename]]]} {
+        set inmode typst
     } else {
         ## default
         set inmode md
     }
+    set ::inmode $inmode
     array set arg [list infile $filename outfile $outfile -mode weave]
     if {[llength $args] > 0} {
         array set arg {*}$args
@@ -443,6 +475,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     array set tdopt [list echo true eval true results show fig true include true \
         label chunk-nn imagepath mtexfig ext png]
     interpReset
+    interp eval intp "set ::inmode $inmode"
     if [catch {open $filename r} infh] {
         return -code error "Cannot open $filename: $infh"
     } else {
@@ -899,21 +932,98 @@ proc ::tmdoc::tmeval {text} {
     return $ret
 }
 
+proc tmdoc::list2mdtab {header values {inmode md}} {
+    set ncol [llength $header]
+    set nval [llength $values]
+    if {[llength [lindex $values 0]] > 1 && [llength [lindex $values 0]] != [llength $header]} {
+        error "Error: list2table - number of values if first row is not a multiple of columns!"
+    } 
+    #elseif {[expr {int(fmod($nval, $ncol))}] != 0} {
+    #    error "Error: list2table - number of values is not a multiple of columns!"
+    #}
+    if {$inmode eq "md"} {
+        set res "|"
+        foreach h $header {
+            append res " $h |"
+        }
+        append res "\n|"
+        foreach h $header {
+            append res " ---- |"
+        }
+        append res "\n"
+        set c 0
+        foreach val $values {
+            if {[llength $val] > 1} {
+                # nested list
+                append res "|"
+                foreach v $val {
+                    append res " $v |"
+                }
+                append res "\n"
+            } else {
+                if {[expr {int(fmod($c, $ncol))}] == 0} {
+                    append res "|"
+                }
+                append res " $val |"
+                incr c
+                if {[expr {int(fmod($c, $ncol))}] == 0} {
+                    append res "\n"
+                }
+            }
+        }
+    } elseif {$inmode eq "adoc"} {
+        set c ""
+        for {set i 1} {$i < $ncol} {incr i 1} {
+            append c 1,
+        }
+        append c 1
+        append res "\[cols=\"$c\"\]\n|===\n"
+        foreach h $header {
+            append res "| $h"
+        }
+        append res "\n\n"
+        foreach val $values {
+            foreach v $val {
+                append res "|$v"
+            }
+            append res "\n"
+        }
+        append res "|===\n"
+    } else {
+        return "Error: Currently only Markdown and AsciiDoc tables are supported!"
+    }
+    return $res
+}
+
+proc tmdoc::list2tab {header values} {
+    set inmode $::inmode
+    return [list2mdtab $header $values $inmode]
+}
+
 proc tmdoc::csv {txt} {
     set res ""
     set x 0
+    set header [list]
+    set values [list]
     foreach line [split $txt \n] {
         if {[regexp {^\s*$} $line]} {
             continue
         }
         incr x
-        set nline [regsub -all {[,;\t]} $line " | "]
-        append res "| $nline |\n"
+        set nline [regsub -all {[,;]} $line "\t"]
         if {$x == 1} {
-            append hrule [regsub -all {[^\s|]} $nline "-"]
-            append res "| $hrule |\n"
-        } 
+            set header [split $nline "\t"]
+        } else {
+            lappend values [split $nline "\t"]
+        }
+        #set nline [regsub -all {[,;\t]} $line " | "]
+        #append res "| $nline |\n"
+        #if {$x == 1} {
+        #    append hrule [regsub -all {[^\s|]} $nline "-"]
+        #    append res "| $hrule |\n"
+        #} 
     }
+    set res [list2tab $header $values]
     return $res
 }
 proc tmdoc::ue_init {} {

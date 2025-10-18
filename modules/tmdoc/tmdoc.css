@@ -178,3 +178,5 @@ table tr td {
   content: "!";
   
 }
+/* fix for AsciiDoc tables with paragraphs */
+p.tableblock { padding: 0px; margin: 0px;}

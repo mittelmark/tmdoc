@@ -98,9 +98,9 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.14.2 tmdoc &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.15.0 tmdoc &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
-<p>tmdoc - Evaluate embedded Tcl code or other command line tool input in Markdown or LaTeX documents</p>
+<p>tmdoc - Evaluate embedded Tcl code or other command line tool input in Markdown, AsciiDoc or LaTeX documents</p>
 </div>
 <div id="toc" class="doctools_section"><h2><a name="toc">Table Of Contents</a></h2>
 <ul class="doctools_toc">
@@ -148,7 +148,7 @@
 <div id="section1" class="doctools_section"><h2><a name="section1">Description</a></h2>
 <p>The package <b class="package">tmdoc</b> provides a command to evaluate embedded Tcl and
 Shell code in code chunks within documents of Markup languages like Markdown
-and LaTeX and add the resulting output to the document for creating dynamic
+AsciiDoc or LaTeX and add the resulting output to the document for creating dynamic
 documents, a technique as well known as literate programming. Further it can
 use the kroki.io webservice to embed diagrams for this web service if diagram
 tools like GraphViz or PlantUML are not installed locally. Since version
@@ -492,8 +492,9 @@ Some more Markup text ...
 </div>
 <div id="section19" class="doctools_section"><h2><a name="section19">Filetypes</a></h2>
 <p>Currently <b class="cmd">tmdoc</b> supports the filetypes Markdown which is assumed
-if you are using the file extension &quot;<b class="file">.tmd</b>&quot; and LaTeX if you use the file
-extensions &quot;<b class="file">.tnw</b>&quot;.</p>
+if you are using the file extension &quot;<b class="file">.tmd</b>&quot;, 
+AsciiDoc if you use the &quot;<b class="file">.tdoc</b>&quot; extension
+and LaTeX if you use the file extensions &quot;<b class="file">.tnw</b>&quot;.</p>
 </div>
 <div id="section20" class="doctools_section"><h2><a name="section20">See Also</a></h2>
 <p>For a detailed tutorial on how to do literate programming with Tcl have a look at the <a href="tmdoc-tutorial.html">tmdoc-tutorial</a>.</p>
