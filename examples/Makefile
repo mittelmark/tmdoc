@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <251018.1015>
+#  Last Modified : <251018.1017>
 #
 #  Description	 :
 #
@@ -42,6 +42,7 @@ adoc:
 	perl -pe 's/\[(.+?)\]\((.+?)\)/link:$$2\[$$1\]/g;s/<center>/[.text-center]/;s/<\/center>//g' header.md > header.adoc
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave asciidoc.tdoc asciidoc.adoc
 	asciidoctor asciidoc.adoc
+	## sudo apt install pipx && pipx install htmlark
 	htmlark asciidoc.html -o htmlark-out.html
 	mv htmlark-out.html asciidoc.html
 
