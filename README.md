@@ -12,7 +12,7 @@
 
 Literate  programming with Tcl. Embed Diagram code and the output, LaTeX equation, literature
 references,  shell  script  output,  Youtube  videos  and Tcl  code  with  the
-evaluation  results into  your Markdown, AsciiDoc or LaTeX
+evaluation  results into  your Markdown, AsciiDoc, Typst or LaTeX
 documents.
 
 ## Description
@@ -20,7 +20,7 @@ documents.
 The package _tmdoc_ and the standalone application of it provide facilities to
 evaluate  embedded Diagram code, LaTeX equations, YAML defined  abbreviations,
 or R, Python, Octave, Shell or Tcl code within  documents of Markup  languages
-like Markdown, AsciiDoc or LaTeX and
+like Markdown, AsciiDoc, Typst or LaTeX and
 add the  resulting  output to the document for creating  dynamic  documents, a
 technique  as well known as  literate  programming. 
 
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-19 21:14
+date: 2025-10-19 21:47
 ---
 
 ## Testing Tmdoc Installation
@@ -371,9 +371,21 @@ document using Libreoffice.
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
 
+If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
+extension you might convert this file with embedded  Tmdoc code chunks into an
+real Typst  document and then use standard  typst  compiler  tools to create a
+PDF file. See the example for such a typst  document with embedded  tmdoc code
+here:   [typst.ttyp](examples/typst.ttyp)  and  there  the  resulting  output:
+[typst.pdf](examples/typst.pdf). So the pipeline in this case was:
+
+```bash
+tmdoc typst.ttyp typst.typ
+typst compile typst.typ
+```
+
 If your input document is an [AsciiDoc](https://asciidoc.org/)  document, for instance with a `.tdoc`
 extension you might convert this file with embedded  Tmdoc code chunks into an
-AsciiDoch  document and then use standard AsciiDoc tools like  [asciidoctor](https://asciidoctor.org/)
+AsciiDoc  document and then use standard AsciiDoc tools like  [asciidoctor](https://asciidoctor.org/)
 for the conversion of that document. Here a typical pipeline.
 
 ![](https://kroki.io/graphviz/svg/eNp1zM0KwjAQBOB7niLk3AriUSIIRTxUFOmt9JDmxy6N3ZIEVMR3NykUQfQ0zM7HKrg4MXb0Qp-EDqh07Tsxat7iPfPhYTU3YK1WWQqJFh2X6AYPts9uoELHl4tVsybUiaFX4DgrzyzWSqGk-YZuY9ZWtNpyFq6xsITTlaZ5Xx3KeRZeAsQhoPugaE7F7gfJR2VYQ8n04ouV0DqNxoDU06eZHIvqD3kR8gZ5gVYU)

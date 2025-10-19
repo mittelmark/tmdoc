@@ -10,8 +10,8 @@
 [description]
 
 The package [package tmdoc] provides a command to evaluate embedded Tcl and
-Shell code in code chunks within documents of Markup languages like Markdown
-AsciiDoc or LaTeX and add the resulting output to the document for creating dynamic
+Shell code in code chunks within documents of Markup languages like Markdown,
+AsciiDoc, Typst or LaTeX and add the resulting output to the document for creating dynamic
 documents, a technique as well known as literate programming. Further it can
 use the kroki.io webservice to embed diagrams for this web service if diagram
 tools like GraphViz or PlantUML are not installed locally. Since version
@@ -212,7 +212,7 @@ tmdoc tmdoc-example.tmd tmdoc-example.tcl -mode tangle
 Note, that the interpreter is reset after each call, so variable declared in previous calls will not exists in calls thereafter. 
 
 [para] The given file extension gives the operation mode, so the default [arg md] assumes that Markdown output is requested, 
-in case of [arg tdoc] AsciiDoc compatible markup will be returned.
+in case of [arg tdoc] AsciiDoc compatible markup and in case of [arg ttyp] Typst compatible markup  will be returned,.
 
 
 [para][example {

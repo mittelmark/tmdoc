@@ -149,8 +149,8 @@
 </div>
 <div id="section1" class="doctools_section"><h2><a name="section1">Description</a></h2>
 <p>The package <b class="package">tmdoc</b> provides a command to evaluate embedded Tcl and
-Shell code in code chunks within documents of Markup languages like Markdown
-AsciiDoc or LaTeX and add the resulting output to the document for creating dynamic
+Shell code in code chunks within documents of Markup languages like Markdown,
+AsciiDoc, Typst or LaTeX and add the resulting output to the document for creating dynamic
 documents, a technique as well known as literate programming. Further it can
 use the kroki.io webservice to embed diagrams for this web service if diagram
 tools like GraphViz or PlantUML are not installed locally. Since version
@@ -305,7 +305,7 @@ tmdoc tmdoc-example.tmd tmdoc-example.tcl -mode tangle
 <dd><p>The command evaluates the given <i class="arg">text</i> as code chunk and returns the resulting output.
 Note, that the interpreter is reset after each call, so variable declared in previous calls will not exists in calls thereafter.</p>
 <p>The given file extension gives the operation mode, so the default <i class="arg">md</i> assumes that Markdown output is requested, 
-in case of <i class="arg">tdoc</i> AsciiDoc compatible markup will be returned.</p>
+in case of <i class="arg">tdoc</i> AsciiDoc compatible markup and in case of <i class="arg">ttyp</i> Typst compatible markup  will be returned,.</p>
 <pre class="doctools_example">
 tmdoc::tmeval &quot;
 Short code chunk follows:
