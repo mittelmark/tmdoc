@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251018.0919>
+#  Last Modified : <251019.0647>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -103,11 +103,9 @@ proc ::tmdoc::interpReset {} {
             set nval [llength $values]
             if {[llength [lindex $values 0]] > 1 && [llength [lindex $values 0]] != [llength $header]} {
                 error "Error: list2table - number of values if first row is not a multiple of columns!"
-            } elseif {[expr {int(fmod($nval, $ncol))}] != 0} {
-                error "Error: list2table - number of values is not a multiple of columns!"
-            }
+            } 
             if {$inmode eq "md"} {
-                set res "\n|"
+                set res "|"
                 foreach h $header {
                     append res " $h |"
                 }
@@ -221,6 +219,15 @@ proc ::tmdoc::interpReset {} {
             return $res
         }
     }
+    set funcDef [interp eval intp {info body list2mdtab}]
+    set argList [interp eval intp {info args list2mdtab}]
+    set procCmd "proc ::tmdoc::list2mdtab {$argList} {$funcDef}"
+    eval $procCmd
+    set funcDef [interp eval intp {info body list2tab}]
+    set argList [interp eval intp {info args list2tab}]
+    set procCmd "proc ::tmdoc::list2tab {$argList} {$funcDef}"
+    eval $procCmd
+    
     # todo handle puts options
 
     # this is the try interp for the catch statements
@@ -350,7 +357,7 @@ proc tmdoc::block {txt inmode {style ""}} {
         append res "\n"
     } elseif {$inmode eq "adoc"} {
         append res "\n"
-        append res "\[,${style}]\n----\n$txt\n----\n"
+        append res "\[,${style}]\n----\n$txt----\n"
         append res "\n"
     } else {
         append res "\\begin{lcverbatim}\n"
@@ -726,7 +733,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 if {$copt(eval)} {
                     if {[catch {interp eval try $tclcode} res]} {
-                        puts $out [tmdoc::block $bashinput $inmode tclerr]
+                        puts $out [tmdoc::block [regsub " +invoked from within.+" "$::errorInfo" ""] $inmode tclerr]
                     } else {
                         set res [interp eval intp $tclcode]
                         set pres [interp eval intp gputs]
@@ -918,87 +925,21 @@ proc ::tmdoc::GetOpts {} {
         }
     }
 }
-proc ::tmdoc::tmeval {text} {
+proc ::tmdoc::tmeval {text {ext tmd}} {
     set filename [fileutil::tempfile]
-    set out [open $filename.tmd w 0600]
+    set out [open $filename.$ext w 0600]
     puts $out $text
     close $out
-    tmdoc::tmdoc $filename.tmd $filename.md
+    tmdoc::tmdoc $filename.$ext $filename.md
     set infh [open $filename.md r]
     set ret [read $infh]
     close $infh
-    file delete $filename.tmd
+    file delete $filename.$ext
     file delete $filename.md
     return $ret
 }
 
-proc tmdoc::list2mdtab {header values {inmode md}} {
-    set ncol [llength $header]
-    set nval [llength $values]
-    if {[llength [lindex $values 0]] > 1 && [llength [lindex $values 0]] != [llength $header]} {
-        error "Error: list2table - number of values if first row is not a multiple of columns!"
-    } 
-    #elseif {[expr {int(fmod($nval, $ncol))}] != 0} {
-    #    error "Error: list2table - number of values is not a multiple of columns!"
-    #}
-    if {$inmode eq "md"} {
-        set res "|"
-        foreach h $header {
-            append res " $h |"
-        }
-        append res "\n|"
-        foreach h $header {
-            append res " ---- |"
-        }
-        append res "\n"
-        set c 0
-        foreach val $values {
-            if {[llength $val] > 1} {
-                # nested list
-                append res "|"
-                foreach v $val {
-                    append res " $v |"
-                }
-                append res "\n"
-            } else {
-                if {[expr {int(fmod($c, $ncol))}] == 0} {
-                    append res "|"
-                }
-                append res " $val |"
-                incr c
-                if {[expr {int(fmod($c, $ncol))}] == 0} {
-                    append res "\n"
-                }
-            }
-        }
-    } elseif {$inmode eq "adoc"} {
-        set c ""
-        for {set i 1} {$i < $ncol} {incr i 1} {
-            append c 1,
-        }
-        append c 1
-        append res "\[cols=\"$c\"\]\n|===\n"
-        foreach h $header {
-            append res "| $h"
-        }
-        append res "\n\n"
-        foreach val $values {
-            foreach v $val {
-                append res "|$v"
-            }
-            append res "\n"
-        }
-        append res "|===\n"
-    } else {
-        return "Error: Currently only Markdown and AsciiDoc tables are supported!"
-    }
-    return $res
-}
 
-proc tmdoc::list2tab {header values} {
-    set inmode $::inmode
-    return [list2mdtab $header $values $inmode]
-}
 
 proc tmdoc::csv {txt} {
     set res ""

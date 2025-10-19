@@ -206,10 +206,14 @@ tmdoc tmdoc-example.tmd tmdoc-example.md
 tmdoc tmdoc-example.tmd tmdoc-example.tcl -mode tangle
 }]
 
-[call [cmd ::tmdoc::tmeval] [arg text]]
+[call [cmd ::tmdoc::tmeval] [arg text] [opt [arg "?ext md?"]]]
 
 [para] The command evaluates the given [arg text] as code chunk and returns the resulting output.
 Note, that the interpreter is reset after each call, so variable declared in previous calls will not exists in calls thereafter. 
+
+[para] The given file extension gives the operation mode, so the default [arg md] assumes that Markdown output is requested, 
+in case of [arg tdoc] AsciiDoc compatible markup will be returned.
+
 
 [para][example {
 tmdoc::tmeval "

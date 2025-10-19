@@ -112,11 +112,10 @@ Some text
 ```{tcl echo=false, results=asis}
 set h {A B C}
 puts \[list2mdtab \$h \[list 1 2 3 4 5 6\]\]
-```"
+```" 
 
 } -result {
 Some text
-
 
 | A | B | C |
 | ---- | ---- | ---- |
@@ -371,6 +370,50 @@ df2md(head(mtcars[, 1:4],n=4))
 |**Mazda RX4 Wag**|21|6|160|110|
 |**Datsun 710**|22.8|4|108|93|
 |**Hornet 4 Drive**|21.4|6|258|110|}
+
+tcltest::test tmdoc-adoc-1.1 {
+    Checking AsciiDoc generation
+} -body {
+set ::inmode adoc
+ string trim [tmdoc::tmeval {```{.tcl results="show" echo=true}
+puts "Hello AsciiDoc"
+```                
+} tdoc]
+}  -result {[,tclcode]
+----
+puts "Hello AsciiDoc"
+----
+
+
+[,tclout]
+----
+Hello AsciiDoc
+----}
+
+tcltest::test tmdoc-adoc-1.2 {
+    Checking AsciiDoc generation
+    of csv based table
+} -body {
+string trim [tmdoc::tmeval {
+Some text
+
+```{.csv echo=false, results=asis}
+col1,col2,col3
+1,2,3
+4,5,6
+7,8,9
+```"
+
+} tdoc]}  -result {Some text
+
+[cols="1,1,1"]
+|===
+| col1| col2| col3
+
+|1|2|3
+|4|5|6
+|7|8|9
+|===}
 
 ::tcltest::cleanupTests 0
 

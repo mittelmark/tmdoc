@@ -1,7 +1,16 @@
 ---
 title: filter-abbrev documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-10-08 19:23
+date: 2025-10-19 06:56
+UM: University of Mustercity
+lipsum: >
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+    veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+    commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+    est laborum.
 ---
 
 `tcl include header.md`
@@ -45,6 +54,23 @@ lipsum: >
     cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
     est laborum.
 ```
+
+Here an example on how to use the abbreviations for UM and lipsum:
+
+```
+I was  studying at {UM} where I learned to write  Lipsum text. Here an example
+of Lipsum  text:
+
+> _{lipsum}_
+```
+
+The output is then this:
+
+I was  studying at {UM} where I learned to write  Lipsum text. Here an example
+of Lipsum  text:
+
+> _{lipsum}_
+
 
 ## Document Conversion
 
