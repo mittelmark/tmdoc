@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251019.0647>
+#  Last Modified : <251019.2136>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -38,7 +38,7 @@ exec tclsh "$0" "$@"
 #                  2025-10-06 version 0.14.0 adding support for Octave, Python and R code embedding
 #                  2025-10-13 version 0.14.1 python bin missing fix, as wel as png file size fix
 #                  2025-10-15 version 0.14.2 kroki chunks first check for local installs of dot, plantuml and ditaa
-#                  2025-10-XX version 0.15.0 support for asciidoc files (tdoc-adoc)
+#                  2025-10-XX version 0.15.0 support for asciidoc and typst files (tdoc-adoc, ttyp-typ)
 #
 package require Tcl 8.6-
 package require fileutil
@@ -152,6 +152,25 @@ proc ::tmdoc::interpReset {} {
                     append res "\n"
                 }
                 append res "|===\n"
+            } elseif {$inmode eq "typst"} {
+                append res "#set table.hline(stroke: 1.4pt)\n"
+                append res "#table(\n"
+                append res "  stroke:none,\n"
+                append res "  columns: [llength $header],\n"
+                append res "  table.hline(),\n"
+                foreach h $header {
+                    append res " \[*$h*\],"
+                }
+                append res "\n  table.hline(),\n"
+                foreach val $values {
+                    foreach v $val {
+                        append res " \[$v\],"
+                    }
+                    append res "\n"
+
+                }
+                append res "  table.hline(),\n)\n"
+                                    
             } else {
                 return "Error: Currently only Markdown and AsciiDoc tables are supported!"
             }
@@ -348,8 +367,13 @@ proc tmdoc::block {txt inmode {style ""}} {
     if {$style ne ""} {
         set mstyle "{${style}}"
     }
-    if {$inmode eq "md" || $inmode eq "typst"} {
+    if {$inmode eq "md"} {
         append res "```${mstyle}\n${txt}"
+        append res "```\n"
+    } elseif {$inmode eq "typst"} {
+        set style [regsub python3 $style python]
+        set style [regsub tclcode $style tcl]
+        append res "```${style}\n${txt}"
         append res "```\n"
     } elseif {$inmode eq "man"} {
         append res "\n"
@@ -594,7 +618,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 continue
             } elseif {$mode in [list csv pipe] && [regexp {```} $line]} {
                 if {$copt(echo)} {
-                    puts $out [tmdoc::block $ginput $inmode]
+                    if {$mode eq "pipe"} {
+                        puts $out [tmdoc::block $ginput $inmode $copt(pipe)]
+                    } else {
+                        puts $out [tmdoc::block $ginput $inmode]
+                    }
                 }
                 if {$mode eq "csv"} {
                     if {$copt(results) eq "asis"}  {
@@ -611,12 +639,14 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         set res [tmdoc::r::filter $ginput [dict create {*}[array get copt]]]
                     }
                     if {$copt(results) eq "show"} {
-                        puts $out [tmdoc::block [lindex $res 0] $inmode]
+                        puts $out [tmdoc::block [lindex $res 0] $inmode $copt(pipe)]
                     } elseif {$copt(results) eq "asis"} {
                         puts $out [lindex $res 0]
                     } 
                     if {$copt(fig) && $copt(include)} {
-                        puts $out "!\[ \]([lindex $res 1])"
+                        set imgsrc [lindex $res 1]
+                        iimage
+                        #puts $out "!\[ \]([lindex $res 1])"
                     }
 
                 }
@@ -743,6 +773,19 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                             if {$inmode eq "md"} {
                                 if {$res ne "" || $pres ne ""} {
                                     puts $out "```{tclout}"
+                                }
+                                if {$pres ne ""} {
+                                    puts -nonewline $out "$pres"
+                                }
+                                if {$res ne ""} {
+                                    puts $out "==> $res"
+                                }
+                                if {$res ne "" || $pres ne ""} {
+                                    puts $out "```"
+                                }
+                            } elseif {$inmode eq "typst"} {
+                                if {$res ne "" || $pres ne ""} {
+                                    puts $out "```tclout"
                                 }
                                 if {$pres ne ""} {
                                     puts -nonewline $out "$pres"
@@ -1134,6 +1177,7 @@ namespace eval ::tmdoc {
 #'     - kroki chunks first check for local installs of dot, plantuml and ditaa
 #' - 2025-10-XX Release 0.15.0
 #'     - support for AsciiDoc documents
+#'     - support for Typst documents
 #'
 #' ## <a name='todo'>TODO</a>
 #'

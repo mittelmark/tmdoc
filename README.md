@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-18 09:54
+date: 2025-10-19 21:14
 ---
 
 ## Testing Tmdoc Installation
@@ -461,7 +461,9 @@ as example for such embedded documentation.
     - kroki filter now uses local installs of GraphViz (dot), PlantUML (plantuml) and Ditaa (ditaa)
       command line applications avoding fetching kroki URL's if applications are available locally
 - 2025-10-XX 0.15.0
-    - support for AsciiDoc - Tcl code chunks, Shell code chunks, CSV tables
+    - support for  AsciiDoc - Tcl code chunks,  Shell code chunks, CSV tables,
+    ...
+    - support for Typst - Tcl code chunks, Shell code chunks, CSV tables, ...
 
 ## TODO
 

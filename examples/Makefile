@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <251018.1017>
+#  Last Modified : <251019.1907>
 #
 #  Description	 :
 #
@@ -45,7 +45,9 @@ adoc:
 	## sudo apt install pipx && pipx install htmlark
 	htmlark asciidoc.html -o htmlark-out.html
 	mv htmlark-out.html asciidoc.html
-
+typst:
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave typst.ttyp typst.typ
+	typst compile typst.typ
 ## run with make c.html, make cpp.html, make emf, make py
 %.html: %.tmd mini.css ## that does not work
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $<.tmd $<.md

@@ -1,0 +1,159 @@
+#align(center, text(17pt)[
+= Hello Typst
+
+*Max Musterman, University of Mustercity*
+
+_ mmuster\@uni-mustercity.de_
+])
+
+An introduction to Typst: #link("https://typst.app")
+
+== First Section
+
+- item 1
+- item 2
+
+
+```{.tcl}
+puts "Hello Tcl"
+```
+
+```{.tcl}
+lappend auto_path ../modules
+package require tsvg
+tsvg set width 100
+tsvg set height 100
+# Tcl like syntax without hyphens
+tsvg circle cx 50 cy 50 r 45 stroke black stroke-width 2 fill salmon
+tsvg text x 29 y 45 Hello
+tsvg text x 27 y 65 Typst!
+tsvg write hello-typst.svg
+### cleanup
+tsvg set code ""
+puts done
+```
+
+#image("hello-typst.svg")
+
+An example equation:
+
+```{.mtex}
+E = mc^2
+```
+
+== Tcl Lists to Tables
+
+An example for a table given as a Tcl  list:
+
+```std
+'``{.tcl results=asis,echo=false}
+set h [list A B C]
+set d [list 1 2 3 4 5 6 7 8 9]
+puts [list2tab $h $d]
+'``
+```
+
+```{.tcl results=asis,echo=false}
+set h [list A B C]
+set d [list 1 2 3 4 5 6 7 8 9]
+puts [list2tab $h $d]
+```
+
+== CSV Display
+
+Since version 0.15.0 with AsciiDoc it is as well to embed CSV (Comma Separated Values) data into the documents and return
+the data as text. Here an example:
+
+```{.csv results=asis}
+col1,col2,col3,col4
+1,2,3,4
+5,6,7,8
+9,10,11,12
+```
+
+As with other code chunks you can as well hide the input by using `echo=false`. Here data from an other table:
+
+```{.csv results=asis echo=false}
+col1,col2,col3,col4
+11,12,13,14
+15,16,17,18
+19,20,21,22
+```
+
+== Shell Chunks
+
+Here the code.  Replace the single quote with a back tick before the other two
+back ticks.
+
+```dot
+'``{.shell label=tdot2 cmd="dot -Tsvg %i -o%o" chunk.ext=dot ext=svg}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=skyblue,shape=box];
+    A -> B -> AsciiDoc
+}
+'``
+```
+
+Here the output:
+
+
+```{.shell label=tdot2 cmd="dot -Tsvg %i -o%o" chunk.ext=dot ext=svg}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=skyblue,shape=box];
+    A -> B -> Typst
+}
+```
+
+Using the  option  `echo=false`  you can hide the input and only  display  the
+image:
+
+```dot
+'``{.shell label=tdot3 cmd="dot -Tsvg %i -o%o" chunk.ext=dot ext=svg echo=false}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=salmon,shape=box];
+    Tmdoc -> A -> B -> Typst 
+}
+'``
+```
+
+Here the output:
+
+
+```{.shell label=tdot3 cmd="dot -Tsvg %i -o%o" chunk.ext=dot ext=svg echo=false}
+digraph G {
+    rankdir="LR";
+    node[style=filled,fillcolor=salmon,shape=box];
+    Tmdoc -> A -> B -> Typst
+}
+```
+
+
+== R Examples
+
+```{.r}
+x=1
+print("Hello R World!")
+```
+
+```{.r fig=true}
+plot(1:15,pch=1:15,cex=3)
+```
+
+The value of x is `r x`!
+
+== Python Example
+
+```{.python}
+x=2
+print(x)
+x=x+1
+import sys
+print(sys.version)
+```
+
+The value of Python's x is `py x`!
+
+
