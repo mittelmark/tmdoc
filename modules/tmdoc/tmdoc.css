@@ -16,7 +16,7 @@ pre {
     padding: 10px ;
     border-top: 2px solid #CCCCCC;
     border-bottom: 2px solid #CCCCCC; 
-    font: "Ubuntu Mono", monospace;
+    font-family: "Ubuntu Mono", monospace;
 }
 pre:has(code) {
     background: #efefef;

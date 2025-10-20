@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.15.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-20 07:17
+date: 2025-10-20 16:30
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -24,7 +24,7 @@ lappend auto_path ..
 In the last years reproducible research has gained focus from the research
 community. It is a type of literate programming, introduced by Donald Knuth in
 1984, where code of a programming language is embedded within standard text
-documents, like LaTeX or Markdown documents. The code is evaluated and
+documents, like LaTeX, Markdown, AsciiDoc or Typst documents. The code is evaluated and
 adds or replaces it's own code with the code output. Alternatively the code chunks as well
 as the output result can be also hidden if needed. 
 
@@ -91,17 +91,19 @@ using the package. Literate programming is a style of progamming where in a
 text document, shorter or longer code fragments of a programming language are
 embedded. The document is then "weaved", the programming code is replaced with
 it's output. The produced document can thereafter be further processed to other
-formats.The `tmdoc::tmdoc` package supports Markdown as documentation
-language. Using Markdown processors like `pandoc` or the Tcl package
-`Markdown` the output of the `tmdoc` processor can be converted finally to
+formats.The   `tmdoc::tmdoc`   package  supports  Markdown,  Typst,  AsciiDoc,
+Quarkdown and LaTeX as documentation
+languages.  Using markup  processors  and document  converters  like `pandoc`,
+`typst`, `asciidoctor` or the Tcl application [mndoc](https://github.com/mittelmark/mndoc) 
+the output of the `tmdoc` processor can be converted finally to
 other document formats like pdf or html. 
 
 To give an example, below is the pipleine which was used to create the HTML document you are
-currently viewing using [https://github.com/mittelmark/tmdoc](tmdoc) and [https://github.com/mittelmark/mkdoc](mkdoc) :
+currently viewing using [https://github.com/mittelmark/tmdoc](tmdoc) and [https://github.com/mittelmark/mndoc](mndoc) :
 
 ```{std}
 $ tmdoc tmdoc-tutorial.tmd - | \
-    mkdoc - tmdoc-tutorial.html --css tmdoc.css 
+    mndoc - tmdoc-tutorial.html --css tmdoc.css 
 ```
 
 With the [pandoc](https://pandoc.org/) command line application yo can as well convert the Markdown output of *tmdoc* to many other formats. 
@@ -114,7 +116,7 @@ TMD --------> MD ----------> HTML/PDF/DOCX
 
 Now the mandatory "Hello World!" example. If you embed the following text
 into your Markdown document with the extension, `.tmd`, *tmdoc* will produce, after converting the document
-from  Markdown to HTML via *mkdoc* or *pandoc*, the following  input  (replace
+from  Markdown to HTML via *mndoc* or *pandoc*, the following  input  (replace
 the leading single quote with a backtick, necessary here to avoid interpretation by *tmdoc*) 
 
 ```{std}
@@ -270,18 +272,20 @@ code by specifying `results=hide` and `echo=false` as shown in the following exa
 set a 2
 '``
     
-Our variable a has now a value of `tcl set a` although we don't know why as the programming code is hidden.
+Our variable a has now a value of `tcl set a` although we don't know why
+as the programming code is hidden.
 ```
 
 ```{.tcl results=hide,echo=false}
 set a 2
 ```
     
-Our variable a has now a value of `tcl set a` although we don't know why.
+Our variable a has now a value of `tcl set a` although we don't know why as ...
 
-This feature can be useful if you don't want to show in a final
-version of a text document how the computation was done, but only the results
-of this computation within the text, for instance to display date and used Tcl packages as can be seen at the very end of this document.
+This  feature can be useful if you don't want to show in a final  version of a
+text  document  how the  computation  was done, but only the  results  of this
+computation  within  the  text,  for  instance  to  display  date and used Tcl
+packages as can be seen at the very end of this document.
 
 
 ## <a name="inline">Inline Codes</a>
@@ -516,7 +520,8 @@ phase of a 13x13 board game but with  different  command  line options for the
 display using the command line tool [sgf-render](https://github.com/julianandrews/sgf-render):
 
 ```
-'``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=1-10 -n 10" echo=false}
+'``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 
+                     --move-numbers=1-10 -n 10" echo=false}
 (;FF[4]
 CA[UTF-8]
 GM[1]
@@ -528,11 +533,13 @@ BR[15k]
 WR[14k]
 ...
 '``
-'``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=11-20 -n 20" echo=false}
+'``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 
+    --move-numbers=11-20 -n 20" echo=false}
 LASTFILE
 '``
 
-'``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 --move-numbers=21-30 -n 30" echo=false}
+'``{.shell cmd="sgf-render %i --format png --outfile %o --width 500 
+    --move-numbers=21-30 -n 30" echo=false}
 LASTFILE
 '``
 ```
@@ -1050,6 +1057,17 @@ Here some example:
 Since version 0.13.0 it is as well to embed CSV (Comma Separated Values) data into the documents and return
 the data as text. Here an example:
 
+```
+'```{.csv results=asis}
+col1,col2,col3,col4
+1,2,3,4
+5,6,7,8
+9,10,11,12
+'```
+```
+
+And here the output:
+
 ```{.csv results=asis}
 col1,col2,col3,col4
 1,2,3,4
@@ -1229,6 +1247,24 @@ y=3
 print(y)
 ```
 
+As Knitr and  RMarkdown are using quotes for strings and  uppercased  TRUE and
+FALSE with code chunks  options  separated by commas, as well such code chunks
+are supported:
+
+```
+'```{r results="show",echo=FALSE}
+y=4
+print(y)
+'```
+```
+
+And here the output:
+
+```{r results="show",echo=FALSE}
+y=4
+print(y)
+```
+
 Let's finish the session with a little loop where  continuation  lines should
 be rendered with '+' signs:
 
@@ -1272,11 +1308,18 @@ x=x+1
 ``` 
 
 
-It is as well possible to embed inline python code. So the value of Pythons x is
-`py print(x)`.
+It is as well possible to embed inline python code. 
 
-To be more compatible  with  other literature programing tools as well  the  following  syntax  is
-supported:
+```
+So the value of Pythons x is `py print(x)`.
+```
+
+Output:
+
+So the value of Pythons x is `py print(x)`.
+
+To be more compatible  with  other  literature  programing  tools as well  the
+following  syntax  where the code chunk starts with `py` is supported:
 
 ```
 '```{py results=show echo=false}
@@ -1486,8 +1529,12 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 
 ## <a name="seealso">See Also</a>
 
+- [filter-python](filter-python.html)
+- [filter-r](filter-r.html)
+- [filter-tcl](filter-tcl.html)
 - [tmdoc-package](tmdoc.html)
 - [tmdoc-application](../../apps/tmdoc.html)
+- [mndoc package and application](https://github.com/mittelmark/mndoc)
 
 ## <a name="process">Processing Information</a>
 
@@ -1505,11 +1552,6 @@ Document was processed at: `tcl clock format [clock seconds] -format "%Y-%m-%d %
 
 Document processing was done within: `tcl expr {[clock milliseconds] - $start}` milliseconds.
 
-## See Also
-
-* [filter-python](filter-python.html)
-* [filter-r](filter-r.html)
-* [filter-tcl](filter-tcl.html)
 
 `tcl include footer.md`
 

@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251020.0953>
+#  Last Modified : <251020.1605>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -535,9 +535,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             if {$yamlflag && [regexp {^---} $line]} {
                 set yamlflag false
                 set yabbrev [dict create {*}[yaml::yaml2dict $yamltext]]
-                if {[dict exists $abbrev abbreviations]} {
-                    if {[file exists [dict get $abbrev abbreviations]]} {
-                        set afile [open [dict get $abbrev abbreviations] r]
+                if {[dict exists $yabbrev abbreviations]} {
+                    if {[file exists [dict get $yabbrev abbreviations]]} {
+                        set afile [open [dict get $yabbrev abbreviations] r]
                         append yamltext [read $afile]
                         close $afile
                         set yabbrev [dict create {*}[yaml::yaml2dict $yamltext]]
