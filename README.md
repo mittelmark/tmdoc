@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-19 21:47
+date: 2025-10-20 07:13
 ---
 
 ## Testing Tmdoc Installation
@@ -476,6 +476,7 @@ as example for such embedded documentation.
     - support for  AsciiDoc - Tcl code chunks,  Shell code chunks, CSV tables,
     ...
     - support for Typst - Tcl code chunks, Shell code chunks, CSV tables, ...
+    - support for Yaml file based abbreviations as well for non Markdown files
 
 ## TODO
 

@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251019.2136>
+#  Last Modified : <251020.0732>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -39,6 +39,7 @@ exec tclsh "$0" "$@"
 #                  2025-10-13 version 0.14.1 python bin missing fix, as wel as png file size fix
 #                  2025-10-15 version 0.14.2 kroki chunks first check for local installs of dot, plantuml and ditaa
 #                  2025-10-XX version 0.15.0 support for asciidoc and typst files (tdoc-adoc, ttyp-typ)
+#                                            support for external declaration of abbreviations within Yaml files 
 #
 package require Tcl 8.6-
 package require fileutil
@@ -444,9 +445,22 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set inmode md
     }
     set ::inmode $inmode
-    array set arg [list infile $filename outfile $outfile -mode weave]
+    set yaml false
+    array set arg [list infile $filename outfile $outfile -mode weave -abbrev ""]
     if {[llength $args] > 0} {
         array set arg {*}$args
+    }
+    set abbrev [dict create default ""]
+    if {$arg(-abbrev) ne "" && [file exists $arg(-abbrev)]} {
+        if [catch {open $arg(-abbrev) r} infha] {
+            return code -error "Cannot open $arg(-abbrev)"
+        } else {
+            set yamltext [read $infha]
+            close $infha
+            set abbrev [dict create {*}[yaml::yaml2dict $yamltext]]
+            set yaml true
+        }
+
     }
     if {$arg(outfile) ni [list stdout -]} {
         if {[file extension $arg(outfile)] eq ".tex"} {
@@ -513,22 +527,22 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set chunki 0
         set lnr 0
         set yamlflag false
-        set yaml false
         set yamltext ""
         
         while {[gets $infh line] >= 0} {
             incr lnr
             if {$yamlflag && [regexp {^---} $line]} {
                 set yamlflag false
-                set abbrev [dict create {*}[yaml::yaml2dict $yamltext]]
+                set yabbrev [dict create {*}[yaml::yaml2dict $yamltext]]
                 if {[dict exists $abbrev abbreviations]} {
                     if {[file exists [dict get $abbrev abbreviations]]} {
                         set afile [open [dict get $abbrev abbreviations] r]
                         append yamltext [read $afile]
                         close $afile
-                        set abbrev [dict create {*}[yaml::yaml2dict $yamltext]]
+                        set yabbrev [dict create {*}[yaml::yaml2dict $yamltext]]
                     }
                 }
+                set abbrev [dict merge $abbrev $yabbrev]
                 set yamltext ""
                 set yaml true
             } 
@@ -1035,9 +1049,11 @@ proc ::tmdoc::main {argv} {
     set Usage [string map [list "\n    " "\n"] {
         Usage: __APP__ ?[--help|version]? INFILE OUTFILE ?--mode weave|tangle?   
                
-        tmdoc - Literate programming with Tcl for Markdown and LaTeX processor, Version __VERSION__
-                Converts Markdown or LaTeX documents with embedded Tcl code into Markdown 
-                or LaTeX documents with evaluated Tcl code
+        tmdoc - Literate programming with Tcl for Markdown, AsciiDoc, Typst, 
+                Quarkdown  and LaTeX documents, Version __VERSION__
+                Converts Markdown, AsciiDoc, Typst, Quarkdown or LaTeX documents
+                with embedded R, Python, Octave, Tcl Diagram code and other
+                extensions with evaluated code chunks and embedded images
                 
         Positional arguments (required):
         
@@ -1056,6 +1072,8 @@ proc ::tmdoc::main {argv} {
            --license    - display license information, and exit
            --mode       - either `weave` for evaluating the code chunks
                           or `tangle` for extracting all Tcl code  
+           --abbrev     - an Yaml abbreviation file used to expand abbreviations
+                          within curly braces                         
                           
         Examples:
         
@@ -1091,7 +1109,18 @@ proc ::tmdoc::main {argv} {
         exit 0
     } else {
         set idxm [lsearch -exact $argv {--mode}]
+        set idxa [lsearch -exact $argv {--abbrev}]
         set mode weave
+        set abbrevfile ""
+        if {$idxa > -1} {
+            set abbrevfile [lindex $argv [expr {$idxa + 1}]]
+            if {![file exists $abbrevfile]} {
+                puts "Error: Abbreviation file '$abbrevfile' does not exists!"
+                puts $usage
+                exit 0
+            }
+            set argv [lreplace $argv $idxa [expr {$idxa + 1}]]
+        }
         if {$idxm > -1} {
             if {[llength $argv] != 4} {
                 puts "Usage: Error - argument --mode must have an argument either weave or tangle"
@@ -1102,7 +1131,7 @@ proc ::tmdoc::main {argv} {
             }
             set argv [lreplace $argv $idxm [expr {$idxm + 1}]]
         }
-        tmdoc::tmdoc [lindex $argv 0] [lindex $argv 1] [list -mode $mode]
+        tmdoc::tmdoc [lindex $argv 0] [lindex $argv 1] [list -mode $mode -abbrev $abbrevfile]
     }
 }
 
@@ -1178,6 +1207,7 @@ namespace eval ::tmdoc {
 #' - 2025-10-XX Release 0.15.0
 #'     - support for AsciiDoc documents
 #'     - support for Typst documents
+#'     - support for external declarations of abbreviations within yaml files
 #'
 #' ## <a name='todo'>TODO</a>
 #'

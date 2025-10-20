@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <251019.1907>
+#  Last Modified : <251020.0707>
 #
 #  Description	 :
 #
@@ -46,7 +46,7 @@ adoc:
 	htmlark asciidoc.html -o htmlark-out.html
 	mv htmlark-out.html asciidoc.html
 typst:
-	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave typst.ttyp typst.typ
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --abbrev abbrev.yml typst.ttyp typst.typ
 	typst compile typst.typ
 ## run with make c.html, make cpp.html, make emf, make py
 %.html: %.tmd mini.css ## that does not work

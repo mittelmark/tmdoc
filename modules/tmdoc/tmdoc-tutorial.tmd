@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.15.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-10-18 09:47
+date: 2025-10-20 07:17
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -982,6 +982,18 @@ Even longer abbreviations can be displayed like:
 Here the output:
 
 > _{lipsum}_
+
+For Markup languages which do not support Yaml headers like Typst or AsciiDoc
+the Yaml file which should be used for  abbreviations since version 0.15.0 can be as well given on
+the command line of tmdoc like this:
+
+```
+tmdoc file.ttyp file.typ --abbrev abbrev.yml
+tpyst compile file.typ
+```
+
+The Tcl procedure `tmdoc::tmdoc`  for this  purpose  has the 
+`-abbrev filename.yml` argument.
 
 ## <a name="alerts">Alerts</a>
 

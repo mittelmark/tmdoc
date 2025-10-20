@@ -156,6 +156,18 @@ Here an abbreviation which will be expanded based on the YAML data in abbrev.yml
 {lipsum}
 }]
 
+For Markup languages which do not support Yaml headers like Typst or AsciiDoc
+the Yaml file which should be used for  abbreviations since version 0.15.0 can be as well given on
+the command line of the tmdoc application:
+
+[example {
+tmdoc file.ttyp file.typ --abbrev abbrev.yml
+tpyst compile file.typ
+}]
+
+The Tcl procedure [cmd tmdoc::tmdoc]  for this  purpose  has the 
+[arg "-abbrev filename.yml"] argument.
+
 [section "Markdown Alerts"]
 
 Since version 0.13.0 there is as well support for adding [uri https://github.com/orgs/community/discussions/16925 {Markdown alerts}]. 
@@ -184,7 +196,7 @@ argument vector given on the command line. It is used by the tmdoc command
 line application but could be used as well by other programming languages liem
 Python or R which can with an installed Tcl interpreter.
 
-[call [cmd ::tmdoc::tmdoc] [arg infile] [arg outfile] [opt "[option -mode] [arg weave|tangle]"]]
+[call [cmd ::tmdoc::tmdoc] [arg infile] [arg outfile] [opt "[option -mode] [arg weave|tangle] [option -abbrev] [arg abbrevfile]"]]
 
 The command reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
 the resulting output to the [arg output] file if such is given or to stdout if [arg output] is missing,
@@ -192,6 +204,9 @@ this is the default mode [arg weave].
 
 [para] If as [option -mode] [arg tangle] is given, the Tcl code in
 code chunks is extracted but not evaluated.
+
+[para] If as [option -abbrev] [arg FILENAME] is given, the given [arg abbrevfile] argument
+should be a YAML file containing abbreviations which can be used within the given [arg infile].
 
 [para] All arguments are paths to the files to read from or write to.
 
@@ -204,6 +219,8 @@ package require tmdoc
 namespace import tmdoc::tmdoc
 tmdoc tmdoc-example.tmd tmdoc-example.md
 tmdoc tmdoc-example.tmd tmdoc-example.tcl -mode tangle
+tmdoc example.ttyp example.typ --abbrev abbrev..yml
+typst compile example.typ
 }]
 
 [call [cmd ::tmdoc::tmeval] [arg text] [opt [arg "?ext md?"]]]

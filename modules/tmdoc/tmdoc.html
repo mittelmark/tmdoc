@@ -142,7 +142,7 @@
 </ul>
 <ul class="doctools_syntax">
 <li><a href="#1"><b class="cmd">::tmdoc::main</b> <i class="arg">argv</i></a></li>
-<li><a href="#2"><b class="cmd">::tmdoc::tmdoc</b> <i class="arg">infile</i> <i class="arg">outfile</i> <span class="opt">?<b class="option">-mode</b> <i class="arg">weave|tangle</i>?</span></a></li>
+<li><a href="#2"><b class="cmd">::tmdoc::tmdoc</b> <i class="arg">infile</i> <i class="arg">outfile</i> <span class="opt">?<b class="option">-mode</b> <i class="arg">weave|tangle</i> <b class="option">-abbrev</b> <i class="arg">abbrevfile</i>?</span></a></li>
 <li><a href="#3"><b class="cmd">::tmdoc::tmeval</b> <i class="arg">text</i> <span class="opt">?<i class="arg">?ext md?</i>?</span></a></li>
 </ul>
 </div>
@@ -265,6 +265,15 @@ curly braces like here: This text was written by {DG}!
 Here an abbreviation which will be expanded based on the YAML data in abbrev.yml.
 {lipsum}
 </pre>
+<p>For Markup languages which do not support Yaml headers like Typst or AsciiDoc
+the Yaml file which should be used for  abbreviations since version 0.15.0 can be as well given on
+the command line of the tmdoc application:</p>
+<pre class="doctools_example">
+tmdoc file.ttyp file.typ --abbrev abbrev.yml
+tpyst compile file.typ
+</pre>
+<p>The Tcl procedure <b class="cmd">tmdoc::tmdoc</b>  for this  purpose  has the 
+<i class="arg">-abbrev filename.yml</i> argument.</p>
 </div>
 <div id="section9" class="doctools_section"><h2><a name="section9">Markdown Alerts</a></h2>
 <p>Since version 0.13.0 there is as well support for adding <a href="https://github.com/orgs/community/discussions/16925">Markdown alerts</a>. 
@@ -285,12 +294,14 @@ can be seen in the tutorial. Here an example:</p>
 argument vector given on the command line. It is used by the tmdoc command
 line application but could be used as well by other programming languages liem
 Python or R which can with an installed Tcl interpreter.</p></dd>
-<dt><a name="2"><b class="cmd">::tmdoc::tmdoc</b> <i class="arg">infile</i> <i class="arg">outfile</i> <span class="opt">?<b class="option">-mode</b> <i class="arg">weave|tangle</i>?</span></a></dt>
+<dt><a name="2"><b class="cmd">::tmdoc::tmdoc</b> <i class="arg">infile</i> <i class="arg">outfile</i> <span class="opt">?<b class="option">-mode</b> <i class="arg">weave|tangle</i> <b class="option">-abbrev</b> <i class="arg">abbrevfile</i>?</span></a></dt>
 <dd><p>The command reads the <i class="arg">input</i> file, evaluates embedded Tcl code in code chunks and writes
 the resulting output to the <i class="arg">output</i> file if such is given or to stdout if <i class="arg">output</i> is missing,
 this is the default mode <i class="arg">weave</i>.</p>
 <p>If as <b class="option">-mode</b> <i class="arg">tangle</i> is given, the Tcl code in
 code chunks is extracted but not evaluated.</p>
+<p>If as <b class="option">-abbrev</b> <i class="arg">FILENAME</i> is given, the given <i class="arg">abbrevfile</i> argument
+should be a YAML file containing abbreviations which can be used within the given <i class="arg">infile</i>.</p>
 <p>All arguments are paths to the files to read from or write to.</p>
 <p>The result of the command is the empty string.</p>
 <p>See section <span class="sectref"><a href="#section11">Code Chunk Options</a></span> for the supported code chunk options.</p>
@@ -299,6 +310,8 @@ package require tmdoc
 namespace import tmdoc::tmdoc
 tmdoc tmdoc-example.tmd tmdoc-example.md
 tmdoc tmdoc-example.tmd tmdoc-example.tcl -mode tangle
+tmdoc example.ttyp example.typ --abbrev abbrev..yml
+typst compile example.typ
 </pre>
 </dd>
 <dt><a name="3"><b class="cmd">::tmdoc::tmeval</b> <i class="arg">text</i> <span class="opt">?<i class="arg">?ext md?</i>?</span></a></dt>

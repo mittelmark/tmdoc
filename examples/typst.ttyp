@@ -61,7 +61,7 @@ puts [list2tab $h $d]
 
 == CSV Display
 
-Since version 0.15.0 with AsciiDoc it is as well to embed CSV (Comma Separated Values) data into the documents and return
+Since version 0.15.0 with Typst it is as well to embed CSV (Comma Separated Values) data into the documents and return
 the data as text. Here an example:
 
 ```{.csv results=asis}
@@ -90,7 +90,7 @@ back ticks.
 digraph G {
     rankdir="LR";
     node[style=filled,fillcolor=skyblue,shape=box];
-    A -> B -> AsciiDoc
+    A -> B -> Typst
 }
 '``
 ```
@@ -155,5 +155,52 @@ print(sys.version)
 ```
 
 The value of Python's x is `py x`!
+
+== Abbreviations
+
+Typst uses it's own  abbreviation  system. We usually  declare some  variables
+and then within the text prefix them with a hash. Here an example:
+
+
+```
+#let abbrev = "Abbreviation"
+
+To use the  abbreviation  we use a hash like this: An #abbrev is a short  text
+symbol.
+```
+
+And here the output:
+
+#let abbrev = "Abbreviation"
+
+To use the  abbreviation  we use a hash like this: An #abbrev is a short  text
+symbol.
+
+Tmdoc allows you to use abbreviations  within Typst documents which can be declared within yaml files like
+this:
+
+```
+MM: Max Musterman, University of Mustercity
+```
+
+And then in the text you place the  abbreviations  within  curly  braces  like
+this:
+
+```
+This document was not written by {MM}.
+```
+
+The output is then the following:
+
+This document was not written by {MM}.
+
+To process the  abbreviations  you need to give the  abbreviation  file on the
+command line of tmdoc like this:
+
+```
+tmdoc input.ttyp output.typ --abbrev abbrev.yml
+typst compile output.typ
+```
+
 
 

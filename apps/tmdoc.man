@@ -34,6 +34,12 @@ the resulting output to the [arg output] or to stdout if [arg output] is a singl
 [para] If as [option --mode] [arg tangle] is given, the Tcl code in
 code chunks is extracted but not evaluated.
 
+[call [cmd tmdoc] [arg input] [arg output] [opt "[option --abbrev] [arg abbrevfile]"]]
+
+[para] The application reads the [arg input] file, evaluates embedded code in code chunks and writes
+the resulting output to the [arg output] or to stdout if [arg output] is a single minus sign. The YAML formatted [arg abbrevfile] contains text abbreviations where the keys can be used to 
+expand the keys embedded within curly braces within the [arg inputfile] and places them in the [arg output] file.
+
 [list_end]
 
 [section Examples]
@@ -48,6 +54,13 @@ code chunks is extracted but not evaluated.
     # Extract the Tcl code from the [file .tmd] file into a Tcl file, ready to
     # be checked and evaluated separately by a Tcl interpreter
     tmdoc sample.tmd sample.tcl --mode weave 
+    
+    # Evaluate he Code from the [file sample.ttyp] file into a Typst file, and expand the 
+    # abbreviations within curly braces based on the key values pairs in the given YAML
+    # abbreviation file
+    # be checked and evaluated separately by a Tcl interpreter
+    tmdoc sample.ttyp sample.typ --abbrev abbrev.yml
+    typst compile sample.typ
 }]
 
 [section "Bugs, Ideas, Feedback"]
