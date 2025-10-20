@@ -6,7 +6,10 @@
 [titledesc {Evaluate embedded Tcl code or other command line tool input in Markdown, AsciiDoc or LaTeX documents}]
 [category  {Text processing}]
 [require Tcl 8.6-]
-[require textutil 0.8]
+[require textutil]
+[require yaml]
+[require fileutil]
+[require cmdline]
 [description]
 
 The package [package tmdoc] provides a command to evaluate embedded Tcl and
