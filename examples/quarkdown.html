@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>QuarkdownExample</title>
+    <script src="script/script.js"></script>
+    <script src="script/plain.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+@import url("data:text/css;base64,QGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuYnVubnkubmV0L2Nzcz9mYW1pbHk9QW5kaWthJmRpc3BsYXk9c3dhcCcpOyAKQGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuYnVubnkubmV0L2Nzcz9mYW1pbHk9VWJ1bnR1K01vbm8mZGlzcGxheT1zd2FwJyk7IC8qICcgKi8KCmJvZHkgewogIHBhZGRpbmc6IDMwcHg7CiAgbWF4LXdpZHRoOiAxMDAwcHg7CiAgZm9udC1mYW1pbHk6IEFuZGlrYSwgc2Fucy1zZXJpZjsKICBtYXJnaW46IDAgYXV0bzsKfQoKI2hlYWRlciwgLnRleHQtY2VudGVyLC5kZXRhaWxzLCBoMS50aXRsZSwgcC5hdXRob3IsIHAuZGF0ZSwgaDIuYXV0aG9yLCBoMi5kYXRlIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKfQphIHsgdGV4dC1kZWNvcmF0aW9uOiBub25lIDsgfQpwcmUgewogICAgcGFkZGluZzogMTBweCA7CiAgICBib3JkZXItdG9wOiAycHggc29saWQgI0NDQ0NDQzsKICAgIGJvcmRlci1ib3R0b206IDJweCBzb2xpZCAjQ0NDQ0NDOyAKICAgIGZvbnQ6IE1vbmFjbywgbW9ub3NwYWNlOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtY29kZSkscHJlOmhhcyhjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiAjZWZlZmVmOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsY29kZSksIHByZTpoYXMoY29kZS50Y2xjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiBjb3Juc2lsazsgICAKfQoKcHJlLmhpZ2hsaWdodDpoYXMoY29kZS5sYW5ndWFnZS10Y2xvdXQpLHByZTpoYXMoY29kZS50Y2xvdXQpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjQ0NFRUZGOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsZXJyKSxwcmU6aGFzKGNvZGUudGNsZXJyKSB7ICAgIAogICAgYmFja2dyb3VuZDogI0ZGQ0NDQzsKfQpwcmUuaGlnaGxpZ2h0Omhhcyhjb2RlLmxhbmd1YWdlLWVycm9yKSxwcmU6aGFzKGNvZGUuZXJyb3IpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjRkZDQ0NDOwp9Cgp0YWJsZSB7ICAgIAogIGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7CiAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkOwogIGJvcmRlci1zcGFjaW5nOiA1cHg7CiAgbWluLXdpZHRoOiAzMDBweDsKfQp0YWJsZSB0aGVhZCB0ciB0aCB7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZGU5ZDk7CiAgdGV4dC1hbGlnbjogbGVmdDsgCiAgcGFkZGluZzogNXB4OwogIGJvcmRlci10b3A6IDJweCBzb2xpZDsKICBib3JkZXItYm90dG9tOiAycHggc29saWQ7Cn0KdGFibGUgdHIgdGQgeyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjZmNmY2OwogIHRleHQtYWxpZ246IGxlZnQ7IAogIHBhZGRpbmc6IDVweDsKfQovKiBmaXggZm9yIEFzY2lpRG9jIHRhYmxlcyB3aXRoIHBhcmFncmFwaHMgKi8KcC50YWJsZWJsb2NrIHsgcGFkZGluZzogMHB4OyBtYXJnaW46IDBweDt9Cg==");
+</style>
+
+    <script>
+        doc = new PlainDocument();
+        doc.prepare();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+    <script src="script/code.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css"/>
+
+    <style>
+
+        body {
+        }
+
+        .page-break {
+            break-before: always;
+        }
+
+        .quarkdown-plain .page-break {
+            break-before: avoid;
+            break-after: avoid;
+        }
+
+        body.quarkdown-plain {
+        }
+
+        body.quarkdown-slides .reveal {
+        }
+
+        @page {
+            size: auto auto;
+            margin: 0;
+        }
+
+        p {
+        }
+    </style>
+</head>
+<body class="quarkdown quarkdown-plain">
+<aside id="margin-area-left" class="margin-area"></aside>
+<main>
+    <div class="page-break" data-hidden=""></div><h1 id="tmdoc-sample-document-for-quarkdown-markup-compiler">Tmdoc Sample Document for Quarkdown Markup Compiler</h1><h2 id="max-musterman-university-of-potsdam">Max Musterman, University of Potsdam</h2><h2 id="paula-musterwoman-university-of-mustercity">Paula Musterwoman, University of Mustercity</h2><h2 id="a-quarkdown-tour">A Quarkdown tour</h2><p>No need to reinvent the wheel: you can make text <strong>bold</strong> or <em>italic</em>,
+<del>strike through</del>, add <span class="codespan-content"><code>inline code</code></span>,
+create <a href="https://quarkdown.com">links</a>, and much more.</p><ul><li>An unordered list</li><li>With multiple items</li></ul><ol><li>An ordered list</li><li>With multiple items</li></ol><figure><img src="https://raw.githubusercontent.com/iamgio/quarkdown/project-files/images/tbanner-dark.svg" alt="Logo" /></figure><h2 id="abbreviations">Abbreviations</h2><p>Tmdoc allows you to use abbreviations  within Quarkdown documents which can be declared within yaml files like
+this:</p><pre><code>MM: Max Musterman, University of Mustercity</code></pre><p>And then in the text you place the  abbreviations  within  curly  braces  like
+this:</p><pre><code>This document was not written by {MM}.</code></pre><p>The output is then the following:</p><p>This document was not written by Max Musterman, University of Mustercity.</p><p>To process the  abbreviations  you need to give the  abbreviation  file on the
+command line of tmdoc like this:</p><pre><code>tmdoc input.tqd output.qd --abbrev abbrev.yml
+quarkdown compile output.qd</code></pre><h2 id="tcl-code">Tcl Code</h2><p>Here an example for Tcl code:</p><pre><code class="language-{tclcode}">set x 1
+puts &quot;Hello Quarkdown World!&quot;</code></pre><pre><code class="language-{tclout}">Hello Quarkdown World!</code></pre><p>The value of x should be 1. What is the value? It is 1!</p>
+</main>
+<aside id="margin-area-right" class="margin-area"></aside>
+</body>
+</html>
+

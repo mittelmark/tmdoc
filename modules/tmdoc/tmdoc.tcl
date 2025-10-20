@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251020.0732>
+#  Last Modified : <251020.0953>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -369,6 +369,7 @@ proc tmdoc::block {txt inmode {style ""}} {
         set mstyle "{${style}}"
     }
     if {$inmode eq "md"} {
+        set mstyle [regsub 3 $mstyle ""]
         append res "```${mstyle}\n${txt}"
         append res "```\n"
     } elseif {$inmode eq "typst"} {
@@ -395,7 +396,7 @@ proc tmdoc::block {txt inmode {style ""}} {
 proc tmdoc::iimage {} {
     uplevel 1 {
         if {$inmode eq "md"} {
-            puts $out "!\[\]($imgsrc)"
+            puts $out "!\[ \]($imgsrc)"
         } elseif {$inmode eq "man"} {
             puts $out "\n\[image [file rootname $imgsrc]\]\n"
         } elseif {$inmode eq "adoc"} {
@@ -441,7 +442,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     } elseif {[regexp {(typ|typst)$} [string tolower [file extension $filename]]]} {
         set inmode typst
     } else {
-        ## default
+        ## default is Markdown
         set inmode md
     }
     set ::inmode $inmode

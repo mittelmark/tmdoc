@@ -1,0 +1,64 @@
+.docname {QuarkdownExample}
+.docauthors
+    - Max Musterman, University of Mustercity
+    - Paula Musterwoman, University of Mustercity
+
+# Tmdoc Sample Document for Quarkdown Markup Compiler
+
+## Max Musterman, University of Potsdam
+## Paula Musterwoman, University of Mustercity
+
+## A Quarkdown tour
+
+No need to reinvent the wheel: you can make text **bold** or *italic*,
+~~strike through~~, add `inline code`,
+create [links](https://quarkdown.com), and much more.
+
+- An unordered list
+- With multiple items
+
+1. An ordered list
+2. With multiple items
+
+![Logo](https://raw.githubusercontent.com/iamgio/quarkdown/project-files/images/tbanner-dark.svg)
+
+## Abbreviations
+
+Tmdoc allows you to use abbreviations  within Quarkdown documents which can be declared within yaml files like
+this:
+
+```
+MM: Max Musterman, University of Mustercity
+```
+
+And then in the text you place the  abbreviations  within  curly  braces  like
+this:
+
+```
+This document was not written by {MM}.
+```
+
+The output is then the following:
+
+This document was not written by {MM}.
+
+To process the  abbreviations  you need to give the  abbreviation  file on the
+command line of tmdoc like this:
+
+```
+tmdoc input.tqd output.qd --abbrev abbrev.yml
+quarkdown compile output.qd
+```
+
+
+## Tcl Code
+
+Here an example for Tcl code:
+
+```{.tcl}
+set x 1
+puts "Hello Quarkdown World!"
+```
+
+The value of x should be 1. What is the value? It is `tcl set x`!
+

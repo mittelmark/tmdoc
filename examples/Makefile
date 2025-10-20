@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <251020.0707>
+#  Last Modified : <251020.1057>
 #
 #  Description	 :
 #
@@ -48,6 +48,12 @@ adoc:
 typst:
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --abbrev abbrev.yml typst.ttyp typst.typ
 	typst compile typst.typ
+quarkdown:
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --abbrev abbrev.yml quarkdown.tqd quarkdown.qd
+	quarkdown compile quarkdown.qd
+	perl -pe 's/theme\/theme.css/tmdoc.css/' output/QuarkdownExample/index.html > temp.html
+	TCLLIBPATH=../modules tclsh ../../mndoc/apps/mndoc temp.html quarkdown.html
+
 ## run with make c.html, make cpp.html, make emf, make py
 %.html: %.tmd mini.css ## that does not work
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $<.tmd $<.md
