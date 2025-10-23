@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-23 09:48
+date: 2025-10-23 09:59
 ---
 
 ## Testing Tmdoc Installation
@@ -371,6 +371,10 @@ document using Libreoffice.
 
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
+To have a look at two examples of  Weasyprint  output, you can look at the the
+[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc-tutorial.pdf) and
+the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc.pdf) pages for Version 0.15.0.
+
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
 real Typst  document and then use standard  typst  compiler  tools to create a
@@ -472,7 +476,7 @@ as example for such embedded documentation.
 - 2025-10-15 0.14.2
     - kroki filter now uses local installs of GraphViz (dot), PlantUML (plantuml) and Ditaa (ditaa)
       command line applications avoding fetching kroki URL's if applications are available locally
-- 2025-10-23 0.15.0
+- 2025-10-23 0.15.0 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc-tutorial.pdf)
     - support for  AsciiDoc - Tcl code chunks,  Shell code chunks, CSV tables,
     ...
     - support for Typst - Tcl code chunks, Shell code chunks, CSV tables, ...
