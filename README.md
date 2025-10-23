@@ -1,4 +1,4 @@
-# tmdoc
+    # tmdoc
 
 [![license](https://img.shields.io/badge/license-BSD-lightgray.svg)](https://opensource.org/license/bsd)
 [![Release](https://img.shields.io/github/v/release/mittelmark/tmdoc.svg?label=current+release)](https://github.com/mittelmark/tmdoc/releases)
@@ -77,13 +77,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.14.2/tmdoc-0.14.2.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc-0.15.0.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.14.2
+## 0.15.0
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-23 09:32
+date: 2025-10-23 09:48
 ---
 
 ## Testing Tmdoc Installation
@@ -144,13 +144,13 @@ documents, you can install the mndoc application in a similar way like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/mndoc/releases/download/v0.14.0/mndoc-0.14.0.bin \
+wget https://github.com/mittelmark/mndoc/releases/download/v0.15.0/mndoc-0.15.0.bin \
   -O ~/.local/bin/mndoc
 ### make the file executable  
 chmod 755 ~/.local/bin/mndoc
 ### check the installation
 mndoc --version
-## 0.14.0
+## 0.15.0
 ```  
 
 To install the  _tmdoc_ package just  download  the latest Zip or Tar-Gz  archive from the release page and
@@ -472,7 +472,7 @@ as example for such embedded documentation.
 - 2025-10-15 0.14.2
     - kroki filter now uses local installs of GraphViz (dot), PlantUML (plantuml) and Ditaa (ditaa)
       command line applications avoding fetching kroki URL's if applications are available locally
-- 2025-10-XX 0.15.0
+- 2025-10-23 0.15.0
     - support for  AsciiDoc - Tcl code chunks,  Shell code chunks, CSV tables,
     ...
     - support for Typst - Tcl code chunks, Shell code chunks, CSV tables, ...
