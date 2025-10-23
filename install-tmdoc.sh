@@ -18,5 +18,5 @@ if [[ ! -d ~/.local/bin ]]; then
 fi
 
 installBinary https://github.com/mittelmark/ tmdoc
-installBinary https://github.com/mittelmark/ mkdoc    
+installBinary https://github.com/mittelmark/ mndoc  
     
