@@ -67,7 +67,7 @@ technique  as well known as  literate  programming.
 On Linux, MacOS and on Windows with installed [Msys2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) download the latest
 [tmdoc-VERSION.bin](https://github.com/mittelmark/tmdoc/releases) binary (150-200kb in size), rename
 the bin file to _tmdoc_ and copy the file to a folder belonging to your PATH variable. 
-Thereafter make the file executable and check that it is correctly installed. Since version 0.14.0 there is an install script which installs both tmdoc and mkdoc into ~/.local/bin. You can execute it like this:
+Thereafter make the file executable and check that it is correctly installed. Since version 0.14.0 there is an install script which installs both tmdoc and mndoc into ~/.local/bin. You can execute it like this:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://github.com/mittelmark/tmdoc/releases/latest/download/install-tmdoc.sh)"
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-20 07:13
+date: 2025-10-23 09:32
 ---
 
 ## Testing Tmdoc Installation
@@ -136,21 +136,21 @@ Hello Tcl World!
 '```
 ```
 
-This file can be then converted to HTML or PDF using standard tools like pandoc as well using the [mkdoc](https://github.com/mittelmark/mkdoc) command line application.
+This file can be then converted to HTML or PDF using standard tools like pandoc as well using the [mndoc](https://github.com/mittelmark/mndoc) command line application.
 
 If you like to use as well a Tcl based converter of Markdown documents to HTML
-documents, you can install the mkdoc application in a similar way like this:
+documents, you can install the mndoc application in a similar way like this:
 
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/mkdoc/releases/download/v0.11.3/mkdoc-0.11.3.bin \
-  -O ~/.local/bin/mkdoc
+wget https://github.com/mittelmark/mndoc/releases/download/v0.14.0/mndoc-0.14.0.bin \
+  -O ~/.local/bin/mndoc
 ### make the file executable  
-chmod 755 ~/.local/bin/mkdoc
+chmod 755 ~/.local/bin/mndoc
 ### check the installation
-mkdoc --version
-## 0.11.3
+mndoc --version
+## 0.14.0
 ```  
 
 To install the  _tmdoc_ package just  download  the latest Zip or Tar-Gz  archive from the release page and
@@ -200,14 +200,14 @@ digraph g {
 
 Since    version   0.9.0   as   well   creation   of   diagrams    using   the
 [kroki.io](https://kroki.io) webservice is as well possible here an example on
-how to process Tmd documents to html using tmdoc and mkdoc.
+how to process Tmd documents to html using tmdoc and mndoc.
 
 ```
 '```{.kroki dia=graphviz imagepath=kroki ext=png}
 digraph g {
   node[height=1.2,width=1.5,style=filled,shape=box,fillcolor=beige]
   TMD -> MD[label="tmdoc"]
-  MD -> HTML[label="mkdoc"]
+  MD -> HTML[label="mndoc"]
 }
 '```
 ```
@@ -364,12 +364,12 @@ The same can be done using the Octave or the Python programming languages. For m
 ## Document Processing
 
 Documents  generated  with  tmdoc  can be then  processed  from the  generated
-Markdown to HTML or PDF using tools like [mkdoc](https://github.com/mittelmark/mkdoc/),
+Markdown to HTML or PDF using tools like [mndoc](https://github.com/mittelmark/mndoc/),
 [pandoc](https:///www.pandoc.org), [WeasyPrint](https://pypi.org/project/weasyprint/) or
 [LibreOffice](https://libreoffice.org/). Here a pipeline to create an HTML, PDF or ODT 
 document using Libreoffice.
 
-![](https://kroki.io/graphviz/svg/eNp1zLEKwkAMgOH9niLcXAVxlHMq4tCiSLficL1cbWjalGtBRXx3vUpHp5B8P0G6BTs0cIOXgl7Ql2NjB28qeSTj9GRvamL2mMThhCUYJ6EfidvkTjg1ZrPeXncKgu1bpGB0dtHftegQVnvIsWRbeTZ66lCcjmWOEOlY5NmCXftDUPM58jk9LJpRFbzUNTk_P1iSU1r8Sd5KfQDUcUVD)
+![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
@@ -399,16 +399,16 @@ To give an example the tmdoc tutorial ([source](modules/tmdoc/tmdoc-tutorial.tmd
 is processed with the following commands.
 
 ```
-tmdoc --mode weave tmdoc-tutorial.tmd - | mkdoc - tmdoc-tutorial.html --css tmdoc.css
+tmdoc --mode weave tmdoc-tutorial.tmd - | mndoc - tmdoc-tutorial.html --css tmdoc.css
 ```
 
 Further  you might  embed your Tmd text within Tcl source code files after the
 _#'_ commented lines for documentation  purposes of your Tcl projects. You can
-then  extract the Markdown  text first with _mkdoc_, then process the Tcl code
+then  extract the Markdown  text first with _mndoc_, then process the Tcl code
 within  using _tmdoc_ and again do then a document  conversion  to HTML and or
 PDF or OST as described above. Here such a workflow:
 
-![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQBuA9T3FkroI4SpyKOLQokq04pLnUHr02JS2oiO9uU6iD4HTc__13SLdg-hpu8BLQeXTFUJveqdI_kmF8slMVMTtM4rCefVDWh24gbpI74VirzXp73QkIpmuQgpLZRU6rtgyrPegWCzalYyXbBr2VsTqF0fIvje1COUKko86z3zsQcxz5nB4WzagMzlcVWTc_WCqnVP-pvIX4AAltTeI=)
+![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQBuA9T3FkroI4SpyKOLRUJFtxSHNpG3pNSlpQEd_dplAHwem4__vv0DZBDS008GLgPJpybNVgROUfyTg9yYjaEhlM4tCefBDaBzda6pK7xakVu-3-dmAQlOvQBsGzK59XqQk2R5A9lqQqQ4L3Dr3msTqH0fIvTf1KOUKks8yz3ztgSxz5kp5WzWwVjK9rq83yYK0UqfxTeTP2AQwBTeg=)
 
 See the  [tdot](https://github.com/mittelmark/tdot/blob/main/tdot/tdot.tcl)  source code
 as example for such embedded documentation.
@@ -492,13 +492,10 @@ as example for such embedded documentation.
   
 ## See Also
 
-- [mkdoc](https://github.com/mittelmark/mkdoc) - converting Markdown output of
+- [mndoc](https://github.com/mittelmark/mndoc) - converting Markdown output of
   tmdoc to HTML or extracting Markdown documentation from source code files
-- [pantcl](https://github.com/mittelmark/pantcl)  - combines functionality of
-  pandoc, mkdoc, tmdoc and brings many filter for code blocks like for GraphViz,
-  PlantUML, Shell, R and Python
 - [Tcl man page format](https://core.tcl-lang.org/tcllib/doc/trunk/embedded/md/tcllib/files/modules/doctools/doctools_lang_cmdref.md)
-- [WeasyPrint](https://pypi.org/project/weasyprint/)
+- [WeasyPrint](https://pypi.org/project/weasyprint/) - converting HTML into PDF with styleseet support
 
 ## Author
 
