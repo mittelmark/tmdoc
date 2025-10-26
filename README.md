@@ -1,4 +1,4 @@
-    # tmdoc
+# tmdoc
 
 [![license](https://img.shields.io/badge/license-BSD-lightgray.svg)](https://opensource.org/license/bsd)
 [![Release](https://img.shields.io/github/v/release/mittelmark/tmdoc.svg?label=current+release)](https://github.com/mittelmark/tmdoc/releases)
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-23 09:59
+date: 2025-10-26 16:05
 ---
 
 ## Testing Tmdoc Installation
