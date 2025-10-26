@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251020.1605>
+#  Last Modified : <251026.1730>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -38,13 +38,14 @@ exec tclsh "$0" "$@"
 #                  2025-10-06 version 0.14.0 adding support for Octave, Python and R code embedding
 #                  2025-10-13 version 0.14.1 python bin missing fix, as wel as png file size fix
 #                  2025-10-15 version 0.14.2 kroki chunks first check for local installs of dot, plantuml and ditaa
-#                  2025-10-XX version 0.15.0 support for asciidoc and typst files (tdoc-adoc, ttyp-typ)
+#                  2025-10-23 version 0.15.0 support for asciidoc and typst files (tdoc-adoc, ttyp-typ)
 #                                            support for external declaration of abbreviations within Yaml files 
+#                  2025-10-26 version 0.15.1 fix for different user run tmdoc on the same machine
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.15.0
+package provide tmdoc::tmdoc 0.15.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -1205,10 +1206,12 @@ namespace eval ::tmdoc {
 #'     - default set to python3
 #' - 2025-10-15 Release 0.14.2
 #'     - kroki chunks first check for local installs of dot, plantuml and ditaa
-#' - 2025-10-XX Release 0.15.0
+#' - 2025-10-23 Release 0.15.0
 #'     - support for AsciiDoc documents
 #'     - support for Typst documents
 #'     - support for external declarations of abbreviations within yaml files
+#' - 2025-10-26 Release 0.15.1
+#'     - fix for multiple users running tmdoc application on the same machine
 #'
 #' ## <a name='todo'>TODO</a>
 #'
@@ -1218,7 +1221,7 @@ namespace eval ::tmdoc {
 #'
 #' ## <a name='license'>LICENSE AND COPYRIGHT</a>
 #'
-#' Tcl Markdown processor tmdoc::tmdoc, version 0.12.1
+#' Tcl Markdown processor tmdoc::tmdoc, version 0.15.1
 #'
 #' Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany E-mail: <dgroth(at)uni(minus)potsdam(dot)de>
 #'
