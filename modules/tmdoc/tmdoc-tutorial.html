@@ -3,10 +3,10 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="title" content="tmdoc::tmdoc 0.15.1 - Tcl Markdown processor tutorial">
+<meta name="title" content="tmdoc::tmdoc 0.15.2 - Tcl Markdown processor tutorial">
 <meta name="author" content="Detlef Groth, University of Potsdam, Germany">
     
-<title>tmdoc::tmdoc 0.15.1 - Tcl Markdown processor tutorial</title>
+<title>tmdoc::tmdoc 0.15.2 - Tcl Markdown processor tutorial</title>
     
     
 
@@ -26,9 +26,9 @@
 
 
     <div class="document-header">
-<h1 class="title">tmdoc::tmdoc 0.15.1 - Tcl Markdown processor tutorial</h1>
+<h1 class="title">tmdoc::tmdoc 0.15.2 - Tcl Markdown processor tutorial</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-10-26</h2>
+<h2 class="date">2025-10-29</h2>
     </div>
 
 <hr />
@@ -164,7 +164,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-10-26 17:35</p>
+<p>The curent date and time is: 2025-10-30 09:25</p>
 
 <hr />
 
@@ -813,7 +813,7 @@ Now an abbreviation which is in the `abbrev.yml` file
 <p><strong>And here the output:</strong></p>
 
 <p>This is an abbrev Detlef Groth, University of Potsdam, Germany and this is another for the Author: Detlef Groth, University of Potsdam, Germany. 
-The document was created at 2025-10-26 17:33. This an empty abbreviation {empty}.</p>
+The document was created at 2025-10-29 23:16. This an empty abbreviation {empty}.</p>
 
 <p>Now an abbreviation which is in the <code>abbrev.yml</code> file - tmdoc is: 'Tcl Markdown document processor'!</p>
 
@@ -1294,7 +1294,9 @@ disp(str);
 disp(str);</code></pre>
 
 <pre class='code'><code class='octave'>octave&gt; str = 'Hello Octave World!';
-octave&gt; disp(str);</code></pre>
+octave&gt; disp(str);
+&gt; 
+Hello Octave Wor</code></pre>
 
 <p>Now comes the next code block where we have two <em>disp</em>  statements  to display
 the value of a variable:</p>
@@ -1306,8 +1308,10 @@ disp(y);</code></pre>
 
 <pre class='code'><code class='octave'>octave&gt; x=1;
 octave&gt; disp(x);
+1
 octave&gt; y=2;
-octave&gt; disp(y);</code></pre>
+octave&gt; disp(y);
+2</code></pre>
 
 <p>Now let's do a plot using the <em>figure</em> and the <em>print</em> methods:</p>
 
@@ -1320,12 +1324,8 @@ mesh (tx, ty, tz);
 print(aux, &quot;mesh-octave.png&quot;, &quot;-dpng&quot;, &quot;-S600,400&quot;);</code></pre>
 
 <pre class='code'><code class='octave'>octave&gt; aux=figure('visible','off');
-Qt: Session management error: Could not open network socket
 octave&gt; tx = ty = linspace (-8, 8, 41);
 octave&gt; [xx, yy] = meshgrid (tx, ty);
-Hello Octave World!
-1
-2
 octave&gt; r = sqrt (xx .^ 2 + yy .^ 2) + eps;
 octave&gt; tz = sin (r) ./ r;
 octave&gt; mesh (tx, ty, tz);
@@ -1495,12 +1495,12 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 
 <ul>
 <li>Tcl/Tk 8.6.16 </li>
-<li>tmdoc::tmdoc 0.15.1
+<li>tmdoc::tmdoc 0.15.2
 </li></ul>
 
-<p>Document was processed at: 2025-10-26 17:35</p>
+<p>Document was processed at: 2025-10-30 09:25</p>
 
-<p>Document processing was done within: 9506 milliseconds.</p>
+<p>Document processing was done within: 9940 milliseconds.</p>
 
 <h2>Author and Copyright</h2>
 

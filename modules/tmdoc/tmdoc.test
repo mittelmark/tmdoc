@@ -236,7 +236,7 @@ X is 2}
 tcltest::test tmdoc-octave-1.1 {
     Checking Octave pipe.
 } -body {
-    string trim [tmdoc::tmeval "```{.pipe pipe=\"octave\"}  
+    string trim [tmdoc::tmeval "```{.pipe pipe=\"octave\"}
 x=1;
 disp(x);
 y=2;

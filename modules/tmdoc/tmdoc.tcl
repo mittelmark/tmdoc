@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251026.1730>
+#  Last Modified : <251030.0931>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -41,11 +41,12 @@ exec tclsh "$0" "$@"
 #                  2025-10-23 version 0.15.0 support for asciidoc and typst files (tdoc-adoc, ttyp-typ)
 #                                            support for external declaration of abbreviations within Yaml files 
 #                  2025-10-26 version 0.15.1 fix for different user run tmdoc on the same machine
+#                  2025-10-29 version 0.15.2 fix for try as name of slave interp, naming it to itry to avoid clash with try command
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.15.1
+package provide tmdoc::tmdoc 0.15.2
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -57,7 +58,7 @@ namespace eval ::tmdoc {}
 proc ::tmdoc::interpReset {} {
     if {[interp exists intp]} {
         interp delete intp
-        interp delete try
+        interp delete itry
     }
     interp create intp
     interp eval intp " set pres {} ;  set auto_path {$::auto_path}"
@@ -251,28 +252,28 @@ proc ::tmdoc::interpReset {} {
     
     # todo handle puts options
 
-    # this is the try interp for the catch statements
+    # this is the itry interp for the catch statements
     # we first check statements and only if they are ok
     # the real interpreter intp will be used
-    interp create try
-    interp eval try { set yamltext "" }
-    interp eval try {rename puts puts.orig}
-    interp eval try " set pres {} ;  set auto_path {$::auto_path}"
-    interp eval try "package require yaml"
+    interp create itry
+    interp eval itry { set yamltext "" }
+    interp eval itry {rename puts puts.orig}
+    interp eval itry " set pres {} ;  set auto_path {$::auto_path}"
+    interp eval itry "package require yaml"
     # todo handle puts options
     
-    interp eval try {proc puts {args} {}}
-    interp eval try {proc include {filename} {}}
-    interp eval try {proc list2tab {header data} {}}    
-    interp eval try {proc list2mdtab {header data} {}}
-    interp eval try {proc nfig {{label ""}} {}}    
-    interp eval try {proc rfig {label} {}}        
-    interp eval try {proc ntab {{label ""}} {}}    
-    interp eval try {proc rtab {label} {}}        
-    interp eval try {proc youtube {video args} {}}            
-    interp eval try {namespace eval citer { } }
-    interp eval try {proc citer::bibliography {{filename ""}} {}}
-    interp eval try {proc citer::cite {key} {}}        
+    interp eval itry {proc puts {args} {}}
+    interp eval itry {proc include {filename} {}}
+    interp eval itry {proc list2tab {header data} {}}    
+    interp eval itry {proc list2mdtab {header data} {}}
+    interp eval itry {proc nfig {{label ""}} {}}    
+    interp eval itry {proc rfig {label} {}}        
+    interp eval itry {proc ntab {{label ""}} {}}    
+    interp eval itry {proc rtab {label} {}}        
+    interp eval itry {proc youtube {video args} {}}            
+    interp eval itry {namespace eval citer { } }
+    interp eval itry {proc citer::bibliography {{filename ""}} {}}
+    interp eval itry {proc citer::cite {key} {}}        
 }
 
 proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {
@@ -778,7 +779,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     puts $out $cont
                 }
                 if {$copt(eval)} {
-                    if {[catch {interp eval try $tclcode} res]} {
+                    if {[catch {interp eval itry $tclcode} res]} {
                         puts $out [tmdoc::block [regsub " +invoked from within.+" "$::errorInfo" ""] $inmode tclerr]
                     } else {
                         set res [interp eval intp $tclcode]
@@ -895,7 +896,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             } elseif {$mode eq "text"} {
                 # todo check for `tcl fragments`
                 while {[regexp {(.*?)`tcl ([^`]+)`(.*)$} $line -> pre t post]} {
-                    if {[catch {interp eval try $t} res]} {
+                    if {[catch {interp eval itry $t} res]} {
                         if {$inmode in [list md man]} {
                             set line "$pre*??$res??*$post"
                         } else {
@@ -922,7 +923,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`oc ([^`]+)`(.*)$} $line -> pre t post]} {
-                    set res [octave::filter $t [dict create pipe octave eval true echo false terminal false wait 500]]
+                    set res [octave::filter $t [dict create pipe octave eval true echo false terminal false wait 800]]
                     set res [lindex [split [lindex [lindex $res 0] 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
@@ -949,9 +950,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             interp eval intp { catch {destroy . } }
             interp delete intp
         }
-        if {[interp exists try]} {
-            interp eval try { catch { destroy . } }
-            interp delete try
+        if {[interp exists itry]} {
+            interp eval itry { catch { destroy . } }
+            interp delete itry
         }
     }
 }
@@ -1141,95 +1142,3 @@ namespace eval ::tmdoc {
     namespace export tmdoc tmeval
 }
 
-#'
-#' ## <a name='changes'>CHANGES</a>
-#'
-#' - 2020-02-19 Release 0.1
-#' - 2020-02-21 Release 0.2
-#'     - docu updates
-#'     - nonewline puts fix
-#'     - *-outfile filename* option
-#'     - *-mode tangle* option
-#' - 2020-02-23 Release 0.3
-#'     - fix for puts into channels
-#' - 2020-11-09 Release 0.4
-#'     - github release
-#'     - LaTeX support
-#'     - fig.width support LaTeX
-#'     - documentation fixes
-#'     - LaTeX sample document
-#'     - fix for inline code special markup using underlines
-#'     - other file type extensions for figure using ext option for code chunks
-#' - 2021-12-19 Release 0.5.0
-#'     - pandoc compatible syntax with .tcl and tcl as chunk indicator
-#'     - chunk options with spaces possible instead of comma
-#' - 2025-01-18 Release 0.7.0
-#'     - making it ready for tcllib inclusion
-#'     - splitting app into own file
-#'     - writing man-pages
-#'     - adding tmdoc::main argv method to make it tclmain aware
-#'     - adapting tmdoc.css to be used by mkdoc
-#'     - Tcl 9 aware
-#'     - documentation fix for app
-#' - 2025-03-21 Release 0.8.0
-#'     - adding support for shell code chunks to create graphics for
-#'       tools like GraphViz dot, PlantUML or sgf-render and many others
-#' - 2025-04-02 Release 0.9.0
-#'     - adding support for kroki code chunks to create graphics for
-#'       tools like GraphViz dot, PlantUML using the [kroki.io](https://kroki.io) web service
-#'     - better support for Tcl man pages (images, code examples)
-#' - 2025-07-07 Release 0.10.0
-#'     - support for text output for shell commands
-#'     - more examples added, 
-#' - 2025-09-16 Release 0.11.0
-#'     - support for %b, the basename of the input file
-#'     - C and C++ examples updated
-#' - 2025-09-30 Release 0.12.0
-#'     - support for %f (for the input filename, so same as %i)
-#'     - support for embedding LaTeX equations using [math.vercel.app](https://math.vercel.app) 
-#'       webservice
-#'     - support for embedding Youtube videos inside iframes
-#'     - adding abc music examples
-#' - 2025-10-02 Release 0.13.0
-#'     - adding abbreviations in yaml header or yaml file
-#'     - adding alert boxes for Markdown output
-#'     - adding bibliography file entry in YAML header
-#'     - adding csv based table creation
-#'     - extending tmdoc tutorial for citation use
-#'     - fixing tcl code chunk option eval=false
-#'     - fixing resetting default of code chunks
-#' - 2025-10-06 Release 0.14.0
-#'     - adding support for Python, Octave and R code embedding
-#' - 2025-10-13 Release 0.14.1
-#'     - fixing image size issue for fig=true for png images
-#'     - fix for modern Linux system with missing python binaries
-#'     - default set to python3
-#' - 2025-10-15 Release 0.14.2
-#'     - kroki chunks first check for local installs of dot, plantuml and ditaa
-#' - 2025-10-23 Release 0.15.0
-#'     - support for AsciiDoc documents
-#'     - support for Typst documents
-#'     - support for external declarations of abbreviations within yaml files
-#' - 2025-10-26 Release 0.15.1
-#'     - fix for multiple users running tmdoc application on the same machine
-#'
-#' ## <a name='todo'>TODO</a>
-#'
-#' - LaTeX mode if file extension is tnw intead of tmd (done)
-#' - fig.width, fig.height options by using args argument in figure (for LaTeX done)
-#' - more test cases
-#'
-#' ## <a name='license'>LICENSE AND COPYRIGHT</a>
-#'
-#' Tcl Markdown processor tmdoc::tmdoc, version 0.15.1
-#'
-#' Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany E-mail: <dgroth(at)uni(minus)potsdam(dot)de>
-#'
-#' License: BSD
-#'
-#' ## See Also
-#'
-#' - [mkdoc](https://github.com/mittelmark/mkdoc) - converting Markdown to HTML or extrac ting Markdown documentation from source code files
-#' - [pandoc](https://pandoc.org)                 - the most flexible document converter
-#' - [pantcl](https://github.com/mittelmark/pantcl) - combines the functionality of mkdoc, tmdoc and adds more languages like R, Python, GraphViz, PlantUML  and many more
-#'

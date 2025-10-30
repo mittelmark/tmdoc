@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-26 17:27
+date: 2025-10-29 23:17
 ---
 
 ## Testing Tmdoc Installation
@@ -481,9 +481,10 @@ as example for such embedded documentation.
     ...
     - support for Typst - Tcl code chunks, Shell code chunks, CSV tables, ...
     - support for Yaml file based abbreviations as well for non Markdown files
-- 2025-10-16 0.15.1 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc-tutorial.pdf)
+- 2025-10-26 0.15.1 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc-tutorial.pdf)
     - fix for multiple users at the same machine run tmdoc
-    
+- 2025-10-30 0.15.2 - renamed try interp to itry to avoid name clash with try command
+
 ## TODO
 
 - [x] kroki code chunk support  (done)
