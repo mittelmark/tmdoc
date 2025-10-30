@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251030.1549>
+#  Last Modified : <251030.1716>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -561,7 +561,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set line [regsub -all "\{$key\}" $line [dict get $abbrev $key]]
                 }
             }
-            if {$mode eq "text" && [regexp {```\{\.?(r|oc|py).*\}} $line]} {
+            if {$mode eq "text" && [regexp {^ {0,2}```\{\.?(r|oc|py).*\}} $line]} {
                 set line [regsub -nocase {\{\.?r(.*)\}} $line "{.pipe pipe=R\\1}"]
                 set line [regsub -nocase {\{\.?oc[a-z]*(.*)\}} $line "{.pipe pipe=octave\\1}"]                
                 set line [regsub -nocase {\{\.?py[a-z]*(.*)\}} $line "{.pipe pipe=python3\\1}"]                                
@@ -589,11 +589,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set alert [string tolower $alert 1 end]
                 set line "<div class=\"side-[string tolower $alert]\"><p><b>${alert}:</b> "
             }
-            if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?tcl\s*\}} $line -> opts])} {
+            if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?tcl\s*\}} $line -> opts])} {
                 set mode code
                 incr chunki
                 array set copt [array get dopt]
-            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?tcl\s+(.*)\}} $line -> opts])} {
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?tcl\s+(.*)\}} $line -> opts])} {
                 set mode code
                 incr chunki
                 array set copt [array get dopt]
@@ -601,27 +601,27 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 # TODO: spaces in fig.cap etc
                 ::tmdoc::GetOpts 
                 continue
-            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(shell|cmd)\s+(.*)\}} $line -> tp opts])} {
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(shell|cmd)\s+(.*)\}} $line -> tp opts])} {
                 set mode shell
                 incr chunki
                 array set copt [array get bdopt]
                 # TODO: spaces in fig.cap etc
                 ::tmdoc::GetOpts 
                 continue
-            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(kroki)\s+(.*)\}} $line -> tp opts])} {
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(kroki)\s+(.*)\}} $line -> tp opts])} {
                 set mode kroki
                 incr chunki
                 array set copt [array get kdopt]
                 # TODO: spaces in fig.cap etc
                 ::tmdoc::GetOpts 
                 continue
-            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(mtex)(\s*.*)\}} $line -> tp opts])} {
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(mtex)(\s*.*)\}} $line -> tp opts])} {
                 set mode mtex
                 incr chunki
                 array set copt [array get tdopt]
                 ::tmdoc::GetOpts 
                 continue
-            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {```\s?\{\.?(pipe)(\s*.*)\}} $line -> tp opts])} {
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(pipe)(\s*.*)\}} $line -> tp opts])} {
                 set mode pipe
                 incr chunki
                 array set copt [array get dopt]
@@ -633,7 +633,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 array set copt [array get mopt]
                 ::tmdoc::GetOpts 
                 continue
-            } elseif {$mode in [list csv pipe] && [regexp {```} $line]} {
+            } elseif {$mode in [list csv pipe] && [regexp {^ {0,2}```} $line]} {
                 if {$copt(echo)} {
                     if {$mode eq "pipe"} {
                         puts $out [tmdoc::block $ginput $inmode $copt(pipe)]
@@ -671,7 +671,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode text
                 array unset copt
                 continue
-            } elseif {$mode eq "shell" && [regexp {```} $line]} {
+            } elseif {$mode eq "shell" && [regexp {^ {0,2}```} $line]} {
                 if {$copt(echo)} {
                     set cont [tmdoc::block $bashinput $inmode code]
                     puts $out $cont
@@ -729,7 +729,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set bashinput ""
                 set mode text
                 array unset copt
-            } elseif {$mode eq "kroki" && [regexp {```} $line]} {
+            } elseif {$mode eq "kroki" && [regexp {^ {0,2}```} $line]} {
                 if {$copt(echo)} {
                     set cont [tmdoc::block $krokiinput $inmode kroki]
                     puts $out $cont
@@ -747,7 +747,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set krokiinput ""
                 set mode text
                 array unset copt                
-            } elseif {$mode eq "mtex" && [regexp {```} $line]} {
+            } elseif {$mode eq "mtex" && [regexp {^ {0,2}```} $line]} {
                 if {$copt(echo)} {
                     set cont [tmdoc::block $mtexinput $inmode mtex]
                     puts $out $cont
@@ -773,7 +773,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 append mtexinput "$line\n"
             } elseif {$mode in [list csv pipe]} {
                 append ginput "$line\n"
-            } elseif {$mode eq "code" && [regexp {```} $line]} {
+            } elseif {$mode eq "code" && [regexp {^ {0,2}```} $line]} {
                 if {$copt(echo)} {
                     set cont [tmdoc::block $tclcode $inmode tclcode]
                     puts $out $cont
