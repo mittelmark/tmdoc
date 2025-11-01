@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251030.1716>
+#  Last Modified : <251101.0736>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -42,11 +42,12 @@ exec tclsh "$0" "$@"
 #                                            support for external declaration of abbreviations within Yaml files 
 #                  2025-10-26 version 0.15.1 fix for different user run tmdoc on the same machine
 #                  2025-10-29 version 0.15.2 fix for try as name of slave interp, naming it to itry to avoid clash with try command
+#                  2025-11-01 version 0.15.3 fix for triple quotes within code chunks
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.15.2
+package provide tmdoc::tmdoc 0.15.3
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]

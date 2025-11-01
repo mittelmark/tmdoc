@@ -77,13 +77,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.15.2/tmdoc-0.15.2.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc-0.15.3.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.15.2
+## 0.15.3
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-10-30 09:41
+date: 2025-11-01 07:37
 ---
 
 ## Testing Tmdoc Installation
@@ -372,8 +372,8 @@ document using Libreoffice.
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
 To have a look at two examples of  Weasyprint  output, you can look at the the
-[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.2/tmdoc-tutorial.pdf) and
-the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.2/tmdoc.pdf) pages for Version 0.15.2.
+[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc-tutorial.pdf) and
+the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc.pdf) pages for Version 0.15.3.
 
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
@@ -484,6 +484,7 @@ as example for such embedded documentation.
 - 2025-10-26 0.15.1 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc-tutorial.pdf)
     - fix for multiple users at the same machine run tmdoc
 - 2025-10-30 0.15.2 - renamed try interp to itry to avoid name clash with try command
+- 2025-11-01 0.15.3 - fix for triple backtick quotes within code chunks
 
 ## TODO
 
