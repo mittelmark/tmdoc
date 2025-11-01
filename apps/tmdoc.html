@@ -102,7 +102,7 @@
 <body><div class="doctools">
 <h1 class="doctools_title">tmdoc(n) 0.15.3 tmdoc &quot;Literate programming using Tcl&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
-<p>tmdoc - Evaluate embedded Tcl code in Markdown or LaTeX documents</p>
+<p>tmdoc - Evaluate embedded R, Python, Tcl, Octave, GraphViz and Shell code in Markdown, AsciiDoc, Typst or LaTeX documents</p>
 </div>
 <div id="toc" class="doctools_section"><h2><a name="toc">Table Of Contents</a></h2>
 <ul class="doctools_toc">
@@ -154,21 +154,21 @@ expand the keys embedded within curly braces within the <i class="arg">inputfile
 </div>
 <div id="section3" class="doctools_section"><h2><a name="section3">Examples</a></h2>
 <pre class="doctools_example">
-    # Evaluate and add the Tcl output in code chunks in a Markdown [ file .tmd] file
-    # andd write the document to a standard Markdown file, ready to be processed
-    # further, for example with pandoc, or similar with mndoc into for instance a [file .html]
-    # file.
+    # Evaluate and add the Tcl output in code chunks in a Markdown file with .tmd extension
+    # and write the document to a standard Markdown file, ready to be processed further, 
+    # for example with pandoc or with mndoc into for instance a html file.
     tmdoc sample.tmd sample.md
-    # Document conversion can be done as well using pipe approach with mndoc like this:
+    # Document conversion can be done as well using a pipe with mndoc like this:
     tmdoc sample.tmd - | mndoc - sample.html --css tmdoc.css
-    # Extract the Tcl code from the [file .tmd] file into a Tcl file, ready to
+    # Extract the Tcl code from the .tmd file into a Tcl file, ready to
     # be checked and evaluated separately by a Tcl interpreter
     tmdoc sample.tmd sample.tcl --mode weave 
     
-    # Evaluate he Code from the [file sample.ttyp] file into a Typst file, and expand the 
+    # Evaluate he Code from the sample.ttyp file into a Typst file, and expand the 
     # abbreviations within curly braces based on the key values pairs in the given YAML
     # abbreviation file
     # be checked and evaluated separately by a Tcl interpreter
+    
     tmdoc sample.ttyp sample.typ --abbrev abbrev.yml
     typst compile sample.typ
 </pre>
