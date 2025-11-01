@@ -48,16 +48,16 @@ expand the keys embedded within curly braces within the [arg inputfile] and plac
     # Evaluate and add the Tcl output in code chunks in a Markdown file with .tmd extension
     # and write the document to a standard Markdown file, ready to be processed further, 
     # for example with pandoc or with mndoc into for instance a html file.
-
+    
     tmdoc sample.tmd sample.md
-
+    
     # Document conversion can be done as well using a pipe with mndoc like this:
-
+    
     tmdoc sample.tmd - | mndoc - sample.html --css tmdoc.css
-
+    
     # Extract the Tcl code from the .tmd file into a Tcl file, ready to
     # be checked and evaluated separately by a Tcl interpreter
-
+    
     tmdoc sample.tmd sample.tcl --mode weave 
     
     # Evaluate he Code from the sample.ttyp file into a Typst file, and expand the 
