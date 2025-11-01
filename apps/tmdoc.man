@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ; fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.15.1]
+[vset VERSION 0.15.3]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
@@ -47,9 +47,12 @@ expand the keys embedded within curly braces within the [arg inputfile] and plac
 [example {
     # Evaluate and add the Tcl output in code chunks in a Markdown [ file .tmd] file
     # andd write the document to a standard Markdown file, ready to be processed
-    # further, for example with pandoc, or similar with mkdoc into for instance a [file .html]
+    # further, for example with pandoc, or similar with mndoc into for instance a [file .html]
     # file.
     tmdoc sample.tmd sample.md
+
+    # Document conversion can be done as well using pipe approach with mndoc like this:
+    tmdoc sample.tmd - | mndoc - sample.html --css tmdoc.css
 
     # Extract the Tcl code from the [file .tmd] file into a Tcl file, ready to
     # be checked and evaluated separately by a Tcl interpreter

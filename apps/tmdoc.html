@@ -100,7 +100,7 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.15.1 tmdoc &quot;Literate programming using Tcl&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.15.3 tmdoc &quot;Literate programming using Tcl&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
 <p>tmdoc - Evaluate embedded Tcl code in Markdown or LaTeX documents</p>
 </div>
@@ -156,9 +156,11 @@ expand the keys embedded within curly braces within the <i class="arg">inputfile
 <pre class="doctools_example">
     # Evaluate and add the Tcl output in code chunks in a Markdown [ file .tmd] file
     # andd write the document to a standard Markdown file, ready to be processed
-    # further, for example with pandoc, or similar with mkdoc into for instance a [file .html]
+    # further, for example with pandoc, or similar with mndoc into for instance a [file .html]
     # file.
     tmdoc sample.tmd sample.md
+    # Document conversion can be done as well using pipe approach with mndoc like this:
+    tmdoc sample.tmd - | mndoc - sample.html --css tmdoc.css
     # Extract the Tcl code from the [file .tmd] file into a Tcl file, ready to
     # be checked and evaluated separately by a Tcl interpreter
     tmdoc sample.tmd sample.tcl --mode weave 
