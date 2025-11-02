@@ -110,7 +110,8 @@ namespace eval tmdoc::r {
         }
         if  {[dict get $dict fig]} {
             puts $pipe "### SHOW OFF"
-            puts $pipe "[dict get $dict ext](file=\"[dict get $dict label].[dict get $dict ext]\",width=[dict get $dict fig.width],height=[dict get $dict fig.height]);"
+            set fname [file join [dict get $dict fig.path] [dict get $dict label].[dict get $dict ext]]
+            puts $pipe "[dict get $dict ext](file=\"$fname\",width=[dict get $dict fig.width],height=[dict get $dict fig.height]);"
             puts $pipe "### SHOW ON"            
             flush $pipe
             after [dict get $dict wait] [list append wait ""]
@@ -145,9 +146,12 @@ namespace eval tmdoc::r {
             set r R
         }
         set def [dict create pipe $r results show eval false label null fig false \
-                 fig.width 600 fig.height 600 \
+                 fig.width 600 fig.height 600 fig.path . \
                  include true terminal true wait 100]
         set dict [dict merge $def $cdict]
+        if {![file isdirectory [dict get $dict fig.path]]} {
+            file mkdir [dict get $dict fig.path]
+        }
         set codeLines [list]
         foreach line [split $cnt \n] {
             lappend codeLines $line

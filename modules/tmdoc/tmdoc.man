@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.15.3]
+[vset VERSION 0.16.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -199,7 +199,10 @@ argument vector given on the command line. It is used by the tmdoc command
 line application but could be used as well by other programming languages liem
 Python or R which can with an installed Tcl interpreter.
 
-[call [cmd ::tmdoc::tmdoc] [arg infile] [arg outfile] [opt "[option -mode] [arg weave|tangle] [option -abbrev] [arg abbrevfile]"]]
+[call [cmd  ::tmdoc::tmdoc]  [arg infile] [arg  outfile] \
+    [opt "[option  -mode] [arg weave|tangle] \
+        [option -abbrev] [arg abbrevfile] \
+        [option -toc] [arg false|true]"]]
 
 The command reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
 the resulting output to the [arg output] file if such is given or to stdout if [arg output] is missing,
@@ -210,6 +213,11 @@ code chunks is extracted but not evaluated.
 
 [para] If as [option -abbrev] [arg FILENAME] is given, the given [arg abbrevfile] argument
 should be a YAML file containing abbreviations which can be used within the given [arg infile].
+
+[para] If as [option -toc] [arg false|true] is given and set to [arg true],
+there will be a file [arg "file rootname  .toc"]  generated  which  contains a
+list with links to all section 2 and 3 headers which can be embedded using the
+[cmd include] function of tmdoc.
 
 [para] All arguments are paths to the files to read from or write to.
 
@@ -259,6 +267,7 @@ The package supports the following code chunk options.
 [def [const echo]] Should the Tcl code itself been show. Defaults to [const true].
 [def [const eval]] Should the code chunk be evaluated. Defaults to [const true].
 [def [const fig]] Should a custom figure function called with the chunk label as argument. Defaults to [const false].
+[def [const fig.width]] The figure width of the image, if not set, the figure width is choosen automatically.
 [def [const include]] Should a possible figure been included directly after the code chunk. Defaults to [const true].
 [def [const label]] A text label for the code chunk. Defaults to [const chunk-nn] where nn is a counter.
 [def [const results]] Should the results of code evaluation been show, either [const show], [const hide] or [const asis], the latter does include the ouptput not into a pre / verbatim environment. Defaults to [const show].
@@ -382,6 +391,7 @@ The following code chunk options are available.
 [def [const echo]] Should the code input be shown. Defaults to [const true].
 [def [const eval]] Should the code chunk be evaluated. Defaults to [const true].
 [def [const fig]] Should a custom figure function called with the chunk label as argument. Defaults to [const true].
+[def [const fig.width]] Suggested figure width. Defaults to 0 (automatic mode).
 [def [const include]] Should a possible figure been included directly after the code chunk. Defaults to [const true].
 [def [const label]] A text label for the code chunk. Defaults to [const chunk-nn] where nn is a counter.
 [def [const results]] Should the results of code evaluation been show, either [const show], [const hide] or [const asis], the latter does include the ouptput not into a pre / verbatim environment. Defaults to [const show].
@@ -422,7 +432,7 @@ The following code chunk options are available.
 [def [const echo]] Should the code input be shown. Defaults to [const true].
 [def [const eval]] Should the code chunk be evaluated. Defaults to [const true].
 [def [const fig]] Should a custom figure function called with the chunk label as argument. Defaults to [const true].
-[def [const imagepath]] the path where the images should be stored, the images are usually downloaded from the webservice locally, default: . (cuurent directory)
+[def [const fig.path]] the path where the images should be stored, the images are usually downloaded from the webservice locally, default: . (cuurent directory)
 [def [const include]] Should a possible figure be included directly after the code chunk. Defaults to [const true].
 [def [const label]] A text label for the code chunk. Defaults to [const chunk-nn] where nn is a counter.
 [def [const results]] Should the results of code evaluation been show, either [const show], [const hide] or [const asis], the latter does include the ouptput not into a pre / verbatim environment. Defaults to [const show].

@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ; fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.15.3]
+[vset VERSION 0.16.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
@@ -39,6 +39,15 @@ code chunks is extracted but not evaluated.
 [para] The application reads the [arg input] file, evaluates embedded code in code chunks and writes
 the resulting output to the [arg output] or to stdout if [arg output] is a single minus sign. The YAML formatted [arg abbrevfile] contains text abbreviations where the keys can be used to 
 expand the keys embedded within curly braces within the [arg inputfile] and places them in the [arg output] file.
+
+[call [cmd tmdoc] [arg input] [arg output] [opt "[option --toc] [arg false|true]"]]
+
+[para] The application reads the [arg input] file, evaluates embedded code in code chunks and writes
+the  resulting  output to the [arg  output] or to stdout if [arg  output] is a
+single  minus  sign. In the same  folder as the [arg input]  file is located a
+file with the same basename but with a toc extension is created which contains
+a Markdown  formatted  table of contents  ready to be included into the [arg output]
+document.
 
 [list_end]
 
@@ -109,7 +118,7 @@ advised of the possibility of such damage.
 not limited to, the implied warranties of merchantability, fitness for a particular
 purpose, and non-infringement.
 
-This software is provided on an "as is" basis, and the authors and distributors have no
+[para] This software is provided on an "as is" basis, and the authors and distributors have no
 obligation to provide maintenance, support, updates, enhancements, or modifications.
 
 [para] [emph {RESTRICTED RIGHTS}]: Use, duplication or disclosure by the government is

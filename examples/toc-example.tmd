@@ -1,0 +1,62 @@
+---
+title: This is a TOC example
+author: Detlef Groth, University of Potsdam, Germany
+date: 2025-11-02 10:23
+---
+
+----
+`tcl include toc-example.toc`
+----
+
+## Introduction
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+## Material and Method
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+### Data
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+### Statistical Analysis
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+## Results
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+## Discussion
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+`tcl include lipsum.txt`
+
+## References
+
+`tcl include lipsum.txt`
+
+## Acknowledgment
+
+`tcl include lipsum.txt`
+

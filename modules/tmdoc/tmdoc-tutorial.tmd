@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.15.3 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.16.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-11-01 07:35
+date: 2025-11-02 11:04
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -743,21 +743,21 @@ See here for some examples.
 A simple [Ditaa](https://ditaa.sourceforge.net/)  diagram can be created like this:
 
 ```
-'``{.kroki dia=ditaa imagepath=kroki ext=png}
+'``{.kroki dia=ditaa fig.path=kroki ext=png}
 A --> B
 '``
 ```
 
 Here the output:
 
-```{.kroki dia=ditaa imagepath=kroki ext=png}
+```{.kroki dia=ditaa fig.path=kroki ext=png}
 A --> B
 ```
 
 Here an example for a GraphViz Kroki diagram:
 
 ```
-'``{.kroki dia=graphviz imagepath=kroki ext=png}
+'``{.kroki dia=graphviz fig.path=kroki ext=png}
 digraph a {
    rankdir="LR"
    node[shape=box,style=filled]
@@ -768,7 +768,7 @@ digraph a {
 
 Here the output:
 
-```{.kroki dia=graphviz imagepath=kroki ext=png}
+```{.kroki dia=graphviz fig.path=kroki ext=png}
 digraph a {
     rankdir="LR"
     node[shape=box,style=filled]
@@ -779,7 +779,7 @@ digraph a {
 Using the option `echo=false` we can as well hide the code display:
 
 ```
-'``{.kroki dia=graphviz ext=png imagepath=kroki echo=false}
+'``{.kroki dia=graphviz ext=png fig.path=kroki echo=false}
 digraph a {
    rankdir="LR"
    node[shape=box,style=filled,fillcolor=cornsilk]
@@ -790,7 +790,7 @@ digraph a {
 
 Here the result:
 
-```{.kroki dia=graphviz ext=png imagepath=kroki echo=false}
+```{.kroki dia=graphviz ext=png fig.path=kroki echo=false}
 digraph a {
     rankdir="LR"
     node[shape=box,style=filled,fillcolor=cornsilk]
@@ -1469,7 +1469,7 @@ declared with _{.kroki}_ :
 - _echo_: Should the Input for the command line tool be shown, either true or false, default: true.
 - _ext_: The file extension, such as pdf, png or svg, default: png
 - _fig_: Does the code chunk  produces a graphic,  default: true
-- _imagepath_:  The folder where to store the images,  default . (dot, current
+- _fig.path_:  The folder where to store the images,  default . (dot, current
   working directory)
 - _label_: Chunk label, helps in debugging and file naming if graphics files are written. default: chunk-nn where nn is the current chunk.
 - _results_: Should the output of the Tcl code evaluation be shown, either "hide",

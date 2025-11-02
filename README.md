@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-01 07:37
+date: 2025-11-02 18:40
 ---
 
 ## Testing Tmdoc Installation
@@ -481,10 +481,15 @@ as example for such embedded documentation.
     ...
     - support for Typst - Tcl code chunks, Shell code chunks, CSV tables, ...
     - support for Yaml file based abbreviations as well for non Markdown files
-- 2025-10-26 0.15.1 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc-tutorial.pdf)
+- 2025-10-26 0.15.1 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc-tutorial.pdf)
     - fix for multiple users at the same machine run tmdoc
 - 2025-10-30 0.15.2 - renamed try interp to itry to avoid name clash with try command
-- 2025-11-01 0.15.3 - fix for triple backtick quotes within code chunks
+- 2025-11-01 0.15.3 - fix for triple backtick quotes within code chunks [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc-tutorial.pdf)
+- 2025-11-XX 0.16.0 
+    - adding fig.path option for R code chunks and renamed imagepath to fig.path option for kroki as well
+    - adding `--toc`, `-toc` option for Markdown files to create a Markdown file with a table of contents, ready for inclusion
+      into the output file
+    - image width defaults sets to 0, which means automatic selection by the browser or renderer
 
 ## TODO
 

@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <251020.1057>
+#  Last Modified : <251102.1008>
 #
 #  Description	 :
 #
@@ -53,7 +53,9 @@ quarkdown:
 	quarkdown compile quarkdown.qd
 	perl -pe 's/theme\/theme.css/tmdoc.css/' output/QuarkdownExample/index.html > temp.html
 	TCLLIBPATH=../modules tclsh ../../mndoc/apps/mndoc temp.html quarkdown.html
-
+toc-example:
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --toc true toc-example.tmd toc-example.md
+	TCLLIBPATH=../modules tclsh ../../mndoc/apps/mndoc toc-example.md toc-example.html
 ## run with make c.html, make cpp.html, make emf, make py
 %.html: %.tmd mini.css ## that does not work
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $<.tmd $<.md
