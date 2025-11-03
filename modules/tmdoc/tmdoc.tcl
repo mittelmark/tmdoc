@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251103.1255>
+#  Last Modified : <251103.1617>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -521,7 +521,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set lastbashinput ""
     set ginput ""
     array set mopt [list eval true echo true results show fig false include true label chunk-nn\
-                    ext png chunk.ext txt]
+                    ext png chunk.ext txt fig.width 0]
     ## r, python, octave, julia
     array set dopt [list eval true echo true results show fig false include true pipe python3 \
         fig.width 0 fig.height 0 fig.cap {} label chunk-nn ext png chunk.ext txt]
@@ -534,7 +534,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                      fig.path .]
     ## mtex
     array set tdopt [list echo true eval true results show fig true include true \
-        label chunk-nn fig.path mtexfig ext png]
+        label chunk-nn fig.path . fig.width 0 ext png]
     interpReset
     interp eval intp "set ::inmode $inmode"
     if [catch {open $filename r} infh] {

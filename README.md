@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-02 18:40
+date: 2025-11-03 16:48
 ---
 
 ## Testing Tmdoc Installation
@@ -355,11 +355,13 @@ print(x)
 ```
 
 
-The same can be done using the Octave or the Python programming languages. For more details look at the filter documentation pages:
+The same can be done using the Julia, Octave, or the Python programming languages. For more details look at the filter documentation pages:
 
+* [filter-julia](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-julia.html)
 * [filter-octave](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-octave.html)
 * [filter-python](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-python.html)
 * [filter-r](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-r.html)
+* [filter-tcl](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
 
 ## Document Processing
 
@@ -490,7 +492,9 @@ as example for such embedded documentation.
     - adding `--toc`, `-toc` option for Markdown files to create a Markdown file with a table of contents, ready for inclusion
       into the output file
     - image width defaults sets to 0, which means automatic selection by the browser or renderer
-
+    - initial [Julia](https://julialang.org) support
+    - fixing fig.width issues for LaTeX formulas
+    
 ## TODO
 
 - [x] kroki code chunk support  (done)
@@ -500,7 +504,7 @@ as example for such embedded documentation.
   generation  of, as well  use of  save.image  and load for  keeping  sessions
   between chunks (done)
 - [x] documentation for filter abbreviation, csv, kroki, alerts, shell code (done)
-- [ ] adding Julia language support using pipe
+- [x] adding Julia language support using pipe
 - [ ] adding tcrd filter for sheet music display and adding string instrument chords  
   
 ## See Also
