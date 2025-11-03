@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251102.1813>
+#  Last Modified : <251103.1255>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -46,6 +46,7 @@ exec tclsh "$0" "$@"
 #                  2025-11-XX version 0.16.0 fig.path for R code chunk option 
 #                                            support for TOC inclusion for Markdown files
 #                                            renamed imagepath to fig.path option for kroki as well
+#                                            initial Julia support
 package require Tcl 8.6-
 package require fileutil
 package require yaml
@@ -54,6 +55,7 @@ package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
 source [file join [file dirname [info script]] filter-octave.tcl]
+source [file join [file dirname [info script]] filter-julia.tcl]
 namespace eval ::tmdoc {}
 
 # clear all variables and defintions
@@ -520,7 +522,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set ginput ""
     array set mopt [list eval true echo true results show fig false include true label chunk-nn\
                     ext png chunk.ext txt]
-    ## r, python, octave
+    ## r, python, octave, julia
     array set dopt [list eval true echo true results show fig false include true pipe python3 \
         fig.width 0 fig.height 0 fig.cap {} label chunk-nn ext png chunk.ext txt]
     ## bash / shell
@@ -592,10 +594,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set line [regsub -all "\{$key\}" $line [dict get $abbrev $key]]
                 }
             }
-            if {$mode eq "text" && [regexp {^ {0,2}```\{\.?(r|oc|py).*\}} $line]} {
+            if {$mode eq "text" && [regexp {^ {0,2}```\{\.?(r|oc|py|ju?l).*\}} $line]} {
                 set line [regsub -nocase {\{\.?r(.*)\}} $line "{.pipe pipe=R\\1}"]
-                set line [regsub -nocase {\{\.?oc[a-z]*(.*)\}} $line "{.pipe pipe=octave\\1}"]                
-                set line [regsub -nocase {\{\.?py[a-z]*(.*)\}} $line "{.pipe pipe=python3\\1}"]                                
+                set line [regsub -nocase {\{\.?oc[a-z]*(.*)\}} $line "{.pipe pipe=octave\\1}"]
+                set line [regsub -nocase {\{\.?py[a-z]*(.*)\}} $line "{.pipe pipe=python3\\1}"]
+                set line [regsub -nocase {\{\.?ju?l[a-z]*(.*)\}} $line "{.pipe pipe=julia\\1}"]
             }
             if {$mode eq "text" && [regexp {\[@[@,\w]+\]} $line]} {
                 set line [regsub -all {\[@([@\w,]+)\]} $line "`tcl citer::cite \\1`"]
@@ -688,6 +691,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         set res [tmdoc::python::filter $ginput [dict create {*}[array get copt]]]
                     } elseif {$copt(pipe) eq "octave"} {
                         set res [tmdoc::octave::filter $ginput [dict create {*}[array get copt]]]
+                    } elseif {$copt(pipe) eq "julia"} {
+                        set res [tmdoc::julia::filter $ginput [dict create {*}[array get copt]]]
                     } else {
                         ## R
                         set res [tmdoc::r::filter $ginput [dict create {*}[array get copt]]]
@@ -961,6 +966,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 }
                 while {[regexp {(.*?)`oc ([^`]+)`(.*)$} $line -> pre t post]} {
                     set res [octave::filter $t [dict create pipe octave eval true echo false terminal false wait 800]]
+                    set res [lindex [split [lindex [lindex $res 0] 0] " "] end]
+                    set line [regsub -all {_}  "$pre$res$post" {\\_}]
+                }
+                while {[regexp {(.*?)`jl ([^`]+)`(.*)$} $line -> pre t post]} {
+                    set res [julia::filter $t [dict create pipe julia eval true echo false terminal false wait 300]]
                     set res [lindex [split [lindex [lindex $res 0] 0] " "] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }

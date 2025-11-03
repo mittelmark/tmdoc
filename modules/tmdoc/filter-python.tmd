@@ -1,7 +1,7 @@
 ---
 title: filter-python.tcl documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-10-06 04:51
+date: 2025-11-03 10:46
 pipe:
     pipe: python
     eval: 1    
@@ -17,11 +17,11 @@ using a pipe mechanism using the Tcl package tmdoc and showing or hiding the out
 
 ## Usage
 
-The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:
+The conversion of the Markdown documents via tmdoc/[mndoc](https://github.com/mittelmark/mndoc) should be done as follows:
 
 ```
 tmdoc --mode weave filename.tmd - | \
-	mkdoc - filename.html --css tmdoc.css
+	mndoc - filename.html --css tmdoc.css
 ```
 
 The file `filter-python.tcl` is not used directly but sourced automatically by the `tmdoc` application

@@ -10,10 +10,14 @@
     
     
 
+
 <style>
-@import url("data:text/css;base64,CmJvZHkgewogICAgcGFkZGluZzogMzBweDsKICAgIG1heC13aWR0aDogMTIwMHB4OwogICAgZm9udDogQWxlZ3JleWEsIEdlb3JnaWEsIHNlcmlmOwogICAgd2lkdGg6IDk4MHB4OyBtYXJnaW46IDAgYXV0bzsKfQoKaDEudGl0bGUsIHAuYXV0aG9yLCBwLmRhdGUsIGgyLmF1dGhvciwgaDIuZGF0ZSB7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7Cn0KYSB7IHRleHQtZGVjb3JhdGlvbjogbm9uZSA7IH0KcHJlIHsKICAgIHBhZGRpbmc6IDEwcHggOwogICAgYm9yZGVyLXRvcDogMnB4IHNvbGlkICNDQ0NDQ0M7CiAgICBib3JkZXItYm90dG9tOiAycHggc29saWQgI0NDQ0NDQzsgCiAgICBmb250OiBNb25hY28sIG1vbm9zcGFjZTsKfQpwcmU6aGFzKGNvZGUpIHsKICAgIGJhY2tncm91bmQ6ICNlZmVmZWY7Cn0KcHJlOmhhcyhjb2RlLnRjbGNvZGUpIHsKICAgIGJhY2tncm91bmQ6IGNvcm5zaWxrOyAgIAp9CgpwcmU6aGFzKGNvZGUudGNsb3V0KSB7ICAgIAogICAgYmFja2dyb3VuZDogI0NDRUVGRjsKfQpwcmU6aGFzKGNvZGUudGNsZXJyKSB7ICAgIAogICAgYmFja2dyb3VuZDogI0ZGQ0NDQzsKfQpwcmU6aGFzKGNvZGUuZXJyb3IpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjRkZDQ0NDOwp9Cgp0YWJsZSB7ICAgIAogIGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7CiAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkOwogIGJvcmRlci1zcGFjaW5nOiA1cHg7CiAgbWluLXdpZHRoOiA1MDBweDsKfQp0YWJsZSB0aGVhZCB0ciB0aCB7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZGU5ZDk7CiAgdGV4dC1hbGlnbjogbGVmdDsgCiAgcGFkZGluZzogNXB4OwogIGJvcmRlci10b3A6IDJweCBzb2xpZDsKICBib3JkZXItYm90dG9tOiAycHggc29saWQ7Cn0KdGFibGUgdHIgdGQgeyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjZmNmY2OwogIHRleHQtYWxpZ246IGxlZnQ7IAogIHBhZGRpbmc6IDVweDsKfQoKLyogQWxlcnRzOiAqLwoKLnNpZGUtd2FybmluZywgLnNpZGUtY2F1dGlvbiwgLnNpZGUtaW5mbywgLnNpZGUtcXVlc3Rpb24sIC5zaWRlLWVycm9yLCAuc2lkZS1ub3RlLCAuc2lkZS10aXAsIC5zaWRlLWltcG9ydGFudCB7CiAgY29sb3I6IHZhcigtLXVzZWQtY29sb3IpOwogIG1hcmdpbi1ib3R0b206IDMycHg7CiAgbWFyZ2luLXRvcDogMTZweDsKICBwYWRkaW5nOiAxNnB4OwogIHBhZGRpbmctbGVmdDogNDhweDsKICBib3JkZXItcmFkaXVzOiA1cHggMCAwIDVweDsKICBwb3NpdGlvbjogcmVsYXRpdmU7ICAKfQouc2lkZS1lcnJvciwgLnNpZGUtY2F1dGlvbiB7CiAgYm9yZGVyLWxlZnQ6IHNvbGlkIDdweCAjYWEzMzIyOwogIGJvcmRlci10b3A6IHNvbGlkIDFweCAjZmZmMGYwOyAKICBib3JkZXItcmlnaHQ6IHNvbGlkIDFweCAjZmZmMGYwOyAKICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggI2ZmZjBmMDsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZjBmMDsKICAKfQoKLnNpZGUtaW1wb3J0YW50IHsKICBib3JkZXItbGVmdDogc29saWQgN3B4ICNhYTMzYWE7CiAgYm9yZGVyLXRvcDogc29saWQgMXB4ICNmZmYwZmY7IAogIGJvcmRlci1yaWdodDogc29saWQgMXB4ICNmZmYwZmY7IAogIGJvcmRlci1ib3R0b206IHNvbGlkIDFweCAjZmZmMGZmOyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmMGZmOwp9Cgouc2lkZS1ub3RlLCAuc2lkZS10aXAgewogIGJvcmRlci1sZWZ0OiBzb2xpZCA3cHggIzIyMzM5OTsKICBib3JkZXItdG9wOiBzb2xpZCAxcHggI2YwZjdmZjsgCiAgYm9yZGVyLXJpZ2h0OiBzb2xpZCAxcHggI2YwZjdmZjsgCiAgYm9yZGVyLWJvdHRvbTogc29saWQgMXB4ICNmMGY3ZmY7IAogIGJhY2tncm91bmQtY29sb3I6ICNmMGY3ZmY7CiAgCn0KCi5zaWRlLWluZm8gewogIGJvcmRlci1sZWZ0OiBzb2xpZCA3cHggIzMzOTkyMjsKICBib3JkZXItdG9wOiBzb2xpZCAxcHggI2Y3ZmZmMDsgCiAgYm9yZGVyLXJpZ2h0OiBzb2xpZCAxcHggI2Y3ZmZmMDsgCiAgYm9yZGVyLWJvdHRvbTogc29saWQgMXB4ICNmN2ZmZjA7IAogIGJhY2tncm91bmQtY29sb3I6ICNmN2ZmZjA7CiAgCn0KLnNpZGUtcXVlc3Rpb24gewogIGJvcmRlci1sZWZ0OiBzb2xpZCA3cHggIzk5OTkyMjsKICBib3JkZXItdG9wOiBzb2xpZCAxcHggI2ZmZmZmMDsgCiAgYm9yZGVyLXJpZ2h0OiBzb2xpZCAxcHggI2ZmZmZmMDsgCiAgYm9yZGVyLWJvdHRvbTogc29saWQgMXB4ICNmZmZmZjA7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZmZmZjA7Cn0KLnNpZGUtd2FybmluZyB7CiAgYm9yZGVyLWxlZnQ6IHNvbGlkIDdweCAjZmY5OTMzOwogIGJvcmRlci10b3A6IHNvbGlkIDFweCAjZmZmN2YwOyAKICBib3JkZXItcmlnaHQ6IHNvbGlkIDFweCAjZmZmN2YwOyAKICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggI2ZmZjdmMDsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZjdmMDsKfQoKLnNpZGUtaW5mbzo6YmVmb3JlLCAuc2lkZS13YXJuaW5nOjpiZWZvcmUsIC5zaWRlLWNhdXRpb246OmJlZm9yZSwgLnNpZGUtcXVlc3Rpb246OmJlZm9yZSwgLnNpZGUtZXJyb3I6OmJlZm9yZSwgLnNpZGUtbm90ZTo6YmVmb3JlLCAuc2lkZS10aXA6OmJlZm9yZSwgLnNpZGUtaW1wb3J0YW50OjpiZWZvcmUgewogIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgYm9yZGVyLXJhZGl1czogNTAlOwogIGRpc3BsYXk6IGZsZXg7CiAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICBmb250LXNpemU6IDE2cHg7CiAgZm9udC13ZWlnaHQ6IDcwMDsKICBoZWlnaHQ6IDI0cHg7CiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgbGVmdDogMTJweDsKICBsaW5lLWhlaWdodDogMTsKICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgdG9wOiAxNXB4OwogIHdpZHRoOiAyNHB4Owp9Cgouc2lkZS1ub3RlOjpiZWZvcmUsIC5zaWRlLXRpcDo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjIzMzk5OwogIGNvbG9yOiAjZmZmOwogIGNvbnRlbnQ6ICJOIjsKICAKfQoKLnNpZGUtaW1wb3J0YW50OjpiZWZvcmUgewogIGJhY2tncm91bmQtY29sb3I6ICM5OTMzOTk7CiAgY29sb3I6ICNmZmY7CiAgY29udGVudDogIiEiOwp9Cgouc2lkZS10aXA6OmJlZm9yZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogIzIyMzM5OTsgCiAgY29udGVudDogIlwyNjFCIjsKICBmb250LXNpemU6IDExMCU7CiAgCn0KCi5zaWRlLWluZm86OmJlZm9yZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogIzMzOTkyMjsKICBjb2xvcjogI2ZmZjsKICBjb250ZW50OiAiaSI7CiAgCn0KLnNpZGUtZXJyb3I6OmJlZm9yZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZjBmMDsKICBjb2xvcjogI2ZmZjsKICBjb250ZW50OiAiXDI2RDQiOwogIGZvbnQtc2l6ZTogMTIwJTsKfQouc2lkZS1jYXV0aW9uOjpiZWZvcmUgewogIGJhY2tncm91bmQtY29sb3I6ICNhYTMzMjI7CiAgY29sb3I6ICNmZmY7CiAgY29udGVudDogIiEiOwp9Cgouc2lkZS1xdWVzdGlvbjo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjOTk5OTIyOwogIGNvbG9yOiAjZmZmOwogIGNvbnRlbnQ6ICI/IjsKICAKfQoKLnNpZGUtd2FybmluZzo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZGQ2NjIyOwogIGNvbG9yOiAjZmZmOwogIGNvbnRlbnQ6ICIhIjsKICAKfQovKiBmaXggZm9yIEFzY2lpRG9jIHRhYmxlcyB3aXRoIHBhcmFncmFwaHMgKi8KcC50YWJsZWJsb2NrIHsgcGFkZGluZzogMHB4OyBtYXJnaW46IDBweDt9Cg==");
+@import url("data:text/css;base64,QGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuYnVubnkubmV0L2Nzcz9mYW1pbHk9QW5kaWthJmRpc3BsYXk9c3dhcCcpOyAKQGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuYnVubnkubmV0L2Nzcz9mYW1pbHk9VWJ1bnR1K01vbm8mZGlzcGxheT1zd2FwJyk7IC8qICcgKi8KCmJvZHkgewogIHBhZGRpbmc6IDMwcHg7CiAgbWF4LXdpZHRoOiAxMDAwcHg7CiAgZm9udC1mYW1pbHk6IEFuZGlrYSwgc2Fucy1zZXJpZjsKICBtYXJnaW46IDAgYXV0bzsKfQoKaDEudGl0bGUsIHAuYXV0aG9yLCBwLmRhdGUsIGgyLmF1dGhvciwgaDIuZGF0ZSB7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7Cn0KYSB7IHRleHQtZGVjb3JhdGlvbjogbm9uZSA7IH0KcHJlIHsKICAgIHBhZGRpbmc6IDEwcHggOwogICAgYm9yZGVyLXRvcDogMnB4IHNvbGlkICNDQ0NDQ0M7CiAgICBib3JkZXItYm90dG9tOiAycHggc29saWQgI0NDQ0NDQzsgCiAgICBmb250LWZhbWlseTogIlVidW50dSBNb25vIiwgbW9ub3NwYWNlOwp9CnByZTpoYXMoY29kZSkgewogICAgYmFja2dyb3VuZDogI2VmZWZlZjsKfQpwcmU6aGFzKGNvZGUudGNsY29kZSkgewogICAgYmFja2dyb3VuZDogY29ybnNpbGs7ICAgCn0KCnByZTpoYXMoY29kZS50Y2xvdXQpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjQ0NFRUZGOwp9CnByZTpoYXMoY29kZS50Y2xlcnIpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjRkZDQ0NDOwp9CnByZTpoYXMoY29kZS5lcnJvcikgeyAgICAKICAgIGJhY2tncm91bmQ6ICNGRkNDQ0M7Cn0KCnRhYmxlIHsgICAgCiAgYm9yZGVyLWNvbGxhcHNlOiBjb2xsYXBzZTsKICBib3JkZXItYm90dG9tOiAycHggc29saWQ7CiAgYm9yZGVyLXNwYWNpbmc6IDVweDsKICBtaW4td2lkdGg6IDUwMHB4Owp9CnRhYmxlIHRoZWFkIHRyIHRoIHsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZkZTlkOTsKICB0ZXh0LWFsaWduOiBsZWZ0OyAKICBwYWRkaW5nOiA1cHg7CiAgYm9yZGVyLXRvcDogMnB4IHNvbGlkOwogIGJvcmRlci1ib3R0b206IDJweCBzb2xpZDsKfQp0YWJsZSB0ciB0ZCB7IAogIGJhY2tncm91bmQtY29sb3I6ICNmNmY2ZjY7CiAgdGV4dC1hbGlnbjogbGVmdDsgCiAgcGFkZGluZzogNXB4Owp9CgovKiBBbGVydHM6ICovCgouc2lkZS13YXJuaW5nLCAuc2lkZS1jYXV0aW9uLCAuc2lkZS1pbmZvLCAuc2lkZS1xdWVzdGlvbiwgLnNpZGUtZXJyb3IsIC5zaWRlLW5vdGUsIC5zaWRlLXRpcCwgLnNpZGUtaW1wb3J0YW50IHsKICBjb2xvcjogdmFyKC0tdXNlZC1jb2xvcik7CiAgbWFyZ2luLWJvdHRvbTogMzJweDsKICBtYXJnaW4tdG9wOiAxNnB4OwogIHBhZGRpbmc6IDE2cHg7CiAgcGFkZGluZy1sZWZ0OiA0OHB4OwogIGJvcmRlci1yYWRpdXM6IDVweCAwIDAgNXB4OwogIHBvc2l0aW9uOiByZWxhdGl2ZTsgIAp9Ci5zaWRlLWVycm9yLCAuc2lkZS1jYXV0aW9uIHsKICBib3JkZXItbGVmdDogc29saWQgN3B4ICNhYTMzMjI7CiAgYm9yZGVyLXRvcDogc29saWQgMXB4ICNmZmYwZjA7IAogIGJvcmRlci1yaWdodDogc29saWQgMXB4ICNmZmYwZjA7IAogIGJvcmRlci1ib3R0b206IHNvbGlkIDFweCAjZmZmMGYwOyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmMGYwOwogIAp9Cgouc2lkZS1pbXBvcnRhbnQgewogIGJvcmRlci1sZWZ0OiBzb2xpZCA3cHggI2FhMzNhYTsKICBib3JkZXItdG9wOiBzb2xpZCAxcHggI2ZmZjBmZjsgCiAgYm9yZGVyLXJpZ2h0OiBzb2xpZCAxcHggI2ZmZjBmZjsgCiAgYm9yZGVyLWJvdHRvbTogc29saWQgMXB4ICNmZmYwZmY7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZmYwZmY7Cn0KCi5zaWRlLW5vdGUsIC5zaWRlLXRpcCB7CiAgYm9yZGVyLWxlZnQ6IHNvbGlkIDdweCAjMjIzMzk5OwogIGJvcmRlci10b3A6IHNvbGlkIDFweCAjZjBmN2ZmOyAKICBib3JkZXItcmlnaHQ6IHNvbGlkIDFweCAjZjBmN2ZmOyAKICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggI2YwZjdmZjsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2YwZjdmZjsKICAKfQoKLnNpZGUtaW5mbyB7CiAgYm9yZGVyLWxlZnQ6IHNvbGlkIDdweCAjMzM5OTIyOwogIGJvcmRlci10b3A6IHNvbGlkIDFweCAjZjdmZmYwOyAKICBib3JkZXItcmlnaHQ6IHNvbGlkIDFweCAjZjdmZmYwOyAKICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggI2Y3ZmZmMDsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2Y3ZmZmMDsKICAKfQouc2lkZS1xdWVzdGlvbiB7CiAgYm9yZGVyLWxlZnQ6IHNvbGlkIDdweCAjOTk5OTIyOwogIGJvcmRlci10b3A6IHNvbGlkIDFweCAjZmZmZmYwOyAKICBib3JkZXItcmlnaHQ6IHNvbGlkIDFweCAjZmZmZmYwOyAKICBib3JkZXItYm90dG9tOiBzb2xpZCAxcHggI2ZmZmZmMDsgCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZmZmMDsKfQouc2lkZS13YXJuaW5nIHsKICBib3JkZXItbGVmdDogc29saWQgN3B4ICNmZjk5MzM7CiAgYm9yZGVyLXRvcDogc29saWQgMXB4ICNmZmY3ZjA7IAogIGJvcmRlci1yaWdodDogc29saWQgMXB4ICNmZmY3ZjA7IAogIGJvcmRlci1ib3R0b206IHNvbGlkIDFweCAjZmZmN2YwOyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmN2YwOwp9Cgouc2lkZS1pbmZvOjpiZWZvcmUsIC5zaWRlLXdhcm5pbmc6OmJlZm9yZSwgLnNpZGUtY2F1dGlvbjo6YmVmb3JlLCAuc2lkZS1xdWVzdGlvbjo6YmVmb3JlLCAuc2lkZS1lcnJvcjo6YmVmb3JlLCAuc2lkZS1ub3RlOjpiZWZvcmUsIC5zaWRlLXRpcDo6YmVmb3JlLCAuc2lkZS1pbXBvcnRhbnQ6OmJlZm9yZSB7CiAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICBib3JkZXItcmFkaXVzOiA1MCU7CiAgZGlzcGxheTogZmxleDsKICBmb250LWZhbWlseTogIlVidW50dSBNb25vIiwgbW9ub3NwYWNlOwogIGZvbnQtc2l6ZTogMTZweDsKICBmb250LXdlaWdodDogNzAwOwogIGhlaWdodDogMjRweDsKICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsKICBsZWZ0OiAxMnB4OwogIGxpbmUtaGVpZ2h0OiAxOwogIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICB0b3A6IDE1cHg7CiAgd2lkdGg6IDI0cHg7Cn0KCi5zaWRlLW5vdGU6OmJlZm9yZSwgLnNpZGUtdGlwOjpiZWZvcmUgewogIGJhY2tncm91bmQtY29sb3I6ICMyMjMzOTk7CiAgY29sb3I6ICNmZmY7CiAgY29udGVudDogIk4iOwogIAp9Cgouc2lkZS1pbXBvcnRhbnQ6OmJlZm9yZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogIzk5MzM5OTsKICBjb2xvcjogI2ZmZjsKICBjb250ZW50OiAiISI7Cn0KCi5zaWRlLXRpcDo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjIzMzk5OyAKICBjb250ZW50OiAiXDI2MUIiOwogIGZvbnQtc2l6ZTogMTEwJTsKICAKfQoKLnNpZGUtaW5mbzo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjMzM5OTIyOwogIGNvbG9yOiAjZmZmOwogIGNvbnRlbnQ6ICJpIjsKICAKfQouc2lkZS1lcnJvcjo6YmVmb3JlIHsKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmMGYwOwogIGNvbG9yOiAjZmZmOwogIGNvbnRlbnQ6ICJcMjZENCI7CiAgZm9udC1zaXplOiAxMjAlOwp9Ci5zaWRlLWNhdXRpb246OmJlZm9yZSB7CiAgYmFja2dyb3VuZC1jb2xvcjogI2FhMzMyMjsKICBjb2xvcjogI2ZmZjsKICBjb250ZW50OiAiISI7Cn0KCi5zaWRlLXF1ZXN0aW9uOjpiZWZvcmUgewogIGJhY2tncm91bmQtY29sb3I6ICM5OTk5MjI7CiAgY29sb3I6ICNmZmY7CiAgY29udGVudDogIj8iOwogIAp9Cgouc2lkZS13YXJuaW5nOjpiZWZvcmUgewogIGJhY2tncm91bmQtY29sb3I6ICNkZDY2MjI7CiAgY29sb3I6ICNmZmY7CiAgY29udGVudDogIiEiOwogIAp9Ci8qIGZpeCBmb3IgQXNjaWlEb2MgdGFibGVzIHdpdGggcGFyYWdyYXBocyAqLwpwLnRhYmxlYmxvY2sgeyBwYWRkaW5nOiAwcHg7IG1hcmdpbjogMHB4O30K");
 </style>
 
+
+<style>
+</style>
     
 </head>
 <body>
@@ -21,14 +25,16 @@
 
 
 
+    <div class="document-header">
 <h1 class="title">filter-r.tcl documentation</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-10-06</h2>
+<h2 class="date">2025-11-03</h2>
+    </div>
 
 <hr />
 
 <p><center>
-<a href="filter-octave.html">filter-octave</a>      -  <a href="filter-python.html">filter-python</a>-   <a href="filter-r.html">filter-r</a>     -
+<a href="filter-julia.html">filter-julia</a> - <a href="filter-octave.html">filter-octave</a>      -  <a href="filter-python.html">filter-python</a>-   <a href="filter-r.html">filter-r</a>     -
 <a href="filter-tcl.html">filter-tcl</a> <br/>
 <a href="filter-abbrev.html">filter-abbrev</a> - <a href="filter-mtex.html">filter-mtex</a> <br/>
 <a href="tmdoc-tutorial.html">tmdoc-tutorial</a>
@@ -43,10 +49,10 @@ using a pipe mechanism using the Tcl package tmdoc and showing or hiding the out
 
 <h2>Usage</h2>
 
-<p>The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:</p>
+<p>The conversion of the Markdown documents via tmdoc/<a href="https://github.com/mittelmark/mndoc">mndoc</a> should be done as follows:</p>
 
 <pre class='code'><code>tmdoc --mode weave filename.tmd - | \
-    mkdoc - filename.html --css tmdoc.css</code></pre>
+    mndoc - filename.html --css tmdoc.css</code></pre>
 
 <p>The file <code>filter-r.tcl</code> is not used directly but sourced automatically by the <code>tmdoc</code> application
 which contains the Tcl file.
@@ -95,12 +101,12 @@ dev.off()
 
 <p>And here the ouput.</p>
 
-<pre class='code'><code>data(iris)
+<pre class='code'><code class='r'>data(iris)
 png(&quot;images/testr.png&quot;)
 boxplot(iris$Sepal.Length ~ iris$Species,col=2:4)
 dev.off()</code></pre>
 
-<pre class='code'><code>&gt; data(iris)
+<pre class='code'><code class='r'>&gt; data(iris)
 &gt; png(&quot;images/testr.png&quot;)
 &gt; boxplot(iris$Sepal.Length ~ iris$Species,col=2:4)
 &gt; dev.off()
@@ -166,7 +172,7 @@ or matrices into Markdown tables. Here an example for its usage:</p>
 
 <p>You can as well hide the rownames or give a caption like this.</p>
 
-<pre class='code'><code>df2md(head(mtcars[, 1:4],n=4),rownames=FALSE,caption=&quot;**Table 1:** mtcars data&quot;)</code></pre>
+<pre class='code'><code class='r'>df2md(head(mtcars[, 1:4],n=4),rownames=FALSE,caption=&quot;**Table 1:** mtcars data&quot;)</code></pre>
 
 <table class="table">
 <thead>
@@ -209,7 +215,7 @@ or matrices into Markdown tables. Here an example for its usage:</p>
 <p>For matrices or data frames without row names or column names just the line
 and columnnumbers will be displayed:</p>
 
-<pre class='code'><code>M=matrix(round(rnorm(100,mean=10),2),ncol=5)
+<pre class='code'><code class='r'>M=matrix(round(rnorm(100,mean=10),2),ncol=5)
 df2md(head(M,n=6),caption=&quot;**Table 2:** Matrix example&quot;)</code></pre>
 
 <table class="table">
@@ -226,51 +232,51 @@ df2md(head(M,n=6),caption=&quot;**Table 2:** Matrix example&quot;)</code></pre>
 <tbody>
   <tr>
     <td><strong>1</strong></td>
-    <td>10.23</td>
-    <td>10.88</td>
-    <td>8.87</td>
-    <td>9.84</td>
-    <td>10.87</td>
+    <td>9.4</td>
+    <td>9.86</td>
+    <td>8.44</td>
+    <td>10.74</td>
+    <td>9.97</td>
   </tr>
   <tr>
     <td><strong>2</strong></td>
-    <td>9.96</td>
-    <td>9.17</td>
-    <td>10.78</td>
-    <td>10.71</td>
-    <td>9.02</td>
+    <td>10.4</td>
+    <td>10.64</td>
+    <td>10.76</td>
+    <td>9.09</td>
+    <td>9.24</td>
   </tr>
   <tr>
     <td><strong>3</strong></td>
-    <td>8.47</td>
-    <td>9.73</td>
-    <td>9.97</td>
-    <td>11.93</td>
-    <td>7.62</td>
+    <td>10.65</td>
+    <td>11.43</td>
+    <td>8.69</td>
+    <td>10.84</td>
+    <td>11.1</td>
   </tr>
   <tr>
     <td><strong>4</strong></td>
-    <td>10.52</td>
-    <td>9.48</td>
-    <td>9.32</td>
-    <td>11.6</td>
-    <td>9.69</td>
+    <td>8.56</td>
+    <td>10.48</td>
+    <td>10.35</td>
+    <td>8.18</td>
+    <td>9.9</td>
   </tr>
   <tr>
     <td><strong>5</strong></td>
-    <td>10.9</td>
-    <td>9.6</td>
-    <td>10.37</td>
-    <td>8.82</td>
-    <td>9.58</td>
+    <td>10.67</td>
+    <td>9.59</td>
+    <td>9.76</td>
+    <td>11.8</td>
+    <td>9.53</td>
   </tr>
   <tr>
     <td><strong>6</strong></td>
-    <td>10.38</td>
-    <td>9.56</td>
-    <td>11.84</td>
-    <td>10.77</td>
-    <td>10.18</td>
+    <td>10.69</td>
+    <td>8.51</td>
+    <td>10.24</td>
+    <td>9.5</td>
+    <td>9.72</td>
   </tr>
 </tbody>
 </table>
@@ -285,13 +291,13 @@ get the number of cars in the dataset. Using code like this:</p>
 
 <p>Let's now simulate an R error:</p>
 
-<pre class='code'><code>x=3+2
+<pre class='code'><code class='r'>x=3+2
 print(ls())
 x
 print(y)
 2+3</code></pre>
 
-<pre class='code'><code>&gt; x=3+2
+<pre class='code'><code class='r'>&gt; x=3+2
 &gt; print(ls())
 [1] &quot;df2md&quot;  &quot;iris&quot;   &quot;M&quot;      &quot;mtcars&quot; &quot;x&quot;     
 &gt; x

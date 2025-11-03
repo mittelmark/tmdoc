@@ -12,6 +12,8 @@ namespace eval tmdoc::octave {
     set pipe ""
     set res ""
     variable dict
+    variable done
+    set done [list]
     # Open a pipe to Python interpreter for reading and writing
     proc getCode {filename} {
         set fileId [open $filename r]
@@ -24,9 +26,12 @@ namespace eval tmdoc::octave {
     }
     proc piperead {pipe} {
         variable res
+        variable done
         if {![eof $pipe]} {
             set outline [gets $pipe]
-            if {$outline ne "" && ![regexp {Gtk-WARNING} $outline] && ![regexp octave:1 $outline] && ![regexp {ans = 0} $outline]}  {
+            if {$outline eq "### DONE"} {
+                lappend done ""
+            } elseif {$outline ne "" && ![regexp {Gtk-WARNING} $outline] && ![regexp octave:1 $outline] && ![regexp {ans = 0} $outline]}  {
                 append res "$outline\n"
                 puts $pipe "fflush(stdout)"
             }
@@ -70,9 +75,13 @@ namespace eval tmdoc::octave {
             }
             puts $pipe "$line"
             flush $pipe
-            after 100 [list append wait ""]
+            after [dict get $dict wait] [list append wait ""]
             vwait wait
         }
+        #puts $pipe [join $codeLines \n]\n
+        #puts $pipe "disp('### DONE');"
+        #flush $pipe
+        #vwait ::tmdoc::octave::done
         ## skip last empty line > \n
         if {[dict get $dict terminal]} {
             set res "[string range $res 0 end-4]\n"

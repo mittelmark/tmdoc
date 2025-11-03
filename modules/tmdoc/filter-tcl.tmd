@@ -1,7 +1,7 @@
 ---
 title: filter-tcl documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-10-06 04:47
+date: 2025-11-03 10:48
 ---
 
 `tcl include header.md`
@@ -14,11 +14,11 @@ hiding the output of these code chunks.
 
 ## Usage
 
-The conversion of the Markdown documents via tmdoc/mkdoc should be done as follows:
+The conversion of the Markdown documents via tmdoc/[mndoc](https://github.com/mittelmark/mndoc) should be done as follows:
 
 ```
 tmdoc --mode weave filename.tmd - | \
-	mkdoc - filename.html --css tmdoc.css
+	mndoc - filename.html --css tmdoc.css
 ```
 
 If code blocks with the `.tcl` or `tcl` are found, the contents in the code block is processed via
