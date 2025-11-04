@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-03 18:00
+date: 2025-11-04 13:17
 ---
 
 ## Testing Tmdoc Installation
@@ -495,7 +495,9 @@ as example for such embedded documentation.
     - initial [Julia](https://julialang.org) support
     - fixing fig.width issues for LaTeX formulas
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc-tutorial.pdf)
-
+- 2025-11-XX 0.16.1
+    - removing curly braces for code output to ensure pandoc compatibility
+    
 ## TODO
 
 - [x] kroki code chunk support  (done)

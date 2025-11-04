@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251103.1617>
+#  Last Modified : <251104.1321>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -43,14 +43,15 @@ exec tclsh "$0" "$@"
 #                  2025-10-26 version 0.15.1 fix for different user run tmdoc on the same machine
 #                  2025-10-29 version 0.15.2 fix for try as name of slave interp, naming it to itry to avoid clash with try command
 #                  2025-11-01 version 0.15.3 fix for triple quotes within code chunks
-#                  2025-11-XX version 0.16.0 fig.path for R code chunk option 
+#                  2025-11-03 version 0.16.0 fig.path for R code chunk option 
 #                                            support for TOC inclusion for Markdown files
 #                                            renamed imagepath to fig.path option for kroki as well
 #                                            initial Julia support
+#                  2025-11-XX version 0.16.1 removed curly braces for fenced code blocks to give pandoc compatibility
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.16.0
+package provide tmdoc::tmdoc 0.16.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -373,7 +374,7 @@ proc tmdoc::block {txt inmode {style ""}} {
     set res ""
     set mstyle $style
     if {$style ne ""} {
-        set mstyle "{${style}}"
+        set mstyle "${style}"
     }
     if {$inmode eq "md"} {
         set mstyle [regsub 3 $mstyle ""]
@@ -831,7 +832,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                         } elseif {$copt(results) eq "show"} {
                             if {$inmode eq "md"} {
                                 if {$res ne "" || $pres ne ""} {
-                                    puts $out "```{tclout}"
+                                    puts $out "```tclout"
                                 }
                                 if {$pres ne ""} {
                                     puts -nonewline $out "$pres"
