@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-04 13:17
+date: 2025-11-05 00:10
 ---
 
 ## Testing Tmdoc Installation
@@ -497,6 +497,8 @@ as example for such embedded documentation.
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc-tutorial.pdf)
 - 2025-11-XX 0.16.1
     - removing curly braces for code output to ensure pandoc compatibility
+    - fix for single quotes for code chunk arguments
+    - fix for width=0 as default for R plot 
     
 ## TODO
 

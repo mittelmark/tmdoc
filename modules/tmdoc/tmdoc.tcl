@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251104.1321>
+#  Last Modified : <251105.0010>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -48,6 +48,8 @@ exec tclsh "$0" "$@"
 #                                            renamed imagepath to fig.path option for kroki as well
 #                                            initial Julia support
 #                  2025-11-XX version 0.16.1 removed curly braces for fenced code blocks to give pandoc compatibility
+#                                            fix for single quotes for code chunk arguments
+#                                            fix for width=0 as default for R plot 
 package require Tcl 8.6-
 package require fileutil
 package require yaml
@@ -1013,7 +1015,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
 }
 proc ::tmdoc::GetOpts {} {
     uplevel 1 {
-        while {[regexp -indices {"(.+?)"} $opts m1 m2]} {
+        while {[regexp -indices {["'](.+?)['"]} $opts m1 m2]} {
             set before [string range $opts 0 [expr {[lindex $m1 0]-1}]] 
             set match [regsub -all { } [string range $opts [lindex $m2 0] [lindex $m2 1]] "%20"]
             set match [regsub -all "=" $match "%3d"]
@@ -1026,7 +1028,7 @@ proc ::tmdoc::GetOpts {} {
             set opt [string trim [regsub -nocase false [regsub -nocase true $opt true] false]]
             set o [split $opt =] 
             set key [lindex $o 0]
-            set value [regsub {"(.+)"} [lindex $o 1] "\\1"]
+            set value [regsub {["'](.+)['"]} [lindex $o 1] "\\1"]
             set value [regsub -all {%20} $value " "]
             set value [regsub -all {%3d} $value "="]
             set copt($key) $value

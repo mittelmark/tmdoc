@@ -110,6 +110,16 @@ namespace eval tmdoc::r {
         }
         if  {[dict get $dict fig]} {
             puts $pipe "### SHOW OFF"
+            if {[dict get $dict fig.width] == 0} {
+                if {[dict get $dict ext] in [list png svg]} {
+                    dict set dict fig.width 600
+                } else {
+                    dict set dict fig.width 600
+                }
+            }
+            if {[dict get $dict fig.height] == 0} {
+                dict set dict fig.height [dict get $dict fig.width]
+            }
             set fname [file join [dict get $dict fig.path] [dict get $dict label].[dict get $dict ext]]
             puts $pipe "[dict get $dict ext](file=\"$fname\",width=[dict get $dict fig.width],height=[dict get $dict fig.height]);"
             puts $pipe "### SHOW ON"            
