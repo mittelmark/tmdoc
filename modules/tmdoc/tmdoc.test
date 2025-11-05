@@ -182,6 +182,24 @@ author: Max Musterman
 
 Max Musterman}
 
+tcltest::test tmdoc-test-1.11 {
+    Checking space around = sign in the code chunk options
+} -body {
+    string trim [tmdoc::tmeval "```{.tcl eval = TRUE}
+set x 1
+set x
+```
+"]
+} -result {```tclcode
+set x 1
+set x
+```
+
+```tclout
+==> 1
+```}
+
+
 tcltest::test tmdoc-python-1.1 {
     Checking Python pipe.
 } -body {

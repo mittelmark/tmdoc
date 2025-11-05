@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251105.0010>
+#  Last Modified : <251105.1540>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -53,7 +53,7 @@ exec tclsh "$0" "$@"
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.16.1
+package provide tmdoc::tmdoc 0.16.2
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -558,11 +558,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         }
         while {[gets $infh line] >= 0} {
             if {$arg(-toc)} {
-                if {[regexp {^## +(.+)} $line -> title]} {
+                if {$mode eq "text" && !$yamlflag && [regexp {^## +(.+)} $line -> title]} {
                     set anchor [string trim [string tolower [regsub -all {[^A-za-z]} $title ""]]]
                     puts $out "<a name=\"$anchor\"> </a>"
                     append toc "* \[$title\](#$anchor)\n"
-                } elseif {[regexp {^### +(.+)} $line -> title]} {
+                } elseif {$mode eq "text" && !$yamlflag && [regexp {^### +(.+)} $line -> title]} {
                     set anchor [string trim [string tolower [regsub -all {[^A-za-z]} $title ""]]]
                     puts $out "<a name=\"$anchor\"> </a>"
                     append toc "    * \[$title\](#$anchor)\n"
@@ -1022,6 +1022,7 @@ proc ::tmdoc::GetOpts {} {
             set after [string range $opts [expr {[lindex $m1 1]+1}] end] 
             set opts ${before}${match}${after}
         }
+        set opts [regsub -all { *= *} $opts =]
         set opts [regsub -all {,+} [regsub -all { +} $opts ,] ,]
         set opts [regsub {^,} $opts ""]
         foreach opt [split $opts ","] {
