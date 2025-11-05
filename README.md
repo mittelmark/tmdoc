@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-05 07:23
+date: 2025-11-05 08:05
 ---
 
 ## Testing Tmdoc Installation
@@ -499,7 +499,8 @@ as example for such embedded documentation.
     - removing curly braces for code output to ensure pandoc compatibility
     - fix for single quotes for code chunk arguments
     - fix for width=0 as default for R plot 
-    
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc-tutorial.pdf)    
+
 ## TODO
 
 - [x] kroki code chunk support  (done)
