@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.16.1 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-11-04 13:15
+date: 2025-11-05 22:08
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1075,13 +1075,27 @@ col1,col2,col3,col4
 9,10,11,12
 ```
 
-As with other code chunks you can as well hide the input by using `echo=false`. Here data from an other table:
+As  with  other  code  chunks  you  can  as  well  hide  the  input  by  using
+`echo=false`.  Further  column with no header could be  introduced by using an
+empty space. Also Markdown styling is supported. Here data from an other table:
+
+```
+'```{.csv results=asis echo=false}
+' ,col1,col2,col3,col4
+'__R1__,11,12,13,14
+'__R2__,15,16,17,18
+'__R3__,19,20,21,22
+'__R4__,23,24,25,26
+'```
+```
+And here the output:
 
 ```{.csv results=asis echo=false}
-col1,col2,col3,col4
-11,12,13,14
-15,16,17,18
-19,20,21,22
+ ,col1,col2,col3,col4
+__R1__,11,12,13,14
+__R2__,15,16,17,18
+__R3__,19,20,21,22
+__R4__,23,24,25,26
 ```
 
 ## <a name="reports">Statistical Reports with R, Python or  Octave</a>
