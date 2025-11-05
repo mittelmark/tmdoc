@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-05 07:17
+date: 2025-11-05 07:23
 ---
 
 ## Testing Tmdoc Installation
@@ -510,6 +510,9 @@ as example for such embedded documentation.
   between chunks (done)
 - [x] documentation for filter abbreviation, csv, kroki, alerts, shell code (done)
 - [x] adding Julia language support using pipe
+- [ ] true HTML comments with text removal
+- [ ] Support for typst comments // line and /* multiline */ comments
+- [ ] more citation examples
 - [ ] adding tcrd filter for sheet music display and adding string instrument chords  
   
 ## See Also
