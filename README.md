@@ -26,7 +26,7 @@ technique  as well known as  literate  programming.
 
 ## Main Features
 
-- __single file approach:__ the required small (approx. 230kb) single file (_tmdoc-0.14.2.bin_) just requires an existing Tcl/Tk installation
+- __single file approach:__ the required small (approx. 230kb) single file (_tmdoc-0.1X.X.bin_) just requires an existing Tcl/Tk installation
 - __Abbreviations:__ expand YAML defined abbreviations - [Abbreviation Filter](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-abbrev.html)
 - __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925) - [Alert Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#alerts)
 - __Citations:__ reference management using BibTeX files - [Citation Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#references)
@@ -77,13 +77,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc-0.16.0.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc-0.16.1.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.16.0
+## 0.16.1
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-05 00:10
+date: 2025-11-05 07:17
 ---
 
 ## Testing Tmdoc Installation
@@ -495,7 +495,7 @@ as example for such embedded documentation.
     - initial [Julia](https://julialang.org) support
     - fixing fig.width issues for LaTeX formulas
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc-tutorial.pdf)
-- 2025-11-XX 0.16.1
+- 2025-11-05 0.16.1
     - removing curly braces for code output to ensure pandoc compatibility
     - fix for single quotes for code chunk arguments
     - fix for width=0 as default for R plot 
