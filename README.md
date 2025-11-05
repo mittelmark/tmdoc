@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-05 08:05
+date: 2025-11-05 22:50
 ---
 
 ## Testing Tmdoc Installation
@@ -500,7 +500,10 @@ as example for such embedded documentation.
     - fix for single quotes for code chunk arguments
     - fix for width=0 as default for R plot 
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc-tutorial.pdf)    
-
+- 2025-11-06 16.2
+    - fix for space around = sign in code chunk options
+    - toc fix for header lines in YAML and in code block sections
+    
 ## TODO
 
 - [x] kroki code chunk support  (done)

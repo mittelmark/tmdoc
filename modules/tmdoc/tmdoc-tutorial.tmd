@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.16.1 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.16.2 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-11-05 22:08
+date: 2025-11-05 22:48
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
