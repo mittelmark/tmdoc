@@ -77,13 +77,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc-0.16.1.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc-0.16.2.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.16.1
+## 0.16.2
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-05 22:50
+date: 2025-11-06 06:37
 ---
 
 ## Testing Tmdoc Installation
@@ -374,8 +374,8 @@ document using Libreoffice.
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
 To have a look at two examples of  Weasyprint  output, you can look at the the
-[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc-tutorial.pdf) and
-the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc.pdf) pages for Version 0.16.0.
+[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc-tutorial.pdf) and
+the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc.pdf) pages for Version 0.16.2.
 
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
@@ -499,11 +499,12 @@ as example for such embedded documentation.
     - removing curly braces for code output to ensure pandoc compatibility
     - fix for single quotes for code chunk arguments
     - fix for width=0 as default for R plot 
-    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc-tutorial.pdf)    
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc-tutorial.pdf)
 - 2025-11-06 16.2
     - fix for space around = sign in code chunk options
     - toc fix for header lines in YAML and in code block sections
-    
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc-tutorial.pdf)        
+
 ## TODO
 
 - [x] kroki code chunk support  (done)
