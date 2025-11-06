@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251105.1540>
+#  Last Modified : <251106.0727>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -568,6 +568,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     append toc "    * \[$title\](#$anchor)\n"
                 }
 
+            }
+            if {$mode eq "text" && !$yamlflag} {
+                set line [regsub {^\s*\[@references\]\s*$} $line "`tcl citer::bibliography`"]
             }
             incr lnr
             if {$yamlflag && [regexp {^---} $line]} {
