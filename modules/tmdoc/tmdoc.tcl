@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251106.0727>
+#  Last Modified : <251112.0816>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -47,13 +47,16 @@ exec tclsh "$0" "$@"
 #                                            support for TOC inclusion for Markdown files
 #                                            renamed imagepath to fig.path option for kroki as well
 #                                            initial Julia support
-#                  2025-11-XX version 0.16.1 removed curly braces for fenced code blocks to give pandoc compatibility
+#                  2025-11-05 version 0.16.1 removed curly braces for fenced code blocks to give pandoc compatibility
 #                                            fix for single quotes for code chunk arguments
 #                                            fix for width=0 as default for R plot 
+#                  2025-11-06 version 0.16.2 fixes code chunk options with spaces around = signs, fixing toc generation if header code is within code chunks or the YAML section 
+#                  2025-11-12 version 0.16.3 fix for `r code` chunks, not returning just last word
+#
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.16.2
+package provide tmdoc::tmdoc 0.16.3
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -961,8 +964,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
 
                 }
                 while {[regexp {(.*?)`r ([^`]+)`(.*)$} $line -> pre t post]} {
-                    set res [r::filter $t [dict create pipe R eval true echo false]]
-                    set res [string trim [lindex [split [lindex $res 0] " "] end]]
+                    set res [r::filter $t [dict create pipe R eval true echo false terminal false]]
+                    set res [string trim [lindex $res 0] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`py ([^`]+)`(.*)$} $line -> pre t post]} {

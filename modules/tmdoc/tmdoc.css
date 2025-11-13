@@ -56,7 +56,7 @@ table tr td {
 
 /* Alerts: */
 
-.side-warning, .side-caution, .side-info, .side-question, .side-error, .side-note, .side-tip, .side-important {
+.side-warning, .side-caution, .side-info, .side-question, .side-error, .side-note, .side-tip, .side-important, .side-hint  {
   color: var(--used-color);
   margin-bottom: 32px;
   margin-top: 16px;
@@ -74,7 +74,7 @@ table tr td {
   
 }
 
-.side-important {
+.side-important, .side-hint {
   border-left: solid 7px #aa33aa;
   border-top: solid 1px #fff0ff; 
   border-right: solid 1px #fff0ff; 
@@ -114,7 +114,7 @@ table tr td {
   background-color: #fff7f0;
 }
 
-.side-info::before, .side-warning::before, .side-caution::before, .side-question::before, .side-error::before, .side-note::before, .side-tip::before, .side-important::before {
+.side-info::before, .side-warning::before, .side-caution::before, .side-question::before, .side-error::before, .side-note::before, .side-tip::before, .side-important::before, .side-hint::before  {
   align-items: center;
   border-radius: 50%;
   display: flex;
@@ -134,6 +134,13 @@ table tr td {
   background-color: #223399;
   color: #fff;
   content: "N";
+  
+}
+
+.side-hint::before {
+  background-color: #992299;
+  color: #fff;
+  content: "!";
   
 }
 

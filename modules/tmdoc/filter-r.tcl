@@ -76,9 +76,10 @@ namespace eval tmdoc::r {
                 set show false
             } 
             if {$show && $got ni [list "" "> "]} {
+                #puts stderr $dict
                 if {!([dict get $dict results] eq "asis" && ([regexp {^>} $got] | [regexp {^.{1,3}K>} $got]))} {
                     append res "$got\n"
-                }
+                } 
             }
             if {[regexp "### SHOW ON" $got]} {
                 set show true
@@ -172,6 +173,10 @@ namespace eval tmdoc::r {
         set img ""
         if {[dict get $dict fig] && [dict get $dict include]} {
             set img "[dict get $dict label].[dict get $dict ext]"
+        }
+        if {![dict get $dict terminal]} {
+            set res [string trim [string trim [regsub {^> .+\[1\] } $res ""]] {"}] ;#"
+            set res [regsub -all {\\n} $res "\n"]
         }
         
         return [list "$res" "$img"]

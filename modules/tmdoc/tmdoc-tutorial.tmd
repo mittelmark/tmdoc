@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.16.2 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-11-05 22:48
+date: 2025-11-12 07:39
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -62,6 +62,8 @@ Tcl packages and other types of documentation.
     - [Creating Tables](#tables)
     - [Including Files](#include)
     - [Writing Images with tsvg](#images)
+- [Pandoc code chunk syntax](#pandoc)
+- [R-Knitr code chunk syntax](#knitr)
 - [Command Line Tools (GraphViz, GO games ...) ](#clp)
 - [Kroki Diagrams (GraphViz, PlantUML, ...)](#kroki)
 - [LaTeX Equations and Matrices](#latex)
@@ -396,7 +398,7 @@ tsvg set code ""
 ![](hello-world.svg)
 
 To allow automatic  embedding of the current image you have to create a figure
-command like this_
+command like this:
 
 ```{.tcl}
 proc figure {filename} {
@@ -424,8 +426,8 @@ tsvg text -x 29 -y 45 Hello
 tsvg text -x 23 -y 65 World2!
 ```
 
-
-## Pandoc compatible code syntax
+<a name="pandoc"> </a>
+## Pandoc compatible code chunk syntax
 
 Since tmdoc version 0.5 as well Pandoc compatible code chunk options are
 supported. For instance spaces after the triple codes are ignored, and chunk
@@ -453,6 +455,27 @@ Now the options: `{.tcl echo=false results="hide"}`
 ``` {.tcl echo=true results="hide"}  
 set x 4
 puts $x
+```
+
+<a name="knitr"> </a>
+## Knitr, R Markdown compatible syntax
+
+Knitr and  R-Markdown  are using R in the  background, so in R strings must be
+quoted, code chunks  arguments  are separated by comma. The terms for booleans are
+TRUE and FALSE. So __tmdoc__ as well supports this syntax. Here an example:
+
+Here an example:
+
+```
+'``{r echo=TRUE,results="show",eval=TRUE}
+print(R.version.string)
+'``
+```
+
+And here the output:
+
+```{r echo=TRUE,results="show",eval=TRUE}
+print(R.version.string)
 ```
 
 <a name="clp"> </a>
@@ -1018,11 +1041,13 @@ Here an example:
 ```
 
 Highlighting is completely managed by the stylesheet. The alerts are placed in
-a div tag  with  the name  side-altername  where  alertname  is the  lowercase
-version of the altername. See the file [tmdoc.css](tmdoc.css) for a stylesheet
+a div tag  with  the name  side-alertname  where  alertname  is the  lowercase
+version of the alert name. See the file [tmdoc.css](tmdoc.css) for a stylesheet
 based implementation. The advantage of this approach is that for instance _weasyprint_ can properly convert these to the PDF format.
 
-Here some example:
+Here some  examples. The alert type is always seen in bold, so that is what you
+need to write in the first alert line in brackets preceded with an exclamation
+mark:
 
 
 > [!NOTE]
@@ -1034,15 +1059,19 @@ Here some example:
 > [!IMPORTANT]
 > That is very important! Or not??
 
-> [!WARNING]
-> This is a warning, warn, warn! This is a warning, warn, warn! This is a warning, warn, warn! This is a warning, warn, warn!
-
 > [!INFO]
 > This is an info, info, info! This is an info, info, info!  
 > This is an info, info, info!  This is an info, info, info!!!
 
+> [!HINT]
+> This is a hint which you can ingnore. But you might need
+> that hint to answer an exam questions.
+
 > [!QUESTION]
 > Be or not to be! That is the question!!
+
+> [!WARNING]
+> This is a warning, warn, warn! This is a warning, warn, warn! This is a warning, warn, warn! This is a warning, warn, warn!
 
 > [!ERROR]
 > An error happend!

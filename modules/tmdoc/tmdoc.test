@@ -314,7 +314,7 @@ x=3
 print(x)
 ```
 
-X is `r print(x)`!
+X is `r x`!
 "]
 } -result {```R
 x=3
@@ -388,6 +388,32 @@ df2md(head(mtcars[, 1:4],n=4))
 |**Mazda RX4 Wag**|21|6|160|110|
 |**Datsun 710**|22.8|4|108|93|
 |**Hornet 4 Drive**|21.4|6|258|110|}
+
+tcltest::test tmdoc-r-1.6 {
+    Checking df2md for table command
+} -body {
+    string trim [tmdoc::tmeval {
+```{r echo=FALSE,results="asis"}
+set.seed(1234)
+v1=sample(1:4,20,replace=TRUE)
+v2=sample(1:4,20,replace=TRUE)
+t = table(v1,v2)
+df2md(t)
+```
+}] 
+} -result {||1|2|3|4|
+|---|---|---|---|---|
+|**1**|0|0|0|3|
+|**2**|2|3|1|2|
+|**3**|1|1|1|0|
+|**4**|0|2|2|2|}
+
+
+tcltest::test tmdoc-r-1.7 {
+    Checking R single backtick pipe with longer return string
+} -body {
+    string trim [tmdoc::tmeval {`r R.version.string`}] 
+} -result {R version 4.5.0 (2025-04-11)}
 
 tcltest::test tmdoc-adoc-1.1 {
     Checking AsciiDoc generation
