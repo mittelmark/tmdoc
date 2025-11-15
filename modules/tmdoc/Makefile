@@ -1,8 +1,8 @@
 ##-*- makefile -*-############################################################
 
 default:
-	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd - | \
-	TCLLIBPATH="~/workspace/mndoc .." tclsh ../../../mndoc/apps/mndoc - tmdoc-tutorial.html --css tmdoc.css
+	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd - --toc true | \
+	TCLLIBPATH=.. tclsh ../../../mndoc/apps/mndoc - tmdoc-tutorial.html --css tmdoc.css
 	weasyprint -q -s small.css tmdoc-tutorial.html tmdoc-tutorial.pdf
 	TCLLIBPATH="~/workspace/tcllib/modules" \
 		~/workspace/tcllib/apps/dtplite -o tmdoc.html html tmdoc.man

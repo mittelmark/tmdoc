@@ -3,10 +3,10 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="title" content="tmdoc::tmdoc 0.16.3 - Tcl Markdown processor tutorial">
+<meta name="title" content="tmdoc::tmdoc 0.16.4 - Tcl Markdown processor tutorial">
 <meta name="author" content="Detlef Groth, University of Potsdam, Germany">
     
-<title>tmdoc::tmdoc 0.16.3 - Tcl Markdown processor tutorial</title>
+<title>tmdoc::tmdoc 0.16.4 - Tcl Markdown processor tutorial</title>
     
     
 
@@ -26,9 +26,9 @@
 
 
     <div class="document-header">
-<h1 class="title">tmdoc::tmdoc 0.16.3 - Tcl Markdown processor tutorial</h1>
+<h1 class="title">tmdoc::tmdoc 0.16.4 - Tcl Markdown processor tutorial</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-11-13</h2>
+<h2 class="date">2025-11-15</h2>
     </div>
 
 <hr />
@@ -42,7 +42,7 @@
 
 <hr />
 
-<h2><a name="abstract">Abstract</a></h2>
+<h4>Abstract</h4>
 
 <p>In the last years reproducible research has gained focus from the research
 community. It is a type of literate programming, introduced by Donald Knuth in
@@ -73,47 +73,47 @@ creation. This basic subset of a literate programming environment should be
 sufficient to create nice technical and statistical reports, tutorials about
 Tcl packages and other types of documentation.</p>
 
-<h2><a name="toc">Table of Contents</a></h2>
+<div class='toc'>
+
+<h3>Table of Contents</h3>
 
 <ul>
-<li><a href="#intro">Introduction</a></li>
-<li><a href="#codes">Color Codes</a></li>
-<li><a href="#block">Tcl code chunks</a>
-<ul>
-<li><a href="#block">Standard Code Blocks</a></li>
-<li><a href="#puts">The puts Statement</a></li>
-<li><a href="#inline">Inline Codes</a></li>
-<li><a href="#errors">Error Handling</a></li>
-<li><a href="#tables">Creating Tables</a></li>
-<li><a href="#include">Including Files</a></li>
-<li><a href="#images">Writing Images with tsvg</a></li></ul>
-
-</li>
-<li><a href="#pandoc">Pandoc code chunk syntax</a></li>
-<li><a href="#knitr">R-Knitr code chunk syntax</a></li>
-<li><a href="#clp">Command Line Tools (GraphViz, GO games ...) </a></li>
-<li><a href="#kroki">Kroki Diagrams (GraphViz, PlantUML, ...)</a></li>
-<li><a href="#latex">LaTeX Equations and Matrices</a></li>
-<li><a href="#programming">Programming Examples (C, C++, Python)</a></li>
-<li><a href="#references">References with BibTeX Files</a></li>
-<li><a href="#abbrev">Abbreviations</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#colorcodes">Color Codes</a></li>
+<li><a href="#standardcodeblocks">Standard Code Blocks</a></li>
+<li><a href="#theputsstatement">The puts Statement</a></li>
+<li><a href="#inlinecodes">Inline Codes</a></li>
+<li><a href="#errorhandling">Error Handling</a></li>
+<li><a href="#creatingtables">Creating Tables</a></li>
+<li><a href="#includingfiles">Including Files</a></li>
+<li><a href="#writingimages">Writing Images</a></li>
+<li><a href="#pandoccompatiblecodechunksyntax">Pandoc compatible code chunk syntax</a></li>
+<li><a href="#knitrrmarkdowncompatiblesyntax">Knitr, R Markdown compatible syntax</a></li>
+<li><a href="#othercommandlinetools">Other Command Line Tools</a></li>
+<li><a href="#krokiwebservicediagrams">Kroki Webservice Diagrams</a></li>
+<li><a href="#latexequations">LaTeX Equations </a></li>
+<li><a href="#programming">Programming</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#abbreviations">Abbreviations</a></li>
 <li><a href="#alerts">Alerts</a></li>
-<li><a href="#csv">CSV Display</a></li>
-<li><a href="#reports">Statistical Reports with R, Python or Octave</a>
+<li><a href="#csvdisplay">CSV Display</a></li>
+<li><a href="#statisticalreports">Statistical Reports</a>
 <ul>
-<li><a href="#rreport">R</a></li>
-<li><a href="#preport">Python</a></li>
-<li><a href="#oreport">Octave</a></li></ul>
+<li><a href="#rcodeevaluation">R Code Evaluation</a></li>
+<li><a href="#pythoncodeevaluation">Python Code Evaluation</a></li>
+<li><a href="#octavecodeevaluation">Octave Code Evaluation</a></li></ul>
 
 </li>
-<li><a href="#options">Code Chunk Options</a></li>
+<li><a href="#codechunkoptions">Code Chunk Options</a></li>
 <li><a href="#summary">Summary</a></li>
-<li><a href="#install">Installation</a></li>
+<li><a href="#installation">Installation</a></li>
 <li><a href="#seealso">See Also</a></li>
-<li><a href="#process">Processing Information</a>
+<li><a href="#processinginformation">Processing Information</a>
 </li></ul>
 
-<h2><a name="intro">Introduction</a></h2>
+<p></div></p>
+
+<p><a name="introduction"> </a></p><h2>Introduction</h2>
 
 <p>The Tcl package <code>tmdoc::tmdoc</code> which is both a standalone command line
 application and as well a Tcl package is a report generator and a literate
@@ -166,11 +166,11 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-11-13 18:50</p>
+<p>The curent date and time is: 2025-11-15 10:10</p>
 
 <hr />
 
-<h2><a name="codes">Color Codes</a></h2>
+<p><a name="colorcodes"> </a></p><h2>Color Codes</h2>
 
 <p>Now follows a short tutorial for the features of the <em>tmdoc</em> Markdown processor.
 For the code blocks the following color codes are used, grey is example Tcl
@@ -187,7 +187,7 @@ in blue is the output of the creme tcl code before. Red code lines indicate code
 
 <pre class='code'><code class='tclerr'>red: errors resulting from Tcl code evaluations</code></pre>
 
-<h2><a name="block">Standard Code Blocks</a></h2>
+<p><a name="standardcodeblocks"> </a></p><h2>Standard Code Blocks</h2>
 
 <p>Standard code block are started with three tickmarts at the beginning of a
 line and in curly brace the string tcl. Separated by a space might follow
@@ -219,7 +219,7 @@ set x</code></pre>
 the current code block. You should use <em>puts</em> if you need to output more than
 the last statement.</p>
 
-<h2><a name="puts">The puts Statement</a></h2>
+<p><a name="theputsstatement"> </a></p><h2>The puts Statement</h2>
 
 <p>You can have several puts statements in your code which are printed
 before the final return value. The channel stdout is displayed as well in the
@@ -293,7 +293,7 @@ text  document  how the  computation  was done, but only the  results  of this
 computation  within  the  text,  for  instance  to  display  date and used Tcl
 packages as can be seen at the very end of this document.</p>
 
-<h2><a name="inline">Inline Codes</a></h2>
+<p><a name="inlinecodes"> </a></p><h2>Inline Codes</h2>
 
 <pre class='code'><code class='std'>Let's look what is the value of x. The value of x is `tcl set x`. Is it one??</code></pre>
 
@@ -309,7 +309,7 @@ packages as can be seen at the very end of this document.</p>
 Don't write too long Tcl statements directly in the text. You should perform
 your major computations in the code blocks. Please note as well, that the inline code chunks can't wrap over multiple lines. So opening and closing backtick must be on the same line.</p>
 
-<h2><a name="errors">Error Handling</a></h2>
+<p><a name="errorhandling"> </a></p><h2>Error Handling</h2>
 
 <p>Let's display errors of code blocks:</p>
 
@@ -328,7 +328,7 @@ set z</code></pre>
 
 <p>This line contains an inline code error <em>??can't read &quot;z&quot;: no such variable??</em>!!</p>
 
-<h2><a name="tables">Creating Tables</a></h2>
+<p><a name="creatingtables"> </a></p><h2>Creating Tables</h2>
 
 <p>Since  <em>tmdoc</em>  version  0.7.0 there is as well  support for tables  using the
 <code>results=asis</code> option. Here an example:</p>
@@ -367,7 +367,7 @@ puts [list2mdtab $h $d]
 </table>
 
 
-<h2><a name="include">Including Files</a></h2>
+<p><a name="includingfiles"> </a></p><h2>Including Files</h2>
 
 <p>Sometimes we store information which should be available for a set of files in
 separate file to reuse this  information in other files. Examples for this are
@@ -398,7 +398,7 @@ gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</em></p>
 
 <p>Some more text.</p>
 
-<h2><a name="images">Writing Images</a></h2>
+<p><a name="writingimages"> </a></p><h2>Writing Images</h2>
 
 <p>Displaying images generated by Tcl code is as well possible. Here an example
 using the <em>tsvg</em> package which is embedded within the tmdoc application:</p>
@@ -436,7 +436,7 @@ tsvg text -x 23 -y 65 World2!
 
 <p>And here the output, only the image should be displayed:</p>
 
-<p><a name="pandoc"> </a></p><h2>Pandoc compatible code chunk syntax</h2>
+<p><a name="pandoccompatiblecodechunksyntax"> </a></p><h2>Pandoc compatible code chunk syntax</h2>
 
 <p>Since tmdoc version 0.5 as well Pandoc compatible code chunk options are
 supported. For instance spaces after the triple codes are ignored, and chunk
@@ -462,7 +462,7 @@ puts $x</code></pre>
 <pre class='code'><code class='tclcode'>set x 4
 puts $x</code></pre>
 
-<p><a name="knitr"> </a></p><h2>Knitr, R Markdown compatible syntax</h2>
+<p><a name="knitrrmarkdowncompatiblesyntax"> </a></p><h2>Knitr, R Markdown compatible syntax</h2>
 
 <p>Knitr and  R-Markdown  are using R in the  background, so in R strings must be
 quoted, code chunks  arguments  are separated by comma. The terms for booleans are
@@ -481,7 +481,7 @@ print(R.version.string)
 <pre class='code'><code class='r'>&gt; print(R.version.string)
 [1] &quot;R version 4.5.0 (2025-04-11)&quot;</code></pre>
 
-<p><a name="clp"> </a></p><h2>Other Command Line Tools</h2>
+<p><a name="othercommandlinetools"> </a></p><h2>Other Command Line Tools</h2>
 
 <p>Since  version  0.8.0  there  is  as  well  support  for  embedding  input
 for command line applications which produce graphics inside
@@ -619,7 +619,7 @@ Error: dot: can't open chunk-25.txt
 
 <p>Error: dot: can't open chunk-25.txt```</p>
 
-<h2><a name="kroki">Kroki Webservice Diagrams</a></h2>
+<p><a name="krokiwebservicediagrams"> </a></p><h2>Kroki Webservice Diagrams</h2>
 
 <p>The <a href="https://kroki.io">kroki.io</a> webservice allows you to embed diagram code
 for many diagram tools into your websites in form of base64 encoding. Since
@@ -681,7 +681,7 @@ digraph a {
 
 <p><img src="data:image/png;base64, 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" alt=" "/></p>
 
-<h2><a name="latex">LaTeX Equations </h2>
+<p><a name="latexequations"> </a></p><h2>LaTeX Equations </h2>
 
 <p><a title="CodeCogs.com" href="https://www.codecogs.com">
 <img src="https://www.codecogs.com/images/poweredbycodecogs.png" border="0" 
@@ -737,7 +737,7 @@ code as <code>echo</code> was set to false:</p>
 
 <p><img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAUwAAABCBAMAAADOPfKoAAAAMFBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv3aB7AAAAD3RSTlMAZkQyzSJ2EImrmbtU3e8fr21CAAAACXBIWXMAAA7EAAAOxAGVKw4bAAADN0lEQVRoBe3aP2gTURwH8O/lerk0Mc2pUGpFCJk7HGbrYtDBjlmdGvEPrVTNJE7aIvgXtSA4CQYdRKuYQXFxuK4uFhwc7eKfbvEPCiKcv3t3L+/Su2RoIfcr3IO8/PLetfnwfZfLvVKUXLeDAa3ouj8HTA9rqrSnUh70XnqlwoJpD0KKOTbMzBFlnVtxui92zzeo5sI0TihJrm5+l8ychd+MmOHAijZedJltbDBljlm4K5mASFZFrSaGXZXER6hH8koZsjWqeybV3FCrKNNQLO2ZZ1GvhyrrebMoc8RSB2hv2DKXlBLwTgCWaWoqzFEbL5tMmVPQZJyzDh6ySvOHlEF/VHknX+Sa5hdGTPPGryuSNua6f2WNuXmHEbPLii/4fITifcFoyhwYT3jSv7yHRyJ1mmYkkn4DaZr9ktnKeJrmVlLr9zOs07wg1FnqWTOXBdNsSaa+KAaoM2bGX8sa2ulTVCd23cyWoY3fB1Yls9iSNOPTRl3WeI6nSTJHgCWUGqBnf9H3KabTRSLTRjVJJqV4C2PLyDk+U5+OZRb9G/nEFl2cfZctZJZ9ppZXzOMTZUpQtNLqhENFYsx1T3GSHus+01JMs4EP3qzXZlt4S0+JMdfozSdb1HUEU7cVkwZX6CHaIQsHqEiKadQ8xf4m8FUwNfQwz3mzXpst4z0dlBRTr3mIAvUfBXPy+u0Z2xuiVnRw3q/oKuAkyjRp0e8h/6d7bqLQkrSRulr0QgNnaTypNOmTY/zDaCeOqTXNz5Ksr+FwksyjwDVcasBoi0WHfudbXdrGb3ZLTJ8pJ8lcALJXHwD0hxjOtx7HgugKTdZM4olGXM5pGi2f+YQ3E1OCqdnMmYZgej3nRfeXXPQpMxTGtss0zW1HGPoFXpoxu0lxRG6hUqHpxG49NjOju0lxxKjruhYjpqPcwW5SDOToq58KNmmGmMFuUjAzwCInZnQ3KZh0C1VnxIzZTQbMi94zl0UnyubdZMB8zIy5eTcZMDucmDG7SZ+5a50TM2Y36TPzNU7MmN2kzyy0OTER3U36zPwiK6aP6tczuiD1I6ZpDkomMrdTbov3Vu2IPTSgVw+yODd3xL+Z/gfCHeSOm4N0xQAAAABJRU5ErkJggg==" alt=" "/></p>
 
-<h2><a name="programming">Programming</a></h2>
+<p><a name="programming"> </a></p><h2>Programming</h2>
 
 <p>Sometimes you would like to prepare programming tutorials where you embed your
 code with  explanations  in a Markdown  document and you then like to test the
@@ -777,7 +777,7 @@ int main() {
 
 <pre class='code'><code class='out'>Hello C World!</code></pre>
 
-<h2><a name='references'>References</a></h2>
+<p><a name="references"> </a></p><h2>References</h2>
 
 <p>Since  version  0.12.0  tmdoc as well  supports the  inclusion of  references.
 References can be included like this:</p>
@@ -813,7 +813,7 @@ citer::bibliography'. Here the output:</p>
 
 </li></ul>
 
-<h2><a name="abbrev">Abbreviations</a></h2>
+<p><a name="abbreviations"> </a></p><h2>Abbreviations</h2>
 
 <p>Abbreviations can be defined in a separate Yaml file which should be mentioned in the document preamble like so:</p>
 
@@ -834,7 +834,7 @@ Now an abbreviation which is in the `abbrev.yml` file
 <p><strong>And here the output:</strong></p>
 
 <p>This is an abbrev Detlef Groth, University of Potsdam, Germany and this is another for the Author: Detlef Groth, University of Potsdam, Germany. 
-The document was created at 2025-11-13 18:50. This an empty abbreviation {empty}.</p>
+The document was created at 2025-11-15 10:07. This an empty abbreviation {empty}.</p>
 
 <p>Now an abbreviation which is in the <code>abbrev.yml</code> file - tmdoc is: 'Tcl Markdown document processor'!</p>
 
@@ -859,7 +859,7 @@ tpyst compile file.typ</code></pre>
 <p>The Tcl procedure <code>tmdoc::tmdoc</code>  for this  purpose  has the 
 <code>-abbrev filename.yml</code> argument.</p>
 
-<h2><a name="alerts">Alerts</a></h2>
+<p><a name="alerts"> </a></p><h2>Alerts</h2>
 
 <p>Since version 0.13.0 tmdoc as well supports Alerts for the Markdown output. Alerts are following the same syntax as the 
 <a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts">Github alerts</a>:</p>
@@ -921,7 +921,7 @@ An error can happen!
 Can we have a third line?
 </p></div>
 
-<h2><a name='csv'>CSV Display</a></h2>
+<p><a name="csvdisplay"> </a></p><h2>CSV Display</h2>
 
 <p>Since version 0.13.0 it is as well to embed CSV (Comma Separated Values) data into the documents and return
 the data as text. Here an example:</p>
@@ -1027,9 +1027,9 @@ empty space. Also Markdown styling is supported. Here data from an other table:<
 </table>
 
 
-<h2><a name="reports">Statistical Reports with R, Python or  Octave</a></h2>
+<p><a name="statisticalreports"> </a></p><h2>Statistical Reports</h2>
 
-<h3><a name="rreport">R Code Evaluation</a></h3>
+<p><a name="rcodeevaluation"> </a></p><h3>R Code Evaluation</h3>
 
 <p>Since  version  0.14.0 we can as well embed R, Python and Octave  code  chunks
 within our  documents.  The code will be then  evaluated  step by step and the
@@ -1270,7 +1270,30 @@ for (i in 1:4) {
 [1] 3
 [1] 4</code></pre>
 
-<h3><a neme="preport">Python Code Evaluation</a></h3>
+<p>Here an example for a code chunk which has an error:</p>
+
+<pre class='code'><code class='r'>x=2
+rm(x)
+print(x)</code></pre>
+
+<pre class='code'><code class='r'>&gt; x=2
+&gt; rm(x)
+&gt; print(x)
+Fehler: Objekt 'x' nicht gefunden</code></pre>
+
+<p>nd here we try to load a non-existing library:</p>
+
+<pre class='code'><code class='r'>library(dummy2025)
+x=1
+print(x)</code></pre>
+
+<pre class='code'><code class='r'>&gt; library(dummy2025)
+Fehler in library(dummy2025) : es gibt kein Paket namens ‘dummy2025’
+&gt; x=1
+&gt; print(x)
+[1] 1</code></pre>
+
+<p><a name="pythoncodeevaluation"> </a></p><h3>Python Code Evaluation</h3>
 
 <p>As we can use R we can as well use Python in a similar way using the pipe code chunk. Here an example:</p>
 
@@ -1284,7 +1307,7 @@ x=2</code></pre>
 ...     print(&quot;Hello Python World!\n&quot;)
 ... 
 &gt;&gt;&gt; hello()
-Hello Python World!
+&gt;&gt;&gt; ... ... &gt;&gt;&gt; Hello Python World!
 &gt;&gt;&gt; x=2
 </code></pre>
 
@@ -1293,14 +1316,14 @@ Hello Python World!
 <pre class='code'><code class='python'>print(x)</code></pre>
 
 <pre class='code'><code class='python'>&gt;&gt;&gt; print(x)
-2
+&gt;&gt;&gt; 2
 </code></pre>
 
 <p>We can as well hide the code and only display the session data using the option
 <code>echo=false</code>.</p>
 
 <pre class='code'><code class='python'>&gt;&gt;&gt; print(x+1)
-3
+&gt;&gt;&gt; 3
 &gt;&gt;&gt; x=x+1
 </code></pre>
 
@@ -1310,7 +1333,7 @@ Hello Python World!
 
 <p>Output:</p>
 
-<p>So the value of Pythons x is 3.</p>
+<p>So the value of Pythons x is &gt;&gt;&gt;.</p>
 
 <p>To be more compatible  with  other  literature  programing  tools as well  the
 following  syntax  where the code chunk starts with <code>py</code> is supported:</p>
@@ -1324,10 +1347,32 @@ print(y)
 
 <pre class='code'><code class='python'>&gt;&gt;&gt; y=3
 &gt;&gt;&gt; print(y)
-3
+&gt;&gt;&gt; 3
 </code></pre>
 
-<h3><a name="oreport">Octave Code Evaluation</a></h3>
+<p>And now let's check for an error:</p>
+
+<pre class='code'><code class='python'>x1=2
+print(x2)</code></pre>
+
+<pre class='code'><code class='python'>&gt;&gt;&gt; x1=2
+&gt;&gt;&gt; print(x2)
+&gt;&gt;&gt; Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+    print(x2)
+          ^^
+NameError: name 'x2' is not defined. Did you mean: 'x'?
+</code></pre>
+
+<p>Let's check if we can continue to work in the shell:</p>
+
+<pre class='code'><code class='python'>print(x1)</code></pre>
+
+<pre class='code'><code class='python'>&gt;&gt;&gt; print(x1)
+&gt;&gt;&gt; 2
+</code></pre>
+
+<p><a name="octavecodeevaluation"> </a></p><h3>Octave Code Evaluation</h3>
 
 <p>As we can use R or Python we can as well use an other statistical  programming
 language, Octave an open source Matlab clone, in a similar way using the pipe code chunk. Here an example:</p>
@@ -1403,7 +1448,7 @@ octave&gt; plot (x, sin (x));</code></pre>
 
 <p><img src="data:image/png;base64, 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" alt=" "/></p>
 
-<h2><a name='options'>Code Chunk Options</a></h2>
+<p><a name="codechunkoptions"> </a></p><h2>Code Chunk Options</h2>
 
 <p>The following  options for Tcl code chunks which are
 declared with as <em>{.tcl}</em> are currently  available:</p>
@@ -1481,7 +1526,7 @@ declared with <em>{.kroki}</em> :</p>
 
 </li></ul>
 
-<h2><a name="summary">Summary</a></h2>
+<p><a name="summary"> </a></p><h2>Summary</h2>
 
 <p>The <code>tmdoc::tmdoc</code>  package provides a literate  programming  proccessor which
 extracts and  evaluates Tcl, Shell, LaTeX equations or Diagram code within
@@ -1509,7 +1554,7 @@ or Pandoc style
 set x 2
 '``</code></pre>
 
-<h2><a name="install">Installation</a></h2>
+<p><a name="installation"> </a></p><h2>Installation</h2>
 
 <p>To install the command line application, just download the latest bin file from the release page of the Github project,
 rename it as tmdoc, make it  executable  and move to a directory  belonging to
@@ -1517,16 +1562,39 @@ your PATH variable.</p>
 
 <p>Here an example:</p>
 
-<pre class='code'><code>wget https://github.com/mittelmark/tmdoc/releases/download/v0.12.0/tmdoc-0.12.0.bin \
+<pre class='code'><code>wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.4/tmdoc-0.16.4.bin \
     -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.12.0</code></pre>
+## 0.16.4</code></pre>
+
+<p>Alternatively    you   can    install    the    latest    version    and   the
+<a href="https://github.com/mittelmark/mndoc">mndoc</a>   Markdown   to  HTML   converter
+together using the following install command in your terminal:</p>
+
+<pre class='code'><code>/bin/bash -c \
+ &quot;$(curl -fsSL https://github.com/mittelmark/tmdoc/releases/latest/download/install-tmdoc.sh)&quot;</code></pre>
+
+<p>Thereafter you should check your  installation  using the <code>--version</code> flag for
+bot applications.</p>
+
+<pre class='code'><code>tmdoc --version
+mndoc --version</code></pre>
+
+<p>To do then a full document  conversion from R-markdown or T-Markdown files you
+can then do the following:</p>
+
+<pre class='code'><code>tmdoc infile.Rmd - --toc true | mndoc - outfile.html --css tmdoc.css</code></pre>
+
+<p>This should convert the given  <em>infile.Rmd</em> to the output file  <em>outfile.html</em>
+creating as well toc-file for  infile.Rmd  whcih can included in that file and
+the HTML use will use  the  given  stylesheet.  Please  not that all local image and
+stylesheet will be embedded per default into the HTML document.</p>
 
 <p>To install the library copy the folder <em>modules/tmdoc</em> to a folder belonging to
 your TCLLIBPATH variable. If this variable does not exists you can set it for instance to <code>~/.local/lib/Tcl8.6</code> and place the code therein.</p>
 
-<h2><a name="seealso">See Also</a></h2>
+<p><a name="seealso"> </a></p><h2>See Also</h2>
 
 <ul>
 <li><a href="filter-python.html">filter-python</a></li>
@@ -1537,18 +1605,18 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 <li><a href="https://github.com/mittelmark/mndoc">mndoc package and application</a>
 </li></ul>
 
-<h2><a name="process">Processing Information</a></h2>
+<p><a name="processinginformation"> </a></p><h2>Processing Information</h2>
 
 <p>For generating the document the following Tcl version and Tcl packages were used:</p>
 
 <ul>
 <li>Tcl/Tk 8.6.16 </li>
-<li>tmdoc::tmdoc 0.16.3
+<li>tmdoc::tmdoc 0.16.4
 </li></ul>
 
-<p>Document was processed at: 2025-11-13 18:51</p>
+<p>Document was processed at: 2025-11-15 10:10</p>
 
-<p>Document processing was done within: 14363 milliseconds.</p>
+<p>Document processing was done within: 15782 milliseconds.</p>
 
 <h2>Author and Copyright</h2>
 

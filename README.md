@@ -77,13 +77,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.3/tmdoc-0.16.3.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.4/tmdoc-0.16.4.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.16.3
+## 0.16.4
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-13 19:04
+date: 2025-11-15 10:10
 ---
 
 ## Testing Tmdoc Installation
@@ -374,8 +374,8 @@ document using Libreoffice.
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
 To have a look at two examples of  Weasyprint  output, you can look at the the
-[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.3/tmdoc-tutorial.pdf) and
-the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.1632/tmdoc.pdf) pages for Version 0.16.3.
+[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.4/tmdoc-tutorial.pdf) and
+the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.4/tmdoc.pdf) pages for Version 0.16.4.
 
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
@@ -506,7 +506,10 @@ as example for such embedded documentation.
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc-tutorial.pdf)        
 - 2025-11-13 0.16.3
     - fix for inline R code chunks now as well with longer text
-    - 
+- 2025-11-15 0.16.4
+    - fix for  Windows  where R errors  break the pipe to Rterm and you got an
+      empty channel message
+    - better error handling for Python code chunks by redirecting to stdout  
 
 ## TODO
 
