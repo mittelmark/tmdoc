@@ -84,7 +84,9 @@ namespace eval tmdoc::python {
         if {[dict get $dict eval]} {
             set res [pipestart $codeLines]
         } 
-        set res [regsub -all {(>>> >>>|>>> >>> >>>)} $res {>>>}]
+        #set res [string trim [regsub -all {(>>> >>>|>>> >>> >>>) } $res {>>> }]]
+        set res [string trim [regsub {>>> >>> } [regsub {>>> >>> >>> } $res ""] ""]]
+        set res [string trim [regsub {>>> \.\.\. \.\.\. >>> } $res ""]]
         return [list $res ""]
     }
 

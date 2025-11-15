@@ -205,25 +205,28 @@ tcltest::test tmdoc-python-1.1 {
 } -body {
     string trim [tmdoc::tmeval "```{.pipe pipe=python}
 x=1
+y=2
 print(x)
 ```
 
-X is `py print(x)`
+y is `py print(y)`
 "]
 } -result {```python
 x=1
+y=2
 print(x)
 ```
 
 ```python
 >>> x=1
+>>> y=2
 >>> print(x)
 1
-
 ```
 
 
-X is 1}
+y is 2}
+
 
 tcltest::test tmdoc-python-1.2 {
     Checking Python pipe with py code name.
@@ -244,12 +247,32 @@ print(x)
 >>> x=2
 >>> print(x)
 2
-
 ```
 
 
 X is 2}
 
+tcltest::test tmdoc-python-1.3 {
+    Checking Python pipe with error
+} -body {
+    string trim [tmdoc::tmeval "```{py}
+y1=2
+print(y2)
+```
+"]} -result {```python
+y1=2
+print(y2)
+```
+
+```python
+>>> y1=2
+>>> print(y2)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+    print(y2)
+          ^^
+NameError: name 'y2' is not defined. Did you mean: 'y'?
+```}
 
 tcltest::test tmdoc-octave-1.1 {
     Checking Octave pipe.
@@ -414,6 +437,27 @@ tcltest::test tmdoc-r-1.7 {
 } -body {
     string trim [tmdoc::tmeval {`r R.version.string`}] 
 } -result {R version 4.5.0 (2025-04-11)}
+
+tcltest::test tmdoc-r-1.8 {
+    Checking R errors
+} -body {
+    string trim [tmdoc::tmeval {```{r}
+x=1
+rm(x)
+print(x)
+```}]
+} -result {```R
+x=1
+rm(x)
+print(x)
+```
+
+```R
+> x=1
+> rm(x)
+> print(x)
+Fehler: Objekt 'x' nicht gefunden
+```}
 
 tcltest::test tmdoc-adoc-1.1 {
     Checking AsciiDoc generation

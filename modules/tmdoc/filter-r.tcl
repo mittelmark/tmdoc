@@ -181,7 +181,7 @@ namespace eval tmdoc::r {
             set res [string trim [string trim [regsub {^> .+\[1\] } $res ""]] {"}] ;#"
             set res [regsub -all {\\n} $res "\n"]
         }
-        
+        set res [string trim $res]
         return [list "$res" "$img"]
     }
 

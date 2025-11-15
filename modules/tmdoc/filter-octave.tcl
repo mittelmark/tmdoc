@@ -116,7 +116,7 @@ namespace eval tmdoc::octave {
         if {[dict get $dict fig]} {
             set img "[dict get $dict label].[dict get $dict ext]"
         }
-
+        set res [string trim $res]
         return [list $res $img]
     }
 
