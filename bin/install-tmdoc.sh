@@ -14,9 +14,15 @@ function installBinary() {
 }
 
 function add_local_bin_path {
-    echo "echo \$PATH | grep -q /.local/bin || export PATH=~/.local/bin:\$PATH" >> ~/.bashrc
-    source ~/.bashrc    
-    echo "Path was updated in .bashrc"
+    if [ "$SHELL" == "/bin/bash" ]; then 
+        echo "echo \$PATH | grep -q /.local/bin || export PATH=~/.local/bin:\$PATH" >> ~/.bashrc
+        source ~/.bashrc    
+        echo "Path was updated in .bashrc"
+    elif [ "$SHELL" == "/bin/zsh" ]; then 
+        echo "echo \$PATH | grep -q /.local/bin || export PATH=~/.local/bin:\$PATH" >> ~/.zshrc
+        source ~/.zshrc    
+        echo "Path was updated in .zshrc"
+    fi
 }
 function check_local_bin_path {
    if [[ "`echo $PATH | grep /.local/bin`" == "" ]]; then 
