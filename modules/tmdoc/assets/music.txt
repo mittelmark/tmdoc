@@ -1,0 +1,2 @@
+Hello [Am]Include [C]World!
+This is [G]Music.
