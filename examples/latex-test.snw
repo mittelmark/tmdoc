@@ -1,0 +1,42 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Copyright (C) 2025 MicroEmacs User.
+%
+% All rights reserved.
+%
+% Synopsis:    
+% Authors:     MicroEmacs User
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+\usepackage{tmdoc}
+
+\begin{document}
+
+For some reason the first statement is incomplete.
+
+```{py}
+print("Hello Python!")
+```
+
+Some more text
+
+```{py}
+print('This is a very long string!',flush=True)
+```
+
+```{py}
+x = 1
+print(x)
+```
+
+
+The value of x is `py x`!
+
+```{py}
+print("Hello Python World!")
+```
+
+
+\end{document}

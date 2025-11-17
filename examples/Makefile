@@ -3,7 +3,7 @@
 #  Author        : $Author$
 #  Created By    : Detlef Groth
 #  Created       : Tue Jun 10 05:31:45 2025
-#  Last Modified : <251102.1008>
+#  Last Modified : <251117.1807>
 #
 #  Description	 :
 #
@@ -38,6 +38,10 @@ default: ## ause lang=c|cpp|py for processing
 c cpp dot emf mtex py pipe literature abcmusic:      ## process C examples
 	TCLLIBPATH=~/workspace/tmdoc/modules ../apps/tmdoc --mode weave $@.tmd $@.md
 	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc $@.md $@.html --css tmdoc.css
+latex-test:
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc $@.snw $@.tex
+	pdflatex $@.tex 
+
 adoc:
 	perl -pe 's/\[(.+?)\]\((.+?)\)/link:$$2\[$$1\]/g;s/<center>/[.text-center]/;s/<\/center>//g' header.md > header.adoc
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave asciidoc.tdoc asciidoc.adoc

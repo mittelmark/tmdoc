@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251115.1117>
+#  Last Modified : <251117.1810>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -54,17 +54,20 @@ exec tclsh "$0" "$@"
 #                  2025-11-12 version 0.16.3 fix for `r code` chunks, not returning just last word
 #                  2025-11-15 version 0.16.4 fix for Windows were errors break the pipe
 #                                            better error handling for Python by redirecting stderr to stdout
+#                  2025-11-XX version 0.16.5 embedding tmdoc.sty for inclusion into LaTeX output
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.16.4
+package provide tmdoc::tmdoc 0.16.5
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
 source [file join [file dirname [info script]] filter-octave.tcl]
 source [file join [file dirname [info script]] filter-julia.tcl]
-namespace eval ::tmdoc {}
+namespace eval ::tmdoc {
+    variable script [info script]
+}
 
 # clear all variables and defintions
 
@@ -403,7 +406,7 @@ proc tmdoc::block {txt inmode {style ""}} {
     } else {
         append res "\\begin{lcverbatim}\n"
         append res "$txt"
-        append res "\\end{lcverbatim}"
+        append res "\n\\end{lcverbatim}"
     }
     return $res
 }
@@ -456,8 +459,13 @@ proc tmdoc::cairosvg {filename dict} {
 # public functions - the main function process the files
 
 proc ::tmdoc::tmdoc {filename outfile args} {
-    if {[string tolower [file extension $filename]] in [list .tnw .tex]} {
+    variable script
+    if {[string tolower [file extension $filename]] in [list .tnw .tex .snw]} {
         set inmode latex
+        if {![file exists [file join [file dirname $filename] tmdoc.sty]]} {
+            ## copy out tmdoc.sty
+            file copy [file join [file dirname $script] tmdoc.sty] [file dirname $filename]
+        }
     } elseif {[string tolower [file extension $filename]] in [list .tan .man .tman]} {
         set inmode man
     } elseif {[regexp {doc$} [string tolower [file extension $filename]]]} {

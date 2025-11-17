@@ -29,6 +29,7 @@ app:
 	cd app-build && mkdir -p tmdoc.vfs/lib/yaml	
 	cd app-build && mkdir -p tmdoc.vfs/lib/tdot
 	cd app-build && cp ../modules/tmdoc/*.tcl tmdoc.vfs/lib/tmdoc/
+	cd app-build && cp ../modules/tmdoc/tmdoc.sty tmdoc.vfs/lib/tmdoc/
 	cd app-build && cp ../modules/bibtex/*.tcl tmdoc.vfs/lib/bibtex/
 	cd app-build && cp ../modules/citer/*.tcl tmdoc.vfs/lib/citer/	
 	cd app-build && cp ../modules/cmdline/*.tcl tmdoc.vfs/lib/cmdline/

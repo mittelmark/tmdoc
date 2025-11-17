@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-15 10:10
+date: 2025-11-17 18:12
 ---
 
 ## Testing Tmdoc Installation
@@ -510,6 +510,8 @@ as example for such embedded documentation.
     - fix for  Windows  where R errors  break the pipe to Rterm and you got an
       empty channel message
     - better error handling for Python code chunks by redirecting to stdout  
+- 2025-11-XX 0.16.5
+    - embedding tmdoc.sty for compiling LaTeX documents
 
 ## TODO
 
