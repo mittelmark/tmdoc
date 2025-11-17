@@ -473,7 +473,27 @@ print('Hi')
 Hi
 ```}
 
+tcltest::test tmdoc-python-1.8 {
+    Checking Python reading a file.
+} -body {
+    string trim [tmdoc::tmeval "```{py}
+fileCat('assets/file1.py')
+```
+"]
+} -result {```python
+fileCat('assets/file1.py')
+```
+
+```python
+import file2
+def f1 ():
+   print("f1 def")
+f1()
+file2.f2()
+```}
+
 puts stderr "starting Octave test"
+
 tcltest::test tmdoc-octave-1.1 {
     Checking Octave pipe.
 } -body {
