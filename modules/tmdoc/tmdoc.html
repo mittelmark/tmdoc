@@ -100,36 +100,37 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.16.4 tmdoc &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.16.5 tmdoc &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
-<p>tmdoc - Evaluate embedded Tcl code or other command line tool input in Markdown, AsciiDoc or LaTeX documents</p>
+<p>tmdoc - Evaluate embedded R, Python, Julia, Octave and Tcl code or other command line tool input in Markdown, Typst, AsciiDoc or LaTeX documents</p>
 </div>
 <div id="toc" class="doctools_section"><h2><a name="toc">Table Of Contents</a></h2>
 <ul class="doctools_toc">
 <li class="doctools_section"><a href="#toc">Table Of Contents</a></li>
 <li class="doctools_section"><a href="#synopsis">Synopsis</a></li>
 <li class="doctools_section"><a href="#section1">Description</a></li>
-<li class="doctools_section"><a href="#section2">Tcl code Embedding</a></li>
-<li class="doctools_section"><a href="#section3">Shell Code Embedding</a></li>
-<li class="doctools_section"><a href="#section4">Embedding Programming Languages</a></li>
-<li class="doctools_section"><a href="#section5">Embedding Diagram Code Using Kroki Webservice</a></li>
-<li class="doctools_section"><a href="#section6">LaTeX Equations</a></li>
-<li class="doctools_section"><a href="#section7">CSV Tables</a></li>
-<li class="doctools_section"><a href="#section8">Abbreviations</a></li>
-<li class="doctools_section"><a href="#section9">Markdown Alerts</a></li>
-<li class="doctools_section"><a href="#section10">Functions</a></li>
-<li class="doctools_section"><a href="#section11">Code Chunk Options</a></li>
-<li class="doctools_section"><a href="#section12">Inline code chunks</a></li>
-<li class="doctools_section"><a href="#section13">Tables</a></li>
-<li class="doctools_section"><a href="#section14">Images</a></li>
-<li class="doctools_section"><a href="#section15">Includes</a></li>
-<li class="doctools_section"><a href="#section16">Command Line Applications</a></li>
-<li class="doctools_section"><a href="#section17">Kroki Webservice</a></li>
-<li class="doctools_section"><a href="#section18">Examples</a></li>
-<li class="doctools_section"><a href="#section19">Filetypes</a></li>
-<li class="doctools_section"><a href="#section20">See Also</a></li>
-<li class="doctools_section"><a href="#section21">Bugs, Ideas, Feedback</a></li>
-<li class="doctools_section"><a href="#section22">Code Copyright</a></li>
+<li class="doctools_section"><a href="#section2">R code Embedding</a></li>
+<li class="doctools_section"><a href="#section3">Tcl code Embedding</a></li>
+<li class="doctools_section"><a href="#section4">Shell Code Embedding</a></li>
+<li class="doctools_section"><a href="#section5">Embedding Programming Languages</a></li>
+<li class="doctools_section"><a href="#section6">Embedding Diagram Code Using Kroki Webservice</a></li>
+<li class="doctools_section"><a href="#section7">LaTeX Equations</a></li>
+<li class="doctools_section"><a href="#section8">CSV Tables</a></li>
+<li class="doctools_section"><a href="#section9">Abbreviations</a></li>
+<li class="doctools_section"><a href="#section10">Markdown Alerts</a></li>
+<li class="doctools_section"><a href="#section11">Functions</a></li>
+<li class="doctools_section"><a href="#section12">Code Chunk Options</a></li>
+<li class="doctools_section"><a href="#section13">Inline code chunks</a></li>
+<li class="doctools_section"><a href="#section14">Tables</a></li>
+<li class="doctools_section"><a href="#section15">Images</a></li>
+<li class="doctools_section"><a href="#section16">Includes</a></li>
+<li class="doctools_section"><a href="#section17">Command Line Applications</a></li>
+<li class="doctools_section"><a href="#section18">Kroki Webservice</a></li>
+<li class="doctools_section"><a href="#section19">Examples</a></li>
+<li class="doctools_section"><a href="#section20">Filetypes</a></li>
+<li class="doctools_section"><a href="#section21">See Also</a></li>
+<li class="doctools_section"><a href="#section22">Bugs, Ideas, Feedback</a></li>
+<li class="doctools_section"><a href="#section23">Code Copyright</a></li>
 <li class="doctools_section"><a href="#category">Category</a></li>
 <li class="doctools_section"><a href="#copyright">Copyright</a></li>
 </ul>
@@ -151,7 +152,7 @@
 </div>
 </div>
 <div id="section1" class="doctools_section"><h2><a name="section1">Description</a></h2>
-<p>The package <b class="package">tmdoc</b> provides a command to evaluate embedded Tcl and
+<p>The package <b class="package">tmdoc</b> provides a command to evaluate embedded R, Python, Julia, Octave, Tcl and
 Shell code in code chunks within documents of Markup languages like Markdown,
 AsciiDoc, Typst or LaTeX and add the resulting output to the document for creating dynamic
 documents, a technique as well known as literate programming. Further it can
@@ -165,7 +166,23 @@ support for defining abbreviations in YAML files or in the YAML header,
 <a href="https://github.com/orgs/community/discussions/16925">Markdown alerts</a> and embedding tables as CSV code.
 Conversion of the created Markdown documents can be done by using Tcllib's <b class="package">Markdown</b> package.</p>
 </div>
-<div id="section2" class="doctools_section"><h2><a name="section2">Tcl code Embedding</a></h2>
+<div id="section2" class="doctools_section"><h2><a name="section2">R code Embedding</a></h2>
+<p>The embedded R code starts with three backticks and a language marker like this:</p>
+<pre class="doctools_example">
+```{r}
+print(&quot;Hello World&quot;)
+```
+</pre>
+<p>Shorter R code fragments can be embedded directly within the text using
+single backticks like this:</p>
+<pre class="doctools_example">
+This document was generated at \
+    `r Sys.Date()` MET.
+</pre>
+<p>Similarly code for the Programming languages Python, Octave and Julia can be embedded. 
+The chunk markers for these languages are py, oc and jl.</p>
+</div>
+<div id="section3" class="doctools_section"><h2><a name="section3">Tcl code Embedding</a></h2>
 <p>The embedded Tcl code starts with three backticks and a language marker like this:</p>
 <pre class="doctools_example">
 ```{.tcl}
@@ -179,7 +196,7 @@ This document was generated at \
     `tcl clock format [clock seconds] -format &quot;%Y-%m-%d %H:%m&quot;` MET.
 </pre>
 </div>
-<div id="section3" class="doctools_section"><h2><a name="section3">Shell Code Embedding</a></h2>
+<div id="section4" class="doctools_section"><h2><a name="section4">Shell Code Embedding</a></h2>
 <p>The embedded Shell code chunks start as well with three backticks then the <i class="arg">.shell</i> indicator and 
 a <i class="arg">cmd</i> code chunk argument which explains how to process the input in the code chunk like this:</p>
 <pre class="doctools_example">
@@ -197,7 +214,7 @@ If the text from the previous code chunk just needs
 to be reused again in the next one, you can use the string 'LASTFILE' as a
 place holder.</p>
 </div>
-<div id="section4" class="doctools_section"><h2><a name="section4">Embedding Programming Languages</a></h2>
+<div id="section5" class="doctools_section"><h2><a name="section5">Embedding Programming Languages</a></h2>
 <p>Programming code can be as well executed, even programming languages requiring
 an compilation step can be embedded. Here is an example for the Python
 programming language:</p>
@@ -219,7 +236,7 @@ int main() {
 <p>Please note, that the compilation step is separated by the execution step
 using the _&amp;&amp;_ and operator of the Bash shell.</p>
 </div>
-<div id="section5" class="doctools_section"><h2><a name="section5">Embedding Diagram Code Using Kroki Webservice</a></h2>
+<div id="section6" class="doctools_section"><h2><a name="section6">Embedding Diagram Code Using Kroki Webservice</a></h2>
 <p>Embedded diagram chunks using the <a href="https://kroki.io">kroki.io</a> web service are done like this:</p>
 <pre class="doctools_example">
 ```{.kroki dia=graphviz ext=png}
@@ -232,7 +249,7 @@ digraph g {
 and many others. For details look at the kroki.io website.
 Since version 0.14.2 first local availability of the GraphViz dot, the plantuml and the ditaa command line applications are checked before the webservise is used.</p>
 </div>
-<div id="section6" class="doctools_section"><h2><a name="section6">LaTeX Equations</a></h2>
+<div id="section7" class="doctools_section"><h2><a name="section7">LaTeX Equations</a></h2>
 <p>Since version 0.12.0 there is as well support for embedding LaTeX equations as SVG images using the 
 <a href="https://math.vercel.app">math.vercel.app</a> webservice. The equations are hashed as CRC32 hashes and then downloaded 
 if <b class="cmd">wget</b> is installed to avoid refetching the images again and again. if <b class="cmd">wget</b> is not
@@ -243,7 +260,7 @@ E = mc^2
 ```
 </pre>
 </div>
-<div id="section7" class="doctools_section"><h2><a name="section7">CSV Tables</a></h2>
+<div id="section8" class="doctools_section"><h2><a name="section8">CSV Tables</a></h2>
 <p>Since version 0.13.0 there is as well support for embedding CSV data within code chunks and 
 displaying them as Markdown tables. Here an example:</p>
 <pre class="doctools_example">
@@ -255,7 +272,7 @@ col1,col2,col3
 ```
 </pre>
 </div>
-<div id="section8" class="doctools_section"><h2><a name="section8">Abbreviations</a></h2>
+<div id="section9" class="doctools_section"><h2><a name="section9">Abbreviations</a></h2>
 <p>Since version 0.13.0 there is as well support for embedding abbreviations either in the YAML header of the document
 or in an external file which must be then referenced in the YAML header like this:</p>
 <pre class="doctools_example">
@@ -278,7 +295,7 @@ tpyst compile file.typ
 <p>The Tcl procedure <b class="cmd">tmdoc::tmdoc</b>  for this  purpose  has the 
 <i class="arg">-abbrev filename.yml</i> argument.</p>
 </div>
-<div id="section9" class="doctools_section"><h2><a name="section9">Markdown Alerts</a></h2>
+<div id="section10" class="doctools_section"><h2><a name="section10">Markdown Alerts</a></h2>
 <p>Since version 0.13.0 there is as well support for adding <a href="https://github.com/orgs/community/discussions/16925">Markdown alerts</a>. 
 These alerts are only visible as such by styline the style sheet acordingly. 
 Please have a look at the file <b class="cmd">tmdoc.css</b> for the styling of the alerts which
@@ -290,7 +307,7 @@ can be seen in the tutorial. Here an example:</p>
 &gt; This is a warning!!
 </pre>
 </div>
-<div id="section10" class="doctools_section"><h2><a name="section10">Functions</a></h2>
+<div id="section11" class="doctools_section"><h2><a name="section11">Functions</a></h2>
 <dl class="doctools_definitions">
 <dt><a name="1"><b class="cmd">::tmdoc::main</b> <i class="arg">argv</i></a></dt>
 <dd><p>The main entry point for applications. The <i class="arg">argv</i> vector is usually the
@@ -311,7 +328,7 @@ list with links to all section 2 and 3 headers which can be embedded using the
 <b class="cmd">include</b> function of tmdoc.</p>
 <p>All arguments are paths to the files to read from or write to.</p>
 <p>The result of the command is the empty string.</p>
-<p>See section <span class="sectref"><a href="#section11">Code Chunk Options</a></span> for the supported code chunk options.</p>
+<p>See section <span class="sectref"><a href="#section12">Code Chunk Options</a></span> for the supported code chunk options.</p>
 <pre class="doctools_example">
 package require tmdoc
 namespace import tmdoc::tmdoc
@@ -338,7 +355,7 @@ set x
 <p><em>This function is mainly used for testing the package and usually not useful in other situations.</em></p></dd>
 </dl>
 </div>
-<div id="section11" class="doctools_section"><h2><a name="section11">Code Chunk Options</a></h2>
+<div id="section12" class="doctools_section"><h2><a name="section12">Code Chunk Options</a></h2>
 <p>The package supports the following code chunk options.</p>
 <dl class="doctools_definitions">
 <dt><b class="const">echo</b></dt>
@@ -363,7 +380,7 @@ set date [clock format [clock seconds]]
 ```
 </pre>
 </div>
-<div id="section12" class="doctools_section"><h2><a name="section12">Inline code chunks</a></h2>
+<div id="section13" class="doctools_section"><h2><a name="section13">Inline code chunks</a></h2>
 <p>Short Tcl codes can be as well evaluated within the standard text flow using single backticks. For instance:</p>
 <pre class="doctools_example">
 The current date is  \
@@ -372,7 +389,7 @@ The current date is  \
 <p>The code above would insert the current date into the text. 
 So text inline code chunks are possible using single backticks such as here <b class="const">`tcl set x`</b>.</p>
 </div>
-<div id="section13" class="doctools_section"><h2><a name="section13">Tables</a></h2>
+<div id="section14" class="doctools_section"><h2><a name="section14">Tables</a></h2>
 <p>The Tcl interpreter which is executed inside the code chunks supports as well a procedure <b class="cmd">list2mdtab</b> <b class="const">headers</b> <b class="const">data</b> which allows of inserting tables if the output is Markdown.</p>
 <pre class="doctools_example">
 ```{.tcl results=&quot;asis&quot;}
@@ -388,7 +405,7 @@ append r \n\n&lt;/center&gt;\n
 ```
 </pre>
 </div>
-<div id="section14" class="doctools_section"><h2><a name="section14">Images</a></h2>
+<div id="section15" class="doctools_section"><h2><a name="section15">Images</a></h2>
 <p>Inside standard code chunks as well images with Tcl can be generated with normal Tcl code.</p>
 <p>To support the standard chunk properties <b class="const">fig=true</b>, optionally with <b class="const">include=false</b> however a Tcl procedure <b class="cmd">figure</b> must be provided. Below is an example to use the tklib package <b class="const">canvas::snap</b> to create images using the Tk canvas.</p>
 <pre class="doctools_example">
@@ -426,7 +443,7 @@ figure markup such as:</p>
 ![](basename-label.png)
 </pre>
 </div>
-<div id="section15" class="doctools_section"><h2><a name="section15">Includes</a></h2>
+<div id="section16" class="doctools_section"><h2><a name="section16">Includes</a></h2>
 <p><b class="cmd">tmdoc</b> supports as well the inclusion of other files into the
 output document, the Tcl interpreter running into your source code chunks has
 an <b class="cmd">include</b> <b class="const">FILENAME</b> feature which allows you to insert Markdown or LaTeX
@@ -435,7 +452,7 @@ code directly within your document.</p>
 `include filename.md`
 </pre>
 </div>
-<div id="section16" class="doctools_section"><h2><a name="section16">Command Line Applications</a></h2>
+<div id="section17" class="doctools_section"><h2><a name="section17">Command Line Applications</a></h2>
 <p>Since Version 0.8.0 <b class="cmd">tmdoc</b> as well supports the inclusion of code for
 tools that can create graphics from the given input such like GraphViz 
 <b class="cmd">dot</b> or <b class="cmd">plantuml</b>. These code chunks have a `.cmd` chunk indication and need to
@@ -474,7 +491,7 @@ LASTFILE
 ```
 </pre>
 </div>
-<div id="section17" class="doctools_section"><h2><a name="section17">Kroki Webservice</a></h2>
+<div id="section18" class="doctools_section"><h2><a name="section18">Kroki Webservice</a></h2>
 <p>Since Version 0.9.0 <b class="cmd">tmdoc</b> as well supports the inclusion of code for
 diagram tools provided by the <a href="https://kroki.io">kroki.io</a> websevices so
 that you do not need tools like GraphViz 
@@ -507,7 +524,7 @@ digraph g {
 ```
 </pre>
 </div>
-<div id="section18" class="doctools_section"><h2><a name="section18">Examples</a></h2>
+<div id="section19" class="doctools_section"><h2><a name="section19">Examples</a></h2>
 <p>Here is such an example which will be executed by the Tcl interpreter</p>
 <pre class="doctools_example">
 The code chunk below will be executed:
@@ -518,25 +535,25 @@ expr {$x*2}
 Some more Markup text ...
 </pre>
 </div>
-<div id="section19" class="doctools_section"><h2><a name="section19">Filetypes</a></h2>
+<div id="section20" class="doctools_section"><h2><a name="section20">Filetypes</a></h2>
 <p>Currently <b class="cmd">tmdoc</b> supports the filetypes Markdown which is assumed
 if you are using the file extension &quot;<b class="file">.tmd</b>&quot;, 
 AsciiDoc if you use the &quot;<b class="file">.tdoc</b>&quot; extension
 and LaTeX if you use the file extensions &quot;<b class="file">.tnw</b>&quot;.</p>
 </div>
-<div id="section20" class="doctools_section"><h2><a name="section20">See Also</a></h2>
+<div id="section21" class="doctools_section"><h2><a name="section21">See Also</a></h2>
 <p>For a detailed tutorial on how to do literate programming with Tcl have a look at the <a href="tmdoc-tutorial.html">tmdoc-tutorial</a>.</p>
 <ul class="doctools_itemized">
 <li><p><a href="tmdoc-tutorial.html">tmdoc-tutorial</a></p></li>
 <li><p><a href="../apps/tmdoc.html">tmdoc-application</a></p></li>
 </ul>
 </div>
-<div id="section21" class="doctools_section"><h2><a name="section21">Bugs, Ideas, Feedback</a></h2>
+<div id="section22" class="doctools_section"><h2><a name="section22">Bugs, Ideas, Feedback</a></h2>
 <p>This document, and the package it describes, will undoubtedly contain bugs and other
 problems. Please report such to the author of this package. Please also report any ideas
 for enhancements you may have for either package and/or documentation.</p>
 </div>
-<div id="section22" class="doctools_section"><h2><a name="section22">Code Copyright</a></h2>
+<div id="section23" class="doctools_section"><h2><a name="section23">Code Copyright</a></h2>
 <p>BSD License type:</p>
 <p>The following terms apply to all files a ssociated with the software unless
 explicitly disclaimed in individual files.</p>

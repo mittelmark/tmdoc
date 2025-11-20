@@ -3,7 +3,7 @@
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
-[titledesc {Evaluate embedded Tcl code or other command line tool input in Markdown, AsciiDoc or LaTeX documents}]
+[titledesc {Evaluate embedded R, Python, Julia, Octave and Tcl code or other command line tool input in Markdown, Typst, AsciiDoc or LaTeX documents}]
 [category  {Text processing}]
 [require Tcl 8.6-]
 [require textutil]
@@ -12,7 +12,7 @@
 [require cmdline]
 [description]
 
-The package [package tmdoc] provides a command to evaluate embedded Tcl and
+The package [package tmdoc] provides a command to evaluate embedded R, Python, Julia, Octave, Tcl and
 Shell code in code chunks within documents of Markup languages like Markdown,
 AsciiDoc, Typst or LaTeX and add the resulting output to the document for creating dynamic
 documents, a technique as well known as literate programming. Further it can
@@ -26,6 +26,27 @@ support for defining abbreviations in YAML files or in the YAML header,
 [uri https://github.com/orgs/community/discussions/16925 {Markdown alerts}] and embedding tables as CSV code.
 
 Conversion of the created Markdown documents can be done by using Tcllib's [package Markdown] package.
+
+[section "R code Embedding"]
+
+The embedded R code starts with three backticks and a language marker like this:
+
+[example {
+```{r}
+print("Hello World")
+```
+}]
+
+Shorter R code fragments can be embedded directly within the text using
+single backticks like this:
+
+[example {
+This document was generated at \\
+    `r Sys.Date()` MET.
+}]
+
+Similarly code for the Programming languages Python, Octave and Julia can be embedded. 
+The chunk markers for these languages are py, oc and jl. 
 
 [section "Tcl code Embedding"]
 
