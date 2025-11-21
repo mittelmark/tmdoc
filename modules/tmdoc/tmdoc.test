@@ -440,7 +440,7 @@ tcltest::test tmdoc-r-1.5 {
 data(mtcars)
 df2md(head(mtcars[, 1:4],n=4))
 ```}]
-} -result {||mpg|cyl|disp|hp|
+} -result {||**mpg**|**cyl**|**disp**|**hp**|
 |---|---|---|---|---|
 |**Mazda RX4**|21|6|160|110|
 |**Mazda RX4 Wag**|21|6|160|110|
@@ -459,7 +459,7 @@ t = table(v1,v2)
 df2md(t)
 ```
 }] 
-} -result {||1|2|3|4|
+} -result {||**1**|**2**|**3**|**4**|
 |---|---|---|---|---|
 |**1**|0|0|0|3|
 |**2**|2|3|1|2|
@@ -493,6 +493,49 @@ print(x)
 > print(x)
 Error: object 'x' not found
 ```}
+
+tcltest::test tmdoc-r-1.9 {
+    Checking long computations ...
+} -body {
+    string trim [tmdoc::tmeval {```{r wait=2000}
+x=1
+Sys.sleep(1)
+print(x)
+```}]
+} -result {```R
+x=1
+Sys.sleep(1)
+print(x)
+```
+
+```R
+> x=1
+> Sys.sleep(1)
+> print(x)
+[1] 1
+```}
+
+tcltest::test tmdoc-r-1.8 {
+    Checking R errors
+} -body {
+    string trim [tmdoc::tmeval {```{r}
+x=1
+rm(x)
+print(x)
+```}]
+} -result {```R
+x=1
+rm(x)
+print(x)
+```
+
+```R
+> x=1
+> rm(x)
+> print(x)
+Error: object 'x' not found
+```}
+
 
 tcltest::test tmdoc-adoc-1.1 {
     Checking AsciiDoc generation

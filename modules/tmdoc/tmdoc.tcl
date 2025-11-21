@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251121.0349>
+#  Last Modified : <251121.1550>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -58,11 +58,11 @@ exec tclsh "$0" "$@"
 #                                            fixing empty code chunk displays
 #                                            fixing empty lines at the end of code chunks
 #                                            fixing encoding language trouble in testing
-#
+#                  2025-11-XX version 0.16.6 bold column headers 
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.16.5
+package provide tmdoc::tmdoc 0.16.6
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]

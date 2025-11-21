@@ -22,11 +22,11 @@ namespace eval tmdoc::r {
                 rn=as.character(1:nrow(df))
             }
             if (rownames) {
-                headr <- paste0(c("","", cn),  sep = "|", collapse='')
+                headr <- paste0(c("","", paste("**",cn,"**",sep="")),  sep = "|", collapse='')
                 sepr <- paste0(c('|', rep(paste0(c(rep('-',3), "|"), 
                                                  collapse=''),length(cn)+1)), collapse ='')
             } else {
-                headr <- paste0(c("", cn),  sep = "|", collapse='')
+                headr <- paste0(c("", paste("**",cn,"**",sep="")),  sep = "|", collapse='')
                 sepr <- paste0(c('|', rep(paste0(c(rep('-',3), "|"), 
                                                  collapse=''),length(cn))), collapse ='')
                 
@@ -134,7 +134,7 @@ namespace eval tmdoc::r {
         foreach line $codeLines {
             puts $pipe "$line"
             flush $pipe
-            after 100 [list append wait ""]
+            after [dict get $dict wait] [list append wait ""]
             vwait wait
         }
         if {[dict get $dict fig]} {
@@ -142,7 +142,7 @@ namespace eval tmdoc::r {
             puts $pipe "dev.off();"
             puts $pipe "### SHOW ON"
             flush $pipe
-            after 100 [list append wait ""]
+            after [dict get $dict wait] [list append wait ""]
             vwait wait
         }
         return [regsub {.{1,3}K>} $res ">"]
