@@ -56,7 +56,7 @@ namespace eval tmdoc::python {
             }
             puts $pipe "$line"
             flush $pipe
-            after 100 [list append wait ""]
+            after [dict get $dict wait] [list append wait ""]
             vwait wait
         }
         ## skip last empty line ... \n
