@@ -274,7 +274,7 @@ Traceback (most recent call last):
 NameError: name 'y2' is not defined. Did you mean: 'y'?
 ```}
 
-tcltest::test tmdoc-python-1.3 {
+tcltest::test tmdoc-python-1.4 {
     Checking Python pipe with eval=FALSE to not show empty pre section.
 } -body {
     string trim [tmdoc::tmeval "```{py eval=FALSE}
@@ -293,6 +293,21 @@ print(x)
 
 Some text.}
 
+tcltest::test tmdoc-python-1.5 {
+    Checking Python Hello World.
+} -body {
+    string trim [tmdoc::tmeval "```{py}
+print('Hello Python World!')
+```
+"]
+} -result {```python
+print('Hello Python World!')
+```
+
+```python
+>>> print('Hello Python World!')
+Hello Python World!
+```}
 
 tcltest::test tmdoc-octave-1.1 {
     Checking Octave pipe.
