@@ -19,16 +19,25 @@ namespace eval tmdoc::python {
         while {[gets $fileId line] >= 0} {
             lappend codeLines $line
         }
+        lappend codeLines "print('#### DONE ####')"
         close $fileId
         return $codeLines
     }
     proc piperead {pipe} {
         variable res
+        variable dict
         if {![eof $pipe]} {
             set outline [gets $pipe]
             if {$outline ne ""} {
-                #puts "$outline"
-                append res "$outline\n"
+                if {[regexp "^\[> \]*#### DONE" $outline]} {
+                    incr ::tmdoc::chunkd
+                    puts stderr $outline
+                    after [dict get $dict wait] [list  append ::tmdoc::pipedone "."]
+                    puts stderr "done was seen"
+                } else {
+                    set outline [regsub {^.*>>> ?} $outline ""]
+                    append res "$outline\n"
+                }
             }
         } else {
             close $pipe
@@ -50,15 +59,15 @@ namespace eval tmdoc::python {
             if {[dict get $dict terminal]} {
                 if {[regexp {^  } $line] || [regexp  {^ *$} $line]} {
                     append res "... $line\n"
-                } else {
+                } elseif {![regexp {#### DONE} $line]} {
                     append res ">>> $line\n"
                 }
             }
             puts $pipe "$line"
-            flush $pipe
-            after [dict get $dict wait] [list append wait ""]
-            vwait wait
         }
+        #puts $pipe "#### DONE ####"
+        flush $pipe
+        vwait ::tmdoc::pipedone
         ## skip last empty line ... \n
         if {[dict get $dict terminal]} {
             set res "[string range $res 0 end-5]\n"
@@ -81,11 +90,21 @@ namespace eval tmdoc::python {
         foreach line [split $cnt \n] {
             lappend codeLines $line
         }
+        lappend codeLines "print('#### DONE ####')"
         if {[dict get $dict eval]} {
             set res [pipestart $codeLines]
         } 
-        set res [string trim [regsub {>>> >>> } [regsub {>>> >>> >>> } $res ""] ""]]
-        set res [string trim [regsub {>>> \.\.\. \.\.\. >>> } $res ""]]
+        set nres ""
+        foreach line [split $res "\n"] {
+            set line [regsub { +$} $line ""]
+            if {![regexp "#### DONE" $line]} {
+                append nres "$line\n"
+            }
+        }
+        set res $nres
+        #set res [string trim [regsub {>>> >>> } [regsub {>>> >>> >>> } $res ""] ""]]
+        #set res [string trim [regsub {>?>?>? ?\.\.\. \.\.\. >>> } $res ""]]
+        #set res [regsub {\n\.\.\.$} $res ""]
         return [list [string trim $res] ""]
     }
 

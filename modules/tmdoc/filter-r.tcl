@@ -5,10 +5,14 @@ namespace eval tmdoc::r {
     variable pipe 
     variable res
     variable show
+    variable dict
+    variable nwait
+    variable wait
+    set wait ""
+    set nwait ""
     set pipe ""
     set res ""
     set show true
-    variable dict
     proc df2md {} {
         variable pipe
         puts $pipe {### SHOW OFF
@@ -72,16 +76,17 @@ namespace eval tmdoc::r {
         variable dict
         if {![eof $pipe]} {
             set got [gets $pipe]
-            if {[regexp "### SHOW OFF" $got]} {
+            if {[regexp "#### DONE ####" $got]} {
+                incr ::tmdoc::chunkd
+                after [dict get $dict wait] [list  append ::tmdoc::pipedone "."]
+            } elseif {[regexp "### SHOW OFF" $got]} {
                 set show false
-            } 
-            if {$show && $got ni [list "" "> "]} {
+            } elseif {$show && $got ni [list "" "> "]} {
                 #puts stderr $dict
                 if {!([dict get $dict results] eq "asis" && ([regexp {^>} $got] | [regexp {^.{1,3}K>} $got]))} {
                     append res "$got\n"
                 } 
-            }
-            if {[regexp "### SHOW ON" $got]} {
+            } elseif {[regexp "### SHOW ON" $got]} {
                 set show true
             }
         } else {
@@ -107,7 +112,6 @@ namespace eval tmdoc::r {
             fconfigure $pipe -buffering line -blocking false
             fileevent $::tmdoc::r::pipe readable [list tmdoc::r::piperead $pipe]
             df2md
-            
             flush $pipe
             after [dict get $dict wait] [list append wait ""]
             vwait wait
@@ -126,17 +130,14 @@ namespace eval tmdoc::r {
             }
             set fname [file join [dict get $dict fig.path] [dict get $dict label].[dict get $dict ext]]
             puts $pipe "[dict get $dict ext](file=\"$fname\",width=[dict get $dict fig.width],height=[dict get $dict fig.height]);"
-            puts $pipe "### SHOW ON"            
+            puts $pipe "### SHOW ON"
             flush $pipe
             after [dict get $dict wait] [list append wait ""]
             vwait wait
         } 
-        foreach line $codeLines {
-            puts $pipe "$line"
-            flush $pipe
-            after [dict get $dict wait] [list append wait ""]
-            vwait wait
-        }
+        #after [dict get $dict wait] [list append wait ""]
+        #vwait wait
+
         if {[dict get $dict fig]} {
             puts $pipe "### SHOW OFF"            
             puts $pipe "dev.off();"
@@ -145,6 +146,14 @@ namespace eval tmdoc::r {
             after [dict get $dict wait] [list append wait ""]
             vwait wait
         }
+        foreach line $codeLines {
+            puts $pipe "$line"
+            flush $pipe
+        }
+        puts $pipe "#### DONE ####"
+        flush $pipe
+        vwait ::tmdoc::pipedone
+
         return [regsub {.{1,3}K>} $res ">"]
     }
     proc start {filename} {
@@ -153,6 +162,7 @@ namespace eval tmdoc::r {
     }
     proc filter {cnt cdict} {
         variable dict
+        variable wait
         set res ""
         if {$::tcl_platform(os) eq "windows"} {
             set r Rterm
@@ -186,6 +196,3 @@ namespace eval tmdoc::r {
     }
 
 }
-
-
-

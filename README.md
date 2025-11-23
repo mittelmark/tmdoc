@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-21 03:53
+date: 2025-11-23 07:15
 ---
 
 ## Testing Tmdoc Installation
@@ -516,6 +516,10 @@ as example for such embedded documentation.
     - fixing empty lines at the end of code chunks
     - fixing encoding language trouble in testing
     - adding more tests
+- 2025-11-XX 0.16.6
+    - bold  headers  for  tables  as well in  LaTeX  mode and not only via CSS
+    styles in HTML output
+    - fixing long computing issues in R and Python mode
 
 ## TODO
 
@@ -527,6 +531,8 @@ as example for such embedded documentation.
   between chunks (done)
 - [x] documentation for filter abbreviation, csv, kroki, alerts, shell code (done)
 - [x] adding Julia language support using pipe
+- [ ] support of ` `include FILENAME` `
+- [ ] support of ` `date %Y-%m-%d` ` and other date formats
 - [ ] true HTML comments with text removal
 - [ ] Support for typst comments // line and /* multiline */ comments
 - [ ] more citation examples

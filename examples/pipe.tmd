@@ -1,10 +1,10 @@
 ---
-title: Python Example
+title: Python and R Examples
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-10-03 09:24
+date: 2025-11-23 08:02
 ---
 
-## Python Code Evaluation
+## Python Code Evaluation I
 
 As we can use R we can as well use Python in a similar way using the pipe code
 chunk. Here an example:
@@ -25,5 +25,102 @@ Inlining Python code fragments should as well work:
 
 The value of x is `py print(x)`.
 
+## R Code Evaluation
 
+```{r label=test,eval=TRUE}
+x=3
+print(x)
+```
+
+The value of x is  `r x`.
+
+```{r label=test1,eval=TRUE}
+x=4
+print(x)
+```
+
+The value of x is  `r x`.
+
+```{r label=test2,eval=TRUE}
+Sys.sleep(2)
+x=5
+print(x)
+```
+
+The value of x is  `r x`.
+
+
+```{r label=test3,eval=TRUE}
+x=6
+print(x)
+```
+
+The value of x is  `r x`.
+
+Another trial with even longer Sys.sleep
+
+```{r label=test4}
+x=7
+Sys.sleep(10)
+print(x)
+```
+
+Now x is: `r x`!
+
+
+That is not yet the end of the test pipe.
+
+```{r}
+x=8
+Sys.sleep(3)
+print(x)
+```
+
+
+Now at the end of the text the value of x should be eight `r x`.
+
+And yes it is!
+
+## Python Code Evaluation II
+
+Let's now continue with some Python code!
+
+```{py}
+y=1
+print(y)
+```
+
+
+The value of y is `py y`! 
+
+Are you sure?
+
+
+
+```{py}
+print("Hello Python World")
+```
+
+
+```{py}
+x=2
+```
+
+
+Let's use time.sleep to see if that breaks things due to som delay?
+
+```{py}
+import time
+x= 5
+time.sleep(5)
+print(x)
+time.sleep(2)
+x=6
+print(x)
+```
+
+And now x is `py x`!
+
+
+All fine?
 

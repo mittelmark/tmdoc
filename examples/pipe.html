@@ -3,15 +3,15 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="title" content="Python Example">
+<meta name="title" content="Python and R Examples">
 <meta name="author" content="Detlef Groth, University of Potsdam, Germany">
     
-<title>Python Example</title>
+<title>Python and R Examples</title>
     
     
 
 <style>
-@import url("data:text/css;base64,CmJvZHkgewogICAgcGFkZGluZzogMzBweDsKICAgIG1heC13aWR0aDogMTIwMHB4OwogICAgZm9udDogQWxlZ3JleWEsIEdlb3JnaWEsIHNlcmlmOwogICAgd2lkdGg6IDk4MHB4OyBtYXJnaW46IDAgYXV0bzsKfQoKI2hlYWRlciwgLnRleHQtY2VudGVyLC5kZXRhaWxzLCBoMS50aXRsZSwgcC5hdXRob3IsIHAuZGF0ZSwgaDIuYXV0aG9yLCBoMi5kYXRlIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKfQphIHsgdGV4dC1kZWNvcmF0aW9uOiBub25lIDsgfQpwcmUgewogICAgcGFkZGluZzogMTBweCA7CiAgICBib3JkZXItdG9wOiAycHggc29saWQgI0NDQ0NDQzsKICAgIGJvcmRlci1ib3R0b206IDJweCBzb2xpZCAjQ0NDQ0NDOyAKICAgIGZvbnQ6IE1vbmFjbywgbW9ub3NwYWNlOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtY29kZSkscHJlOmhhcyhjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiAjZWZlZmVmOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsY29kZSksIHByZTpoYXMoY29kZS50Y2xjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiBjb3Juc2lsazsgICAKfQoKcHJlLmhpZ2hsaWdodDpoYXMoY29kZS5sYW5ndWFnZS10Y2xvdXQpLHByZTpoYXMoY29kZS50Y2xvdXQpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjQ0NFRUZGOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsZXJyKSxwcmU6aGFzKGNvZGUudGNsZXJyKSB7ICAgIAogICAgYmFja2dyb3VuZDogI0ZGQ0NDQzsKfQpwcmUuaGlnaGxpZ2h0Omhhcyhjb2RlLmxhbmd1YWdlLWVycm9yKSxwcmU6aGFzKGNvZGUuZXJyb3IpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjRkZDQ0NDOwp9Cgp0YWJsZSB7ICAgIAogIGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7CiAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkOwogIGJvcmRlci1zcGFjaW5nOiA1cHg7CiAgbWluLXdpZHRoOiAzMDBweDsKfQp0YWJsZSB0aGVhZCB0ciB0aCB7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZGU5ZDk7CiAgdGV4dC1hbGlnbjogbGVmdDsgCiAgcGFkZGluZzogNXB4OwogIGJvcmRlci10b3A6IDJweCBzb2xpZDsKICBib3JkZXItYm90dG9tOiAycHggc29saWQ7Cn0KdGFibGUgdHIgdGQgeyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjZmNmY2OwogIHRleHQtYWxpZ246IGxlZnQ7IAogIHBhZGRpbmc6IDVweDsKfQo=");
+@import url("data:text/css;base64,QGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuYnVubnkubmV0L2Nzcz9mYW1pbHk9QW5kaWthJmRpc3BsYXk9c3dhcCcpOyAKQGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuYnVubnkubmV0L2Nzcz9mYW1pbHk9VWJ1bnR1K01vbm8mZGlzcGxheT1zd2FwJyk7IC8qICcgKi8KCmJvZHkgewogIHBhZGRpbmc6IDMwcHg7CiAgbWF4LXdpZHRoOiAxMDAwcHg7CiAgZm9udC1mYW1pbHk6IEFuZGlrYSwgc2Fucy1zZXJpZjsKICBtYXJnaW46IDAgYXV0bzsKfQoKI2hlYWRlciwgLnRleHQtY2VudGVyLC5kZXRhaWxzLCBoMS50aXRsZSwgcC5hdXRob3IsIHAuZGF0ZSwgaDIuYXV0aG9yLCBoMi5kYXRlIHsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKfQphIHsgdGV4dC1kZWNvcmF0aW9uOiBub25lIDsgfQpwcmUgewogICAgcGFkZGluZzogMTBweCA7CiAgICBib3JkZXItdG9wOiAycHggc29saWQgI0NDQ0NDQzsKICAgIGJvcmRlci1ib3R0b206IDJweCBzb2xpZCAjQ0NDQ0NDOyAKICAgIGZvbnQ6IE1vbmFjbywgbW9ub3NwYWNlOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtY29kZSkscHJlOmhhcyhjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiAjZWZlZmVmOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsY29kZSksIHByZTpoYXMoY29kZS50Y2xjb2RlKSB7CiAgICBiYWNrZ3JvdW5kOiBjb3Juc2lsazsgICAKfQoKcHJlLmhpZ2hsaWdodDpoYXMoY29kZS5sYW5ndWFnZS10Y2xvdXQpLHByZTpoYXMoY29kZS50Y2xvdXQpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjQ0NFRUZGOwp9CnByZS5oaWdobGlnaHQ6aGFzKGNvZGUubGFuZ3VhZ2UtdGNsZXJyKSxwcmU6aGFzKGNvZGUudGNsZXJyKSB7ICAgIAogICAgYmFja2dyb3VuZDogI0ZGQ0NDQzsKfQpwcmUuaGlnaGxpZ2h0Omhhcyhjb2RlLmxhbmd1YWdlLWVycm9yKSxwcmU6aGFzKGNvZGUuZXJyb3IpIHsgICAgCiAgICBiYWNrZ3JvdW5kOiAjRkZDQ0NDOwp9Cgp0YWJsZSB7ICAgIAogIGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7CiAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkOwogIGJvcmRlci1zcGFjaW5nOiA1cHg7CiAgbWluLXdpZHRoOiAzMDBweDsKfQp0YWJsZSB0aGVhZCB0ciB0aCB7IAogIGJhY2tncm91bmQtY29sb3I6ICNmZGU5ZDk7CiAgdGV4dC1hbGlnbjogbGVmdDsgCiAgcGFkZGluZzogNXB4OwogIGJvcmRlci10b3A6IDJweCBzb2xpZDsKICBib3JkZXItYm90dG9tOiAycHggc29saWQ7Cn0KdGFibGUgdHIgdGQgeyAKICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjZmNmY2OwogIHRleHQtYWxpZ246IGxlZnQ7IAogIHBhZGRpbmc6IDVweDsKfQovKiBmaXggZm9yIEFzY2lpRG9jIHRhYmxlcyB3aXRoIHBhcmFncmFwaHMgKi8KcC50YWJsZWJsb2NrIHsgcGFkZGluZzogMHB4OyBtYXJnaW46IDBweDt9Cg==");
 </style>
 
     
@@ -21,38 +21,153 @@
 
 
 
-<h1 class="title">Python Example</h1>
+<h1 class="title">Python and R Examples</h1>
 <h2 class="author">Detlef Groth, University of Potsdam, Germany</h2>
-<h2 class="date">2025-10-03</h2>
+<h2 class="date">2025-11-23</h2>
 
-<h2>Python Code Evaluation</h2>
+<h2>Python Code Evaluation I</h2>
 
 <p>As we can use R we can as well use Python in a similar way using the pipe code
 chunk. Here an example:</p>
 
-<pre class='code'><code>def hello():
+<pre class='code'><code class='python'>def hello():
     print(&quot;Hello Python World!\n&quot;)
 
 hello()
 x=2</code></pre>
 
-<pre class='code'><code>&gt;&gt;&gt; def hello():
+<pre class='code'><code class='python'>&gt;&gt;&gt; def hello():
 ...     print(&quot;Hello Python World!\n&quot;)
-... 
+...
 &gt;&gt;&gt; hello()
-Hello Python World!
 &gt;&gt;&gt; x=2
-</code></pre>
+...
+Hello Python Wo</code></pre>
 
-<pre class='code'><code>print(x)</code></pre>
+<pre class='code'><code class='python'>print(x)</code></pre>
 
-<pre class='code'><code>&gt;&gt;&gt; print(x)
-2
-</code></pre>
+<pre class='code'><code class='python'>&gt;&gt;&gt; print(x)
+..</code></pre>
 
 <p>Inlining Python code fragments should as well work:</p>
 
 <p>The value of x is 2.</p>
+
+<h2>R Code Evaluation</h2>
+
+<pre class='code'><code class='r'>x=3
+print(x)</code></pre>
+
+<pre class='code'><code class='r'>&gt; x=3
+&gt; print(x)
+[1] 3</code></pre>
+
+<p>The value of x is  3.</p>
+
+<pre class='code'><code class='r'>x=4
+print(x)</code></pre>
+
+<pre class='code'><code class='r'>&gt; x=4
+&gt; print(x)
+[1] 4</code></pre>
+
+<p>The value of x is  4.</p>
+
+<pre class='code'><code class='r'>Sys.sleep(2)
+x=5
+print(x)</code></pre>
+
+<pre class='code'><code class='r'>&gt; Sys.sleep(2)
+&gt; x=5
+&gt; print(x)
+[1] 5</code></pre>
+
+<p>The value of x is  5.</p>
+
+<pre class='code'><code class='r'>x=6
+print(x)</code></pre>
+
+<pre class='code'><code class='r'>&gt; x=6
+&gt; print(x)
+[1] 6</code></pre>
+
+<p>The value of x is  6.</p>
+
+<p>Another trial with even longer Sys.sleep</p>
+
+<pre class='code'><code class='r'>x=7
+Sys.sleep(10)
+print(x)</code></pre>
+
+<pre class='code'><code class='r'>&gt; x=7
+&gt; Sys.sleep(10)
+&gt; print(x)
+[1] 7</code></pre>
+
+<p>Now x is: 7!</p>
+
+<p>That is not yet the end of the test pipe.</p>
+
+<pre class='code'><code class='r'>x=8
+Sys.sleep(3)
+print(x)</code></pre>
+
+<pre class='code'><code class='r'>&gt; x=8
+&gt; Sys.sleep(3)
+&gt; print(x)
+[1] 8</code></pre>
+
+<p>Now at the end of the text the value of x should be eight 8.</p>
+
+<p>And yes it is!</p>
+
+<h2>Python Code Evaluation II</h2>
+
+<p>Let's now continue with some Python code!</p>
+
+<pre class='code'><code class='python'>y=1
+print(y)</code></pre>
+
+<pre class='code'><code class='python'>&gt;&gt;&gt; y=1
+&gt;&gt;&gt; print(y)
+..</code></pre>
+
+<p>The value of y is 1!</p>
+
+<p>Are you sure?</p>
+
+<pre class='code'><code class='python'>print(&quot;Hello Python World&quot;)</code></pre>
+
+<pre class='code'><code class='python'>&gt;&gt;&gt; print(&quot;Hello Python World&quot;)
+...
+Hello Python W</code></pre>
+
+<pre class='code'><code class='python'>x=2</code></pre>
+
+<pre class='code'><code class='python'>&gt;&gt;&gt; x=2</code></pre>
+
+<p>Let's use time.sleep to see if that breaks things due to som delay?</p>
+
+<pre class='code'><code class='python'>import time
+x= 5
+time.sleep(5)
+print(x)
+time.sleep(2)
+x=6
+print(x)</code></pre>
+
+<pre class='code'><code class='python'>&gt;&gt;&gt; import time
+&gt;&gt;&gt; x= 5
+&gt;&gt;&gt; time.sleep(5)
+&gt;&gt;&gt; print(x)
+&gt;&gt;&gt; time.sleep(2)
+&gt;&gt;&gt; x=6
+&gt;&gt;&gt; print(x)
+...</code></pre>
+
+<p>And now x is 6!</p>
+
+<p>All fine?</p>
 
 
 

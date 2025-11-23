@@ -3,6 +3,7 @@ lappend auto_path ..
 package require tcltest
 package require tmdoc
 
+puts stderr "starting Tcl test"
 tcltest::test tmdoc-test-1.1 {
     Calling my tmdoc::tmeval with a simple code chunk
 } -body {
@@ -199,6 +200,7 @@ set x
 ==> 1
 ```}
 
+puts stderr "starting Python test"
 
 tcltest::test tmdoc-python-1.1 {
     Checking Python pipe.
@@ -309,6 +311,8 @@ print('Hello Python World!')
 Hello Python World!
 ```}
 
+puts stderr "starting Octave test"
+
 tcltest::test tmdoc-octave-1.1 {
     Checking Octave pipe.
 } -body {
@@ -363,6 +367,8 @@ octave> disp(x);
 
 
 X is 4!}
+
+puts stderr "starting R-test"
 
 tcltest::test tmdoc-r-1.1 {
     Checking R pipe code with r code name.
@@ -536,6 +542,7 @@ print(x)
 Error: object 'x' not found
 ```}
 
+puts stderr "starting AsciiDoc test"
 
 tcltest::test tmdoc-adoc-1.1 {
     Checking AsciiDoc generation
@@ -580,6 +587,8 @@ col1,col2,col3
 |4|5|6
 |7|8|9
 |===}
+
+puts stderr "starting Typst test"
 
 tcltest::test tmdoc-typst-1.1 {
     Checking AsciiDoc generation
