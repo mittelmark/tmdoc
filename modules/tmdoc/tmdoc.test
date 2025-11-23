@@ -220,9 +220,6 @@ print(x)
 ```
 
 ```python
->>> x=1
->>> y=2
->>> print(x)
 1
 ```
 
@@ -246,8 +243,6 @@ print(x)
 ```
 
 ```python
->>> x=2
->>> print(x)
 2
 ```
 
@@ -267,8 +262,6 @@ print(y2)
 ```
 
 ```python
->>> y1=2
->>> print(y2)
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
     print(y2)
@@ -307,9 +300,41 @@ print('Hello Python World!')
 ```
 
 ```python
->>> print('Hello Python World!')
 Hello Python World!
 ```}
+
+tcltest::test tmdoc-python-1.6 {
+    Checking Python time.sleep.
+} -body {
+    string trim [tmdoc::tmeval "```{py}
+import time
+x=5
+time.sleep(3)
+print(x)
+time.sleep(1)
+x=6
+print(x)
+```
+
+x is `py x`!
+"]
+} -result {```python
+import time
+x=5
+time.sleep(3)
+print(x)
+time.sleep(1)
+x=6
+print(x)
+```
+
+```python
+5
+6
+```
+
+
+x is 6!}
 
 puts stderr "starting Octave test"
 

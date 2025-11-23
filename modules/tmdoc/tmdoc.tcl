@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251123.0801>
+#  Last Modified : <251123.1531>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -485,11 +485,12 @@ proc tmdoc::cairosvg {filename dict} {
 proc tmdoc::waitchunk {} {
     set x 0
     while {$::tmdoc::chunkn != $::tmdoc::chunkd} {
-        after 200
-        if {[incr x] < 20} {
+        after 100
+        if {[incr x] > 20} {
             break
         }
     }
+    #puts stderr "x was $x"
 }
 # public functions - the main function process the files
 
@@ -743,10 +744,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     
                     if {$copt(pipe) eq "python" || $copt(pipe) eq "python3"} {
                         incr ::tmdoc::chunkn
-                        puts stderr waiting1
                         set res [tmdoc::python::filter $ginput [dict create {*}[array get copt]]]
                         waitchunk
-                        puts stderr waiting2
                     } elseif {$copt(pipe) eq "octave"} {
                         set res [tmdoc::octave::filter $ginput [dict create {*}[array get copt]]]
                     } elseif {$copt(pipe) eq "julia"} {

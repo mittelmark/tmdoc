@@ -1,7 +1,7 @@
 ---
 title: Python and R Examples
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-11-23 08:02
+date: 2025-11-23 15:36
 ---
 
 ## Python Code Evaluation I
@@ -80,6 +80,12 @@ print(x)
 Now at the end of the text the value of x should be eight `r x`.
 
 And yes it is!
+
+Now an example with a figure, is it automatically embedded?
+
+```{r fig=TRUE}
+plot(1)
+```
 
 ## Python Code Evaluation II
 

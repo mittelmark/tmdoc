@@ -31,9 +31,7 @@ namespace eval tmdoc::python {
             if {$outline ne ""} {
                 if {[regexp "^\[> \]*#### DONE" $outline]} {
                     incr ::tmdoc::chunkd
-                    puts stderr $outline
                     after [dict get $dict wait] [list  append ::tmdoc::pipedone "."]
-                    puts stderr "done was seen"
                 } else {
                     set outline [regsub {^.*>>> ?} $outline ""]
                     append res "$outline\n"
@@ -56,22 +54,22 @@ namespace eval tmdoc::python {
             set res ""
         }
         foreach line $codeLines {
-            if {[dict get $dict terminal]} {
-                if {[regexp {^  } $line] || [regexp  {^ *$} $line]} {
-                    append res "... $line\n"
-                } elseif {![regexp {#### DONE} $line]} {
-                    append res ">>> $line\n"
-                }
-            }
+            #if {[dict get $dict terminal]} {
+            #    if {[regexp {^  } $line] || [regexp  {^ *$} $line]} {
+            #        append res "... $line\n"
+            #    } elseif {![regexp {#### DONE} $line]} {
+            #        append res ">>> $line\n"
+            #    }
+            #}
             puts $pipe "$line"
         }
         #puts $pipe "#### DONE ####"
         flush $pipe
         vwait ::tmdoc::pipedone
         ## skip last empty line ... \n
-        if {[dict get $dict terminal]} {
-            set res "[string range $res 0 end-5]\n"
-        }
+        #if {[dict get $dict terminal]} {
+        #    set res "[string range $res 0 end-5]\n"
+        #}
         return $res
     }
     proc start {filename} {

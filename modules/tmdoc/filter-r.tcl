@@ -138,6 +138,10 @@ namespace eval tmdoc::r {
         #after [dict get $dict wait] [list append wait ""]
         #vwait wait
 
+        foreach line $codeLines {
+            puts $pipe "$line"
+            flush $pipe
+        }
         if {[dict get $dict fig]} {
             puts $pipe "### SHOW OFF"            
             puts $pipe "dev.off();"
@@ -145,10 +149,6 @@ namespace eval tmdoc::r {
             flush $pipe
             after [dict get $dict wait] [list append wait ""]
             vwait wait
-        }
-        foreach line $codeLines {
-            puts $pipe "$line"
-            flush $pipe
         }
         puts $pipe "#### DONE ####"
         flush $pipe
