@@ -393,6 +393,29 @@ octave> disp(x);
 
 X is 4!}
 
+tcltest::test tmdoc-octave-1.3 {
+    Octave error check
+} -body {
+    string trim [tmdoc::tmeval "```{oc}
+y=2
+disp(y):
+```
+"]
+} -result {```octave
+y=2
+disp(y):
+```
+
+```octave
+octave> y=2
+y = 2
+octave> disp(y):
+error: parse error:
+  syntax error
+>>> disp(y):
+           ^
+```}
+
 puts stderr "starting R-test"
 
 tcltest::test tmdoc-r-1.1 {

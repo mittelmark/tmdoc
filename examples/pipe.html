@@ -158,6 +158,38 @@ print(x)</code></pre>
 
 <p>All fine?</p>
 
+<h3>Octave Code Evaluation</h3>
+
+<p>As we can use R or Python we can as well use an other statistical  programming
+language, Octave an open source Matlab clone, in a similar way using the pipe code chunk. Here an example:</p>
+
+<p>And here the output:</p>
+
+<pre class='code'><code class='octave'>str = 'Hello Octave World!';
+x=1;
+disp(str);
+disp(x);</code></pre>
+
+<pre class='code'><code class='octave'>octave&gt; str = 'Hello Octave World!';
+octave&gt; x=1;
+octave&gt; disp(str);
+Hello Octave World!
+octave&gt; disp(x);
+1</code></pre>
+
+<p>Let's check for an error:</p>
+
+<pre class='code'><code class='octave'>y=2
+disp(y):</code></pre>
+
+<pre class='code'><code class='octave'>octave&gt; y=2
+y = 2
+octave&gt; disp(y):
+error: parse error:
+  syntax error
+&gt;&gt;&gt; disp(y):
+           ^</code></pre>
+
 
 
 </body>

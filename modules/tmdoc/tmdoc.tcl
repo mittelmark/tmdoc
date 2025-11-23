@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251123.1531>
+#  Last Modified : <251123.1551>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -743,18 +743,18 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 } elseif {$mode eq "pipe"} {
                     
                     if {$copt(pipe) eq "python" || $copt(pipe) eq "python3"} {
-                        incr ::tmdoc::chunkn
+                        #incr ::tmdoc::chunkn
                         set res [tmdoc::python::filter $ginput [dict create {*}[array get copt]]]
-                        waitchunk
+                        #waitchunk
                     } elseif {$copt(pipe) eq "octave"} {
                         set res [tmdoc::octave::filter $ginput [dict create {*}[array get copt]]]
                     } elseif {$copt(pipe) eq "julia"} {
                         set res [tmdoc::julia::filter $ginput [dict create {*}[array get copt]]]
                     } else {
                         ## R
-                        incr ::tmdoc::chunkn
+                        #incr ::tmdoc::chunkn
                         set res [tmdoc::r::filter $ginput [dict create {*}[array get copt]]]
-                        waitchunk
+                        #waitchunk
                     }
                     if {$copt(results) eq "show"} {
                         puts $out [tmdoc::block [lindex $res 0] $inmode $copt(pipe)]
@@ -1014,16 +1014,16 @@ proc ::tmdoc::tmdoc {filename outfile args} {
 
                 }
                 while {[regexp {(.*?)`r ([^`]+)`(.*)$} $line -> pre t post]} {
-                    incr ::tmdoc::chunkn
+                    #incr ::tmdoc::chunkn
                     set res [r::filter $t [dict create pipe R eval true echo false terminal false]]
-                    waitchunk
+                    #waitchunk
                     set res [string trim [lindex $res 0] end]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`py ([^`]+)`(.*)$} $line -> pre t post]} {
-                    incr ::tmdoc::chunkn
+                    #incr ::tmdoc::chunkn
                     set res [python::filter $t [dict create pipe python3 eval true echo false terminal false]]
-                    waitchunk
+                    #waitchunk
                     #qset res [lindex [split [lindex [lindex $res 0] 0] " "] end]
                     set res [regsub {.+> } [lindex $res 0] ""]
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
