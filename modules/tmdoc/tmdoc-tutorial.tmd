@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.16.5 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-11-21 03:49
+date: 2025-11-23 15:49
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1374,6 +1374,20 @@ Let's check if we can continue to work in the shell:
 ```{py}
 print(x1)
 ```
+
+In earlier versions there was a problem when  computations  took longer as the
+Python  pipe then mixed up then the input and the output, we fixed that now by
+only supporting output but not terminal like input lines. Here an example that
+a longer lasting computation does not harm the output.
+
+```{py}
+import time
+x=9
+time.sleep(4)
+print(x)
+```
+
+The value of Pythons x is now `py x`! Should be 9!
 
 
 ### Octave Code Evaluation
