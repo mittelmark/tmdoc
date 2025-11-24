@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.16.5 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.16.6 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-11-23 15:49
+date: 2025-11-24 07:58
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1571,11 +1571,11 @@ your PATH variable.
 Here an example:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.4/tmdoc-0.16.4.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc-0.16.6.bin \
     -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.16.4
+## 0.16.6
 ```
 
 Alternatively    you   can    install    the    latest    version    and   the

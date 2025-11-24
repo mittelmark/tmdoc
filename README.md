@@ -77,13 +77,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.5/tmdoc-0.16.5.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc-0.16.6.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.16.5
+## 0.16.6
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-23 07:15
+date: 2025-11-24 08:00
 ---
 
 ## Testing Tmdoc Installation
@@ -374,8 +374,8 @@ document using Libreoffice.
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
 To have a look at two examples of  Weasyprint  output, you can look at the the
-[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.5/tmdoc-tutorial.pdf) and
-the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.5/tmdoc.pdf) pages for Version 0.16.5.
+[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc-tutorial.pdf) and
+the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc.pdf) pages for Version 0.16.6.
 
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
@@ -516,10 +516,11 @@ as example for such embedded documentation.
     - fixing empty lines at the end of code chunks
     - fixing encoding language trouble in testing
     - adding more tests
-- 2025-11-XX 0.16.6
+- 2025-11-24 0.16.6
     - bold  headers  for  tables  as well in  LaTeX  mode and not only via CSS
-    styles in HTML output
-    - fixing long computing issues in R and Python mode
+      styles in HTML output
+    - fixing long computing issues in R, Octave, Julia and Python mode
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc-tutorial.pdf)
 
 ## TODO
 

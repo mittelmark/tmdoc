@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251124.0640>
+#  Last Modified : <251124.0757>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -58,8 +58,9 @@ exec tclsh "$0" "$@"
 #                                            fixing empty code chunk displays
 #                                            fixing empty lines at the end of code chunks
 #                                            fixing encoding language trouble in testing
-#                  2025-11-XX version 0.16.6 bold column headers 
-#                                            fixing issues with long computations in R and Python
+#                  2025-11-24 version 0.16.6 bold column headers 
+#                                            fixing issues with long computations in R, Octave, Julia and Python
+#
 package require Tcl 8.6-
 package require fileutil
 package require yaml
