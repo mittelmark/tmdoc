@@ -27,10 +27,13 @@ namespace eval tmdoc::octave {
     proc piperead {pipe} {
         variable res
         variable done
+        variable dict
         if {![eof $pipe]} {
             set outline [gets $pipe]
-            if {$outline eq "### DONE"} {
-                lappend done ""
+            if {[regexp "^\[> \]*#### DONE" $outline]} {
+                #incr ::tmdoc::chunkd
+                puts $pipe "fflush(stdout)"
+                after [dict get $dict wait] [list  append ::tmdoc::pipedone "."]
             } elseif {$outline ne "" && ![regexp {Gtk-WARNING} $outline] && ![regexp octave:1 $outline] && ![regexp {ans = 0} $outline]}  {
                 append res "$outline\n"
                 puts $pipe "fflush(stdout)"
@@ -75,9 +78,19 @@ namespace eval tmdoc::octave {
             }
             puts $pipe "$line"
             flush $pipe
-            after [dict get $dict wait] [list append wait ""]
-            vwait wait
+            if {![regexp {^[\s]*$} $line]} {
+                puts $pipe "disp(\"#### DONE ####\");"
+                flush $pipe
+                vwait ::tmdoc::pipedone
+            }
+            #after [dict get $dict wait] [list append wait ""]
+            #vwait wait
         }
+        puts $pipe "disp(\"#### DONE ####\");"
+        flush $pipe
+
+        vwait ::tmdoc::pipedone
+
         #puts $pipe [join $codeLines \n]\n
         #puts $pipe "disp('### DONE');"
         #flush $pipe
