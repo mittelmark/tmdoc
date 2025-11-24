@@ -416,6 +416,40 @@ error: parse error:
            ^
 ```}
 
+tcltest::test tmdoc-octave-1.4 {
+    Checking Octave sleep.
+} -body {
+    string trim [tmdoc::tmeval "```{.oc}
+x=3;
+disp(x);
+y=3;
+pause(3);
+disp(y);
+```
+
+X is `oc disp(x);`!
+"]
+} -result {```octave
+x=3;
+disp(x);
+y=3;
+pause(3);
+disp(y);
+```
+
+```octave
+octave> x=3;
+octave> disp(x);
+3
+octave> y=3;
+octave> pause(3);
+octave> disp(y);
+3
+```
+
+
+X is 3!}
+
 puts stderr "starting R-test"
 
 tcltest::test tmdoc-r-1.1 {
@@ -589,6 +623,89 @@ print(x)
 > print(x)
 Error: object 'x' not found
 ```}
+
+puts stderr "starting Julia test"
+
+tcltest::test tmdoc-julia-1.1 {
+    Checking Julia code
+} -body {
+    string trim [tmdoc::tmeval {```{.pipe pipe="julia" results="show" terminal=true}
+x=1;
+println(x);
+y=x+1;
+println(y);
+```
+}]
+} -result {```julia
+x=1;
+println(x);
+y=x+1;
+println(y);
+```
+
+```julia
+1
+1
+2
+2
+```}
+
+tcltest::test tmdoc-julia-1.2 {
+    Checking Julia code with sleep
+} -body {
+    string trim [tmdoc::tmeval {```{.pipe pipe="julia" results="show" terminal=true}
+x=1;
+sleep(4);
+println(x);
+y=x+1;
+println(y);
+```
+}]
+} -result {```julia
+x=1;
+sleep(4);
+println(x);
+y=x+1;
+println(y);
+```
+
+```julia
+1
+1
+2
+2
+```}
+
+tcltest::test tmdoc-julia-1.3 {
+    Checking Julia code with sleep and inline Julia
+} -body {
+    string trim [tmdoc::tmeval {```{julia results="show"}
+x=1;
+sleep(4);
+println(x);
+y=x+2;
+println(y);
+```
+
+The value of Julias y is `jl y`. Should be three!
+}]
+} -result {```julia
+x=1;
+sleep(4);
+println(x);
+y=x+2;
+println(y);
+```
+
+```julia
+1
+1
+3
+3
+```
+
+
+The value of Julias y is 3. Should be three!}
 
 puts stderr "starting AsciiDoc test"
 
