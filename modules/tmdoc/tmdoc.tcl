@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251124.0757>
+#  Last Modified : <251126.1707>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -209,9 +209,14 @@ proc ::tmdoc::interpReset {} {
             return $res
         }
         proc include {filename} {
+            if {![file exists $filename]} {
+                return "Error: file '$filename' does not exists!"
+            }
+            set enc [::tmdoc::get_encoding $filename]
             if [catch {open $filename r} infh] {
                 return "Cannot open $filename"
             } else {
+                fconfigure $infh -encoding $enc
                 set res ""
                 while {[gets $infh line] >= 0} {
                     append res "$line\n"
@@ -437,6 +442,21 @@ proc tmdoc::block {txt inmode {style ""}} {
         return $res
     }
 }
+proc tmdoc::get_encoding {filename} {
+    set encodings {utf-8 iso8859-1 iso8859-15 iso8859-16 cp1252 cp850}
+    foreach enc $encodings {
+        catch {
+            set f [open $filename "r"]
+            fconfigure $f -encoding $enc
+            set data [read $f]
+            close $f
+        } err
+        if {$err eq ""} {
+            return $enc
+        }
+    }
+}
+
 
 proc tmdoc::iimage {} {
     uplevel 1 {
@@ -521,9 +541,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     }
     set abbrev [dict create default ""]
     if {$arg(-abbrev) ne "" && [file exists $arg(-abbrev)]} {
+        set enc [get_encoding $arg(-abbrev)]
         if [catch {open $arg(-abbrev) r} infha] {
             return code -error "Cannot open $arg(-abbrev)"
         } else {
+            fconfigure $infha -encoding $enc
             set yamltext [read $infha]
             close $infha
             set abbrev [dict create {*}[yaml::yaml2dict $yamltext]]
@@ -543,10 +565,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set out stdout
     }
     if {$arg(-mode) eq "tangle"} {
+        set enc [::tmdoc::get_encoding $filename]
         if [catch {open $filename r} infh] {
             return -code error "Cannot open $filename: $infh"
         } else {
             set flag false
+            fconfigure $infh -encoding $enc
             while {[gets $infh line] >= 0} {
                 if {[regexp {^[> ]{0,2}```\{\.?tcl[^a-zA-Z]} $line]} {
                     set flag true
@@ -590,9 +614,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         label chunk-nn fig.path . fig.width 0 ext png]
     interpReset
     interp eval intp "set ::inmode $inmode"
+    set enc [::tmdoc::get_encoding $filename]
     if [catch {open $filename r} infh] {
         return -code error "Cannot open $filename: $infh"
     } else {
+        fconfigure $infh -encoding $enc
         set chunki 0
         set lnr 0
         set yamlflag false
