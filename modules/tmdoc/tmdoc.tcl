@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251126.1707>
+#  Last Modified : <251126.1733>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -60,11 +60,13 @@ exec tclsh "$0" "$@"
 #                                            fixing encoding language trouble in testing
 #                  2025-11-24 version 0.16.6 bold column headers 
 #                                            fixing issues with long computations in R, Octave, Julia and Python
+#                  2025-11-XX version 0.16.7 fixing issues with Octave mode and fig=true
+#                                            fixing encoding issues if text contains umlauts and other non-latin letters
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.16.6
+package provide tmdoc::tmdoc 0.16.7
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -208,11 +210,25 @@ proc ::tmdoc::interpReset {} {
             }
             return $res
         }
+        proc get_encoding {filename} {
+            set encodings {utf-8 iso8859-1 iso8859-15 iso8859-16 cp1252 cp850}
+            foreach enc $encodings {
+                catch {
+                    set f [open $filename "r"]
+                    fconfigure $f -encoding $enc
+                    set data [read $f]
+                    close $f
+                } err
+                if {$err eq ""} {
+                    return $enc
+                }
+            }
+        }
         proc include {filename} {
             if {![file exists $filename]} {
                 return "Error: file '$filename' does not exists!"
             }
-            set enc [::tmdoc::get_encoding $filename]
+            set enc [get_encoding $filename]
             if [catch {open $filename r} infh] {
                 return "Cannot open $filename"
             } else {

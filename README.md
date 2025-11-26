@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-24 08:00
+date: 2025-11-26 17:34
 ---
 
 ## Testing Tmdoc Installation
@@ -521,6 +521,9 @@ as example for such embedded documentation.
       styles in HTML output
     - fixing long computing issues in R, Octave, Julia and Python mode
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc-tutorial.pdf)
+- 2025-11-XX version 0.16.7 
+    - fixing issues with Octave mode and `fig=true`
+    - fixing encoding issues if text contains umlauts and other non-latin letters
 
 ## TODO
 

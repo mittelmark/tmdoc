@@ -10,7 +10,7 @@ default:
 	TCLLIBPATH="~/workspace/tcllib/modules" \
 		~/workspace/tcllib/apps/dtplite -o ../../apps/tmdoc.html html ../../apps/tmdoc.man
 test:
-	TCLLIBPATH=.. LANG=en_US.UTF-8 tclsh tmdoc.test
+	TCLLIBPATH=.. tclsh -encoding cp1252 tmdoc.test
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc test-man.tman test-man.man
 
 tmdoc:

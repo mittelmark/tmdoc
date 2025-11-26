@@ -800,5 +800,22 @@ col1,col2,col3
   table.hline(),
 )}
 
+puts stderr "starting Umlaut testing"
+
+tcltest::test tmdoc-umlaut-1.1 {
+    Checking German Umlauts
+} -body {
+ string trim [tmdoc::tmeval {## Test
+
+This is some test with Umlauts like ÄÖÜ and äöü.
+
+The letter ß is another serious problem in some cases.
+}]
+}  -result {## Test
+
+This is some test with Umlauts like ÄÖÜ and äöü.
+
+The letter ß is another serious problem in some cases.}
+
 ::tcltest::cleanupTests 0
 
