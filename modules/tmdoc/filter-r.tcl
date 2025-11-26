@@ -171,7 +171,7 @@ namespace eval tmdoc::r {
         }
         set def [dict create pipe $r results show eval false label null fig false \
                  fig.width 600 fig.height 600 fig.path . \
-                 include true terminal true wait 100]
+                 include true terminal true wait 50]
         set dict [dict merge $def $cdict]
         if {![file isdirectory [dict get $dict fig.path]]} {
             file mkdir [dict get $dict fig.path]

@@ -72,7 +72,7 @@ namespace eval tmdoc::julia {
         variable dict
         set res ""
         set def [dict create results show eval false label null \
-                 include true terminal true wait 400]
+                 include true terminal true wait 100]
         set dict [dict merge $def $cdict]
         
         set codeLines [list]
