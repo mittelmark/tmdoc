@@ -1,0 +1,25 @@
+---
+title: This is some ling title
+author: MicroEmacs User
+date: 2025-11-26 16:55
+---
+
+
+## Umlaut examples
+
+Here some texts with umlauts.
+
+ÄÖÜ can cause problems as well as their lowercase variants: äöü.
+
+The letter ß is something special.
+
+## Table example
+
+| col1  | col2 | col 3 |
+|:-----:|:----:|:-----:|
+|   1   |  2   | 3    |
+|   4   |  5   | 6    |
+
+
+Some more text then here ...
+
