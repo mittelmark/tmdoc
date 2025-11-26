@@ -37,7 +37,6 @@ namespace eval tmdoc::octave {
                 puts $pipe "fflush(stdout)"
                 after [dict get $dict wait] [list  append ::tmdoc::pipedone "."]
             } elseif {[regexp ".*#### SHOW OFF" $outline]} {
-                puts stderr "show off"
                 set show false
             } elseif {[regexp ".*#### SHOW ON" $outline]} {
                 set show true
@@ -72,17 +71,12 @@ namespace eval tmdoc::octave {
         }
         foreach line $codeLines {
             if {[dict get $dict terminal]} {
-                if {[regexp {^ *[^\s]} $line] || [regexp  {^ *$} $line]} {
-                    append res "> $line\n"
-                } else {
-                    if {[regexp {#### SHOW OFF} $line]} {
-                        puts stderr $line
-                        set mshow false
-                    } elseif {[regexp {#### SHOW ON} $line]} {
-                        set mshow true
-                    } elseif {$mshow && ![regexp {.+#### SHOW.+} $line]} {
-                        append res "octave> $line\n"
-                    }
+                if {[regexp {#### SHOW OFF} $line]} {
+                    set mshow false
+                } elseif {[regexp {#### SHOW ON} $line]} {
+                    set mshow true
+                } elseif {$mshow && [regexp {^ *[^\s]} $line]} {
+                    append res "octave> $line\n"
                 }
             }
             puts $pipe "$line"
@@ -99,7 +93,7 @@ namespace eval tmdoc::octave {
 
         ## skip last empty line > \n
         if {[dict get $dict terminal]} {
-            set res "[string range $res 0 end-4]\n"
+            set res [string trim $res]
         }
         return $res
     }
