@@ -13,6 +13,8 @@ namespace eval tmdoc::octave {
     set res ""
     variable dict
     variable done
+    variable show
+    set show true
     set done [list]
     # Open a pipe to Python interpreter for reading and writing
     proc getCode {filename} {
@@ -28,13 +30,18 @@ namespace eval tmdoc::octave {
         variable res
         variable done
         variable dict
+        variable show
         if {![eof $pipe]} {
             set outline [gets $pipe]
             if {[regexp "^\[> \]*#### DONE" $outline]} {
-                #incr ::tmdoc::chunkd
                 puts $pipe "fflush(stdout)"
                 after [dict get $dict wait] [list  append ::tmdoc::pipedone "."]
-            } elseif {$outline ne "" && ![regexp {Gtk-WARNING} $outline] && ![regexp octave:1 $outline] && ![regexp {ans = 0} $outline]}  {
+            } elseif {[regexp ".*#### SHOW OFF" $outline]} {
+                puts stderr "show off"
+                set show false
+            } elseif {[regexp ".*#### SHOW ON" $outline]} {
+                set show true
+            } elseif {$outline ne "" && $show && ![regexp {Gtk-WARNING} $outline] && ![regexp octave:1 $outline] && ![regexp {ans = 0} $outline]}  {
                 append res "$outline\n"
                 puts $pipe "fflush(stdout)"
             }
@@ -47,7 +54,9 @@ namespace eval tmdoc::octave {
         variable pipe
         variable res
         variable dict
+        set mshow true
         set res ""
+        
         if {$pipe eq ""} {
             set res ""
             set pipe [open "|octave --interactive --no-gui --norc --silent 2>@1" r+]
@@ -57,23 +66,23 @@ namespace eval tmdoc::octave {
             puts $pipe "page_screen_output(1);"
             puts $pipe "page_output_immediately(1);"
             puts $pipe "fflush(stdout)"
+            puts $pipe "disp(\"#### DONE ####\");"
             flush $pipe
-            after [dict get $dict wait] [list append wait ""]
-            vwait wait
-            #set ::fpipe::pipecode ""
-        }
-        if  {[dict get $dict fig]} {
-            puts $pipe "aux = figure('visible','off');"
-            flush $pipe
-            after [dict get $dict wait] [list append wait ""]
-            vwait wait
+            vwait ::tmdoc::pipedone
         }
         foreach line $codeLines {
             if {[dict get $dict terminal]} {
-                if {[regexp {^  } $line] || [regexp  {^ *$} $line]} {
+                if {[regexp {^ *[^\s]} $line] || [regexp  {^ *$} $line]} {
                     append res "> $line\n"
                 } else {
-                    append res "octave> $line\n"
+                    if {[regexp {#### SHOW OFF} $line]} {
+                        puts stderr $line
+                        set mshow false
+                    } elseif {[regexp {#### SHOW ON} $line]} {
+                        set mshow true
+                    } elseif {$mshow && ![regexp {.+#### SHOW.+} $line]} {
+                        append res "octave> $line\n"
+                    }
                 }
             }
             puts $pipe "$line"
@@ -83,32 +92,20 @@ namespace eval tmdoc::octave {
                 flush $pipe
                 vwait ::tmdoc::pipedone
             }
-            #after [dict get $dict wait] [list append wait ""]
-            #vwait wait
         }
         puts $pipe "disp(\"#### DONE ####\");"
         flush $pipe
-
         vwait ::tmdoc::pipedone
 
-        #puts $pipe [join $codeLines \n]\n
-        #puts $pipe "disp('### DONE');"
-        #flush $pipe
-        #vwait ::tmdoc::octave::done
         ## skip last empty line > \n
         if {[dict get $dict terminal]} {
             set res "[string range $res 0 end-4]\n"
-        }
-        if {[dict get $dict fig]} {
-            puts $pipe "print(aux,'[dict get $dict label].[dict get $dict ext]','-d[dict get $dict ext]','-S[dict get $dict fig.width],[dict get $dict fig.height]');"
-            flush $pipe
         }
         return $res
     }
     proc start {filename} {
         set codeLines [getCode $filename]
         pipestart $codeLines
-        # Write the code lines to Python's stdin through the pipe
     }
     proc filter {cnt cdict} {
         variable dict
@@ -117,10 +114,28 @@ namespace eval tmdoc::octave {
                  include true terminal true wait 300 fig false \
                  fig.width 600 fig.height 600]
         set dict [dict merge $def $cdict]
-        
-        set codeLines [list]
+        if {[dict get $dict fig.width] == 0} {
+            if {[dict get $dict ext] in [list png svg]} {
+                dict set dict fig.width 600
+            } else {
+                dict set dict fig.width 600
+            }
+        }
+        if {[dict get $dict fig.height] == 0} {
+            dict set dict fig.height [dict get $dict fig.width]
+        }
+        if  {[dict get $dict fig]} {
+            set codeLines [list "disp(\"#### SHOW OFF ####\");" "aux = figure('visible','off');" "disp(\"#### SHOW ON ####\");"]
+        } else {
+            set codeLines [list]
+        }
         foreach line [split $cnt \n] {
             lappend codeLines $line
+        }
+        if  {[dict get $dict fig]} {
+            lappend codeLines "disp(\"#### SHOW OFF ####\");"
+            lappend codeLines "print(aux,'[dict get $dict label].[dict get $dict ext]','-d[dict get $dict ext]','-S[dict get $dict fig.width],[dict get $dict fig.height]');"
+            lappend codeLines "disp(\"#### SHOW ON ####\");"
         }
         if {[dict get $dict eval]} {
             set res [pipestart $codeLines]
