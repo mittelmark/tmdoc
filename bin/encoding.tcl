@@ -2,6 +2,12 @@
 
 proc get_encoding {filename} {
     set encodings {utf-8 iso8859-1 iso8859-15 iso8859-16 cp1252 cp850}
+    set all [encoding names]
+    foreach enc $all {
+        if {$enc ni $encodings} {
+            lappend encoding $enc
+        }
+    }
     foreach enc $encodings {
         catch {
             set f [open $filename "r"]
