@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-30 12:59
+date: 2025-11-30 17:32
 ---
 
 ## Testing Tmdoc Installation
@@ -435,7 +435,9 @@ as example for such embedded documentation.
 
 - 2025-11-XX: 0.17.0
     - adding support for true HTML comments
-    - adding support for HTML tags like kbd to display menu entries and keyboard shortcuts
+    - adding support  for HTML  tags like kbd to  display  menu  entries  and
+      keyboard shortcuts
+    - adding support for `` `include FILENAME` `` in normal text
 - 2025-11-27 version 0.16.7 
     - fixing issues with Octave mode and `fig=true`
     - fixing encoding issues if text contains umlauts and other non-latin letters

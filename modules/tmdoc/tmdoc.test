@@ -103,7 +103,24 @@ Some text
 
 }
 
-tcltest::test tmdoc-test-1.7 {
+tcltest::test tmdoc-test-1.7 {checking include} -body {
+   tmdoc::tmeval "
+Some text
+
+`include include.md`
+
+Some text
+"
+} -result {
+Some text
+
+## Hello Include
+
+Some text
+
+}
+
+tcltest::test tmdoc-test-1.8 {
     Calling my tmdoc::tmeval with results=asis 
     to display a table using the list2md command
 } -body {
@@ -125,7 +142,7 @@ Some text
 
 }
 
-tcltest::test tmdoc-test-1.8 {
+tcltest::test tmdoc-test-1.9 {
     Calling my tmdoc::tmeval with results=asis 
     to display a table using csv input
 } -body {
@@ -150,7 +167,7 @@ Some text
 
 }
 
-tcltest::test tmdoc-test-1.9 {
+tcltest::test tmdoc-test-1.10 {
     Calling my tmdoc::tmeval with alert message
     for a note
 } -body {
@@ -162,7 +179,7 @@ This is a note!
 </p></div>}
 
 
-tcltest::test tmdoc-test-1.10 {
+tcltest::test tmdoc-test-1.11 {
     Checking abbreviations in the YAML header.
 } -body {
     string trim [tmdoc::tmeval "---
@@ -183,7 +200,7 @@ author: Max Musterman
 
 Max Musterman}
 
-tcltest::test tmdoc-test-1.11 {
+tcltest::test tmdoc-test-1.12 {
     Checking space around = sign in the code chunk options
 } -body {
     string trim [tmdoc::tmeval "```{.tcl eval = TRUE}
@@ -201,22 +218,30 @@ set x
 ```}
 
 
-tcltest::test tmdoc-test-1.12 {
+tcltest::test tmdoc-test-1.13 {
     Checking kbd tag with complete tcl code
 } -body {
     string trim [tmdoc::tmeval "Example for kbd tag:
 `tcl tag kbd Ctrl-x`
-                 
+
 save a file: `kbd Ctrl-x` `kbd Ctrl-s`.
 
 menu entry: `menu File` - `menu Save`.
+
+Now a menu which is given as a list:
+
+Change Indent width in Geany: `menu {Document {Indent Type} Spaces}`.
 "]
 } -result {Example for kbd tag:
 <kbd>Ctrl-x</kbd>
-                 
+
 save a file: <kbd>Ctrl-x</kbd> <kbd>Ctrl-s</kbd>.
 
-menu entry: <kbd class="menu">File</kbd> - <kbd class="menu">Save</kbd>.}
+menu entry: <kbd class="menu">File</kbd> - <kbd class="menu">Save</kbd>.
+
+Now a menu which is given as a list:
+
+Change Indent width in Geany: <kbd class="menu">Document</kbd> &#8594; <kbd class="menu">Indent Type</kbd> &#8594; <kbd class="menu">Spaces</kbd>.}
 
 puts stderr "starting Comment test"
 tcltest::test tmdoc-comment-1.1 {

@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251130.1309>
+#  Last Modified : <251130.1731>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -64,6 +64,7 @@ exec tclsh "$0" "$@"
 #                                            fixing encoding issues if text contains umlauts and other non-latin letters
 #                  2025-12-XX version 0.17.0 adding support for true HTML comments
 #                                            adding support for HTML tags like kbd to display menu entries and keyboard shortcuts
+#                                            adding support for `include filename` outside of triple quotes
 #
 package require Tcl 8.6-
 package require fileutil
@@ -304,7 +305,16 @@ proc ::tmdoc::interpReset {} {
             if {$class eq ""} {
                 return "<$tag>$text</$tag>"
             } else {
-                return "<${tag} class=\"${class}\">${text}</$tag>"
+                if {$tag eq "kbd" && $class eq "menu" && [llength $text] > 1} {
+                    set res "<${tag} class=\"${class}\">[lindex ${text} 0]</$tag>"
+                    foreach t [lrange $text 1 end] {
+                        append res " &#8594; "
+                        append res "<${tag} class=\"${class}\">${t}</$tag>"
+                    }
+                    return $res
+                } else {
+                    return "<${tag} class=\"${class}\">${text}</$tag>"
+                }
             }
         }
     }
@@ -691,6 +701,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set line [regsub {^\s*\[@references\]\s*$} $line "`tcl citer::bibliography`"]
                 set line [regsub -all {`kbd ([^`]+)`} $line "`tcl tag kbd \\1`"]
                 set line [regsub -all {`menu ([^`]+)`} $line "`tcl tag kbd \\1 menu`"]
+                set line [regsub -all {`include ([^`]+)`} $line "`tcl include \\1`"]
             }
             set line [regsub {^\s*\[@references\]\s*$} $line "`tcl citer::bibliography`"]
             incr lnr
