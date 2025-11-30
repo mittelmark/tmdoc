@@ -200,6 +200,47 @@ set x
 ==> 1
 ```}
 
+
+tcltest::test tmdoc-test-1.12 {
+    Checking kbd tag with complete tcl code
+} -body {
+    string trim [tmdoc::tmeval "Example for kbd tag:
+`tcl tag kbd Ctrl-x`
+                 
+save a file: `kbd Ctrl-x` `kbd Ctrl-s`.
+
+menu entry: `menu File` - `menu Save`.
+"]
+} -result {Example for kbd tag:
+<kbd>Ctrl-x</kbd>
+                 
+save a file: <kbd>Ctrl-x</kbd> <kbd>Ctrl-s</kbd>.
+
+menu entry: <kbd class="menu">File</kbd> - <kbd class="menu">Save</kbd>.}
+
+puts stderr "starting Comment test"
+tcltest::test tmdoc-comment-1.1 {
+    Checking comment syntax
+} -body {
+    string trim [tmdoc::tmeval "This some text.
+
+<!-- and now follows some comment
+and here another line
+-->
+
+And here again text which should be displayed.
+
+Followed by some text with an <!-- comment -->
+inline comment.
+"]
+} -result {This some text.
+
+
+And here again text which should be displayed.
+
+Followed by some text with an 
+inline comment.}
+
 puts stderr "starting Python test"
 
 tcltest::test tmdoc-python-1.1 {

@@ -54,6 +54,47 @@ table tr td {
   padding: 5px;
 }
 
+/* https://codepen.io/Harrix/pen/pZZZxg */
+
+kbd {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: grey20;
+  font-size: 100%;
+  font-family: monospace, sans-serif;
+  vertical-align: baseline;
+  background: transparent;
+  border-color: #e6e6e6 #bebebe #bebebe #e6e6e6;
+  border-style: solid;
+  border-width: 1px 3px 4px;
+  padding: 0 5px;
+  background-color: #d2d2d2;
+  background-color: rgba(210, 210, 210, 0.9);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+kbd.menu {
+  -moz-border-radius: 3px;
+  -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;
+  -webkit-border-radius: 3px;
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;
+  color: #333;
+  display: inline-block;
+  font-family: monospace, sans-serif;
+  font-size: 100%;
+  line-height: 1.4;
+  margin: 0 0.1em;
+  padding: 0.1em 0.6em;
+  text-shadow: 0 1px 0 #fff;
+}
 /* Alerts: */
 
 .side-warning, .side-caution, .side-info, .side-question, .side-error, .side-note, .side-tip, .side-important, .side-hint  {

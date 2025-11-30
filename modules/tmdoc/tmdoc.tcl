@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251127.0549>
+#  Last Modified : <251130.1309>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -62,11 +62,13 @@ exec tclsh "$0" "$@"
 #                                            fixing issues with long computations in R, Octave, Julia and Python
 #                  2025-11-27 version 0.16.7 fixing issues with Octave mode and fig=true
 #                                            fixing encoding issues if text contains umlauts and other non-latin letters
+#                  2025-12-XX version 0.17.0 adding support for true HTML comments
+#                                            adding support for HTML tags like kbd to display menu entries and keyboard shortcuts
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.16.7
+package provide tmdoc::tmdoc 0.17.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -298,6 +300,13 @@ proc ::tmdoc::interpReset {} {
                 return NN
             }
         }
+        proc tag {tag text {class ""}} {
+            if {$class eq ""} {
+                return "<$tag>$text</$tag>"
+            } else {
+                return "<${tag} class=\"${class}\">${text}</$tag>"
+            }
+        }
     }
     interp eval intp {
         proc gputs {} {
@@ -329,16 +338,17 @@ proc ::tmdoc::interpReset {} {
     
     interp eval itry {proc puts {args} {}}
     interp eval itry {proc include {filename} {}}
-    interp eval itry {proc list2tab {header data} {}}    
+    interp eval itry {proc list2tab {header data} {}}
     interp eval itry {proc list2mdtab {header data} {}}
-    interp eval itry {proc nfig {{label ""}} {}}    
-    interp eval itry {proc rfig {label} {}}        
-    interp eval itry {proc ntab {{label ""}} {}}    
-    interp eval itry {proc rtab {label} {}}        
-    interp eval itry {proc youtube {video args} {}}            
+    interp eval itry {proc nfig {{label ""}} {}}
+    interp eval itry {proc rfig {label} {}}
+    interp eval itry {proc ntab {{label ""}} {}}
+    interp eval itry {proc rtab {label} {}}
+    interp eval itry {proc tag {tag text {class ""}} {}}
+    interp eval itry {proc youtube {video args} {}}
     interp eval itry {namespace eval citer { } }
     interp eval itry {proc citer::bibliography {{filename ""}} {}}
-    interp eval itry {proc citer::cite {key} {}}        
+    interp eval itry {proc citer::cite {key} {}}
 }
 
 proc ::tmdoc::dia2kroki {text {dia graphviz} {ext svg}} {
@@ -653,6 +663,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         set chunki 0
         set lnr 0
         set yamlflag false
+        set comment false
         set yamltext ""
         set toc ""
         if {$arg(-toc)} {
@@ -678,7 +689,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             }
             if {$mode eq "text" && !$yamlflag} {
                 set line [regsub {^\s*\[@references\]\s*$} $line "`tcl citer::bibliography`"]
+                set line [regsub -all {`kbd ([^`]+)`} $line "`tcl tag kbd \\1`"]
+                set line [regsub -all {`menu ([^`]+)`} $line "`tcl tag kbd \\1 menu`"]
             }
+            set line [regsub {^\s*\[@references\]\s*$} $line "`tcl citer::bibliography`"]
             incr lnr
             if {$yamlflag && [regexp {^---} $line]} {
                 set yamlflag false
@@ -700,7 +714,20 @@ proc ::tmdoc::tmdoc {filename outfile args} {
             }
             if {!$yamlflag && $lnr < 3 && [regexp {^---} $line]} {
                 set yamlflag true
-            } 
+            }
+            if {$mode eq "text" && !$comment && [regexp {<!--} $line]} {
+                if {[regexp {<!-- .+ -->} $line]} {
+                    set line [regsub -all {<!-- .+ -->} $line ""]
+                } else {
+                    set comment true
+                    continue
+                }
+            } elseif {$comment && [regexp -- {-->} $line]} {
+                set comment false 
+                continue
+            } elseif {$comment} {
+                continue
+            }
             if {$mode eq "text" && $yaml && ![regexp {```} $line] && [regexp {\{\w+\}} $line]} {
                 set abbrevs [tmdoc::extractAbbreviations $line]
                 foreach key [dict keys $abbrev] {

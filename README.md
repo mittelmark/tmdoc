@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-28 07:33
+date: 2025-11-30 12:59
 ---
 
 ## Testing Tmdoc Installation
@@ -433,60 +433,39 @@ as example for such embedded documentation.
 
 ## Changes
 
-- 2020-02-19: 0.1 first release
-- 2020-02-21: 0.2 release
-    - puts -nonewline fix in the output
-    - outfile and tangle options
-    - manual page ready
-- 2020-02-23: 0.3 release - fix for puts into channels
-- 2020-11-08: 0.4 release
-    - LaTeX support
-    - project moved to github 
-- 2021-12-19 0.5 release - making code structure like in tcllib
-- 2025-01-04 0.6 tcllib and Tcl 9 aware version
-- 2025-01-18 0.7.0
-    - support for  _results="asis"_ for instance to create Markdown or SVG code
-    - function  _include_ to  include other Markdown files 
-    - function  _list2mdtab_ to  add tables within code chunks
-- 2025-03-21 0.8.0
-    - support for shell code embedding to generate graphics
-- 2025-04-02 0.9.0
-    - better support for Tcl man pages (images, code examples)
-    - support for kroki code chunks
-- 2025-06-09 0.10.0    
-    - support for embedded code of different programming languages like 
-      C, C++, Python etc and displaying text output from the code
-- 2025-09-14 0.11.0    
-- 2025-09-30 0.12.0 
-    - support for LaTeX quations using [https://math.vercel.app](https://math.vercel.app)
-    - support for embedding Youtube videos creating an iframe
-    - support for embedding citations based on BibteX files
-- 2025-10-02 0.13.0 
-    - support for abbreviations declared in the YAML header or in YAML files
-    - support for [Markdown alerts](https://github.com/orgs/community/discussions/16925)
-    - support for embedding CSV data for creating Markdown tables
-- 2025-10-06 0.14.0
-    - support for statistical reports in R,  Python or Octave
-    - switching  to   https://latex.codecogs.com/   for  LaTeX  equations  as
-      math.vercel.app  svgs can't be converted  to PNG needed for inclusion into
-      pdf documents
-    - documentation updates, docu for each filter started
-- 2025-10-13 0.14.1
-    - fixes for fig=true for R pipes and setting the proper image size for png images
-    - fix for new Linux distros having no `python` alias for `python3` anymore, `python3` is
-      now the default for the Python pipe
-- 2025-10-15 0.14.2
-    - kroki filter now uses local installs of GraphViz (dot), PlantUML (plantuml) and Ditaa (ditaa)
-      command line applications avoding fetching kroki URL's if applications are available locally
-- 2025-10-23 0.15.0 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc-tutorial.pdf)
-    - support for  AsciiDoc - Tcl code chunks,  Shell code chunks, CSV tables,
-    ...
-    - support for Typst - Tcl code chunks, Shell code chunks, CSV tables, ...
-    - support for Yaml file based abbreviations as well for non Markdown files
-- 2025-10-26 0.15.1 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc-tutorial.pdf)
-    - fix for multiple users at the same machine run tmdoc
-- 2025-10-30 0.15.2 - renamed try interp to itry to avoid name clash with try command
-- 2025-11-01 0.15.3 - fix for triple backtick quotes within code chunks [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc-tutorial.pdf)
+- 2025-11-XX: 0.17.0
+    - adding support for true HTML comments
+    - adding support for HTML tags like kbd to display menu entries and keyboard shortcuts
+- 2025-11-27 version 0.16.7 
+    - fixing issues with Octave mode and `fig=true`
+    - fixing encoding issues if text contains umlauts and other non-latin letters
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.7/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.7/tmdoc-tutorial.pdf)
+- 2025-11-24 0.16.6
+    - bold  headers  for  tables  as well in  LaTeX  mode and not only via CSS
+      styles in HTML output
+    - fixing long computing issues in R, Octave, Julia and Python mode
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc-tutorial.pdf)
+- 2025-11-21 0.16.5
+    - embedding tmdoc.sty for compiling LaTeX documents
+    - fixing empty code chunk displays
+    - fixing empty lines at the end of code chunks
+    - fixing encoding language trouble in testing
+    - adding more tests
+- 2025-11-15 0.16.4
+    - fix for  Windows  where R errors  break the pipe to Rterm and you got an
+      empty channel message
+    - better error handling for Python code chunks by redirecting to stdout  
+- 2025-11-13 0.16.3
+    - fix for inline R code chunks now as well with longer text
+- 2025-11-06 0.16.2
+    - fix for space around = sign in code chunk options
+    - toc fix for header lines in YAML and in code block sections
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc-tutorial.pdf)        
+- 2025-11-05 0.16.1
+    - removing curly braces for code output to ensure pandoc compatibility
+    - fix for single quotes for code chunk arguments
+    - fix for width=0 as default for R plot 
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc-tutorial.pdf)
 - 2025-11-03 0.16.0 
     - adding fig.path option for R code chunks and renamed imagepath to fig.path option for kroki as well
     - adding `--toc`, `-toc` option for Markdown files to create a Markdown file with a table of contents, ready for inclusion
@@ -495,36 +474,59 @@ as example for such embedded documentation.
     - initial [Julia](https://julialang.org) support
     - fixing fig.width issues for LaTeX formulas
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.0/tmdoc-tutorial.pdf)
-- 2025-11-05 0.16.1
-    - removing curly braces for code output to ensure pandoc compatibility
-    - fix for single quotes for code chunk arguments
-    - fix for width=0 as default for R plot 
-    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.1/tmdoc-tutorial.pdf)
-- 2025-11-06 0.16.2
-    - fix for space around = sign in code chunk options
-    - toc fix for header lines in YAML and in code block sections
-    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.2/tmdoc-tutorial.pdf)        
-- 2025-11-13 0.16.3
-    - fix for inline R code chunks now as well with longer text
-- 2025-11-15 0.16.4
-    - fix for  Windows  where R errors  break the pipe to Rterm and you got an
-      empty channel message
-    - better error handling for Python code chunks by redirecting to stdout  
-- 2025-11-21 0.16.5
-    - embedding tmdoc.sty for compiling LaTeX documents
-    - fixing empty code chunk displays
-    - fixing empty lines at the end of code chunks
-    - fixing encoding language trouble in testing
-    - adding more tests
-- 2025-11-24 0.16.6
-    - bold  headers  for  tables  as well in  LaTeX  mode and not only via CSS
-      styles in HTML output
-    - fixing long computing issues in R, Octave, Julia and Python mode
-    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.6/tmdoc-tutorial.pdf)
-- 2025-11-27 version 0.16.7 
-    - fixing issues with Octave mode and `fig=true`
-    - fixing encoding issues if text contains umlauts and other non-latin letters
-    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.7/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.7/tmdoc-tutorial.pdf)
+- 2025-11-01 0.15.3 - fix for triple backtick quotes within code chunks [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.3/tmdoc-tutorial.pdf)
+- 2025-10-30 0.15.2 - renamed try interp to itry to avoid name clash with try command
+- 2025-10-26 0.15.1 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.1/tmdoc-tutorial.pdf)
+    - fix for multiple users at the same machine run tmdoc
+- 2025-10-23 0.15.0 - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.15.0/tmdoc-tutorial.pdf)
+    - support for  AsciiDoc - Tcl code chunks,  Shell code chunks, CSV tables, ...
+    - support for Typst - Tcl code chunks, Shell code chunks, CSV tables, ...
+    - support for Yaml file based abbreviations as well for non Markdown files
+- 2025-10-15 0.14.2
+    - kroki filter now uses local installs of GraphViz (dot), PlantUML (plantuml) and Ditaa (ditaa)
+      command line applications avoding fetching kroki URL's if applications are available locally
+- 2025-10-13 0.14.1
+    - fixes for fig=true for R pipes and setting the proper image size for png images
+    - fix for new Linux distros having no `python` alias for `python3` anymore, `python3` is
+      now the default for the Python pipe
+- 2025-10-06 0.14.0
+    - support for statistical reports in R,  Python or Octave
+    - switching  to   https://latex.codecogs.com/   for  LaTeX  equations  as
+      math.vercel.app  svgs can't be converted  to PNG needed for inclusion into
+      pdf documents
+    - documentation updates, docu for each filter started
+- 2025-10-02 0.13.0 
+    - support for abbreviations declared in the YAML header or in YAML files
+    - support for [Markdown alerts](https://github.com/orgs/community/discussions/16925)
+    - support for embedding CSV data for creating Markdown tables
+- 2025-09-30 0.12.0 
+    - support for LaTeX quations using [https://math.vercel.app](https://math.vercel.app)
+    - support for embedding Youtube videos creating an iframe
+    - support for embedding citations based on BibteX files
+- 2025-09-14 0.11.0
+- 2025-06-09 0.10.0
+    - support for embedded code of different programming languages like 
+      C, C++, Python etc and displaying text output from the code
+- 2025-04-02 0.9.0
+    - better support for Tcl man pages (images, code examples)
+    - support for kroki code chunks
+- 2025-03-21 0.8.0
+    - support for shell code embedding to generate graphics
+- 2025-01-18 0.7.0
+    - support for  _results="asis"_ for instance to create Markdown or SVG code
+    - function  _include_ to  include other Markdown files 
+    - function  _list2mdtab_ to  add tables within code chunks
+- 2025-01-04 0.6 tcllib and Tcl 9 aware version
+- 2021-12-19 0.5 release - making code structure like in tcllib
+- 2020-11-08: 0.4 release
+    - LaTeX support
+    - project moved to github 
+- 2020-02-23: 0.3 release - fix for puts into channels
+- 2020-02-21: 0.2 release
+    - puts -nonewline fix in the output
+    - outfile and tangle options
+    - manual page ready
+- 2020-02-19: 0.1 first release
 
 ## TODO
 

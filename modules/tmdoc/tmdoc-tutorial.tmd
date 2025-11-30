@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.16.7 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.17.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-11-27 06:14
+date: 2025-11-30 12:20
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1093,6 +1093,59 @@ __R2__,15,16,17,18
 __R3__,19,20,21,22
 __R4__,23,24,25,26
 ```
+
+## HTML Tags
+
+Markdown  only  supports  a subset of HTML tags. The tmdoc  package  to insert
+un-supported  HTML tags using the 'tcl tag TAGNAME TEXT CLASSNAME' syntax. For
+instance you can inser the 'kbd' tag like this:
+
+Example:
+```
+In MicroEmacs as in Bash the key combination 
+`tcl tag kbd Ctrl` + `tcl tag kbd t` can be used to transpose two characters.
+```
+
+And here the output:
+
+In MicroEmacs as in Bash the key combination 
+`tcl tag kbd Ctrl` + `tcl tag kbd t` can be used to transpose two characters.
+
+The styling is prodded by the tmdoc.css style sheet. That style sheet support
+as well a menu class for the 'kbd' tag to show menu entries. Here an example.
+
+Here an example:
+
+```
+Files in MicroEmacs can be either saved via the 
+`tcl tag kbd Ctrl-x`  `tcl tag kbd Ctrl-s` keys or via the menu entry
+`tcl tag kbd File menu` &#8594; `tcl tag kbd Save menu`.
+```
+
+And here the output:
+
+Files in MicroEmacs can be either saved via the 
+`tcl tag kbd Ctrl-x`  `tcl tag kbd Ctrl-s` keys or via the menu entry
+`tcl tag kbd File menu` &#8594; `tcl tag kbd Save menu`.
+
+
+As this is a little  bit  tedious  to write but I need that code  often for my
+lectures __tmdoc__ provides as well two short inline code injections.
+
+```
+`kbd text` and `menu text` 
+```
+
+which translates to 
+
+`kbd text` and `menu text` 
+
+Here an other example:
+
+Short  code  snippets  are  configured  in Geany vs the  `menu  Tools` -> 
+`menu "Configuration Files"` -> `menu snippets.conf` menu entry.
+entries.
+
 
 ## Statistical Reports
 
