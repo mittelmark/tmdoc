@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.17.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-12-01 10:06
+date: 2025-12-01 11:39
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1156,13 +1156,13 @@ lectures __tmdoc__ provides as well two short methods using 'kbd' and 'menu'
 for  inline code injections. Here an example:
 
 ```
-`kbd Ctrl-x` `kbd Ctrl-s` or  `menu File` &#8595; `menu Save` are saving a file
+`kbd Ctrl-x` `kbd Ctrl-s` or  `menu File` &#8594; `menu Save` are saving a file
 with MicroEmacs.
 ```
 
 which translates to:
 
-`kbd Ctrl-x` `kbd Ctrl-s` or  `menu File` &#8595; `menu Save` are saving a file
+`kbd Ctrl-x` `kbd Ctrl-s` or  `menu File` &#8594; `menu Save` are saving a file
 with MicroEmacs.
  
 
@@ -1170,15 +1170,18 @@ Here an other example using 'menu':
 
 ```
 Short  code  snippets  are  configured  in Geany vs the  `menu  Tools` -> 
-`menu "Configuration Files"` -> `menu snippets.conf` menu entry.
+`menu "Configuration&nsbp;Files"` -> `menu snippets.conf` menu entry.
 entries.
 ```
 
 And here the output:
 
 Short  code  snippets  are  configured  in Geany vs the  `menu  Tools` -> 
-`menu "Configuration Files"` -> `menu snippets.conf` menu entry.
+`menu "Configuration&nbsp;Files"` -> `menu snippets.conf` menu entry.
 entries.
+
+Please  not that if you give a single  string  containing  a space you have to
+write the HTML code for a string there so `&nbsp;`.
 
 To make this even easier the user can as well give a list argument like this:
 
@@ -1221,7 +1224,7 @@ like so:
 ```
 That a file which does not has the _.md_ file extension is a Markdown file
 can be configured in Geany using the:
-`menu {<u>D</u>ocument "Set File<u>t</u>ype" "<u>M</u>arkup Languages" "Markdown source file"}`
+`menu {<u>D</u>ocument "Set File<u>t</u>ype" "<u>M</u>arkup Languages" "<u>M</u>arkdown source file"}`
 menu checkbox.
 ```
 
@@ -1230,7 +1233,7 @@ Here the output:
 
 That a file which does not has the _.md_ file extension is a Markdown file
 can be configured in Geany using the:
-`menu {Document "Set Filetype" "Markup Languages" "Markdown source file"}`
+`menu {<u>D</u>ocument "Set File<u>t</u>ype" "<u>M</u>arkup Languages" "<u>M</u>arkdown source file"}`
 menu checkbox.
 
 

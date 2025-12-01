@@ -168,7 +168,7 @@ directly embedded into the text. Here an example for this approach:</p>
 
 <p>This is the output:</p>
 
-<p>The curent date and time is: 2025-12-01 11:10</p>
+<p>The curent date and time is: 2025-12-01 11:39</p>
 
 <hr />
 
@@ -863,7 +863,7 @@ Now an abbreviation which is in the `abbrev.yml` file
 <p><strong>And here the output:</strong></p>
 
 <p>This is an abbrev Detlef Groth, University of Potsdam, Germany and this is another for the Author: Detlef Groth, University of Potsdam, Germany. 
-The document was created at 2025-12-01 10:06. This an empty abbreviation {empty}.</p>
+The document was created at 2025-12-01 11:39. This an empty abbreviation {empty}.</p>
 
 <p>Now an abbreviation which is in the <code>abbrev.yml</code> file - tmdoc is: 'Tcl Markdown document processor'!</p>
 
@@ -1092,25 +1092,28 @@ as well a menu class for the 'kbd' tag to show menu entries. Here an example.</p
 lectures <strong>tmdoc</strong> provides as well two short methods using 'kbd' and 'menu'
 for  inline code injections. Here an example:</p>
 
-<pre class='code'><code>`kbd Ctrl-x` `kbd Ctrl-s` or  `menu File` &amp;#8595; `menu Save` are saving a file
+<pre class='code'><code>`kbd Ctrl-x` `kbd Ctrl-s` or  `menu File` &amp;#8594; `menu Save` are saving a file
 with MicroEmacs.</code></pre>
 
 <p>which translates to:</p>
 
-<p><kbd>Ctrl-x</kbd> <kbd>Ctrl-s</kbd> or  <kbd class="menu">File</kbd> &#8595; <kbd class="menu">Save</kbd> are saving a file
+<p><kbd>Ctrl-x</kbd> <kbd>Ctrl-s</kbd> or  <kbd class="menu">File</kbd> &#8594; <kbd class="menu">Save</kbd> are saving a file
 with MicroEmacs.</p>
 
 <p>Here an other example using 'menu':</p>
 
 <pre class='code'><code>Short  code  snippets  are  configured  in Geany vs the  `menu  Tools` -&gt; 
-`menu &quot;Configuration Files&quot;` -&gt; `menu snippets.conf` menu entry.
+`menu &quot;Configuration&amp;nsbp;Files&quot;` -&gt; `menu snippets.conf` menu entry.
 entries.</code></pre>
 
 <p>And here the output:</p>
 
 <p>Short  code  snippets  are  configured  in Geany vs the  <kbd class="menu">Tools</kbd> -&gt; 
-<kbd class="menu">Configuration</kbd> &#8594; <kbd class="menu">Files</kbd> -&gt; <kbd class="menu">snippets.conf</kbd> menu entry.
+<kbd class="menu">Configuration&nbsp;Files</kbd> -&gt; <kbd class="menu">snippets.conf</kbd> menu entry.
 entries.</p>
+
+<p>Please  not that if you give a single  string  containing  a space you have to
+write the HTML code for a string there so <code>&amp;nbsp;</code>.</p>
 
 <p>To make this even easier the user can as well give a list argument like this:</p>
 
@@ -1148,14 +1151,14 @@ like so:</p>
 
 <pre class='code'><code>That a file which does not has the _.md_ file extension is a Markdown file
 can be configured in Geany using the:
-`menu {&lt;u&gt;D&lt;/u&gt;ocument &quot;Set File&lt;u&gt;t&lt;/u&gt;ype&quot; &quot;&lt;u&gt;M&lt;/u&gt;arkup Languages&quot; &quot;Markdown source file&quot;}`
+`menu {&lt;u&gt;D&lt;/u&gt;ocument &quot;Set File&lt;u&gt;t&lt;/u&gt;ype&quot; &quot;&lt;u&gt;M&lt;/u&gt;arkup Languages&quot; &quot;&lt;u&gt;M&lt;/u&gt;arkdown source file&quot;}`
 menu checkbox.</code></pre>
 
 <p>Here the output:</p>
 
 <p>That a file which does not has the <em>.md</em> file extension is a Markdown file
 can be configured in Geany using the:
-<kbd class="menu">Document</kbd> &#8594; <kbd class="menu">Set Filetype</kbd> &#8594; <kbd class="menu">Markup Languages</kbd> &#8594; <kbd class="menu">Markdown source file</kbd>
+<kbd class="menu"><u>D</u>ocument</kbd> &#8594; <kbd class="menu">Set File<u>t</u>ype</kbd> &#8594; <kbd class="menu"><u>M</u>arkup Languages</kbd> &#8594; <kbd class="menu"><u>M</u>arkdown source file</kbd>
 menu checkbox.</p>
 
 <p><a name="comments"> </a></p><h2>Comments</h2>
@@ -1763,9 +1766,9 @@ your TCLLIBPATH variable. If this variable does not exists you can set it for in
 <li>tmdoc::tmdoc 0.17.0
 </li></ul>
 
-<p>Document was processed at: 2025-12-01 11:10</p>
+<p>Document was processed at: 2025-12-01 11:40</p>
 
-<p>Document processing was done within: 20650 milliseconds.</p>
+<p>Document processing was done within: 20390 milliseconds.</p>
 
 <h2>Author and Copyright</h2>
 
