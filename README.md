@@ -77,13 +77,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.7/tmdoc-0.16.7.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.17.0/tmdoc-0.17.0.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.16.7
+## 0.17.0
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -97,7 +97,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-11-30 17:32
+date: 2025-12-01 11:19
 ---
 
 ## Testing Tmdoc Installation
@@ -374,8 +374,8 @@ document using Libreoffice.
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
 To have a look at two examples of  Weasyprint  output, you can look at the the
-[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.16.7/tmdoc-tutorial.pdf) and
-the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.16.7/tmdoc.pdf) pages for Version 0.16.7.
+[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.0/tmdoc-tutorial.pdf) and
+the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.0/tmdoc.pdf) pages for Version 0.17.0.
 
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
@@ -433,11 +433,12 @@ as example for such embedded documentation.
 
 ## Changes
 
-- 2025-11-XX: 0.17.0
+- 2025-12-01: 0.17.0
     - adding support for true HTML comments
     - adding support  for HTML  tags like kbd to  display  menu  entries  and
       keyboard shortcuts
     - adding support for `` `include FILENAME` `` in normal text
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.0/tmdoc-tutorial.pdf)
 - 2025-11-27 version 0.16.7 
     - fixing issues with Octave mode and `fig=true`
     - fixing encoding issues if text contains umlauts and other non-latin letters
@@ -540,10 +541,10 @@ as example for such embedded documentation.
   between chunks (done)
 - [x] documentation for filter abbreviation, csv, kroki, alerts, shell code (done)
 - [x] adding Julia language support using pipe
+- [x] support of ` `include FILENAME` (0.17.0)
+- [x] true HTML comments with text removal (0.17.0)
 - [ ] support for  `fig=TRUE` for Python's library matplotlib
-- [ ] support of ` `include FILENAME`
 - [ ] support of ` `date %Y-%m-%d` ` and other date formats
-- [ ] true HTML comments with text removal
 - [ ] Support for typst comments // line and /* multiline */ comments
 - [ ] more citation examples
 - [ ] adding tcrd filter for sheet music display and adding string instrument chords  

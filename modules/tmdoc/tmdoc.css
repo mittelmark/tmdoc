@@ -95,6 +95,16 @@ kbd.menu {
   padding: 0.1em 0.6em;
   text-shadow: 0 1px 0 #fff;
 }
+
+u {
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom:1px solid black;
+}
+span.grey70 {
+  background-color: #aaa;
+  padding: 4px;
+}
 /* Alerts: */
 
 .side-warning, .side-caution, .side-info, .side-question, .side-error, .side-note, .side-tip, .side-important, .side-hint  {
