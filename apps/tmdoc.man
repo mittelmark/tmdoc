@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ; fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.16.5]
+[vset VERSION 0.17.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
@@ -69,7 +69,7 @@ document.
     
     tmdoc sample.tmd sample.tcl --mode weave 
     
-    # Evaluate he Code from the sample.ttyp file into a Typst file, and expand the 
+    # Evaluate the code from the sample.ttyp file into a Typst file, and expand the 
     # abbreviations within curly braces based on the key values pairs in the given YAML
     # abbreviation file
     # be checked and evaluated separately by a Tcl interpreter
@@ -98,7 +98,7 @@ either package and/or documentation.
 
 BSD License type:
 
-[para] The following terms apply to all files a ssociated with the software unless
+[para] The following terms apply to all files associated with the software unless
 explicitly disclaimed in individual files.
 
 [para] The authors hereby grant permission to use, copy, modify, distribute, and license
