@@ -49,6 +49,7 @@ technique  as well known as  literate  programming.
 - __Table numbering:__ support for automatic table numbering using the `` `ntab label` `` syntax
 - __Tcl programming:__ evaluate Tcl and other programming language code
   [![Tcl Filter](https://img.shields.io/badge/Docu-Tcl%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
+- __Table of Content generation:__ creating a table of content (toc) file ready to be included into the main document
 
 ## Examples
 
