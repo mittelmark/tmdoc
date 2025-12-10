@@ -437,7 +437,7 @@ as example for such embedded documentation.
 
 ## Changes
 
-- 2025-12-10: 0.17.10
+- 2025-12-10: 0.17.1
     - making nfig and ntab functionality public, so use `` `nfig label` `` to number figures and or tables with
       ` ``ntab label` `` and to reference figures and tables
     - span class for figure and table captions for Markdown mode
