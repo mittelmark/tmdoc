@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.17.0]
+[vset VERSION 0.17.1]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -207,6 +207,27 @@ can be seen in the tutorial. Here an example:
 
 > [!WARNING]
 > This is a warning!!
+}]
+
+[section "Figure and Table Numbering"]
+
+Since version 0.17.1  automatic  figure and table numbering is supported using
+single backticks quoted chunks together with an appropriate label. If the same
+label  appears  later in the text the label is reused for the numbering so you
+have forward and backward referencing for figures and tables. Here an example:
+
+[example {
+
+The figure `nfig rect` below shows some simple rectangles.
+
+```{.kroki echo=FALSE}
+     +----------------+       /----------------\
+     |                |       |  cEFF          |
+     +----------------+       \----------------/
+```
+
+**Figure `nfig rect`:** Sample rectangle in Ditaa syntax.
+
 }]
 
 [section Functions]

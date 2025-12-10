@@ -243,6 +243,44 @@ Now a menu which is given as a list:
 
 Change Indent width in Geany: <kbd class="menu">Document</kbd> &#8594; <kbd class="menu">Indent Type</kbd> &#8594; <kbd class="menu">Spaces</kbd>.}
 
+tcltest::test tmdoc-test-1.14 {
+    Checking nfig numberings of figures and tables.
+} -body {
+    string trim [tmdoc::tmeval "Example for nfig tag:
+The figure `nfig first` shows ...
+
+
+If we we reuse the tag for figure `nfig first`.
+
+Another reference would be for figure `nfig second`.
+"]
+} -result {Example for nfig tag:
+The figure 1 shows ...
+
+
+If we we reuse the tag for figure 1.
+
+Another reference would be for figure 2.}
+
+tcltest::test tmdoc-test-1.15 {
+    Checking ntab numberings of tables.
+} -body {
+    string trim [tmdoc::tmeval "Example for ntab tag:
+The table `ntab firstt` shows ...
+
+
+If we we reuse the tag for table `ntab firstt`.
+
+Another reference would be for table `ntab secondt`.
+"]
+} -result {Example for ntab tag:
+The table 1 shows ...
+
+
+If we we reuse the tag for table 1.
+
+Another reference would be for table 2.}
+
 puts stderr "starting Comment test"
 tcltest::test tmdoc-comment-1.1 {
     Checking comment syntax

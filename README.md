@@ -33,6 +33,7 @@ technique  as well known as  literate  programming.
 - __CSV Tables:__ create tables using CSV data - [CSV Tables Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#csv)
 - __Diagrams:__ evaluate diagram code and embed create graphics using the [Kroki webservice](https:://kroki.io) - [Kroki Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#kroki)
 - __Graphic generation:__ create graphics using the [tsvg package](https://github.com/mittelmark/tsv) - [tsvg section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#images)
+- __Figure numbering:__ support for automatic figure numbering using the `` `nfig label` `` syntax
 - __Includes:__ Markdown file includes - [include section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#include)
 - __LaTeX equations:__ can be embedded using the [latex.codecs.com](https://latex.codecogs.com/) web servcie
     [![LaTeX Filter](https://img.shields.io/badge/Docu-LaTeX%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-mtex.html)
@@ -43,6 +44,7 @@ technique  as well known as  literate  programming.
 - __R reports:__ writing statistical reports using the R programming language
    [![R Filter](https://img.shields.io/badge/Docu-R%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-r.html)
 - __Shell code:__ evaluate embedded shell code to create graphics or text to be used within the output - [shell section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#clp)
+- __Table numbering:__ support for automatic table numbering using the `` `ntabe label` `` syntax
 - __Tcl programming:__ evaluate Tcl and other programming language code
   [![Tcl Filter](https://img.shields.io/badge/Docu-Tcl%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
 
@@ -76,13 +78,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.17.0/tmdoc-0.17.0.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.17.1/tmdoc-0.17.1.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.17.0
+## 0.17.1
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -96,7 +98,7 @@ To check the document processing create a simple file, let's say `test.tmd` with
 ---
 title: Test file for tmdoc
 author: Max Musterman
-date: 2025-12-03 06:18
+date: 2025-12-10 09:13
 ---
 
 ## Testing Tmdoc Installation
@@ -373,8 +375,8 @@ document using Libreoffice.
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
 To have a look at two examples of  Weasyprint  output, you can look at the the
-[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.0/tmdoc-tutorial.pdf) and
-the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.0/tmdoc.pdf) pages for Version 0.17.0.
+[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.1/tmdoc-tutorial.pdf) and
+the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.1/tmdoc.pdf) pages for Version 0.17.1.
 
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
@@ -432,6 +434,10 @@ as example for such embedded documentation.
 
 ## Changes
 
+- 2025-12-10: 0.17.10
+    - making nfig and ntab functionality public, so use `` `nfig label` `` to number figures and or tables with
+      ` ``ntab label` `` and to reference figures and tables
+    - span class for figure and table captions for Markdown mode
 - 2025-12-01: 0.17.0
     - adding support for true HTML comments
     - adding support  for HTML  tags like kbd to  display  menu  entries  and

@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251130.1731>
+#  Last Modified : <251210.0918>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -62,14 +62,17 @@ exec tclsh "$0" "$@"
 #                                            fixing issues with long computations in R, Octave, Julia and Python
 #                  2025-11-27 version 0.16.7 fixing issues with Octave mode and fig=true
 #                                            fixing encoding issues if text contains umlauts and other non-latin letters
-#                  2025-12-XX version 0.17.0 adding support for true HTML comments
+#                  2025-12-01 version 0.17.0 adding support for true HTML comments
 #                                            adding support for HTML tags like kbd to display menu entries and keyboard shortcuts
 #                                            adding support for `include filename` outside of triple quotes
+#                  2025-12-10 version 0.17.1 embed lines starting with figure into a span class in mode Markdown
+#                                            replace `nfig label` or `ntab label` with `tcl nfig label`
+#                                            remove tcl rfig and tcl rtab command can be replaced with tcl nfig and tcl ntab
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.17.0
+package provide tmdoc::tmdoc 0.17.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -273,32 +276,22 @@ proc ::tmdoc::interpReset {} {
 
         proc nfig {{label ""}} {
             global nfig
-            incr nfig 1
-            if {$label ne ""} {
-                set ::figs($label) $nfig
-            }
-            return $nfig
-        }
-        proc rfig {label} {
             if {[info exists ::figs($label)]} {
                 return $::figs($label)
             } else {
-                return NN
+                incr nfig 1
+                set ::figs($label) $nfig
+                return $nfig
             }
         }
         proc ntab {{label ""}} {
             global ntab
-            incr ntab 1
-            if {$label ne ""} {
-                set ::tabs($label) $ntab
-            }
-            return $nfig
-        }
-        proc rtab {label} {
             if {[info exists ::tabs($label)]} {
                 return $::tabs($label)
             } else {
-                return NN
+                incr ntab 1
+                set ::tabs($label) $ntab
+                return $ntab
             }
         }
         proc tag {tag text {class ""}} {
@@ -351,9 +344,7 @@ proc ::tmdoc::interpReset {} {
     interp eval itry {proc list2tab {header data} {}}
     interp eval itry {proc list2mdtab {header data} {}}
     interp eval itry {proc nfig {{label ""}} {}}
-    interp eval itry {proc rfig {label} {}}
     interp eval itry {proc ntab {{label ""}} {}}
-    interp eval itry {proc rtab {label} {}}
     interp eval itry {proc tag {tag text {class ""}} {}}
     interp eval itry {proc youtube {video args} {}}
     interp eval itry {namespace eval citer { } }
@@ -642,6 +633,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     }
     set mode text
     set alt false
+    set span false
     set tclcode ""
     set bashinput ""
     set krokiinput ""
@@ -702,6 +694,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set line [regsub -all {`kbd ([^`]+)`} $line "`tcl tag kbd \\1`"]
                 set line [regsub -all {`menu ([^`]+)`} $line "`tcl tag kbd \\1 menu`"]
                 set line [regsub -all {`include ([^`]+)`} $line "`tcl include \\1`"]
+                set line [regsub -all {`(n[ft][ai][bg]) +([a-zA-Z0-9]+)`} $line "`tcl \\1 \\2`"]
             }
             set line [regsub {^\s*\[@references\]\s*$} $line "`tcl citer::bibliography`"]
             incr lnr
@@ -766,6 +759,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set line "</p></div>\n\n"
                 set alt false
             } 
+            if {$mode eq "text" && $span && [regexp {^\s*$} $line]} {
+                set line "</span>\n"
+                set span false
+            } 
             if {$mode eq "text" && $alt && [regexp {^> (.+)} $line -> txt]} {
                 set line $txt
             } 
@@ -773,6 +770,14 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set alt true
                 set alert [string tolower $alert 1 end]
                 set line "<div class=\"side-[string tolower $alert]\"><p><b>${alert}:</b> "
+            }
+            if {$mode eq "text" && [regexp {^..Figure} $line]} {
+                set span true
+                set line "<span class='fig-caption'>\n$line"
+            }
+            if {$mode eq "text" && [regexp {^..Table} $line]} {
+                set span true
+                set line "<span class='tab-caption'>\n$line"
             }
             if {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?tcl\s*\}} $line -> opts])} {
                 set mode code

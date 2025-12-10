@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.17.0 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.17.1 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-12-01 13:48
+date: 2025-12-10 09:37
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1265,6 +1265,85 @@ Some more text
 -->
 
 That should be visible again.
+
+## Figure Numbering
+
+Since version 0.17.1 **tmdoc** as well supports automatic figure and table numbering. To
+number  your  figure  or table you can use the  syntax  'nfig  label' or 'ntab
+label'  where the label  should  only  consist of letters or  numbers.  If you
+repeat a label then the initial figure numbering can be used. Here an example.
+
+
+```
+The first  figure is `nfig  first`.  The first  table is `ntab  first`. If you
+repeat a label  somewhere  later in the text like for figure `nfig first`, then
+simply the numbering is repeated. The same is true for `ntab first`. Whereas 
+the call for a with a not used label like in figure  `nfig  second`  the label
+gets a new number. So you can use a figure or table label  before and after the actual
+figure for referencing and displaying the correct number.
+```
+
+Here the output:
+
+The first  figure is `nfig  first`.  The first  table is `ntab  first`. If you
+repeat a label  somewhere  later in the text like for figure `nfig first`, then
+simply the numbering is repeated. The same is true for `ntab first`. Whereas 
+the call for a with a not used label like in figure  `nfig  second`  the label
+gets a new number. So you can use a figure or table label  before and after the actual
+figure for referencing and displaying the correct number.
+
+Here an example to label a Ditaa image:
+
+```
+The figure `nfig rect` below shows some simple rectangles.
+
+'``{.kroki echo=FALSE}
++----------------+       /----------------\    /\
+|                |  -->  |  cEFF          |    \/
++----------------+       \----------------/
+'``
+**Figure `nfig rect`:** Sample rectangles in Ditaa syntax.
+```
+
+And here the output:
+
+The figure `nfig rect` below shows some simple rectangles.
+
+```{.kroki echo=FALSE}
++----------------+       /----------------\    /\
+|                |  -->  |  cEFF          |    \/
++----------------+       \----------------/
+```
+
+**Figure `nfig rect`:** Sample rectangles in Ditaa syntax.
+
+As you can see lines starting with Figure are rendered  especially the same is
+true for tables. Let's show a table caption with automatic labeling.
+
+Here an example:
+
+```
+**Table `ntab first`:** An example for a CSV table.
+
+'```{.csv echo=FALSE}
+,col1,col2,col3
+__A__,1,2,3
+__B__,4,5,6
+__B__,7,8,9
+'```
+```
+
+And here the output:
+
+**Table `ntab first`:** An example for a CSV table.
+
+```{.csv echo=FALSE}
+,col1,col2,col3
+__A__,1,2,3
+__B__,4,5,6
+__B__,7,8,9
+```
+
 
 
 ## Statistical Reports

@@ -54,6 +54,19 @@ table tr td {
   padding: 5px;
 }
 
+p:has(span.fig-caption) {
+    padding: 5px;
+    text-align: center;
+    background-color: #ececec;
+    border: 1px solid #999;
+    margin 40px 10px;
+    max-width:600px;
+}
+p:has(span.tab-caption) {
+    padding: 5px;
+    margin 20px 10px;
+}
+
 /* https://codepen.io/Harrix/pen/pZZZxg */
 
 kbd {
