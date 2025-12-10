@@ -26,7 +26,7 @@ technique  as well known as  literate  programming.
 
 ## Main Features
 
-- __single file approach:__ the required small (approx. 230kb) single file (_tmdoc-0.1X.X.bin_) just requires an existing Tcl/Tk installation
+- __single file approach:__ the required small (approx. 250kb) single file (_tmdoc-0.1X.X.bin_) just requires an existing Tcl/Tk installation
 - __Abbreviations:__ expand YAML defined abbreviations - [Abbreviation Filter](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-abbrev.html)
 - __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925) - [Alert Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#alerts)
 - __Citations:__ reference management using BibTeX files - [Citation Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#references)
@@ -35,6 +35,8 @@ technique  as well known as  literate  programming.
 - __Graphic generation:__ create graphics using the [tsvg package](https://github.com/mittelmark/tsv) - [tsvg section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#images)
 - __Figure numbering:__ support for automatic figure numbering using the `` `nfig label` `` syntax
 - __Includes:__ Markdown file includes - [include section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#include)
+- __Julia reports:__ writing statistical reports using the Julia programming
+   language [![Julia-Filter](https://img.shields.io/badge/Docu-Octave%20Filter-blue)](https://htmlpreview.github.io/?https://raw.githubusercontent.com/mittelmark/tmdoc/master/modules/tmdoc/filter-julia.html)
 - __LaTeX equations:__ can be embedded using the [latex.codecs.com](https://latex.codecogs.com/) web servcie
     [![LaTeX Filter](https://img.shields.io/badge/Docu-LaTeX%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-mtex.html)
 - __Octave reports:__ writing statistical reports using the Octave programming
@@ -44,7 +46,7 @@ technique  as well known as  literate  programming.
 - __R reports:__ writing statistical reports using the R programming language
    [![R Filter](https://img.shields.io/badge/Docu-R%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-r.html)
 - __Shell code:__ evaluate embedded shell code to create graphics or text to be used within the output - [shell section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#clp)
-- __Table numbering:__ support for automatic table numbering using the `` `ntabe label` `` syntax
+- __Table numbering:__ support for automatic table numbering using the `` `ntab label` `` syntax
 - __Tcl programming:__ evaluate Tcl and other programming language code
   [![Tcl Filter](https://img.shields.io/badge/Docu-Tcl%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
 
