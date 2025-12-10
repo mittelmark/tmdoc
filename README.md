@@ -36,7 +36,7 @@ technique  as well known as  literate  programming.
 - __Figure numbering:__ support for automatic figure numbering using the `` `nfig label` `` syntax
 - __Includes:__ Markdown file includes - [include section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#include)
 - __Julia reports:__ writing statistical reports using the Julia programming
-   language [![Julia-Filter](https://img.shields.io/badge/Docu-Octave%20Filter-blue)](https://htmlpreview.github.io/?https://raw.githubusercontent.com/mittelmark/tmdoc/master/modules/tmdoc/filter-julia.html)
+   language [![Julia-Filter](https://img.shields.io/badge/Docu-Julia%20Filter-blue)](https://htmlpreview.github.io/?https://raw.githubusercontent.com/mittelmark/tmdoc/master/modules/tmdoc/filter-julia.html)
 - __LaTeX equations:__ can be embedded using the [latex.codecs.com](https://latex.codecogs.com/) web servcie
     [![LaTeX Filter](https://img.shields.io/badge/Docu-LaTeX%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-mtex.html)
 - __Octave reports:__ writing statistical reports using the Octave programming
