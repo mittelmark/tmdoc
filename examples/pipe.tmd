@@ -1,7 +1,7 @@
 ---
 title: Python and R Examples
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-11-23 16:01
+date: 2025-12-18 11:24
 ---
 
 ## Python Code Evaluation I
@@ -86,6 +86,18 @@ Now an example with a figure, is it automatically embedded?
 ```{r fig=TRUE}
 plot(1)
 ```
+
+Let's finish with an example for a  more complex inline statement.
+
+```{r}
+library(MASS)
+data(birthwt)
+head(birthwt)
+```
+
+The correlation value between lwt and bwt is: 
+`r with(birthwt,cor.test(lwt,bwt))$estimate`.
+
 
 ## Python Code Evaluation II
 

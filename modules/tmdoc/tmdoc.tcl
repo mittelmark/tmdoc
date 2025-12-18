@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251210.0918>
+#  Last Modified : <251218.1145>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -68,11 +68,12 @@ exec tclsh "$0" "$@"
 #                  2025-12-10 version 0.17.1 embed lines starting with figure into a span class in mode Markdown
 #                                            replace `nfig label` or `ntab label` with `tcl nfig label`
 #                                            remove tcl rfig and tcl rtab command can be replaced with tcl nfig and tcl ntab
+#                  2025-12-18 version 0.17.2 fixing an issue with more complex returns in inline R statements
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.17.1
+package provide tmdoc::tmdoc 0.17.2
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -1119,6 +1120,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                     set res [r::filter $t [dict create pipe R eval true echo false terminal false]]
                     #waitchunk
                     set res [string trim [lindex $res 0] end]
+                    if {[regexp {> } $res]} {
+                        set res [lindex [split $res "\n\r "] end]
+                        ## seems that code chunk is inside
+                        set res [regsub {^>.+ ([^ \n]+)} $res "\\1"]
+                    }
                     set line [regsub -all {_}  "$pre$res$post" {\\_}]
                 }
                 while {[regexp {(.*?)`py ([^`]+)`(.*)$} $line -> pre t post]} {

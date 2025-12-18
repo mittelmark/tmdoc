@@ -10,16 +10,16 @@
 [![Tutorial](https://img.shields.io/badge/Docu-Tutorial-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
 [![Wiki](https://img.shields.io/badge/Docu-Wiki-blue)](https://wiki.tcl-lang.org/page/tmdoc%3A%3Atmdoc)
 
-Literate  programming with Tcl. Embed Diagram code and the output, LaTeX equation, literature
-references,  shell  script  output,  Youtube  videos  and Tcl  code  with  the
-evaluation  results into  your Markdown, AsciiDoc, Typst or LaTeX
+Literate programming using R, Python, Octave, Julia or Tcl. Embed Diagram code and the output, LaTeX equation, literature
+references,  shell  script  output,  Youtube  videos  and code chunks for many
+different programming languages while adding the evaluation  results into  your Markdown, AsciiDoc, Typst or LaTeX
 documents.
 
 ## Description
 
 The package _tmdoc_ and the standalone application of it provide facilities to
 evaluate  embedded Diagram code, LaTeX equations, YAML defined  abbreviations,
-or R, Python, Octave, Shell or Tcl code within  documents of Markup  languages
+or Julia, R, Python, Octave, Shell or Tcl code within  documents of Markup  languages
 like Markdown, AsciiDoc, Typst or LaTeX and
 add the  resulting  output to the document for creating  dynamic  documents, a
 technique  as well known as  literate  programming. 
@@ -437,6 +437,8 @@ as example for such embedded documentation.
 
 ## Changes
 
+- 2025-12-18: 0.17.2
+    - fixing an issue with more complex R inline statements 
 - 2025-12-10: 0.17.1
     - making nfig and ntab functionality public, so use `` `nfig label` `` to number figures and or tables with
       ` ``ntab label` `` and to reference figures and tables

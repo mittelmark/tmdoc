@@ -707,7 +707,7 @@ print(x)
 [1] 1
 ```}
 
-tcltest::test tmdoc-r-1.8 {
+tcltest::test tmdoc-r-1.10 {
     Checking R errors
 } -body {
     string trim [tmdoc::tmeval {```{r}
@@ -727,6 +727,30 @@ print(x)
 > print(x)
 Error: object 'x' not found
 ```}
+
+tcltest::test tmdoc-r-1.11 {
+    Checking R single backtick pipe with return of code
+} -body {
+    string trim [tmdoc::tmeval {```{r echo=FALSE} 
+library(MASS)
+data(birthwt)
+dim(birthwt)
+```
+
+The correlation value between lwt and bwt is: 
+`r with(birthwt,cor.test(lwt,bwt))$estimate`.
+}]
+} -result {```R
+> library(MASS)
+> data(birthwt)
+> dim(birthwt)
+[1] 189  10
+```
+
+
+The correlation value between lwt and bwt is: 
+0.1857333.}
+
 
 puts stderr "starting Julia test"
 
