@@ -108,11 +108,4 @@ namespace eval tmdoc::python {
 
 }
 
-#set file [open [lindex $argv 0] r]
-#set cnt [read $file]
-#close $file
-#set res [filter-py $cnt [list eval true]]
-#puts [lindex $res 0]
-# pypipe::start [lindex $argv 0]
-#close $pipe
 

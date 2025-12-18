@@ -440,8 +440,32 @@ print(x)
 
 x is 6!}
 
-puts stderr "starting Octave test"
+tcltest::test tmdoc-python-1.7 {
+    Checking Python reading a file.
+} -body {
+    string trim [tmdoc::tmeval "```{py}
+def fileCat (filename):
+    file = open(filename,'r')
+    for line in file:
+        print(line)
 
+print('Hi')
+```
+"]
+} -result {```python
+def fileCat (filename):
+    file = open(filename,'r')
+    for line in file:
+        print(line)
+
+print('Hi')
+```
+
+```python
+Hi
+```}
+
+puts stderr "starting Octave test"
 tcltest::test tmdoc-octave-1.1 {
     Checking Octave pipe.
 } -body {

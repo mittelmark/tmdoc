@@ -81,13 +81,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.17.1/tmdoc-0.17.1.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc-0.17.2.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.17.1
+## 0.17.2
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -378,8 +378,8 @@ document using Libreoffice.
 ![](https://kroki.io/graphviz/svg/eNp1zLEKwjAQgOE9T3FkroI4SpyKOLRUpFtxSHNpe_SalLSgIr67ptLR6bj7fg6pDXrsoIWXAOfRVlOnR6tq_0im-clWNcRsMYnDePZBGR_cRNwnd8K5U7vt_nYQELTrkYKS2VV-13JA2Bwhx4p1bVnJeUBvZCxzhEjnMs9WHNwPQSznyJf0tGpGdbC-acjY5cGaFGn5J3kL8QHVZ0VG)
 
 To have a look at two examples of  Weasyprint  output, you can look at the the
-[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.1/tmdoc-tutorial.pdf) and
-the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.1/tmdoc.pdf) pages for Version 0.17.1.
+[Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc-tutorial.pdf) and
+the [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc.pdf) pages for Version 0.17.2.
 
 If your input document is a [Typst](https://typst.app/)  document, for instance with a `.ttyp`
 extension you might convert this file with embedded  Tmdoc code chunks into an
@@ -439,10 +439,12 @@ as example for such embedded documentation.
 
 - 2025-12-18: 0.17.2
     - fixing an issue with more complex R inline statements 
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc-tutorial.pdf)
 - 2025-12-10: 0.17.1
     - making nfig and ntab functionality public, so use `` `nfig label` `` to number figures and or tables with
       ` ``ntab label` `` and to reference figures and tables
     - span class for figure and table captions for Markdown mode
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.1/tmdoc-tutorial.pdf)
 - 2025-12-01: 0.17.0
     - adding support for true HTML comments
     - adding support  for HTML  tags like kbd to  display  menu  entries  and
