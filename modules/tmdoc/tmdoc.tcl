@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <260101.1457>
+#  Last Modified : <260101.1734>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -823,6 +823,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 incr chunki
                 array set copt [array get cdopt]
                 ::tmdoc::GetOpts 
+                if {$copt(chord)} {
+                    set copt(fig) true
+                }
                 continue
             } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(pipe)(\s*.*)\}} $line -> tp opts])} {
                 set mode pipe

@@ -25,7 +25,6 @@ namespace eval tmdoc::tcrd {
         if {[dict get $dict chord]} {
             dict set dict fig true
         }
-        
         set owd [pwd] 
         set fname [file join $owd [dict get $dict imagepath] [dict get $dict label]].svg
 
@@ -45,7 +44,6 @@ namespace eval tmdoc::tcrd {
                          append svgall "\n</g>\n"
                      }
                      incr x
-                     
                  }
                  set out [open $fname w 0600]
                  puts $out "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>"
@@ -67,7 +65,7 @@ namespace eval tmdoc::tcrd {
                  } 
                  set res $cont
              } elseif {[dict get $dict inline]} {
-                 set res [tcrd::chords $cont [dict get $dict transpose]] 
+                 set res [tcrd::chordsheet $cont [dict get $dict transpose]] 
              } elseif {[dict get $dict transpose] == 0}  {
                  set res $cont
              } else {
@@ -88,7 +86,6 @@ namespace eval tmdoc::tcrd {
         return [list $res $fname]
     }
 }
-
 
 
 

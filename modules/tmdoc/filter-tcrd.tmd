@@ -1,0 +1,221 @@
+---
+title: "filter-tcrd.tcl documentation"
+author: "Detlef Groth, Caputh-Schwielowsee, Germany"
+date: 2023-07-14
+---
+
+`tcl include header.md`
+
+## Name
+
+_filter-tcrd.tcl_ - Filter which can be used to display songs with chords
+with music chord names above the text where the chords are directly embedded within the song text. Currently only one chord per word can be displayed.
+
+## Usage
+
+
+The conversion of the Markdown documents via tmdoc/[mndoc](https://github.com/mittelmark/mndoc) should be done as follows:
+
+```
+tmdoc filename.tmd - | mndoc - filename.html --css tmdoc.css
+```
+
+The file `filter-tcrd.tcl` is not used directly but sourced automatically by the `pantcl.bin` file.
+If code blocks with the `.tcrd` marker are found, the contents in the code block is 
+processed via the Tcl interpreter using the embedded Tcl code.
+
+The following options can be given via code chunks options or as defaults in the YAML header.
+
+> - eval - should the code in the code block be evaluated, default: false (0)
+  - circlecolor - for chords charts the circle color, default: back
+  - chord - are the code chunk contain chord commands like `C 0003` to display chord charts for fretted instruments, default: false
+  - ext  - the file extension if chord files are displayed, pdf or png are possible if cairosvg is installed, default: svg
+  - imagepath - if chord diagrams are generated the path for the stored images in svg format, default: images
+  - inline - are chords embedded inline within the text like this `Text [C]with [Am]chord!`, default: true (1)
+  - label - the code chunk label used as well for the image name, default: null
+  - results - should the output, the song text be show(n) or hid(d)e(n), default: show
+  - transpose - how many steps up or down to transpose, can be negative or positive, 0 means no transpose default: 0
+  - width - for chord charts the width of the chart, for Guitar a value of 160  is reasonable, for Ukulele a value of 100, default: 100
+
+Options can be set globally in the YAML header for all chunks. Below is an example which hides per default always the source and
+only shows the output.
+
+```
+ ---
+ title: "filter-tcrd.tcl documentation"
+ author: "Detlef Groth, Caputh-Schwielowsee, Germany"
+ date: 2021-12-22
+ tcrd:
+     echo: 0
+ ---
+```
+
+## Examples
+
+Here an example for a song with an intro and verse and chorus:
+
+```
+     ```{.tcrd echo=false eval=true}
+     [Intro]
+      
+     [G] - [C] - [G] - [C] - [D7] - [G]
+      
+     [Verse]
+     I'[G]ve been a wild rover for many a ye[C]ar
+     I [G]spent all me m[C]oney on w[D7]hiskey and b[G]eer
+     But [G]now I'm returning with gold in great st[C]ore
+     And [G]I never will p[C]lay the wild r[D7]over no m[G]ore
+ 
+     [Chorus]
+     And it's no nay ne[D7]ver, no [G]nay never no m[C]ore
+     Will I p[G]lay the wild ro[C]ver, no n[D7]ever, no m[G]ore
+     ```
+```
+
+And here is the output:
+
+```{.tcrd echo=false}
+[Intro]
+
+[G] - [C] - [G] - [C] - [D7] - [G]
+
+[Verse]
+I'[G]ve been a wild rover for many a ye[C]ar
+I [G]spent all me m[C]oney on w[D7]hiskey and b[G]eer
+But [G]now I'm returning with gold in great st[C]ore
+And [G]I never will p[C]lay the wild r[D7]over no m[G]ore
+ 
+[Chorus]
+And it's no nay ne[D7]ver, no [G]nay never no m[C]ore
+Will I p[G]lay the wild ro[C]ver, no n[D7]ever, no m[G]ore
+```
+
+To change the background color you just need to change the used style sheet
+for your HTML file.
+
+Let's now transpose the song by two steps from G to A. The 
+chunk options are then just changed to: `{.tcrd echo=false eval=true transpose=2}`. Below the result:
+
+```{.tcrd echo=false transpose=2}
+[Intro]
+      
+[G] - [C] - [G] - [C] - [D7] - [G]
+      
+[Verse]
+I'[G]ve been a wild rover for many a ye[C]ar
+I [G]spent all me m[C]oney on w[D7]hiskey and b[G]eer
+But [G]now I'm returning with gold in great st[C]ore
+And [G]I never will p[C]lay the wild r[D7]over no m[G]ore
+ 
+[Chorus]
+And it's no nay ne[D7]ver, no [G]nay never no m[C]ore
+Will I p[G]lay the wild ro[C]ver, no n[D7]ever, no m[G]ore
+```
+
+Here an other song, Scarborough Fair:
+
+```{.tcrd}
+[Dm]Are you going to [C]Scarborough [Dm]Fair? 
+[F]Parsley, [Dm]sage, rose [F]mary [G]and [Dm]thyme 
+Remember [F]me to one who [C]lives there 
+[Dm]He once [C]was a true love of [Dm]mine
+``` 
+
+The same but transposed by two halfsteps up:
+
+```{.tcrd transpose=2}
+[Dm]Are you going to [C]Scarborough [Dm]Fair? 
+[F]Parsley, [Dm]sage, rose [F]mary [G]and [Dm]thyme 
+Remember [F]me to one who [C]lives there 
+[Dm]He once [C]was a true love of [Dm]mine
+``` 
+
+Obviously in a song book you do not want to show the source code, you can
+hide the source for the output by applying the chunk option `echo=false`.
+
+Sometimes the chords are displayed above the text already,
+you then might like to transpose the given chords.
+You can do this by specifying the chunk option `inline=false` and
+give again the number of desired halfstep like below with `transpose=2`:
+
+```{.tcrd transpose=2 inline=false}
+C           G
+Dat du mien Leevsten b¸st
+Am          G  
+dat du wohl weeﬂ
+F                C          Am
+Kumm bi de Nacht kumm bi de Nacht
+G7         C 
+segg wo du heeﬂt
+F                C          Am
+Kumm bi de Nacht kumm bi de Nacht
+G7         C 
+segg wo du heeﬂt
+```
+
+## Harmomics Tabs
+
+You can combine Harmonica Tabs on top with embedded chords, here an example:
+
+```{.tcrd echo=true}
+-4  -4  -6    -6 5  -5 5      -4
+[Dm]Are you going to [C]Scarborough [Dm]Fair? 
+-6  7    -8    7  -6 -7  6   -6
+[F]Parsley, [Dm]sage, rose [F]mary [G]and [Dm]thyme 
+-8 -8 -8  7  -6 -6  6   -5    5
+Remember [F]me to one who [C]lives there 
+-4  -6   6  -5  5    -4   4  -4
+[Dm]He once [C]was a true love of [Dm]mine
+```
+
+
+## Chord diagrams
+
+Here an example for a chord diagram for some Ukulele chords, chunk options are `{.tcrd chord=true}`:
+
+```{.tcrd chord=true,echo=true,out.width=400}
+C  0003
+Dm 2210
+Em 0321
+F  2010
+G  0232
+Am 2000
+```
+
+And here some Guitar chords:
+
+```{.tcrd chord=true,fig.width=140,out.width=600}
+G   320003
+Am  x02210
+Bm  x24432
+C   x32010
+D   xx0232
+Em  022000
+```
+
+To hide the input code you would use `{.tcrd chord=true echo=false}` as a code chunk option.
+
+The default output format is svg as this does not require any additional tools. 
+If you have `cairosvg` installed you can as well create png or pdf files.
+Here an example of a png file. For Guitar chord diagrams you should as well
+extend the width of the image by using te width option, here an 
+example `{.tcrd  ext=png,fig.width=140,out.width=600}`: 
+
+```{.tcrd chord=true fig.width=140,out.width=600}
+C   x32010
+Dm  xx0231
+Em  022000
+F   x03211
+G   320003
+Am  x02210
+```
+
+## CHANGES
+
+- 2026-01-01 first version
+
+## TODO:
+
+- chord diagrams
+- F# vs Gb etc due to key
+
