@@ -28,28 +28,32 @@ app:
 	cd app-build && mkdir -p tmdoc.vfs/lib/textutil
 	cd app-build && mkdir -p tmdoc.vfs/lib/yaml	
 	cd app-build && mkdir -p tmdoc.vfs/lib/tdot
+	cd app-build && mkdir -p tmdoc.vfs/lib/tcrd
+	cd app-build && mkdir -p tmdoc.vfs/lib/tsvg
 	cd app-build && cp ../modules/tmdoc/*.tcl tmdoc.vfs/lib/tmdoc/
 	cd app-build && cp ../modules/tmdoc/tmdoc.sty tmdoc.vfs/lib/tmdoc/
 	cd app-build && cp ../modules/bibtex/*.tcl tmdoc.vfs/lib/bibtex/
 	cd app-build && cp ../modules/citer/*.tcl tmdoc.vfs/lib/citer/	
 	cd app-build && cp ../modules/cmdline/*.tcl tmdoc.vfs/lib/cmdline/
 	cd app-build && cp ../modules/fileutil/*.tcl tmdoc.vfs/lib/fileutil/	
-	cd app-build && cp ../modules/markdown/*.tcl tmdoc.vfs/lib/markdown/			
-	cd app-build && cp ../modules/textutil/*.tcl tmdoc.vfs/lib/textutil/		
-	cd app-build && cp ../modules/tdot/*.tcl tmdoc.vfs/lib/tdot/			
-	cd app-build && cp ../modules/yaml/*.tcl tmdoc.vfs/lib/yaml/				
+	cd app-build && cp ../modules/markdown/*.tcl tmdoc.vfs/lib/markdown/
+	cd app-build && cp ../modules/textutil/*.tcl tmdoc.vfs/lib/textutil/
+	cd app-build && cp ../modules/tdot/*.tcl tmdoc.vfs/lib/tdot/
+	cd app-build && cp ../modules/yaml/*.tcl tmdoc.vfs/lib/yaml/
+	cd app-build && cp ../../tcrd/tcrd/*.tcl tmdoc.vfs/lib/tcrd/
+	cd app-build && cp ../../tsvg/tsvg/*.tcl tmdoc.vfs/lib/tsvg/
 	cd app-build && cp ~/workspace/tcllib/modules/cmdline/*.tcl tmdoc.vfs/lib/cmdline/
-	cd app-build && cp ~/workspace/tcllib/modules/textutil/*.tcl tmdoc.vfs/lib/textutil/	
-	cd app-build && cp ~/workspace/tcllib/modules/fileutil/*.tcl tmdoc.vfs/lib/fileutil/		
+	cd app-build && cp ~/workspace/tcllib/modules/textutil/*.tcl tmdoc.vfs/lib/textutil/
+	cd app-build && cp ~/workspace/tcllib/modules/fileutil/*.tcl tmdoc.vfs/lib/fileutil/
 	cd app-build && echo "lappend auto_path [file join [file dirname [info script]] lib]" > tmdoc.vfs/main.tcl
 	cp apps/tmdoc app-build/tmdoc.tcl
 	cd app-build && tpack wrap tmdoc.tapp --lz4
 	tclsh app-build/tmdoc.tapp --version
 	tclsh app-build/tmdoc.tapp --help
-	cp app-build/tmdoc.tapp bin/tmdoc-`tclsh app-build/tmdoc.tapp --version`.bin	
+	cp app-build/tmdoc.tapp bin/tmdoc-`tclsh app-build/tmdoc.tapp --version`.bin
 docu:
-	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o modules/tmdoc/tmdoc.html html modules/tmdoc/tmdoc.man 
-	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o apps/tmdoc.html html apps/tmdoc.man 
+	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o modules/tmdoc/tmdoc.html html modules/tmdoc/tmdoc.man
+	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o apps/tmdoc.html html apps/tmdoc.man
 test:
 	TCLLIBPATH=modules tclsh modules/tmdoc/tmdoc.test	
 

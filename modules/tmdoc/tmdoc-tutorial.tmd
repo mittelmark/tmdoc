@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.17.2 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2025-12-18 11:44
+date: 2026-01-01 14:59
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1705,6 +1705,49 @@ And here the output:
 ```{.pipe pipe=octave label=oct1 fig=true eval=true}
 x = -10:0.1:10;
 plot (x, sin (x));
+```
+
+## Music Chord Sheets
+
+Below we have an example for a tcrd sheet.
+
+```
+'``{.tcrd echo=FALSE}
+[Dm]Are you going to [C]Scarborough [Dm]Fair? 
+[F]Parsley, [Dm]sage, rose [F]mary [G]and [Dm]thyme 
+Remember [F]me to one who [C]lives there 
+[Dm]He once [C]was a true love of [Dm]mine
+'``
+```
+
+And here is the output:
+
+```{.tcrd echo=FALSE}
+[Dm]Are you going to [C]Scarborough [Dm]Fair? 
+[F]Parsley, [Dm]sage, rose [F]mary [G]and [Dm]thyme 
+Remember [F]me to one who [C]livesxb there 
+[Dm]He once [C]was a true love of [Dm]mine
+```
+
+Let's now add a few Ukulele Chord figures:
+
+
+```
+'``{.tcrd chord=true,echo=true,fig=true,out.width=300}
+C  0003
+Dm 2210
+F  2010
+G  0232
+'``
+```
+
+And here the output:
+
+```{.tcrd chord=true,echo=true,fig=true,out.width=300}
+C  0003
+Dm 2210
+F  2010
+G  0232
 ```
 
 ## Code Chunk Options

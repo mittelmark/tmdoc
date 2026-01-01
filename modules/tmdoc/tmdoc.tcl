@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <251218.1145>
+#  Last Modified : <260101.1457>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -69,16 +69,18 @@ exec tclsh "$0" "$@"
 #                                            replace `nfig label` or `ntab label` with `tcl nfig label`
 #                                            remove tcl rfig and tcl rtab command can be replaced with tcl nfig and tcl ntab
 #                  2025-12-18 version 0.17.2 fixing an issue with more complex returns in inline R statements
+#                  2026-01-01 version 0.18.0 adding support for Ukulele and Guitar chords as well as chord sheets
 #
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.17.2
+package provide tmdoc::tmdoc 0.18.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
 source [file join [file dirname [info script]] filter-octave.tcl]
 source [file join [file dirname [info script]] filter-julia.tcl]
+source [file join [file dirname [info script]] filter-tcrd.tcl]
 namespace eval ::tmdoc {
     variable script [info script]
     variable pipedone
@@ -639,6 +641,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set bashinput ""
     set krokiinput ""
     set mtexinput ""
+    set tcrdinput ""    
     set lastbashinput ""
     set ginput ""
     array set mopt [list eval true echo true results show fig false include true label chunk-nn\
@@ -655,7 +658,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                      fig.path .]
     ## mtex
     array set tdopt [list echo true eval true results show fig true include true \
-        label chunk-nn fig.path . fig.width 0 ext png]
+                     label chunk-nn fig.path . fig.width 0 ext png]
+    ## tcrd
+    array set cdopt [list echo true results show eval true include true label chunk-nn transpose 0 inline true \
+                 chord false chordname "" imagepath images fig false ext svg circlecolor black fig.width 100 out.width 0]
     interpReset
     interp eval intp "set ::inmode $inmode"
     set enc [::tmdoc::get_encoding $filename]
@@ -810,6 +816,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode mtex
                 incr chunki
                 array set copt [array get tdopt]
+                ::tmdoc::GetOpts 
+                continue
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(tcrd)(\s*.*)\}} $line -> tp opts])} {
+                set mode tcrd
+                incr chunki
+                array set copt [array get cdopt]
                 ::tmdoc::GetOpts 
                 continue
             } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(pipe)(\s*.*)\}} $line -> tp opts])} {
@@ -968,12 +980,40 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mtexinput ""
                 set mode text
                 array unset copt
+            } elseif {$mode eq "tcrd" && [regexp {^ {0,2}```} $line]} {
+                if {$copt(echo)} {
+                    set cont [tmdoc::block $tcrdinput $inmode mtex]
+                    puts $out $cont
+                }
+                if {$copt(eval)} {
+                    set res [tmdoc::tcrd::filter $tcrdinput [dict create {*}[array get copt]]]
+                    if {$copt(fig)} {
+                        set imgsrc [lindex $res end]
+                        if {$copt(out.width) > 0} {
+                            set copt(fig.width) $copt(out.width)
+                        }
+                        if {$copt(include)} {
+                            iimage
+                        }
+                    }
+                    if {$copt(results) eq "show"} {
+                        set cont [tmdoc::block [lindex $res 0] $inmode tcrd]
+                        puts $out $cont
+                    } elseif {$copt(results) eq "asis"} {
+                        puts $out [lindex $res 0]
+                    }
+                }
+                set tcrdinput ""
+                set mode text
+                array unset copt
             } elseif {$mode eq "shell"} {
                 append bashinput "$line\n"
             } elseif {$mode eq "kroki"} {
                 append krokiinput "$line\n"
             } elseif {$mode eq "mtex"} {
                 append mtexinput "$line\n"
+            } elseif {$mode eq "tcrd"} {
+                append tcrdinput "$line\n"
             } elseif {$mode in [list csv pipe]} {
                 append ginput "$line\n"
             } elseif {$mode eq "code" && [regexp {^ {0,2}```} $line]} {
