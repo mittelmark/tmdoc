@@ -35,7 +35,7 @@ namespace eval tmdoc::tcrd {
                  set svgall ""
                  set x 0
                  foreach line [split $cont "\n"] {
-                     set line [string trim $line]
+                     set line [string trimright $line]
                      set line [regsub -all { +}  $line " "]
                                       
                      foreach {key frets} [split $line " "] {

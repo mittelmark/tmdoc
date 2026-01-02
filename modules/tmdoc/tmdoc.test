@@ -996,15 +996,6 @@ tcltest::test tmdoc-tcrd-1.2 {
 } -result {      Dm    
 Hello World}
 
-tcltest::test tmdoc-tcrd-1.2 {
-    Checking tcrd package 
-} -body {
-    package require tsvg
-    package require tcrd
-    tcrd chordsheet {Hello [Dm]World!}
-} -result {      Dm     
-Hello World!}
-
 tcltest::test tmdoc-tcrd-1.3 {
     Checking tcrd package 
 } -body {
@@ -1015,8 +1006,27 @@ Hello [Dm]World!
 Hello [Dm]World!
 ```
 ```tcrd
-Dm
+      Dm
 Hello World!
+```}]
+
+puts stderr "starting include testing"
+
+tcltest::test tmdoc-include-1.1 {
+    Checking tcrd include
+} -body {
+ normalizeWhitespace [tmdoc::tmeval {```{.tcrd}
+#include "assets/music.txt"
+```
+}]} -result [normalizeWhitespace {```tcrd
+Hello [Am]Include [C]World!
+This is [G]Music.
+```
+```tcrd
+      Am      C
+Hello Include World!
+        G
+This is Music.
 ```}]
 
 ::tcltest::cleanupTests 0

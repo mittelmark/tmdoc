@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.18.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2026-01-01 17:10
+date: 2026-01-02 11:18
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -365,6 +365,22 @@ Some text - indented and bold.
 
 Some more text.
 
+Sometimes  you would like to include as well files within code chunks and then
+process these files within the code chunk environment for this you can use the
+`#include "filename"` directive as it is know for the C programming  language.
+Here an example (remove the leading space before the `#` char):
+
+```
+'``{.tcrd echo=false}
+ #include "assets/music.txt"
+'``
+```
+
+And here the output:
+
+```{.tcrd echo=false}
+#include "assets/music.txt"
+```
 
 ## Writing Images
 
@@ -1867,11 +1883,11 @@ your PATH variable.
 Here an example:
 
 ```
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.16.7/tmdoc-0.16.7.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.18.0/tmdoc-0.18.0.bin \
     -O ~/.local/bin/tmdoc
 chmod 755 ~/.local/bin/tmdoc
 tmdoc --version
-## 0.16.7
+### 0.18.0
 ```
 
 Alternatively    you   can    install    the    latest    version    and   the

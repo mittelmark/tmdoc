@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <260102.0943>
+#  Last Modified : <260102.1116>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -453,7 +453,11 @@ proc tmdoc::block {txt inmode {style ""}} {
             set mstyle "${style}"
         }
         if {$inmode eq "md"} {
-            set txt [string trim $txt]
+            if {$style ne "tcrd"} {
+                set txt [string trim $txt]
+            } else {
+                set txt [string trimright $txt]
+            }
             set mstyle [regsub 3 $mstyle ""]
             append res "```${mstyle}\n${txt}"
             if {![regexp {\n$} $txt]} {
@@ -702,6 +706,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set line [regsub -all {`menu ([^`]+)`} $line "`tcl tag kbd \\1 menu`"]
                 set line [regsub -all {`include ([^`]+)`} $line "`tcl include \\1`"]
                 set line [regsub -all {`(n[ft][ai][bg]) +([a-zA-Z0-9]+)`} $line "`tcl \\1 \\2`"]
+            } elseif {$mode in [list tcrd mtex]} {
+                if {[regexp {^#include "(.+)"} $line -> filename]} {
+                    set line [include $filename]
+                }
             }
             set line [regsub {^\s*\[@references\]\s*$} $line "`tcl citer::bibliography`"]
             incr lnr
@@ -1312,6 +1320,24 @@ proc tmdoc::ue_init {} {
 tmdoc::ue_init
 proc tmdoc::ue {s} { string map $::ue_map $s }
 proc tmdoc::ud {s} { string map $::ud_map $s }
+proc ::tmdoc::include {filename} {
+    if {![file exists $filename]} {
+        return "Error: file '$filename' does not exists!"
+    }
+    set enc [get_encoding $filename]
+    if [catch {open $filename r} infh] {
+        return "Cannot open $filename"
+    } else {
+        fconfigure $infh -encoding $enc
+        set res ""
+        while {[gets $infh line] >= 0} {
+            append res "$line\n"
+        }
+        set res [regsub {\n$} $res ""]
+        close $infh
+        return $res
+    }
+}
 proc ::tmdoc::main {argv} {
     global argv0
     set APP $argv0
