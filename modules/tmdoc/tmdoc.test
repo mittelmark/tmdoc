@@ -3,6 +3,14 @@ lappend auto_path ..
 package require tcltest
 package require tmdoc
 
+proc normalizeWhitespace s {
+    # Trim ends and collapse all internal whitespace runs to a single space
+    #set s [string trim $s]                   ;# remove leading/trailing whitespace
+    #regsub -all {\s+} $s { } s               ;# collapse whitespace runs
+    regsub -all {\s+\n} $s "\n" s              ;# remove line trailing whitespaces
+    return [string trimright $s]
+}
+
 puts stderr "starting Tcl test"
 tcltest::test tmdoc-test-1.1 {
     Calling my tmdoc::tmeval with a simple code chunk
@@ -968,6 +976,48 @@ The letter ß is another serious problem in some cases.
 This is some test with Umlauts like ÄÖÜ and äöü.
 
 The letter ß is another serious problem in some cases.}
+
+puts stderr "starting tcrd testing"
+
+tcltest::test tmdoc-tcrd-1.1 {
+    Checking tcrd package 
+} -body {
+    package require tsvg
+    package require tcrd
+    tcrd transpose A 2
+} -result {B}   
+
+tcltest::test tmdoc-tcrd-1.2 {
+    Checking tcrd package 
+} -body {
+    package require tsvg
+    package require tcrd
+    tcrd chordsheet {Hello [Dm]World}
+} -result {      Dm    
+Hello World}
+
+tcltest::test tmdoc-tcrd-1.2 {
+    Checking tcrd package 
+} -body {
+    package require tsvg
+    package require tcrd
+    tcrd chordsheet {Hello [Dm]World!}
+} -result {      Dm     
+Hello World!}
+
+tcltest::test tmdoc-tcrd-1.3 {
+    Checking tcrd package 
+} -body {
+ normalizeWhitespace [tmdoc::tmeval {```{.tcrd}
+Hello [Dm]World!
+```
+}]} -result [normalizeWhitespace {```tcrd
+Hello [Dm]World!
+```
+```tcrd
+Dm
+Hello World!
+```}]
 
 ::tcltest::cleanupTests 0
 

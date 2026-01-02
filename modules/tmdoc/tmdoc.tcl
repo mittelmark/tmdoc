@@ -4,7 +4,7 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <260101.1734>
+#  Last Modified : <260102.0943>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -985,7 +985,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 array unset copt
             } elseif {$mode eq "tcrd" && [regexp {^ {0,2}```} $line]} {
                 if {$copt(echo)} {
-                    set cont [tmdoc::block $tcrdinput $inmode mtex]
+                    set cont [tmdoc::block $tcrdinput $inmode tcrd]
                     puts $out $cont
                 }
                 if {$copt(eval)} {
