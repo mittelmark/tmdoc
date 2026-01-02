@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.18.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2026-01-02 15:48
+date: 2026-01-02 16:21
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -470,7 +470,7 @@ tsvg text -x 23 -y 65 World2!
 
 And here the output, only the image should be displayed:
 
-```{.tcl fig=true echo=false results=hide}
+```{.tcl fig=true,echo=false,results=hide}
 tsvg circle -cx 50 -cy 50 -r 45 -stroke black -stroke-width 2 -fill skyblue
 tsvg text -x 29 -y 45 Hello
 tsvg text -x 23 -y 65 World2!

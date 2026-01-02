@@ -69,6 +69,7 @@ exec tclsh "$0" "$@"
 #                                            remove tcl rfig and tcl rtab command can be replaced with tcl nfig and tcl ntab
 #                  2025-12-18 version 0.17.2 fixing an issue with more complex returns in inline R statements
 #                  2026-01-01 version 0.18.0 adding support for Ukulele and Guitar chords as well as chord sheets
+#                                            adding support for #INCLUDE in code chunks
 #
 package require Tcl 8.6-
 package require fileutil
@@ -546,15 +547,22 @@ proc tmdoc::cairosvg {filename dict} {
     array set opt $dict
     set fname [file rootname $filename]
     if {$opt(ext) in [list "pdf" "png"]} {
-        if {[auto_execok cairosvg] eq ""} {
-            return [list "Error: pdf and png conversion needs cairosvg, please install cairosvg https://www.cairosvg.org !" ""]
+        set conv cairosvg
+        if {[auto_execok rsvg-convert] ne ""} {
+            set conv rsvg-convert
+        } elseif {[auto_execok cairosvg] eq ""} {
+            return [list "Error: pdf and png conversion needs cairosvg or rsvg-convert, please install cairosvg https://www.cairosvg.org !" ""]
         }
     }
     if {[dict get $dict ext] eq "pdf"} {
-        exec cairosvg $fname.svg -o $fname.pdf ;# -W $opt(width) -H $opt(height)
+        if {$conv eq "cairosvg"} {
+            exec $conv $fname.svg -o $fname.pdf ;# -W $opt(width) -H $opt(height)
+        } else {
+            exec $conv $fname.svg --format pdf -o $fname.pdf ;#-W $opt(width) -H $opt(height)
+        }
         return ${fname}.pdf
     } elseif {[dict get $dict ext] eq "png"} {
-        exec cairosvg $fname.svg -o $fname.png ;#-W $opt(width) -H $opt(height)
+        exec $conv $fname.svg -o $fname.png ;#-W $opt(width) -H $opt(height)
         return ${fname}.png
     } elseif {[dict get $dict ext] ne "svg"} {
         return "Error unkown extension name valid values are svg, pdf, png"
@@ -1113,26 +1121,27 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                                 }
                             
                             }
-                            if {$copt(fig)} {
-                                set imgfile [file tail [file rootname $filename]]-$copt(label).$copt(ext)
-                                if {[interp eval intp "info commands figure"] eq ""} {
-                                    if {$inmode eq "md"} {
-                                        puts $out "```{tclerr}\nYou need to define a figure procedure \nwhich gets a filename as argument"
-                                        puts $out "proc figure {filename} { }\n\nwhere within you create the image file```\n"
-                                    } elseif {$inmode eq "man"} {
-                                        puts $out "\n\[example_begin\]"
-                                        puts $out "\nYou need to define a figure procedure \nwhich gets a filename as argument"
-                                        puts $out "proc figure {filename} { }\n\nwhere within you create the image file\n"
-                                        puts $out "\n\[example_end\]"
-                                    } else {
-                                        puts $out "\n\\begin{lrverbatim}\n\nYou need to define a figure procedure \nwhich gets a filename as argument\n"
-                                        puts $out "proc figure {filename} { }\n\nwhere within you create the image file\\end{lrverbatim}\n"
-                                    }
+                        }
+                        if {$copt(fig)} {
+                            set imgfile [file tail [file rootname $filename]]-$copt(label).$copt(ext)
+                            if {[interp eval intp "info commands figure"] eq ""} {
+                                if {$inmode eq "md"} {
+                                    puts $out "```{tclerr}\nYou need to define a figure procedure \nwhich gets a filename as argument"
+                                    puts $out "proc figure {filename} { }\n\nwhere within you create the image file```\n"
+                                } elseif {$inmode eq "man"} {
+                                    puts $out "\n\[example_begin\]"
+                                    puts $out "\nYou need to define a figure procedure \nwhich gets a filename as argument"
+                                    puts $out "proc figure {filename} { }\n\nwhere within you create the image file\n"
+                                    puts $out "\n\[example_end\]"
                                 } else {
-                                    interp eval intp [list figure $imgfile]
-                                    if {$copt(include)} {
-                                        set imgsrc $imgfile
-                                    }
+                                    puts $out "\n\\begin{lrverbatim}\n\nYou need to define a figure procedure \nwhich gets a filename as argument\n"
+                                    puts $out "proc figure {filename} { }\n\nwhere within you create the image file\\end{lrverbatim}\n"
+                                }
+                            } else {
+                                interp eval intp [list figure $imgfile]
+                                if {$copt(include)} {
+                                    set imgsrc $imgfile
+                                    iimage
                                 }
                             }
                         }
