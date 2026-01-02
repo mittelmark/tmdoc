@@ -4,7 +4,6 @@ exec tclsh "$0" "$@"
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
-#  Last Modified : <260102.1116>
 #
 # Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
@@ -484,9 +483,21 @@ proc tmdoc::block {txt inmode {style ""}} {
             append res "\[,${style}]\n----\n$txt----\n"
             append res "\n"
         } else {
-            append res "\\begin{lcverbatim}\n"
-            append res "$txt"
-            append res "\\end{lcverbatim}"
+            if {$style eq "r"} {
+                append res "\\begin{lrverbatim}\n"
+                append res "$txt"
+                append res "\n\\end{lrverbatim}"
+            } elseif {$style eq "python3"} {
+                append res "\\begin{lpverbatim}\n"
+                append res "$txt"
+                append res "\n\\end{lpverbatim}"
+                
+            } else {
+                append res "\\begin{lcverbatim}\n"
+                append res "$txt"
+                append res "\n\\end{lcverbatim}"
+                
+            }
         }
         return $res
     }

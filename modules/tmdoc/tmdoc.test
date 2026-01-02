@@ -487,6 +487,9 @@ fileCat('assets/file1.py')
 ```python
 import file2
 def f1 ():
+>>> fileCat('assets/file1.py')
+import file2
+def f1 (): 
    print("f1 def")
 f1()
 file2.f2()
