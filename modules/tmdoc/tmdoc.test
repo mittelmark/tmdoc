@@ -1036,7 +1036,7 @@ tcltest::test tmdoc-include-1.1 {
     Checking tcrd include
 } -body {
  normalizeWhitespace [tmdoc::tmeval {```{.tcrd}
-#include "assets/music.txt"
+#INCLUDE "assets/music.txt"
 ```
 }]} -result [normalizeWhitespace {```tcrd
 Hello [Am]Include [C]World!

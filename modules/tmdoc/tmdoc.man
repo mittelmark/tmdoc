@@ -410,14 +410,26 @@ figure markup such as:
 
 [para] [cmd tmdoc] supports as well the inclusion of other files into the
 output document, the Tcl interpreter running into your source code chunks has
-an [cmd include] [const FILENAME] feature which allows you to insert Markdown or LaTeX
-code directly within your document.
+an [cmd include] [const FILENAME] feature which allows you to insert document
+code  directly  within your  document.  This is  especially  import for markup
+languages  like Markdown  which do not have an include  directive per default.
+Here an example to include an Markdown file into the current document. 
+
 
 [para] [example {
 
 `include filename.md`
 
 }]
+
+[para]  Within  code  chunks  you  can as well  include  source  code  for the
+appropriate chunk type using the [cmd {#INCLUDE  "FILENAME"}]  syntax. Here an
+example to include a C source code file and then execute and run that file.
+
+[para] [example {
+```{.shell cmd="gcc %i -o hello2&&./hello2 > %o" chunk.ext=c ext=txt}
+#INCLUDE "assets/hello2.c"
+```}]
 
 [section "Command Line Applications"]
 

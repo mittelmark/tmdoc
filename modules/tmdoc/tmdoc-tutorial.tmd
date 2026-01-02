@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.18.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2026-01-02 11:18
+date: 2026-01-02 15:48
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -367,19 +367,63 @@ Some more text.
 
 Sometimes  you would like to include as well files within code chunks and then
 process these files within the code chunk environment for this you can use the
-`#include "filename"` directive as it is know for the C programming  language.
+`#INCLUDE "filename"` directive as it is know for the C programming  language.
+We use an uppercase `#INCLUDE` to not confuse C programming.
 Here an example (remove the leading space before the `#` char):
 
 ```
 '``{.tcrd echo=false}
- #include "assets/music.txt"
+#INCLUDE "assets/music.txt"
 '``
 ```
 
 And here the output:
 
 ```{.tcrd echo=false}
-#include "assets/music.txt"
+#INCLUDE "assets/music.txt"
+```
+
+Here an example for an included C file which will be then compiled:
+
+```
+'``{.shell cmd="gcc %i -o hello2&&./hello2 > %o" chunk.ext=c ext=txt}
+#INCLUDE "assets/hello2.c"
+'``
+```
+
+And here the output:
+
+```{.shell cmd="gcc %i -o hello2&&./hello2 > %o" chunk.ext=c ext=txt}
+#INCLUDE "assets/hello2.c"
+```
+
+Now as an example  let's include a PlantUML file which is then  processed  with
+the plantuml command line application.
+
+```
+'``{.shell cmd="plantuml -tpng %i" echo=false}
+#INCLUDE "assets/table.pml"
+'``
+```
+
+And here the output:
+
+```{.shell cmd="plantuml -tpng %i" echo=false}
+#INCLUDE "assets/table.pml"
+```
+
+Now let's use the [kroki](https://kroki.io) web service instead:
+
+```
+'``{.kroki dia="plantuml",echo=FALSE}
+#INCLUDE "assets/class.pml"
+'``
+```
+
+And here the output:
+
+```{.kroki dia="plantuml",echo=FALSE}
+#INCLUDE "assets/class.pml"
 ```
 
 ## Writing Images

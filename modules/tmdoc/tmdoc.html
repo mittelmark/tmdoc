@@ -461,11 +461,20 @@ figure markup such as:</p>
 <div id="section17" class="doctools_section"><h2><a name="section17">Includes</a></h2>
 <p><b class="cmd">tmdoc</b> supports as well the inclusion of other files into the
 output document, the Tcl interpreter running into your source code chunks has
-an <b class="cmd">include</b> <b class="const">FILENAME</b> feature which allows you to insert Markdown or LaTeX
-code directly within your document.</p>
+an <b class="cmd">include</b> <b class="const">FILENAME</b> feature which allows you to insert document
+code  directly  within your  document.  This is  especially  import for markup
+languages  like Markdown  which do not have an include  directive per default.
+Here an example to include an Markdown file into the current document.</p>
 <pre class="doctools_example">
 `include filename.md`
 </pre>
+<p>Within  code  chunks  you  can as well  include  source  code  for the
+appropriate chunk type using the <b class="cmd">#INCLUDE  &quot;FILENAME&quot;</b>  syntax. Here an
+example to include a C source code file and then execute and run that file.</p>
+<pre class="doctools_example">
+```{.shell cmd=&quot;gcc %i -o hello2&amp;&amp;./hello2 &gt; %o&quot; chunk.ext=c ext=txt}
+#INCLUDE &quot;assets/hello2.c&quot;
+```</pre>
 </div>
 <div id="section18" class="doctools_section"><h2><a name="section18">Command Line Applications</a></h2>
 <p>Since Version 0.8.0 <b class="cmd">tmdoc</b> as well supports the inclusion of code for

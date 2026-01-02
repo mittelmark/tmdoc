@@ -717,8 +717,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set line [regsub -all {`menu ([^`]+)`} $line "`tcl tag kbd \\1 menu`"]
                 set line [regsub -all {`include ([^`]+)`} $line "`tcl include \\1`"]
                 set line [regsub -all {`(n[ft][ai][bg]) +([a-zA-Z0-9]+)`} $line "`tcl \\1 \\2`"]
-            } elseif {$mode in [list tcrd mtex]} {
-                if {[regexp {^#include "(.+)"} $line -> filename]} {
+            } elseif {$mode in [list tcrd mtex shell kroki]} {
+                if {[regexp {^#INCLUDE "(.+)"} $line -> filename]} {
                     set line [include $filename]
                 }
             }

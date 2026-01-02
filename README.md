@@ -440,7 +440,9 @@ as example for such embedded documentation.
 ## Changes
 
 - 2026-01-XX: 0.18.0
-    - support for music chord sheet and chord shape displays for Guitar and Ukulele
+    - support  for music chord sheet and chord shape  displays  for Guitar and
+      Ukulele
+    - adding support for `#INCLUDE "filename"` in code chunks
 - 2025-12-18: 0.17.2
     - fixing an issue with more complex R inline statements 
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc-tutorial.pdf)
