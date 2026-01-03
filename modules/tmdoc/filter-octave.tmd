@@ -1,7 +1,7 @@
 ---
 title: filter-octave.tcl documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-11-03 12:52
+date: 2026-01-03 13:38
 pipe:
     pipe: python
     eval: 1    
@@ -96,6 +96,7 @@ disp(k)
 
 ## See Also
 
+* [filter-julia](filter-julia.html)
 * [filter-python](filter-python.html)
 * [filter-r](filter-r.html)
 * [filter-tcl](filter-tcl.html)

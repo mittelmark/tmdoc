@@ -1,7 +1,7 @@
 ---
 title: filter-tcl documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-11-03 10:48
+date: 2026-01-03 13:40
 ---
 
 `tcl include header.md`
@@ -65,6 +65,7 @@ The curent date and time is: `tcl clock format [clock seconds] -format "%Y-%m-%d
 
 ## See Also
 
+* [filter-julia](filter-julia.html)
 * [filter-r](filter-r.html)
 * [filter-py](filter-python.html)
 * [filter-octave](filter-octave.html)

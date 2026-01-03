@@ -1,7 +1,7 @@
 ---
 title: filter-python.tcl documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-11-03 10:46
+date: 2026-01-03 13:38
 pipe:
     pipe: python
     eval: 1    
@@ -31,10 +31,18 @@ a shell pipe either using the python command line application.
 
 The following options can be given via code chunks or in the YAML header.
 
-> - eval - should the code in the code block be evaluated, default: false/0
-  - echo - should the input code been shown, default: true/1
+> - echo - should the input code been shown, default: true/1
+  - eval - should the code in the code block be evaluated, default: false/0
+  - fig - should be a matplotlib figure generated, default: false
+  -  fig.path - path were the  matplotlib  images  should be stored,  default:
+  "images"
+  - fig.dpi - resolution of a bitmap image like png, default: 144
+  - fig.ext - image type which should be generated, default: "svg"
+  -  include  - should  the  image be  automatically  included  if  generated,
+  default: true  
+  - label - chunk label name, default: "chunk-nn" where nn is replaced with a number
   - pipe - the programming language to be used, here python
-  - results - should the output of the command line application been shown, should be asis, show or hide, default: show
+  - results - should the output of the command line application been shown, should be asis, show or hide, default: "show"
   - wait - the timeout (ms) after every code evaluation to wait for the pipe to
            read, try to decrease the time to get a speedup, increase of you
            observe output at wrong places, default: 100
@@ -118,6 +126,29 @@ We then just display the image file using standard Markdown.
  
 ![](images/pyhist.png)
 
+Here an example where the savefig method is automatically  added at the end by
+using the code chunk option `fig=true`.
+
+```{py fig=true,results=hide,fig.dpi=144,fig.ext=svg}
+import numpy as np
+
+# make the data
+np.random.seed(3)
+x = 4 + np.random.normal(0, 2, 24)
+y = 4 + np.random.normal(0, 2, len(x))
+# size and color:
+sizes = np.random.uniform(15, 80, len(x))
+colors = np.random.uniform(15, 80, len(x))
+
+# plot
+fig, ax = plt.subplots()
+
+ax.scatter(x, y, s=sizes, c=colors, vmin=0, vmax=100)
+
+ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
+       ylim=(0, 8), yticks=np.arange(1, 8))
+```
+
 There is as well the possibility to add inline Python code to display the values of variables or the output of short python commands here an example:
 
 ```{.pipe pipe="python3"}
@@ -146,6 +177,7 @@ print(y00)
 
 ## See Also
 
+* [filter-julia](filter-julia.html)
 * [filter-octave](filter-octave.html)
 * [filter-r](filter-r.html)
 * [filter-tcl](filter-tcl.html)

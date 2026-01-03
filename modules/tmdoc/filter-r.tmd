@@ -1,7 +1,7 @@
 ---
 title: filter-r.tcl documentation
 author: Detlef Groth, University of Potsdam, Germany
-date: 2025-11-03 10:47
+date: 2026-01-03 13:39
 ---
 
 
@@ -130,6 +130,7 @@ print(y)
 
 ## See Also
 
+* [filter-julia](filter-julia.html)
 * [filter-octave](filter-octave.html)
 * [filter-py](filter-python.html)
 * [filter-tcl](filter-tcl.html)
