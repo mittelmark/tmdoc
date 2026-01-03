@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.18.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2026-01-02 16:21
+date: 2026-01-03 10:58
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -1702,6 +1702,73 @@ print(x)
 
 The value of Pythons x is now `py x`! Should be 9!
 
+You can as well  create  plots  using the  [matplotlib](https://matplotlib.org/)  library for Python like
+this:
+
+Here an example:
+
+```
+' ```{py results="hide"}
+import matplotlib.pyplot as plt
+x = [0, 2, 4, 6, 8]
+y = [0, 4, 16, 36, 64]
+
+fig, ax = plt.subplots()  
+ax.plot(x, y, marker='o', label="Data Points")
+
+ax.set_title("Basic Components of Matplotlib Figure")
+ax.set_xlabel("X-Axis") 
+ax.set_ylabel("Y-Axis")  
+plt.savefig('pyexample.svg')
+' ```
+
+![](pyexample.svg)
+```
+
+And here the ouput:
+
+```{py results="hide"}
+import matplotlib.pyplot as plt
+x = [0, 2, 4, 6, 8]
+y = [0, 4, 16, 36, 64]
+
+fig, ax = plt.subplots()  
+ax.plot(x, y, marker='o', label="Data Points")
+
+ax.set_title("Basic Components of Matplotlib Figure")
+ax.set_xlabel("X-Axis") 
+ax.set_ylabel("Y-Axis")  
+plt.savefig('pyexample.svg')
+```
+
+![](pyexample.svg)
+
+If you setup the matplotlib  library as shown above you can as well get rid of
+the  plot.savefig  call by setting the code chunk option  `fig=true`.  Here an
+example:
+
+```{py fig=true,results=hide,fig.dpi=144,fig.ext=svg}
+import numpy as np
+
+plt.style.use('_mpl-gallery')
+
+# make the data
+np.random.seed(3)
+x = 4 + np.random.normal(0, 2, 24)
+y = 4 + np.random.normal(0, 2, len(x))
+# size and color:
+sizes = np.random.uniform(15, 80, len(x))
+colors = np.random.uniform(15, 80, len(x))
+
+# plot
+fig, ax = plt.subplots()
+
+ax.scatter(x, y, s=sizes, c=colors, vmin=0, vmax=100)
+
+ax.set(xlim=(0, 8), xticks=np.arange(1, 8),
+       ylim=(0, 8), yticks=np.arange(1, 8))
+```
+
 
 ### Octave Code Evaluation
 
@@ -1789,6 +1856,27 @@ Remember [F]me to one who [C]livesxb there
 [Dm]He once [C]was a true love of [Dm]mine
 ```
 
+Using the chode chunk option argument `transpose=2` you transpose the song by two
+half tone steps above like so:
+
+```
+'``{.tcrd echo=FALSE transpose=2}
+[Dm]Are you going to [C]Scarborough [Dm]Fair? 
+[F]Parsley, [Dm]sage, rose [F]mary [G]and [Dm]thyme 
+Remember [F]me to one who [C]lives there 
+[Dm]He once [C]was a true love of [Dm]mine
+'``
+```
+
+And here is the output:
+
+```{.tcrd echo=FALSE,transpose=2}
+[Dm]Are you going to [C]Scarborough [Dm]Fair? 
+[F]Parsley, [Dm]sage, rose [F]mary [G]and [Dm]thyme 
+Remember [F]me to one who [C]livesxb there 
+[Dm]He once [C]was a true love of [Dm]mine
+```
+
 Let's now add a few Ukulele Chord figures:
 
 
@@ -1809,6 +1897,8 @@ Dm 2210
 F  2010
 G  0232
 ```
+
+
 
 ## Code Chunk Options
 

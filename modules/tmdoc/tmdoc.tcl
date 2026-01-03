@@ -667,10 +667,10 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set tcrdinput ""    
     set lastbashinput ""
     set ginput ""
-    array set mopt [list eval true echo true results show fig false include true label chunk-nn\
+    array set mopt [list eval true echo true results show fig false include true label chunk-nn fig.path images \
                     ext png chunk.ext txt fig.width 0]
     ## r, python, octave, julia
-    array set dopt [list eval true echo true results show fig false include true pipe python3 \
+    array set dopt [list eval true echo true results show fig false include true pipe python3 fig.path images \
         fig.width 0 fig.height 0 fig.cap {} label chunk-nn ext png chunk.ext txt]
     ## bash / shell
     array set bdopt [list cmd "" echo true eval true results show fig true include true \
@@ -678,13 +678,13 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     ## kroki
     array set kdopt [list echo true eval true results show fig true include true \
                      fig.width 0 label chunk-nn ext png dia ditaa \
-                     fig.path .]
+                     fig.path images]
     ## mtex
     array set tdopt [list echo true eval true results show fig true include true \
-                     label chunk-nn fig.path . fig.width 0 ext png]
+                     label chunk-nn fig.path images fig.width 0 ext png]
     ## tcrd
     array set cdopt [list echo true results show eval true include true label chunk-nn transpose 0 inline true \
-                 chord false chordname "" imagepath images fig false ext svg circlecolor black fig.width 100 out.width 0]
+                 chord false chordname "" fig.path images fig false ext svg circlecolor black fig.width 100 out.width 0]
     interpReset
     interp eval intp "set ::inmode $inmode"
     set enc [::tmdoc::get_encoding $filename]
@@ -821,7 +821,6 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode code
                 incr chunki
                 array set copt [array get dopt]
-
                 # TODO: spaces in fig.cap etc
                 ::tmdoc::GetOpts
                 continue
@@ -836,6 +835,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode kroki
                 incr chunki
                 array set copt [array get kdopt]
+                if {[file isdirectory $copt(fig.path)]} {
+                    file mkdir $copt(fig.path)
+                }
                 # TODO: spaces in fig.cap etc
                 ::tmdoc::GetOpts 
                 continue
@@ -1003,6 +1005,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 #if {$copt(ext) eq "svg"} {
                 #    set filename [tmdoc::cairosvg $filename [array get copt]]
                 #}
+                if {[file isdirectory $copt(fig.path)]} {
+                    file mkdir $copt(fig.path)
+                }
                 if {$copt(include)} {
                     set imgsrc $filename
                     iimage
@@ -1276,7 +1281,7 @@ proc ::tmdoc::GetOpts {} {
         # setting default label if no label was given
         foreach key [array names copt] {
             if {$key eq "label" && $copt($key) eq "chunk-nn"} {
-                set value [regsub {nn} $copt($key) $chunki]
+                set value [regsub {nn} $copt($key) $mode-$chunki]
                 set copt($key) $value
             }
         }

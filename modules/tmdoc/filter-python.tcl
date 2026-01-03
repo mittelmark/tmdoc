@@ -80,13 +80,24 @@ namespace eval tmdoc::python {
     proc filter {cnt cdict} {
         variable dict
         set res ""
-        set def [dict create results show eval false label null \
-                 include true terminal true wait 50]
+        set def [dict create results show eval false label null fig.dpi 144 fig false fig.ext svg \
+                 fig.path images include true terminal true wait 50 matplotlib plt]
         set dict [dict merge $def $cdict]
-        
+        if {![regexp {\.} [dict get $dict fig.ext]]} {
+            dict set dict fig.ext ".[dict get $dict fig.ext]"
+        }
         set codeLines [list]
         foreach line [split $cnt \n] {
+            if {[regexp {import matplotlib.pyplot as} $line]} {
+                set asm [regsub {.+as +} $line ""]
+                dict set dict matplotlib [string trim $asm]
+            }
             lappend codeLines $line
+        }
+        if {[dict get $dict fig]} {
+            set filename [file join [dict get $dict fig.path] [dict get $dict label][dict get $dict fig.ext]]
+            set code "[dict get $dict matplotlib].savefig(\"$filename\",dpi=[dict get $dict fig.dpi])"
+            lappend codeLines $code
         }
         lappend codeLines "print('#### DONE ####')"
         if {[dict get $dict eval]} {
@@ -100,10 +111,14 @@ namespace eval tmdoc::python {
             }
         }
         set res $nres
+        set img ""
+        if {[dict get $dict fig] && [dict get $dict include]} {
+            set img [file join [dict get $dict fig.path] [dict get $dict label][dict get $dict fig.ext]]
+        }
         #set res [string trim [regsub {>>> >>> } [regsub {>>> >>> >>> } $res ""] ""]]
         #set res [string trim [regsub {>?>?>? ?\.\.\. \.\.\. >>> } $res ""]]
         #set res [regsub {\n\.\.\.$} $res ""]
-        return [list [string trim $res] ""]
+        return [list [string trim $res] "$img"]
     }
 
 }

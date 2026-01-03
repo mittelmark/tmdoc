@@ -16,7 +16,7 @@ namespace eval tmdoc { }
 namespace eval tmdoc::tcrd {
     proc filter {cont dict} {
         set def [dict create results show eval true include true label null transpose 0 inline true \
-                 chord false chordname "" imagepath images fig false ext svg \
+                 chord false chordname "" fig.path images fig false ext svg \
                  circlecolor black fig.width 100]
         set dict [dict merge $def $dict]
         if {![dict get $dict eval]} {
@@ -26,8 +26,10 @@ namespace eval tmdoc::tcrd {
             dict set dict fig true
         }
         set owd [pwd] 
-        set fname [file join $owd [dict get $dict imagepath] [dict get $dict label]].svg
-
+        set fname [file join $owd [dict get $dict fig.path] [dict get $dict label]].svg
+        if {![file isdirectory [dict get $dict fig.path]]} {
+            file mkdir [dict get $dict fig.path]
+        }
         if {[catch {
              set width [dict get $dict fig.width]
              if {[dict get $dict chord]} {

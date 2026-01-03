@@ -559,14 +559,15 @@ as example for such embedded documentation.
   between chunks (done)
 - [x] documentation for filter abbreviation, csv, kroki, alerts, shell code (done)
 - [x] adding Julia language support using pipe
-- [x] support of ` `include FILENAME` (0.17.0)
+- [x] support of `` `include FILENAME` `` (0.17.0)
 - [x] true HTML comments with text removal (0.17.0)
+- [x] adding tcrd filter for sheet music display and adding string  instrument
+      chords (0.18.0)
 - [ ] support for abbreviation lists
 - [ ] support for  `fig=TRUE` for Python's library matplotlib
-- [ ] support of ` `date %Y-%m-%d` ` and other date formats
+- [ ] support of `` `date %Y-%m-%d` `` and other date formats
 - [ ] Support for typst comments // line and /* multiline */ comments
 - [ ] more citation examples
-- [ ] adding tcrd filter for sheet music display and adding string instrument chords  
   
 ## See Also
 
