@@ -1,7 +1,7 @@
 ---
 title: tmdoc::tmdoc 0.18.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2026-01-03 13:57
+date: 2026-01-04 08:33
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -2049,7 +2049,7 @@ tmdoc infile.Rmd - --toc true | mndoc - outfile.html --css tmdoc.css
 ```
 
 This should convert the given  _infile.Rmd_ to the output file  _outfile.html_
-creating as well toc-file for  infile.Rmd  whcih can included in that file and
+creating as well toc-file for  infile.Rmd  which can included in that file and
 the HTML use will use  the  given  stylesheet.  Please  not that all local image and
 stylesheet will be embedded per default into the HTML document.
 

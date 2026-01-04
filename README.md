@@ -436,13 +436,13 @@ as example for such embedded documentation.
 * [Latest Release](https://github.com/mittelmark/tmdoc/releases)
 * [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
-
 ## Changes
 
 - 2026-01-XX: 0.18.0
     - support  for music chord sheet and chord shape  displays  for Guitar and
       Ukulele
     - adding support for `#INCLUDE "filename"` in code chunks
+    - adding support for fig=true in Python matplotlib plots
 - 2025-12-18: 0.17.2
     - fixing an issue with more complex R inline statements 
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc-tutorial.pdf)
@@ -563,8 +563,8 @@ as example for such embedded documentation.
 - [x] true HTML comments with text removal (0.17.0)
 - [x] adding tcrd filter for sheet music display and adding string  instrument
       chords (0.18.0)
+- [x] support for  `fig=TRUE` for Python's library matplotlib (0.18.0)
 - [ ] support for abbreviation lists
-- [ ] support for  `fig=TRUE` for Python's library matplotlib
 - [ ] support of `` `date %Y-%m-%d` `` and other date formats
 - [ ] Support for typst comments // line and /* multiline */ comments
 - [ ] more citation examples

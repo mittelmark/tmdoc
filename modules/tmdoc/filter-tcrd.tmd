@@ -1,7 +1,7 @@
 ---
 title: "filter-tcrd.tcl documentation"
 author: "Detlef Groth, Caputh-Schwielowsee, Germany"
-date: 2026-01-02 11:06
+date: 2026-01-04 08:55
 ---
 
 `tcl include header.md`
@@ -214,14 +214,23 @@ Am  x02210
 
 You can as well include external files as music sheets like this:
 
+```
+'``{.tcrd}
+#INCLUDE "assets/music.txt"
+'``
+```
+
+And here the output:
+
 ```{.tcrd}
-#include "assets/music.txt"
+#INCLUDE "assets/music.txt"
 ```
 
 
 ## CHANGES
 
 - 2026-01-01 first version
+- 2026-01-XX first release
 
 ## TODO:
 
