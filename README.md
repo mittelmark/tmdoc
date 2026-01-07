@@ -83,13 +83,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc-0.17.2.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.18.0/tmdoc-0.18.0.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.17.2
+## 0.18.0
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -438,11 +438,15 @@ as example for such embedded documentation.
 
 ## Changes
 
-- 2026-01-XX: 0.18.0
+- 2026-01-07: 0.18.0
     - support  for music chord sheet and chord shape  displays  for Guitar and
-      Ukulele
-    - adding support for `#INCLUDE "filename"` in code chunks
+      Ukulele using the [tcrd Tcl library](https://github.com/mittelmark/tcrd)
+    - adding  support for `#INCLUDE  "filename"` in code chunks with start and
+      end lines
     - adding support for fig=true in Python matplotlib plots
+    - adding support for rsvg-convert in addition to cairosvg
+    - fixing an issue with fig=TRUE for Tcl code blocks
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.18.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.18.0/tmdoc-tutorial.pdf)
 - 2025-12-18: 0.17.2
     - fixing an issue with more complex R inline statements 
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.17.2/tmdoc-tutorial.pdf)

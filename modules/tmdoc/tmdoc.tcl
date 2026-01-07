@@ -70,7 +70,10 @@ exec tclsh "$0" "$@"
 #                  2025-12-18 version 0.17.2 fixing an issue with more complex returns in inline R statements
 #                  2026-01-01 version 0.18.0 adding support for Ukulele and Guitar chords as well as chord sheets
 #                                            adding support for #INCLUDE in code chunks
-#
+#                                            fixing issues with fig=TRUE in Tcl cocd chunks
+#                                            adding support for fig=true in Python matplotlib plots
+#                                             adding support for rsvg-convert in addition to cairosvg
+  
 package require Tcl 8.6-
 package require fileutil
 package require yaml
@@ -727,7 +730,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set line [regsub -all {`(n[ft][ai][bg]) +([a-zA-Z0-9]+)`} $line "`tcl \\1 \\2`"]
             } elseif {$mode in [list tcrd mtex shell kroki]} {
                 if {[regexp {^#INCLUDE "(.+)"} $line -> filename]} {
-                    set line [include $filename]
+                    if {[regexp {^#INCLUDE "(.+)" +([0-9]+) +([0-9]+)} $line -> filename start end]} {
+                        set line [include $filename $start $end]
+                    } else {
+                        set line [include $filename]
+                    }
                 }
             }
             set line [regsub {^\s*\[@references\]\s*$} $line "`tcl citer::bibliography`"]
@@ -1345,9 +1352,15 @@ proc tmdoc::ue_init {} {
 tmdoc::ue_init
 proc tmdoc::ue {s} { string map $::ue_map $s }
 proc tmdoc::ud {s} { string map $::ud_map $s }
-proc ::tmdoc::include {filename} {
+proc ::tmdoc::include {filename args} {
     if {![file exists $filename]} {
         return "Error: file '$filename' does not exists!"
+    }
+    if {[llength $args] > 0} {
+        foreach {start end} $args { break }
+    } else {
+        set start 0
+        set end 1000
     }
     set enc [get_encoding $filename]
     if [catch {open $filename r} infh] {
@@ -1355,8 +1368,12 @@ proc ::tmdoc::include {filename} {
     } else {
         fconfigure $infh -encoding $enc
         set res ""
+        set x 0
         while {[gets $infh line] >= 0} {
-            append res "$line\n"
+            if {$x >= $start && $x < $end } {
+                append res "$line\n"
+            }
+            incr x
         }
         set res [regsub {\n$} $res ""]
         close $infh
