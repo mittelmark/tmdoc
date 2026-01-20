@@ -128,8 +128,17 @@ namespace eval tmdoc::r {
             if {[dict get $dict fig.height] == 0} {
                 dict set dict fig.height [dict get $dict fig.width]
             }
+            ### check if width and height is given in inches, convert ot pixes
+            if {([dict get $dict fig.width] < 20 || [dict get $dict fig.height] < 20) && [dict get $dict units] eq "null"} {
+                dict set dict units in
+            }
+            if {[dict get $dict units] eq "null"} {
+                dict set dict units px
+            }
+            puts stderr [dict get $dict units]
             set fname [file join [dict get $dict fig.path] [dict get $dict label].[dict get $dict ext]]
-            puts $pipe "[dict get $dict ext](file=\"$fname\",width=[dict get $dict fig.width],height=[dict get $dict fig.height]);"
+            puts stderr "[dict get $dict ext](file=\"$fname\",width=[dict get $dict fig.width],height=[dict get $dict fig.height],units='[dict get $dict units]',res=[dict get $dict res]);"
+            puts $pipe "[dict get $dict ext](file=\"$fname\",width=[dict get $dict fig.width],height=[dict get $dict fig.height],units='[dict get $dict units]');"
             puts $pipe "### SHOW ON"
             flush $pipe
             after [dict get $dict wait] [list append wait ""]
@@ -170,8 +179,8 @@ namespace eval tmdoc::r {
             set r R
         }
         set def [dict create pipe $r results show eval false label null fig false \
-                 fig.width 600 fig.height 600 fig.path . \
-                 include true terminal true wait 50]
+                 fig.width 600 fig.height 600 fig.path . res 144 \
+                 include true terminal true wait 50 units null]
         set dict [dict merge $def $cdict]
         if {![file isdirectory [dict get $dict fig.path]]} {
             file mkdir [dict get $dict fig.path]
