@@ -1,5 +1,5 @@
-[comment {-*- mode: tcl ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.18.0]
+[comment {-*- mode: tcl-doctools ;fill-column: 90 -*- doctools manpage}]
+[vset VERSION 0.18.1]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2025, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -421,6 +421,18 @@ Here an example to include an Markdown file into the current document.
 `include filename.md`
 
 }]
+    
+[para] If you would like to place the file content within a specific
+environment, for instance to show some source code with in a pre environment,
+you can as well give two arguments like this
+
+[para] [example {
+
+`include filename.md {{<pre class="python">} {</pre>}}`
+
+}]
+
+    
 
 [para]  Within  code  chunks  you  can as well  include  source  code  for the
 appropriate chunk type using the [cmd {#INCLUDE  "FILENAME"}]  syntax. Here an

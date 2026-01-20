@@ -438,6 +438,9 @@ as example for such embedded documentation.
 
 ## Changes
 
+- 2026-01-18: 0.18.1
+    - adding include support for Python, R, Julia and Tcl code chunks
+    - adding include with environment arguments for including files into pre or div tags
 - 2026-01-07: 0.18.0
     - support  for music chord sheet and chord shape  displays  for Guitar and
       Ukulele using the [tcrd Tcl library](https://github.com/mittelmark/tcrd)

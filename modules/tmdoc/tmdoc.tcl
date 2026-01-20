@@ -1,6 +1,4 @@
-#!/bin/sh
-# A Tcl comment, whose contents don't matter \
-exec tclsh "$0" "$@"
+#!//usr/bin/env tclsh
 ##############################################################################
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
@@ -73,7 +71,9 @@ exec tclsh "$0" "$@"
 #                                            fixing issues with fig=TRUE in Tcl cocd chunks
 #                                            adding support for fig=true in Python matplotlib plots
 #                                            adding support for rsvg-convert in addition to cairosvg
-#                 2026-01-07 version 0.18.1  adding include support for Python, R, Julia and Tcl code chunks
+#                 2026-01-XX version 0.18.1  adding include support for Python, R, Julia and Tcl code chunks
+#                                            adding include with environment arguments for including files into pre or div tags
+#                                            fixing fig.path issue for R chunks
 
 package require Tcl 8.6-
 package require fileutil
@@ -252,7 +252,7 @@ proc ::tmdoc::interpReset {} {
                 }
             }
         }
-        proc include {filename} {
+        proc include {filename {envir {"" ""}}} {
             if {![file exists $filename]} {
                 return "Error: file '$filename' does not exists!"
             }
@@ -262,10 +262,12 @@ proc ::tmdoc::interpReset {} {
             } else {
                 fconfigure $infh -encoding $enc
                 set res ""
+                append res [lindex $envir 0]
                 while {[gets $infh line] >= 0} {
                     append res "$line\n"
                 }
                 set res [regsub {\n$} $res ""]
+                append res [lindex $envir 1]
                 close $infh
                 return $res
             }
@@ -347,7 +349,7 @@ proc ::tmdoc::interpReset {} {
     # todo handle puts options
     
     interp eval itry {proc puts {args} {}}
-    interp eval itry {proc include {filename} {}}
+    interp eval itry {proc include {filename {envir {"" ""}}} {}}
     interp eval itry {proc list2tab {header data} {}}
     interp eval itry {proc list2mdtab {header data} {}}
     interp eval itry {proc nfig {{label ""}} {}}

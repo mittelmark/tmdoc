@@ -185,7 +185,7 @@ namespace eval tmdoc::r {
         } 
         set img ""
         if {[dict get $dict fig] && [dict get $dict include]} {
-            set img "[dict get $dict label].[dict get $dict ext]"
+            set img [file join [dict get $dict fig.path] "[dict get $dict label].[dict get $dict ext]"]
         }
         if {![dict get $dict terminal]} {
             set res [string trim [string trim [regsub {^> .+\[1\] } $res ""]] {"}] ;#"

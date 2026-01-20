@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.18.0 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.18.1 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2026-01-04 08:33
+date: 2026-01-20 07:39
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -345,7 +345,6 @@ Some text - indented and emphasized.
  
 Some more text.
     
-
 Since  version  0.17 the user of tmdoc can as well omit the tcl  prefix of the
 inline chunk like this:
 
@@ -364,6 +363,16 @@ Some text - indented and bold.
 > __`include lipsum.txt`__
 
 Some more text.
+
+Since version 0.18.1 you can as well add specific code, for instance HTML
+tags like pre or div which should be displayed before and after the included
+file. Here an example which would display an C source code file within a pre HTML
+environment.
+
+```
+`tcl include sample.c {<pre> </pre>}`
+```
+
 
 Sometimes  you would like to include as well files within code chunks and then
 process these files within the code chunk environment for this you can use the
@@ -1023,7 +1032,8 @@ __References:__
 
 ## Abbreviations
 
-Abbreviations can be defined in a separate Yaml file which should be mentioned in the document preamble like so:
+Abbreviations can be defined in a separate Yaml file which should be
+mentioned in the document preamble like so:
 
 ```
 ---
@@ -1284,8 +1294,9 @@ like so:
 
 ```
 That a file which does not has the _.md_ file extension is a Markdown file
-can be configured in Geany using the:
-`menu {<u>D</u>ocument "Set File<u>t</u>ype" "<u>M</u>arkup Languages" "<u>M</u>arkdown source file"}`
+can be configured in Geany using the (remove the newline next line):
+`menu {<u>D</u>ocument "Set File<u>t</u>ype" "<u>M</u>arkup Languages" 
+   "<u>M</u>arkdown source file"}`
 menu checkbox.
 ```
 
@@ -1339,8 +1350,8 @@ The first  figure is `nfig  first`.  The first  table is `ntab  first`. If you
 repeat a label  somewhere  later in the text like for figure `nfig first`, then
 simply the numbering is repeated. The same is true for `ntab first`. Whereas 
 the call for a with a not used label like in figure  `nfig  second`  the label
-gets a new number. So you can use a figure or table label  before and after the actual
-figure for referencing and displaying the correct number.
+gets a new number. So you can use a figure or table label  before and after the
+actual figure for referencing and displaying the correct number.
 ```
 
 Here the output:
@@ -1349,8 +1360,8 @@ The first  figure is `nfig  first`.  The first  table is `ntab  first`. If you
 repeat a label  somewhere  later in the text like for figure `nfig first`, then
 simply the numbering is repeated. The same is true for `ntab first`. Whereas 
 the call for a with a not used label like in figure  `nfig  second`  the label
-gets a new number. So you can use a figure or table label  before and after the actual
-figure for referencing and displaying the correct number.
+gets a new number. So you can use a figure or table label  before and after the
+actual figure for referencing and displaying the correct number.
 
 Here an example to label a Ditaa image:
 

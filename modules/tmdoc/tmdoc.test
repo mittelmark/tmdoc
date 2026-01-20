@@ -128,7 +128,25 @@ Some text
 
 }
 
-tcltest::test tmdoc-test-1.8 {
+tcltest::test tmdoc-test-1.8 {checking include with pre} -body {
+   tmdoc::tmeval "
+Some text
+
+`include include.md {<pre> </pre>}`
+
+Some text
+"
+} -result {
+Some text
+
+<pre>## Hello Include</pre>
+
+Some text
+
+}
+
+
+tcltest::test tmdoc-test-1.9 {
     Calling my tmdoc::tmeval with results=asis 
     to display a table using the list2md command
 } -body {
@@ -150,7 +168,7 @@ Some text
 
 }
 
-tcltest::test tmdoc-test-1.9 {
+tcltest::test tmdoc-test-1.10 {
     Calling my tmdoc::tmeval with results=asis 
     to display a table using csv input
 } -body {
@@ -175,7 +193,7 @@ Some text
 
 }
 
-tcltest::test tmdoc-test-1.10 {
+tcltest::test tmdoc-test-1.11 {
     Calling my tmdoc::tmeval with alert message
     for a note
 } -body {
@@ -187,7 +205,7 @@ This is a note!
 </p></div>}
 
 
-tcltest::test tmdoc-test-1.11 {
+tcltest::test tmdoc-test-1.12 {
     Checking abbreviations in the YAML header.
 } -body {
     string trim [tmdoc::tmeval "---
@@ -208,7 +226,7 @@ author: Max Musterman
 
 Max Musterman}
 
-tcltest::test tmdoc-test-1.12 {
+tcltest::test tmdoc-test-1.13 {
     Checking space around = sign in the code chunk options
 } -body {
     string trim [tmdoc::tmeval "```{.tcl eval = TRUE}
@@ -226,7 +244,7 @@ set x
 ```}
 
 
-tcltest::test tmdoc-test-1.13 {
+tcltest::test tmdoc-test-1.14 {
     Checking kbd tag with complete tcl code
 } -body {
     string trim [tmdoc::tmeval "Example for kbd tag:
@@ -251,7 +269,7 @@ Now a menu which is given as a list:
 
 Change Indent width in Geany: <kbd class="menu">Document</kbd> &#8594; <kbd class="menu">Indent Type</kbd> &#8594; <kbd class="menu">Spaces</kbd>.}
 
-tcltest::test tmdoc-test-1.14 {
+tcltest::test tmdoc-test-1.15 {
     Checking nfig numberings of figures and tables.
 } -body {
     string trim [tmdoc::tmeval "Example for nfig tag:
@@ -270,7 +288,7 @@ If we we reuse the tag for figure 1.
 
 Another reference would be for figure 2.}
 
-tcltest::test tmdoc-test-1.15 {
+tcltest::test tmdoc-test-1.16 {
     Checking ntab numberings of tables.
 } -body {
     string trim [tmdoc::tmeval "Example for ntab tag:
@@ -712,7 +730,7 @@ plot(1)
 > plot(1)
 ```
 
-![ ](testlab.png)}
+![ ](images/testlab.png)}
 
 tcltest::test tmdoc-r-1.4 {
     Checking R pipe code with image creation and include=false.
