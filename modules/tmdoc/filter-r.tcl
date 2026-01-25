@@ -135,9 +135,7 @@ namespace eval tmdoc::r {
             if {[dict get $dict units] eq "null"} {
                 dict set dict units px
             }
-            puts stderr [dict get $dict units]
             set fname [file join [dict get $dict fig.path] [dict get $dict label].[dict get $dict ext]]
-            puts stderr "[dict get $dict ext](file=\"$fname\",width=[dict get $dict fig.width],height=[dict get $dict fig.height],units='[dict get $dict units]',res=[dict get $dict res]);"
             puts $pipe "[dict get $dict ext](file=\"$fname\",width=[dict get $dict fig.width],height=[dict get $dict fig.height],units='[dict get $dict units]');"
             puts $pipe "### SHOW ON"
             flush $pipe

@@ -263,12 +263,16 @@ proc ::tmdoc::interpReset {} {
             } else {
                 fconfigure $infh -encoding $enc
                 set res ""
-                append res [lindex $envir 0]
                 while {[gets $infh line] >= 0} {
                     append res "$line\n"
                 }
                 set res [regsub {\n$} $res ""]
+                if {[regexp {^<pre} [lindex $envir 0]]} {
+                    set res [string map [list "<" "&lt;" ">" "&gt;"] $res]
+                }
+                set res "[lindex $envir 0]$res"
                 append res [lindex $envir 1]
+
                 close $infh
                 return $res
             }
