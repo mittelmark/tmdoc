@@ -437,7 +437,10 @@ as example for such embedded documentation.
 * [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
 ## Changes
-
+- 2026-01-XX (git): 0.18.2
+    - fixing an issue with fig.width smaller than 20 seens as pixel
+    - fixing issue in included files within pre environments havng < and > chars
+    - optional shortening syntax for pre environments in include to 'include filename pre'
 - 2026-01-20: 0.18.1
     - adding include support for Python, R, Julia and Tcl code chunks
     - adding include with environment arguments for including files into pre or div tags

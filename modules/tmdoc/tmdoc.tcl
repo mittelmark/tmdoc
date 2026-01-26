@@ -75,6 +75,8 @@
 #                                            adding include with environment arguments for including files into pre or div tags
 #                                            fixing fig.path issue for R chunks
 #                 2026-01-XX version 0.18.2  fixing an issue with fig.width smaller than 20 seens as pixel
+#                                            fixing issue in included files within pre environments havng < and > chars
+#                                            optional shortening syntax for pre environments in include to `include filename pre`
 
 package require Tcl 8.6-
 package require fileutil
@@ -265,6 +267,9 @@ proc ::tmdoc::interpReset {} {
                 set res ""
                 while {[gets $infh line] >= 0} {
                     append res "$line\n"
+                }
+                if {$envir eq "pre"} {
+                    set envir {<pre> </pre>}
                 }
                 set res [regsub {\n$} $res ""]
                 if {[regexp {^<pre} [lindex $envir 0]]} {

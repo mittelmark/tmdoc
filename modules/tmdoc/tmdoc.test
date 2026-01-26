@@ -149,7 +149,7 @@ tcltest::test tmdoc-test-1.9 {checking include with pre and greater loser signs 
    tmdoc::tmeval "
 Some text
 
-`include assets/hello2.c {<pre> </pre>}`
+`include assets/hello2.c pre`
 
 Some text"} -result {
 Some text
