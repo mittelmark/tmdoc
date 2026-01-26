@@ -145,6 +145,30 @@ Some text
 
 }
 
+tcltest::test tmdoc-test-1.9 {checking include with pre and greater loser signs and && in include} -body {
+   tmdoc::tmeval "
+Some text
+
+`include assets/hello2.c {<pre> </pre>}`
+
+Some text"} -result {
+Some text
+
+<pre>#include &lt;stdio.h&gt;
+int main() {
+    int x = 1;
+    int y = 1;
+    if (x == 1 && y == 1) {
+        printf("All looks good!");
+    }
+    printf("Hello 2nd C World!\n");
+    return(0);
+}
+</pre>
+
+Some text
+}
+
 
 tcltest::test tmdoc-test-1.9 {
     Calling my tmdoc::tmeval with results=asis 
