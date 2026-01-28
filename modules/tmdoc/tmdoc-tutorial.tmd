@@ -1,7 +1,7 @@
 ---
-title: tmdoc::tmdoc 0.18.1 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.18.2 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
-date: 2026-01-20 07:39
+date: 2026-01-28 08:00
 bibliography: ../../examples/literature.bib
 abbreviations: abbrev.yml
 DG: Detlef Groth, University of Potsdam, Germany
@@ -373,6 +373,19 @@ environment.
 `tcl include sample.c {<pre> </pre>}`
 ```
 
+That syntax is useful if you like to provide specific arguments for the environment like adding a class name:
+
+`tcl include sample.c {{<pre class="c"}> </pre>}`
+
+Since version 0.18.2 you can as well shorten _pre_ blocks without classnames like this:
+
+```
+`tcl include assets/hello2.c pre`
+```
+
+Here the output:
+
+`tcl include assets/hello2.c pre`
 
 Sometimes  you would like to include as well files within code chunks and then
 process these files within the code chunk environment for this you can use the

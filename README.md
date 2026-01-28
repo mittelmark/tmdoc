@@ -83,13 +83,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.18.1/tmdoc-0.18.1.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.18.2/tmdoc-0.18.2.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.18.1
+## 0.18.2
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -437,15 +437,16 @@ as example for such embedded documentation.
 * [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
 ## Changes
-- 2026-01-XX (git): 0.18.2
+- 2026-01-28: 0.18.2
     - fixing an issue with fig.width smaller than 20 seens as pixel
-    - fixing issue in included files within pre environments havng < and > chars
+    - fixing issue in included files within pre environments having < and > chars
     - optional shortening syntax for pre environments in include to 'include filename pre'
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.18.2/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.18.2/tmdoc-tutorial.pdf)
 - 2026-01-20: 0.18.1
     - adding include support for Python, R, Julia and Tcl code chunks
     - adding include with environment arguments for including files into pre or div tags
     - fixing issues filename issues with automatic image inclusions in R code chunks
-    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.18.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.18.1/tmdoc-tutorial.pdf)    
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.18.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.18.1/tmdoc-tutorial.pdf)
 - 2026-01-07: 0.18.0
     - support  for music chord sheet and chord shape  displays  for Guitar and
       Ukulele using the [tcrd Tcl library](https://github.com/mittelmark/tcrd)
