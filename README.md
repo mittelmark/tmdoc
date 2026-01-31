@@ -437,6 +437,8 @@ as example for such embedded documentation.
 * [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
 ## Changes
+- 2026-0X-XX: 0.18.3
+    - fixing a hang forever issue if final print statements miss a newline (Python, R, Julia)
 - 2026-01-28: 0.18.2
     - fixing an issue with fig.width smaller than 20 seens as pixel
     - fixing issue in included files within pre environments having < and > chars

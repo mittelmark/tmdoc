@@ -9,7 +9,7 @@ left to right direction
 skinparam roundcorner 10
 skinparam linetype ortho
 skinparam shadowing false
-skinparam handwritten false
+!option handwritten true
 skinparam class {
     BackgroundColor #eeeeee
     ArrowColor #2688d4

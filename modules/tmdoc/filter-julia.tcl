@@ -79,6 +79,8 @@ namespace eval tmdoc::julia {
         foreach line [split $cnt \n] {
             lappend codeLines $line
         }
+        # to avoid hanging in case of print("Hello") at the end
+        lappend codeLines "\nprintln(\"\");"
         if {[dict get $dict eval]} {
             set res [pipestart $codeLines]
         } 

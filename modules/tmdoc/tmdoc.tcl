@@ -3,7 +3,7 @@
 #  Author        : Dr. Detlef Groth
 #  Created       : Tue Feb 18 06:05:14 2020
 #
-# Copyright (c) 2020-2025  Detlef Groth, University of Potsdam, Germany
+# Copyright (c) 2020-2026  Detlef Groth, University of Potsdam, Germany
 #                          E-mail: dgroth(at)uni(minus)potsdam(dot)de
 #
 #  Description	 : Command line utility and package to embed and evaluate Tcl code
@@ -77,11 +77,11 @@
 #                 2026-01-XX version 0.18.2  fixing an issue with fig.width smaller than 20 seens as pixel
 #                                            fixing issue in included files within pre environments havng < and > chars
 #                                            optional shortening syntax for pre environments in include to `include filename pre`
-
+#                 2026-0X-XX version 0.18.3  fixing a hang issue if final print statements miss a newline (Python, R, Julia)
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.18.2
+package provide tmdoc::tmdoc 0.18.3
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -1002,6 +1002,13 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode text
                 array unset copt
             } elseif {$mode eq "kroki" && [regexp {^ {0,2}```} $line]} {
+                if {[regexp {^\s*$} $krokiinput]} {
+                    ## empty input
+                    set krokiinput ""
+                    set mode text
+                    array unset copt
+                    continue
+                }
                 if {$copt(echo)} {
                     set cont [tmdoc::block $krokiinput $inmode kroki]
                     puts $out $cont
@@ -1098,10 +1105,16 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                                     puts -nonewline $out "$pres"
                                 }
                                 if {$res ne ""} {
-                                    puts $out "==> $res"
+                                    puts -nonewline $out "==> $res"
                                 }
                                 if {$res ne "" || $pres ne ""} {
-                                    puts $out "```"
+                                    if {$res ne "" && ![regexp {\n$} $res]} {
+                                        puts $out "\n```"
+                                    } elseif {$pres ne "" && ![regexp {\n$} $pres]} {
+                                        puts $out "\n```"
+                                    } else {
+                                        puts $out "```"
+                                    }
                                 }
                             } elseif {$inmode eq "typst"} {
                                 if {$res ne "" || $pres ne ""} {
