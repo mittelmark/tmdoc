@@ -1,0 +1,52 @@
+## Emtpy Chunks
+
+Below is a chunk with now code:
+
+```{.tcl}
+```
+
+Below is a chunk with an empty line:
+
+```{.tcl}
+
+```
+
+Now a chunk which just puts a single line:
+
+
+```{.tcl}
+puts Hello
+```
+
+
+Now a chunk which just puts a single line but no endline marker:
+
+
+```{.tcl}
+puts -nonewline Hello
+```
+
+We should have a newline before the  closing triple backticks.
+
+## Julia
+
+```{.julia}
+println("Hello")
+```
+
+Now a chunk which just puts a single line but no endline marker which will hang forever:
+
+```{.julia}
+print("Hello")
+```
+
+## Python
+
+```{py}
+print("Hello Python")
+```
+
+
+```{py}
+print("Hello Python",end="")
+```

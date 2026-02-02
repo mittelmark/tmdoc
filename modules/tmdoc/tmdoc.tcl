@@ -74,10 +74,10 @@
 #                 2026-01-20 version 0.18.1  adding include support for Python, R, Julia and Tcl code chunks
 #                                            adding include with environment arguments for including files into pre or div tags
 #                                            fixing fig.path issue for R chunks
-#                 2026-01-XX version 0.18.2  fixing an issue with fig.width smaller than 20 seens as pixel
+#                 2026-01-28 version 0.18.2  fixing an issue with fig.width smaller than 20 seens as pixel
 #                                            fixing issue in included files within pre environments havng < and > chars
 #                                            optional shortening syntax for pre environments in include to `include filename pre`
-#                 2026-0X-XX version 0.18.3  fixing a hang issue if final print statements miss a newline (Python, R, Julia)
+#                 2026-02-02 version 0.18.3  fixing a hang issue if final print statements miss a newline (Python, R, Julia)
 package require Tcl 8.6-
 package require fileutil
 package require yaml

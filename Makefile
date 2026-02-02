@@ -55,10 +55,10 @@ docu:
 	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o modules/tmdoc/tmdoc.html html modules/tmdoc/tmdoc.man
 	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o apps/tmdoc.html html apps/tmdoc.man
 test:
-	TCLLIBPATH=modules tclsh modules/tmdoc/tmdoc.test	
+	cd modules/tmdoc && LANG=en_US.UTF8 TCLLIBPATH=../ tclsh tmdoc.test	
 
 test9:
-	TCLLIBPATH=modules $(TCL9) modules/tmdoc/tmdoc.test	
+	cd modules/tmdoc && LANG=en_US.UTF8 TCLLIBPATH=../ $(TCL9) -encoding cp1252 tmdoc.test	
 
 fileutil: lib
 	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi

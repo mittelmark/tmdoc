@@ -83,13 +83,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.18.2/tmdoc-0.18.2.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.18.3/tmdoc-0.18.3.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.18.2
+## 0.18.3
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -437,7 +437,7 @@ as example for such embedded documentation.
 * [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
 ## Changes
-- 2026-0X-XX: 0.18.3
+- 2026-02-02: 0.18.3
     - fixing a hang forever issue if final print statements miss a newline (Python, R, Julia)
 - 2026-01-28: 0.18.2
     - fixing an issue with fig.width smaller than 20 seens as pixel
