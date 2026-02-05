@@ -34,6 +34,30 @@ pre:has(code.tclerr) {
 pre:has(code.error) {    
     background: #FFCCCC;
 }
+.chem {
+  font-family: system-ui, sans-serif;
+}
+
+/* Normalize size and vertical positions */
+.chem sub,
+.chem sup {
+  font-size: 0.75em;        /* smaller than base text */
+  line-height: 0;           /* avoid extra line height */
+}
+
+span.pos {
+  display: inline-table; /*contain floats*/
+  vertical-align: middle;
+  margin-left: -0px; /*no whitespace on i element*/
+}
+.pos sup, .pos sub {
+  float: left;
+  clear: left;
+  font-size: 0.75em;
+  line-height: 1;
+}
+.pos sup { margin-left: -15px; color: red;}
+/* sup.sup { margin-left: -3px; }*/
 
 table {    
   border-collapse: collapse;

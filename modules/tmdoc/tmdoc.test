@@ -331,6 +331,33 @@ If we we reuse the tag for table 1.
 
 Another reference would be for table 2.}
 
+puts stderr "starting Chemical equations tests"
+
+tcltest::test tmdoc-ce-1.1 {
+    Checking chemical equations.
+} -body {
+    string trim [tmdoc::tmeval "
+This is water: `ce H2O`
+"]
+} -result {This is water: <span class="chem">H<sub>2</sub>O</span>}
+
+
+tcltest::test tmdoc-ce-1.2 {
+    Checking chemical equations.
+} -body {
+    string trim [tmdoc::tmeval "
+This is Photosynthesis: `ce 6H2O + 6CO2 -> C6H12O6 + 6O2`
+"]
+} -result {This is Photosynthesis: <span class="chem">6H<sub>2</sub>O + 6CO<sub>2</sub> &rarr; C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub></span>}
+
+tcltest::test tmdoc-ce-1.3 {
+    Checking chemical equations.
+} -body {
+    string trim [tmdoc::tmeval "
+`ce 2MnO4^-  3Mn^2+ + 4OH- <-> 5MnO2 + 2H2O`
+"]
+} -result {<span class="chem">2MnO<sub>4</sub><sup class="sup"><b>-</b></sup>  3Mn<sup class="sup">2+</sup> + 4OH<sup class="sup"><b>-</b></sup> &#8651; 5MnO<sub>2</sub> + 2H<sub>2</sub>O</span>}
+
 puts stderr "starting Empty chunk tests"
 
 tcltest::test tmdoc-empty-1.1 {

@@ -22,3 +22,6 @@ filter-julia filter-r filter-python filter-octave filter-mtex filter-tcl filter-
 	TCLLIBPATH=.. tclsh ../../../mndoc/apps/mndoc - $@.html --css tmdoc.css
 	
 
+test-eq:
+	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave test.Rmd - --toc true | \
+	TCLLIBPATH=.. tclsh ../../../mndoc/apps/mndoc - test.htm --css tmdoc.css

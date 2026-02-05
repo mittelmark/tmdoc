@@ -1,5 +1,5 @@
 ---
-title: tmdoc::tmdoc 0.18.3 - Tcl Markdown processor tutorial
+title: tmdoc::tmdoc 0.19.0 - Tcl Markdown processor tutorial
 author:  Detlef Groth, University of Potsdam, Germany
 date: 2026-01-28 08:00
 bibliography: ../../examples/literature.bib
@@ -959,6 +959,121 @@ code as `echo` was set to false:
 5 & 6 & 7
 \end{bmatrix}
 ```
+
+## Chemical Equations
+
+Since version 0.19.0 tmdoc allows you as well to embed simple chemical equations with ce code chunks. Equations look like this:
+
+```
+Glucose creation: 
+`ce 6H2O + 6CO2 -> C6H12O6 + 6O2`
+
+Respiration with backward arrow: 
+`ce 6CO2 + 6H2O <- C6H12O6 + 6O2`
+
+The dissocation of water showing back and forward arrows is show here: 
+`ce 2H2O <-> H3O+ + OH-`
+
+Dissociaton of Natrium Phosphate: 
+`ce Na3PO4 <-> 3Na+ + PO_4^3-`
+
+`ce 2MnO4^-  3Mn^2+ + 4OH- <-> 5MnO2 + 2H2O`
+
+Isotop: `ce ^14C`
+```
+
+Here the output:
+
+Glucose creation: 
+`ce 6H2O + 6CO2 -> C6H12O6 + 6O2`
+
+Respiration with backward arrow: 
+`ce 6CO2 + 6H2O <- C6H12O6 + 6O2`
+
+The dissocation of water showing back and forward arrows is show here: 
+`ce 2H2O <-> H3O+ + OH-`
+
+Dissociaton of Natrium Phosphate: 
+`ce Na3PO4 <-> 3Na+ + PO_4^3-`
+
+`ce 2MnO4^-  3Mn^2+ + 4OH- <-> 5MnO2 + 2H2O`
+
+Isotop: `ce ^14C`
+
+So there are just three type of arrows as shown above. Furthermore, any number
+is lowered, any charge us uppered, text following a hat symbol is as well
+uppered. So that more than one positive or negative charged can be displayed.
+
+> [!HINT]
+> To show these numbers above each other you need to add a specific style section to your HTML document which manages this.
+> This style is part of the default tmdoc.css style file. Here an example for the code you
+> need to add to your own file:
+
+```
+<style>
+/* chem span tag */
+.chem {
+  font-family: system-ui, sans-serif;
+}
+
+/* Normalize size and vertical positions */
+.chem sub,
+.chem sup {
+  font-size: 0.75em;        /* smaller than base text */
+  line-height: 0;           /* avoid extra line height */
+}
+
+span.pos {
+  display: inline-table; /*contain floats*/
+  vertical-align: middle;
+  margin-left: -0px; /*no whitespace on i element*/
+}
+/* placement of  _N^N(-|+)  */
+.pos sup, .pos sub {
+  float: left;
+  clear: left;
+  font-size: 0.75em;
+  line-height: 1;
+}
+.pos sup { margin-left: -15px; color: red;}
+</style>
+```
+
+Further we can do a little bit of math like this about the ranking of the Pythagoreans means:
+
+```
+`ce m_a &ge; m_g &ge; m_h`
+```
+
+Here the output:
+
+`ce m_a &ge; m_g &ge; m_h`
+
+To simplify the use of LaTeX formulas for LaTeX command which have HTML
+entities with the same name, like for instance greek letters or these greater
+or equal symbols shown above we can even use the backslash version like so:
+
+```
+`ce m_a \ge m_g \ge m_h and \alpha and \beta and \gamma`
+```
+
+Here the output:
+
+`ce m_a \ge m_g \ge m_h and \alpha and \beta and \gamma`
+
+And here an example for the times and the entities:
+
+```
+`ce CV = 100 \times (SD \div Mean)`
+```
+
+And here the output:
+
+`ce CV = 100 \times (SD \div Mean)`
+
+More of these commands which can be mapped from LaTeX to HTML can be found in the 
+[w3school unicode math reference](https://www.w3schools.com/charsets/ref_utf_math.asp). Just  look there into  the Entity column.
+If you need full LaTeX math support within your Markdown files, go to the LaTeX section of this tutorial.
 
 
 ## Programming

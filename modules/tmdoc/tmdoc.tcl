@@ -78,10 +78,12 @@
 #                                            fixing issue in included files within pre environments havng < and > chars
 #                                            optional shortening syntax for pre environments in include to `include filename pre`
 #                 2026-02-02 version 0.18.3  fixing a hang issue if final print statements miss a newline (Python, R, Julia)
+#                 2026-02-02 version 0.19.0  anchor fix, using as well numbers, 
+#                                            adding basic suport for chemical formula and reactions
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.18.3
+package provide tmdoc::tmdoc 0.19.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -255,6 +257,21 @@ proc ::tmdoc::interpReset {} {
                 }
             }
         }
+        proc ce {eqn} {
+            ## map latex to HTML entities
+            set txt [regsub -all {\\([a-zA-Z]+)} $eqn "\\&\\1;"]
+            ## arrows
+            set txt [string map {-> &rarr; <-> &#8651; <- &larr;} $txt]
+            set txt [regsub -all {_\{?([0-9a-z]+)\}?\^([-+0-9a-z_]+)} $txt "<span class=\"pos\"><sub class=\"pos\">\\2</sub><sub class=\"pos\">\\1</sub></span>"]
+            set txt [string map {-- &mdash;} $txt]
+            set txt [regsub -all {\{?([0-9]+)\}?^([-+0-9])} $txt "<span class=\"pos\"><sub>\\2</sub><sub>\\1</sub></span>"]            
+            set txt [regsub -all {_\{?([a-z0-9]+)\}?} $txt "<sub>\\1</sub>"]
+            set txt [regsub -all {\^\{?([-+0-9]+)\}?} $txt "<sup class=\"sup\">\\1</sup>"]
+            set txt [regsub -all {([A-Za-z])([0-9]*[-+])} $txt "\\1<sup class=\"sup\">\\2</sup>"]
+            set txt [regsub -all {([A-Za-z])([0-9]+)} $txt "\\1<sub>\\2</sub>"]
+            set txt [string map {- <b>-</b>} $txt]
+            return "<span class=\"chem\">$txt</span>"
+        }
         proc include {filename {envir {"" ""}}} {
             if {![file exists $filename]} {
                 return "Error: file '$filename' does not exists!"
@@ -359,6 +376,7 @@ proc ::tmdoc::interpReset {} {
     # todo handle puts options
     
     interp eval itry {proc puts {args} {}}
+    interp eval itry {proc ce {eqn} {}}
     interp eval itry {proc include {filename {envir {"" ""}}} {}}
     interp eval itry {proc list2tab {header data} {}}
     interp eval itry {proc list2mdtab {header data} {}}
@@ -730,11 +748,11 @@ proc ::tmdoc::tmdoc {filename outfile args} {
         while {[gets $infh line] >= 0} {
             if {$arg(-toc)} {
                 if {$mode eq "text" && !$yamlflag && [regexp {^## +(.+)} $line -> title]} {
-                    set anchor [string trim [string tolower [regsub -all {[^A-za-z]} $title ""]]]
+                    set anchor [string trim [string tolower [regsub -all {[^0-9A-za-z]} $title ""]]]
                     puts $out "<a name=\"$anchor\"> </a>"
                     append toc "* \[$title\](#$anchor)\n"
                 } elseif {$mode eq "text" && !$yamlflag && [regexp {^### +(.+)} $line -> title]} {
-                    set anchor [string trim [string tolower [regsub -all {[^A-za-z]} $title ""]]]
+                    set anchor [string trim [string tolower [regsub -all {[^0-9A-za-z]} $title ""]]]
                     puts $out "<a name=\"$anchor\"> </a>"
                     append toc "    * \[$title\](#$anchor)\n"
                 }
@@ -745,6 +763,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set line [regsub -all {`kbd ([^`]+)`} $line "`tcl tag kbd \\1`"]
                 set line [regsub -all {`menu ([^`]+)`} $line "`tcl tag kbd \\1 menu`"]
                 set line [regsub -all {`include ([^`]+)`} $line "`tcl include \\1`"]
+                set line [regsub -all {`ce ([^`]+)`} $line "`tcl ce {\\1}`"]
                 set line [regsub -all {`(n[ft][ai][bg]) +([a-zA-Z0-9]+)`} $line "`tcl \\1 \\2`"]
             } elseif {$mode in [list tcrd mtex shell kroki pipe]} {
                 if {[regexp {^#INCLUDE "(.+)"} $line -> filename]} {

@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl-doctools ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.18.2]
+[vset VERSION 0.19.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2026, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -143,6 +143,62 @@ available just the link to math.vercel.app image is embedded. Here an example:
 ```{.mtex echo=false}
 E = mc^2
 ```
+}]
+
+
+[section "Chemical Formulas and Reactions"]
+
+Since version 0.19.0 there is as well limited support for embedding  chemical formulas and
+reactions in the Markdown output. The equations transformed to HTML code using sub and sup
+tags, for special features like placing the charge over a number
+specific css style sheet rules are required.
+
+[example {
+Glucose creation: 
+`ce 6H2O + 6CO2 -> C6H12O6 + 6O2`
+
+Respiration with backward arrow: 
+`ce 6CO2 + 6H2O <- C6H12O6 + 6O2`
+
+The dissocation of water showing back and forward arrows is show here: 
+`ce 2H2O = H3O+ + OH-`
+
+Dissociaton of Natrium Phosphate (requires the css code below, part of tmdoc.css): 
+`ce Na3PO4 = 3Na+ + PO_4^3-`
+
+Isotop: `ce ^14C`
+}]
+
+And here the stylesheet code require for 3+ over 4.
+
+[example {
+<style>
+/* chem span tag */
+.chem {
+  font-family: system-ui, sans-serif;
+}
+
+/* Normalize size and vertical positions */
+.chem sub,
+.chem sup {
+  font-size: 0.75em;        /* smaller than base text */
+  line-height: 0;           /* avoid extra line height */
+}
+
+span.pos {
+  display: inline-table; /*contain floats*/
+  vertical-align: middle;
+  margin-left: -0px; /*no whitespace on i element*/
+}
+/* placement of  _N^N(-|+)  */
+.pos sup, .pos sub {
+  float: left;
+  clear: left;
+  font-size: 0.75em;
+  line-height: 1;
+}
+.pos sup { margin-left: -15px; color: red;}
+</style>
 }]
 
 [section "CSV Tables"]
