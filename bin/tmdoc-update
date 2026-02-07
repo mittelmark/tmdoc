@@ -6,29 +6,32 @@ function installBinary() {
     #echo ${BASEURL}
     RELEASE=`curl -isS $BASEURL/$APP/releases/latest/ | grep -i ^location:`
     VERSION=`echo "$RELEASE" | sed -E 's/.+v([.0-9]+).+/\\1/'`
-    if [ -x "${HOME}/.local/bin/tmdoc" ]; then
-        CVERSION=`~/.local/bin/tmdoc --version`
+    if [ -x "${HOME}/.local/bin/$APP" ]; then
+        CVERSION=`~/.local/bin/$APP --version`
     else
         CVERSION="0.0.0"
     fi
-    echo "CVERSION='$CVERSION' GVERSION='$VERSION'"
+    echo "$APP installed version='$CVERSION' Github version='$VERSION'"
     if [ "$VERSION" \> "$CVERSION" ] ; then
-        echo "Current $2 VERSION: $CVERSION!"
+        echo "Current $2 version: $CVERSION!"
         echo "New Github Version $VERSION will be installed!"
         URL="https://github.com/mittelmark/$APP/releases/download/v${VERSION}/$APP-${VERSION}.bin"
         curl -fsSL $URL --output ~/.local/bin/$APP
         chmod 755 ~/.local/bin/$APP
         NV=`~/.local/bin/$APP --version`
         echo "Success: installed $APP ${NV}!"
-        URL="https://github.com/mittelmark/$APP/releases/download/v${VERSION}/tmdoc-update"
-        curl -fsSL $URL --output ~/.local/bin/tmdoc-update
-        chmod 755 ~/.local/bin/tmdoc-update
-        echo -e "Success: Installed as well 'tmdoc-update'!\n Run it in the future to update your installation!"
+        if [ "$APP" == "tmdoc" ]; then
+            URL="https://github.com/mittelmark/$APP/releases/download/v${VERSION}/tmdoc-update"
+            curl -fsSL $URL --output ~/.local/bin/tmdoc-update
+            chmod 755 ~/.local/bin/tmdoc-update
+            echo -e "Success: Installed as well 'tmdoc-update'!\n Run it in the future to update your installation!"
+        fi
     else
-        echo "Version on Github is the same as the local version: $VERSION !"
-        echo "No install is needed!"
+        echo "Version of $APP on Github is the same as the local version: $VERSION!"
+        echo "No update is needed!"
     fi
 }
 
 
 installBinary https://github.com/mittelmark/ tmdoc
+installBinary https://github.com/mittelmark/ mndoc
