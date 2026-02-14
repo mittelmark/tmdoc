@@ -29,14 +29,17 @@ technique  as well known as  literate  programming.
 - __single file approach:__ the required small (approx. 250kb) single file (_tmdoc-0.1X.X.bin_) just requires an existing Tcl/Tk installation
 - __Abbreviations:__ expand YAML defined abbreviations - [Abbreviation Filter](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-abbrev.html)
 - __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925) - [Alert Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#alerts)
+- __Chemical Equations:__  simple chemical equations like C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> or H<sub>3</sub>O<sup>+</sup>
+  string instruments [![tcrd Filter](https://img.shields.io/badge/Docu-Tcrd%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcrd.html)
 - __Chord  shapes and  sheets:__  display  chord  sheets and chord  shapes for
   string instruments [![tcrd Filter](https://img.shields.io/badge/Docu-Tcrd%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcrd.html)
 - __Citations:__ reference management using BibTeX files - [Citation Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#references)
+- __Comments:__ sections between HTLM comments are truly excluded, not only hidden in the display
 - __CSV Tables:__ create tables using CSV data - [CSV Tables Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#csv)
 - __Diagrams:__ evaluate diagram code and embed create graphics using the [Kroki webservice](https:://kroki.io) - [Kroki Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#kroki)
 - __Graphic generation:__ create graphics using the [tsvg package](https://github.com/mittelmark/tsv) - [tsvg section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#images)
 - __Figure numbering:__ support for automatic figure numbering using the `` `nfig label` `` syntax
-- __Includes:__ Markdown file includes - [include section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#include)
+- __Includes:__ Markdown file includes - [include section in the tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#include) or code chunk includes
 - __Julia reports:__ writing statistical reports using the Julia programming
    language [![Julia-Filter](https://img.shields.io/badge/Docu-Julia%20Filter-blue)](https://htmlpreview.github.io/?https://raw.githubusercontent.com/mittelmark/tmdoc/master/modules/tmdoc/filter-julia.html)
 - __LaTeX equations:__ can be embedded using the [latex.codecs.com](https://latex.codecogs.com/) web servcie
@@ -368,6 +371,20 @@ The same can be done using the Julia, Octave, or the Python programming language
 * [filter-python](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-python.html)
 * [filter-r](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-r.html)
 * [filter-tcl](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcl.html)
+
+## Chemical Equations
+
+Since version 0.19.0 there is as well for simple chemical equations like the following:
+
+```
+`ce 6H2O + 6CO2 -> C6H12O6 + 6O2`
+```
+
+
+Which should produce this:
+
+6H<sub>2</sub>O + 6CO<sub>2</sub> &rarr; 6H<sub>2</sub>O + 6CO<sub>2</sub>
+
 
 ## Document Processing
 
