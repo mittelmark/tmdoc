@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function installBinary() {    
     BASEURL=$1
@@ -6,49 +6,32 @@ function installBinary() {
     #echo ${BASEURL}
     RELEASE=`curl -isS $BASEURL/$APP/releases/latest/ | grep -i ^location:`
     VERSION=`echo "$RELEASE" | sed -E 's/.+v([.0-9]+).+/\\1/'`
-    URL="https://github.com/mittelmark/$APP/releases/download/v${VERSION}/$APP-${VERSION}.bin"
-    curl -fsSL $URL --output ~/.local/bin/$APP
-    chmod 755 ~/.local/bin/$APP
-    ~/.local/bin/$APP --version
-    echo "installed $APP"
-}
-
-function add_local_bin_path {
-    if [ "$SHELL" == "/bin/bash" ]; then 
-        echo "echo \$PATH | grep -q /.local/bin || export PATH=~/.local/bin:\$PATH" >> ~/.bashrc
-        source ~/.bashrc    
-        echo "Path was updated in .bashrc"
-    elif [ "$SHELL" == "/bin/zsh" ]; then 
-        echo "echo \$PATH | grep -q /.local/bin || export PATH=~/.local/bin:\$PATH" >> ~/.zshrc
-        source ~/.zshrc    
-        echo "Path was updated in .zshrc"
+    if [ -x "${HOME}/.local/bin/$APP" ]; then
+        CVERSION=`~/.local/bin/$APP --version`
+    else
+        CVERSION="0.0.0"
+    fi
+    echo "$APP installed version='$CVERSION' Github version='$VERSION'"
+    if [ "$VERSION" \> "$CVERSION" ] ; then
+        echo "Current $2 version: $CVERSION!"
+        echo "New Github Version $VERSION will be installed!"
+        URL="https://github.com/mittelmark/$APP/releases/download/v${VERSION}/$APP-${VERSION}.bin"
+        curl -fsSL $URL --output ~/.local/bin/$APP
+        chmod 755 ~/.local/bin/$APP
+        NV=`~/.local/bin/$APP --version`
+        echo "Success: installed $APP ${NV}!"
+        if [ "$APP" == "tmdoc" ]; then
+            URL="https://github.com/mittelmark/$APP/releases/download/v${VERSION}/install-tmdoc.sh"
+            curl -fsSL $URL --output ~/.local/bin/tmdoc-update
+            chmod 755 ~/.local/bin/tmdoc-update
+            echo -e "Success: Installed as well 'tmdoc-update'!\n Run it in the future to update your installation!"
+        fi
+    else
+        echo "Version of $APP on Github is the same as the local version: $VERSION!"
+        echo "No update is needed!"
     fi
 }
-function check_local_bin_path {
-   if [[ "`echo $PATH | grep /.local/bin`" == "" ]]; then 
-       echo "~/.local/bin is not in your PATH"
-       echo "add the following line to your .bashrc or .zshrc file"
-       echo "echo \$PATH | grep -q /.local/bin || export PATH=~/.local/bin:\$PATH"
-       yes_or_no "Do you like to add this PATH adaptation to your .bashrc file?" && add_local_bin_path
-   else 
-       echo "~/.local/bin is already in your PATH"
-   fi 
-}
 
-function yes_or_no {
-   while true; do
-       read -p "$* [y/n]: " yn
-        case $yn in
-            [Yy]*) return 0  ;;  
-            [Nn]*) echo "Aborted" ; return  1 ;;
-        esac
-    done
-}
-
-if [[ ! -d ~/.local/bin ]]; then
-    mkdir ~/.local/bin
-fi
 
 installBinary https://github.com/mittelmark/ tmdoc
-installBinary https://github.com/mittelmark/ mndoc  
-check_local_bin_path
+installBinary https://github.com/mittelmark/ mndoc

@@ -83,13 +83,13 @@ You can as well just install tmdoc alone like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.18.3/tmdoc-0.18.3.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.19.0/tmdoc-0.19.0.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.18.3
+## 0.19.0
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -437,6 +437,10 @@ as example for such embedded documentation.
 * [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
 ## Changes
+- 2026-02-14: 0.19.0
+    - support for simple chemical equations
+    - installer as well no intalls tmdoc-update
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.19.0/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.19.0/tmdoc-tutorial.pdf)
 - 2026-02-02: 0.18.3
     - fixing a hang forever issue if final print statements miss a newline (Python, R, Julia)
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.18.3/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.18.3/tmdoc-tutorial.pdf)
