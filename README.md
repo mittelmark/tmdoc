@@ -82,7 +82,12 @@ Thereafter make the file executable and check that it is correctly installed. Si
 /bin/bash -c "$(curl -fsSL https://github.com/mittelmark/tmdoc/releases/latest/download/install-tmdoc.sh)"
 ```
 
-You can as well just install tmdoc alone like this:
+Since version 0.19.0: After you used this installer you might as well use the
+installed command __tmdoc-update__ to check for a newer version and install
+that if it is available.
+
+In case you would like to use your own Markdown to HTML converter, you can as
+well just install __tmdoc__ alone without __mndoc__ like this:
 
 ```bash
 ### download to your local bin folder
