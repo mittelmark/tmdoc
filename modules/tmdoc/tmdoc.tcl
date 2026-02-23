@@ -78,12 +78,13 @@
 #                                            fixing issue in included files within pre environments havng < and > chars
 #                                            optional shortening syntax for pre environments in include to `include filename pre`
 #                 2026-02-02 version 0.18.3  fixing a hang issue if final print statements miss a newline (Python, R, Julia)
-#                 2026-02-02 version 0.19.0  anchor fix, using as well numbers, 
+#                 2026-02-14 version 0.19.0  anchor fix, using as well numbers, 
 #                                            adding basic suport for chemical formula and reactions
+#                 2026-02-23 version 0.19.1  fix for csv mode with comma or semikolon within quotes
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.19.0
+package provide tmdoc::tmdoc 0.19.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -1360,17 +1361,45 @@ proc ::tmdoc::tmeval {text {ext tmd}} {
 
 
 
+proc tmdoc::ProtectSeparator {input} {
+    set result ""
+    set inQuotes 0
+    # Split the input string character by character
+    for {set i 0} {$i < [string length $input]} {incr i} {
+        set char [string index $input $i]
+
+        # Check if the character is a quote
+        if {$char eq "\""} {
+            set inQuotes [expr {!$inQuotes}]
+            #append result $char
+        } else {
+            # Replace comma with HTML entity if inside quotes
+            if {$inQuotes && $char eq ","} {
+                append result "COMMA"
+            } elseif {$inQuotes && $char eq ";"} {
+                append result "SEMIKOLON"
+            } else {
+                append result $char
+            }
+        }
+    }
+    return $result
+}
+
 proc tmdoc::csv {txt} {
     set res ""
     set x 0
     set header [list]
     set values [list]
+    set txt [tmdoc::ProtectSeparator $txt]
     foreach line [split $txt \n] {
         if {[regexp {^\s*$} $line]} {
             continue
         }
         incr x
         set nline [regsub -all {[,;]} $line "\t"]
+        set nline [regsub -all {COMMA} $nline ","]
+        set nline [regsub -all {SEMIKOLON} $nline ";"]
         if {$x == 1} {
             set header [split $nline "\t"]
         } else {

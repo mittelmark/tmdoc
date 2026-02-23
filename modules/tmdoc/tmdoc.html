@@ -100,7 +100,7 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.19.0 tmdoc &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.19.1 tmdoc &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
 <p>tmdoc - Evaluate embedded R, Python, Julia, Octave and Tcl code or other command line tool input in Markdown, Typst, AsciiDoc or LaTeX documents</p>
 </div>
@@ -315,6 +315,16 @@ displaying them as Markdown tables. Here an example:</p>
 col1,col2,col3
 1,2,3
 4,5,6
+7,8,9
+```
+</pre>
+<p>If your values as well contain the  separator  you most enclose the values  within  quotes
+like so:</p>
+<pre class="doctools_example">
+```{.csv echo=false results=asis}
+col1,col2,col3
+1,&quot;2, 3 or 4&quot;,3
+4,5,&quot;6, 7 or 8&quot;
 7,8,9
 ```
 </pre>

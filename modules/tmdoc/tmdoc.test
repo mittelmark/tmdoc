@@ -218,6 +218,33 @@ Some text
 }
 
 tcltest::test tmdoc-test-1.11 {
+    Calling my tmdoc::tmeval with results=asis 
+    to display a table using csv input with internal quotes 
+    and commas within these quotes
+} -body {
+     tmdoc::tmeval "
+Some text
+
+```{.csv echo=false, results=asis}
+col1,col2,col3
+1,2,\"3, 4, 5\"
+4,5,\"6, 7\"
+7,8,9
+```"
+
+} -result {
+Some text
+
+| col1 | col2 | col3 |
+| ---- | ---- | ---- |
+| 1 | 2 | 3, 4, 5 |
+| 4 | 5 | 6, 7 |
+| 7 | 8 | 9 |
+
+}
+
+
+tcltest::test tmdoc-test-1.12 {
     Calling my tmdoc::tmeval with alert message
     for a note
 } -body {
@@ -229,7 +256,7 @@ This is a note!
 </p></div>}
 
 
-tcltest::test tmdoc-test-1.12 {
+tcltest::test tmdoc-test-1.13 {
     Checking abbreviations in the YAML header.
 } -body {
     string trim [tmdoc::tmeval "---
@@ -250,7 +277,7 @@ author: Max Musterman
 
 Max Musterman}
 
-tcltest::test tmdoc-test-1.13 {
+tcltest::test tmdoc-test-1.14 {
     Checking space around = sign in the code chunk options
 } -body {
     string trim [tmdoc::tmeval "```{.tcl eval = TRUE}
@@ -268,7 +295,7 @@ set x
 ```}
 
 
-tcltest::test tmdoc-test-1.14 {
+tcltest::test tmdoc-test-1.15 {
     Checking kbd tag with complete tcl code
 } -body {
     string trim [tmdoc::tmeval "Example for kbd tag:
@@ -293,7 +320,7 @@ Now a menu which is given as a list:
 
 Change Indent width in Geany: <kbd class="menu">Document</kbd> &#8594; <kbd class="menu">Indent Type</kbd> &#8594; <kbd class="menu">Spaces</kbd>.}
 
-tcltest::test tmdoc-test-1.15 {
+tcltest::test tmdoc-test-1.16 {
     Checking nfig numberings of figures and tables.
 } -body {
     string trim [tmdoc::tmeval "Example for nfig tag:
@@ -312,7 +339,7 @@ If we we reuse the tag for figure 1.
 
 Another reference would be for figure 2.}
 
-tcltest::test tmdoc-test-1.16 {
+tcltest::test tmdoc-test-1.17 {
     Checking ntab numberings of tables.
 } -body {
     string trim [tmdoc::tmeval "Example for ntab tag:

@@ -91,13 +91,13 @@ well just install __tmdoc__ alone without __mndoc__ like this:
 
 ```bash
 ### download to your local bin folder
-wget https://github.com/mittelmark/tmdoc/releases/download/v0.19.0/tmdoc-0.19.0.bin \
+wget https://github.com/mittelmark/tmdoc/releases/download/v0.19.1/tmdoc-0.19.1.bin \
   -O ~/.local/bin/tmdoc
 ### make the Tcl script executable
 chmod 755 ~/.local/bin/tmdoc
 ### check the installation
 tmdoc --version
-## 0.19.0
+## 0.19.1
 ```
 
 If the folder `~/.local/bin` does not exists you should create it and add this to your `PATH` variable.
@@ -385,7 +385,6 @@ Since version 0.19.0 there is as well for simple chemical equations like the fol
 `ce 6H2O + 6CO2 -> C6H12O6 + 6O2`
 ```
 
-
 Which should produce this:
 
 6H<sub>2</sub>O + 6CO<sub>2</sub> &rarr; 6H<sub>2</sub>O + 6CO<sub>2</sub>
@@ -459,6 +458,10 @@ as example for such embedded documentation.
 * [Latest development code](https://github.com/mittelmark/tmdoc/warchive/refs/heads/main.zip)
 
 ## Changes
+
+- 2026-02-23: 0.19.1
+    - fix for comma, semikolon in csv tables embedded within csv tables
+    - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.19.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.19.1/tmdoc-tutorial.pdf)    
 - 2026-02-14: 0.19.0
     - support for simple chemical equations
     - installer as well no intalls tmdoc-update
