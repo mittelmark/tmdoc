@@ -13,6 +13,7 @@ TCL=tclsh
 TCLLIB=https://raw.githubusercontent.com/tcltk/tcllib/refs/heads/master/modules
 CITER=https://raw.githubusercontent.com/mittelmark/citer/refs/heads/main
 TDOT=https://raw.githubusercontent.com/mittelmark/tdot/refs/heads/main
+TBLOCKS=https://raw.githubusercontent.com/mittelmark/tblocks/refs/heads/main
 default:
 	echo "Usage: make app|docu|test"
 app:
@@ -30,6 +31,7 @@ app:
 	cd app-build && mkdir -p tmdoc.vfs/lib/tdot
 	cd app-build && mkdir -p tmdoc.vfs/lib/tcrd
 	cd app-build && mkdir -p tmdoc.vfs/lib/tsvg
+	cd app-build && mkdir -p tmdoc.vfs/lib/tblocks	
 	cd app-build && cp ../modules/tmdoc/*.tcl tmdoc.vfs/lib/tmdoc/
 	cd app-build && cp ../modules/tmdoc/tmdoc.sty tmdoc.vfs/lib/tmdoc/
 	cd app-build && cp ../modules/bibtex/*.tcl tmdoc.vfs/lib/bibtex/
@@ -42,6 +44,7 @@ app:
 	cd app-build && cp ../modules/yaml/*.tcl tmdoc.vfs/lib/yaml/
 	cd app-build && cp ../../tcrd/tcrd/*.tcl tmdoc.vfs/lib/tcrd/
 	cd app-build && cp ../../tsvg/tsvg/*.tcl tmdoc.vfs/lib/tsvg/
+	cd app-build && cp ../../tblocks/tblocks/*.tcl tmdoc.vfs/lib/tblocks/	
 	cd app-build && cp ~/workspace/tcllib/modules/cmdline/*.tcl tmdoc.vfs/lib/cmdline/
 	cd app-build && cp ~/workspace/tcllib/modules/textutil/*.tcl tmdoc.vfs/lib/textutil/
 	cd app-build && cp ~/workspace/tcllib/modules/fileutil/*.tcl tmdoc.vfs/lib/fileutil/
@@ -98,7 +101,7 @@ citer:
 			wget -q $(CITER)/$@/$$file -O modules/$@/$$file; \
 		fi \
 	done
-tdot tsvg:
+tdot tsvg tblocks:
 	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
 	for file in $@.tcl pkgIndex.tcl; do \
 		if [ ! -f modules/$@/$$file ]; then \

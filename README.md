@@ -29,7 +29,8 @@ technique  as well known as  literate  programming.
 - __single file approach:__ the required small (approx. 250kb) single file (_tmdoc-0.1X.X.bin_) just requires an existing Tcl/Tk installation
 - __Abbreviations:__ expand YAML defined abbreviations - [Abbreviation Filter](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-abbrev.html)
 - __Alerts:__ [Markdown alerts](https://github.com/orgs/community/discussions/16925) - [Alert Section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#alerts)
-- __Chemical Equations:__  simple chemical equations like C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> or H<sub>3</sub>O<sup>+</sup>
+- __Block diagrams:__ written in Markdown - see [tblocks section in the Tutorial](https://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html#tblocksdiagramsfrommarkdowncode)
+- __Chemical equations:__  simple chemical equations like C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> or H<sub>3</sub>O<sup>+</sup>
   string instruments [![tcrd Filter](https://img.shields.io/badge/Docu-Tcrd%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcrd.html)
 - __Chord  shapes and  sheets:__  display  chord  sheets and chord  shapes for
   string instruments [![tcrd Filter](https://img.shields.io/badge/Docu-Tcrd%20Filter-blue)](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/filter-tcrd.html)
@@ -459,6 +460,8 @@ as example for such embedded documentation.
 
 ## Changes
 
+- 2026-07-08: 0.20.0 
+    - support for [tblocks diagrams](https://github.com/mittelmark/tblocks)
 - 2026-02-23: 0.19.1
     - fix for comma, semikolon in csv tables embedded within csv tables
     - [Manual](https://github.com/mittelmark/tmdoc/releases/download/v0.19.1/tmdoc.pdf) - [Tutorial](https://github.com/mittelmark/tmdoc/releases/download/v0.19.1/tmdoc-tutorial.pdf)    

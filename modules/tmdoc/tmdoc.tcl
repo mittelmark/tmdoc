@@ -81,16 +81,19 @@
 #                 2026-02-14 version 0.19.0  anchor fix, using as well numbers, 
 #                                            adding basic suport for chemical formula and reactions
 #                 2026-02-23 version 0.19.1  fix for csv mode with comma or semikolon within quotes
+#                 2026-07-08 version 0.20.0  support for tblocks package
+
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.19.1
+package provide tmdoc::tmdoc 0.20.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
 source [file join [file dirname [info script]] filter-octave.tcl]
 source [file join [file dirname [info script]] filter-julia.tcl]
 source [file join [file dirname [info script]] filter-tcrd.tcl]
+source [file join [file dirname [info script]] filter-tblocks.tcl]
 namespace eval ::tmdoc {
     variable script [info script]
     variable pipedone
@@ -704,7 +707,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     set bashinput ""
     set krokiinput ""
     set mtexinput ""
-    set tcrdinput ""    
+    set tcrdinput ""
+    set tblocksinput ""
     set lastbashinput ""
     set ginput ""
     array set mopt [list eval true echo true results show fig false include true label chunk-nn fig.path images \
@@ -722,6 +726,9 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     ## mtex
     array set tdopt [list echo true eval true results show fig true include true \
                      label chunk-nn fig.path images fig.width 0 ext png]
+    ## tblocks
+    array set tbopt [list echo false results show eval true include true \
+                     label chunk-nn fig.path images fig true ext svg fig.width 600 out.width 0]
     ## tcrd
     array set cdopt [list echo true results show eval true include true label chunk-nn transpose 0 inline true \
                  chord false chordname "" fig.path images fig false ext svg circlecolor black fig.width 100 out.width 0]
@@ -766,7 +773,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set line [regsub -all {`include ([^`]+)`} $line "`tcl include \\1`"]
                 set line [regsub -all {`ce ([^`]+)`} $line "`tcl ce {\\1}`"]
                 set line [regsub -all {`(n[ft][ai][bg]) +([a-zA-Z0-9]+)`} $line "`tcl \\1 \\2`"]
-            } elseif {$mode in [list tcrd mtex shell kroki pipe]} {
+            } elseif {$mode in [list tblocks tcrd mtex shell kroki pipe]} {
                 if {[regexp {^#INCLUDE "(.+)"} $line -> filename]} {
                     if {[regexp {^#INCLUDE "(.+)" +([0-9]+) +([0-9]+)} $line -> filename start end]} {
                         set line [include $filename $start $end]
@@ -890,6 +897,12 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mode mtex
                 incr chunki
                 array set copt [array get tdopt]
+                ::tmdoc::GetOpts 
+                continue
+            } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(tblocks)(\s*.*)\}} $line -> tp opts])} {
+                set mode tblocks
+                incr chunki
+                array set copt [array get tbopt]
                 ::tmdoc::GetOpts 
                 continue
             } elseif {$mode eq "text" && (![regexp {   ```} $line] && [regexp {^\s{0,2}```\s?\{\.?(tcrd)(\s*.*)\}} $line -> tp opts])} {
@@ -1067,6 +1080,32 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 set mtexinput ""
                 set mode text
                 array unset copt
+            } elseif {$mode eq "tblocks" && [regexp {^ {0,2}```} $line]} {
+                if {$copt(echo)} {
+                    set cont [tmdoc::block $tblocksinput $inmode tblocks]
+                    puts $out $cont
+                }
+                if {$copt(eval)} {
+                    set res [tmdoc::tblocks::filter $tblocksinput [dict create {*}[array get copt]]]
+                    if {$copt(fig)} {
+                        set imgsrc [lindex $res end]
+                        if {$copt(out.width) > 0} {
+                            set copt(fig.width) $copt(out.width)
+                        }
+                        if {$copt(include)} {
+                            iimage
+                        }
+                    }
+                    if {$copt(results) eq "show"} {
+                        set cont [tmdoc::block [lindex $res 0] $inmode tblocks]
+                        puts $out $cont
+                    } elseif {$copt(results) eq "asis"} {
+                        puts $out [lindex $res 0]
+                    }
+                }
+                set tblocksinput ""
+                set mode text
+                array unset copt
             } elseif {$mode eq "tcrd" && [regexp {^ {0,2}```} $line]} {
                 if {$copt(echo)} {
                     set cont [tmdoc::block $tcrdinput $inmode tcrd]
@@ -1099,6 +1138,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 append krokiinput "$line\n"
             } elseif {$mode eq "mtex"} {
                 append mtexinput "$line\n"
+            } elseif {$mode eq "tblocks"} {
+                append tblocksinput "$line\n"
             } elseif {$mode eq "tcrd"} {
                 append tcrdinput "$line\n"
             } elseif {$mode in [list csv pipe]} {
