@@ -10,10 +10,19 @@
 
 TCL9=~/.local/opt/bin/tclsh9.0
 TCL=tclsh
-TCLLIB=https://raw.githubusercontent.com/tcltk/tcllib/refs/heads/master/modules
-CITER=https://raw.githubusercontent.com/mittelmark/citer/refs/heads/main
-TDOT=https://raw.githubusercontent.com/mittelmark/tdot/refs/heads/main
-TBLOCKS=https://raw.githubusercontent.com/mittelmark/tblocks/refs/heads/main
+## Pinned dependency commits so the build is reproducible.  Bump these only
+## when a new dependency version is required; refresh any local vendor patches
+## at the same time.
+TCLLIB_REF=29bce268ae8d21a688d1a1efb256acc0e030a6a6
+CITER_REF=10d043ca4c08d87d3c1693c7b171933edec846bf
+TDOT_REF=18103b4cc927bff15c4c3b7b58c3c1780dfbe715
+TBLOCKS_REF=0cbbe297578620c5d00fe69467bc889c8c8141ed
+TSVG_REF=6188f012f3a59610bf02504bf367167ed4dfa59b
+TCRD_REF=1aa1e1694dd8fe25dd61b6eb04229a875950ef64
+TCLLIB=https://raw.githubusercontent.com/tcltk/tcllib/$(TCLLIB_REF)/modules
+CITER=https://raw.githubusercontent.com/mittelmark/citer/$(CITER_REF)
+TDOT=https://raw.githubusercontent.com/mittelmark/tdot/$(TDOT_REF)
+TBLOCKS=https://raw.githubusercontent.com/mittelmark/tblocks/$(TBLOCKS_REF)
 default:
 	echo "Usage: make app|docu|test"
 app:
@@ -58,7 +67,7 @@ docu:
 	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o modules/tmdoc/tmdoc.html html modules/tmdoc/tmdoc.man
 	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o apps/tmdoc.html html apps/tmdoc.man
 test:
-	cd modules/tmdoc && LANG=en_US.UTF8 TCLLIBPATH=../ tclsh tmdoc.test	
+	cd modules/tmdoc && LANG=en_US.UTF8 TCLLIBPATH=../ tclsh -encoding cp1252 tmdoc.test
 
 test9:
 	cd modules/tmdoc && LANG=en_US.UTF8 TCLLIBPATH=../ $(TCL9) -encoding cp1252 tmdoc.test	
@@ -101,13 +110,22 @@ citer:
 			wget -q $(CITER)/$@/$$file -O modules/$@/$$file; \
 		fi \
 	done
-tdot tsvg tblocks:
-	if [ ! -d modules/$@ ] ; then mkdir -p modules/$@ ;fi
-	for file in $@.tcl pkgIndex.tcl; do \
-		if [ ! -f modules/$@/$$file ]; then \
-			wget -q https://raw.githubusercontent.com/mittelmark/$@/refs/heads/main/$@/$$file -O modules/$@/$$file; \
-		fi \
-	done
+tdot:
+	@[ ! -d modules/tdot ] && mkdir -p modules/tdot
+	@[ ! -f modules/tdot/tdot.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tdot/$(TDOT_REF)/tdot/tdot.tcl -O modules/tdot/tdot.tcl
+	@[ ! -f modules/tdot/pkgIndex.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tdot/$(TDOT_REF)/tdot/pkgIndex.tcl -O modules/tdot/pkgIndex.tcl
+tsvg:
+	@[ ! -d modules/tsvg ] && mkdir -p modules/tsvg
+	@[ ! -f modules/tsvg/tsvg.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tsvg/$(TSVG_REF)/tsvg/tsvg.tcl -O modules/tsvg/tsvg.tcl
+	@[ ! -f modules/tsvg/pkgIndex.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tsvg/$(TSVG_REF)/tsvg/pkgIndex.tcl -O modules/tsvg/pkgIndex.tcl
+tblocks:
+	@[ ! -d modules/tblocks ] && mkdir -p modules/tblocks
+	@[ ! -f modules/tblocks/tblocks.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tblocks/$(TBLOCKS_REF)/tblocks/tblocks.tcl -O modules/tblocks/tblocks.tcl
+	@[ ! -f modules/tblocks/pkgIndex.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tblocks/$(TBLOCKS_REF)/tblocks/pkgIndex.tcl -O modules/tblocks/pkgIndex.tcl
+tcrd:
+	@[ ! -d modules/tcrd ] && mkdir -p modules/tcrd
+	@[ ! -f modules/tcrd/tcrd.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tcrd/$(TCRD_REF)/tcrd/tcrd.tcl -O modules/tcrd/tcrd.tcl
+	@[ ! -f modules/tcrd/pkgIndex.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tcrd/$(TCRD_REF)/tcrd/pkgIndex.tcl -O modules/tcrd/pkgIndex.tcl
 			
 lib:
 	@[[ -d lib ]] || mkdir -p lib

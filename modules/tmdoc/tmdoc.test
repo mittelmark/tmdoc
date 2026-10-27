@@ -163,14 +163,13 @@ int main() {
     }
     printf("Hello 2nd C World!\n");
     return(0);
-}
-</pre>
+}</pre>
 
 Some text
 }
 
 
-tcltest::test tmdoc-test-1.9 {
+tcltest::test tmdoc-test-1.18 {
     Calling my tmdoc::tmeval with results=asis 
     to display a table using the list2md command
 } -body {
@@ -799,8 +798,7 @@ disp(y):
 octave> y=2
 y = 2
 octave> disp(y):
-error: parse error:
-  syntax error
+error: syntax error
 >>> disp(y):
            ^
 ```}
@@ -1220,15 +1218,15 @@ tcltest::test tmdoc-umlaut-1.1 {
 } -body {
  string trim [tmdoc::tmeval {## Test
 
-This is some test with Umlauts like ÄÖÜ and äöü.
+This is some test with Umlauts like ï¿½ï¿½ï¿½ and ï¿½ï¿½ï¿½.
 
-The letter ß is another serious problem in some cases.
+The letter ï¿½ is another serious problem in some cases.
 }]
 }  -result {## Test
 
-This is some test with Umlauts like ÄÖÜ and äöü.
+This is some test with Umlauts like ï¿½ï¿½ï¿½ and ï¿½ï¿½ï¿½.
 
-The letter ß is another serious problem in some cases.}
+The letter ï¿½ is another serious problem in some cases.}
 
 puts stderr "starting tcrd testing"
 
