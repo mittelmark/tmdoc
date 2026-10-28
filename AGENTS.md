@@ -21,10 +21,13 @@ Shell, plus extensions for:
 - **Markdown alerts**, **block diagrams** (`tblocks`),
 - **table of contents** generation (`--toc true`).
 
-Current version: **0.20.0**. License: **BSD-3-Clause** (file `LICENSE`).
+Current version: **0.20.1**. License: **BSD-3-Clause** (file `LICENSE`).
 Upstream: <https://github.com/mittelmark/tmdoc>. The companion package
 **mndoc** (a separate repo, <https://github.com/mittelmark/mndoc>) converts the
 resulting Markdown/AsciiDoc/Typst to HTML; `mndoc` is **not** bundled here.
+The `install-tmdoc.sh` installer installs both `tmdoc` **and** the latest
+`mndoc` release, so a full installation also picks up mndoc fixes (e.g. the
+non-ISO date normalizer in mndoc 0.15.5) without bundling mndoc.
 
 `tmdoc` started as an extension of the Tcllib `mkdoc` package.
 
@@ -48,6 +51,8 @@ resulting Markdown/AsciiDoc/Typst to HTML; `mndoc` is **not** bundled here.
 | `bin/encoding.tcl` | encoding helper script |
 | `examples/` | sample `.tmd`/`.tdoc`/`.ttyp`/`.tqd` inputs and reference HTML |
 | `tests/` | a few small test fixtures (`empty.tmd`, `umlauts.Rmd`) |
+| `tools/dtplite.tcl` | lightweight doctools man-page → HTML generator (replaces the tcllib-sibling `dtlite`) |
+| `tools/doctools/` | vendored Tcllib doctools package + `mpformats/` (used by `dtlite.tcl`; self-contained, no tcllib sibling needed) |
 
 ## Dependencies and sibling checkouts
 
@@ -58,25 +63,29 @@ The source tree itself only tracks `modules/tmdoc/`. The **build** and the
 - Tcllib modules are vendored into `modules/<name>/` on demand by the Makefile
   targets (`fileutil`, `cmdline`, `bibtex`, `markdown`, `textutil`, `yaml`
   are downloaded from Tcllib; `citer`, `tdot`, `tsvg`, `tblocks`, `tcrd`
-  from their own repos). The Makefile also copies from `~/workspace/tcllib`
-  and `~/workspace/tcrd`, `~/workspace/tsvg`, `~/workspace/tblocks` for the
-  `app` target.
+  from their own repos). Each is pinned to a commit in the `Makefile`.
 - **The fetched `modules/` subdirectories are NOT tracked in git** (see
   `.gitignore`). They are downloaded on demand from **pinned commits** — the
   `*_REF` variables at the top of the `Makefile`. To reproduce a build, the
   pins must match; to bump a dependency, update the corresponding `*_REF` and
   re-run the fetch target.
-- `modules/tmdoc/Makefile` and `examples/Makefile` call `~/workspace/mndoc`
-  (a sibling of this repo) to convert `.md` to HTML, and
-  `~/workspace/tcllib` for `dtlite`.
+- `make app` and the man-page HTML step of `make docu` are **self-contained**:
+  they fetch the vendored modules from the network and use `tools/dtplite.tcl`
+  + the vendored `tools/doctools`. No sibling checkouts are required.
+- Only the **tutorial/PDF** part of `make docu` calls `~/workspace/mndoc`
+  (a sibling of this repo) to convert `.md` to HTML, plus `weasyprint`.
 
 Consequences:
 
-- `make test` / `make docu` / `make app` are **developer-environment
-  specific** and assume a `~/workspace/` layout of sibling checkouts. On this
-  machine only `~/workspace/mndoc` exists; `tcllib`, `tcrd`, `tsvg` and
-  `tblocks` are missing, so `make app`/`make docu` will fail here. Do not
-  assume these targets run in isolation.
+- `make test` is fully self-contained: it fetches the vendored modules and
+  runs the tcltest suite (with `-encoding cp1252`). It needs network on the
+  first run only.
+- `make app` and the man-page HTML of `make docu` are self-contained too;
+  they need `tclsh` (+ `weasyprint` for the PDFs) and the `tpack` bundler
+  (`~/.local/bin/tpack` or the `~/workspace/tpack` sibling).
+- `make docu`'s tutorial step **does** need the `~/workspace/mndoc` sibling;
+  on a machine without it, that part fails but the man-page HTML still
+  regenerates.
 - To run the *package* tests only:
   ```sh
   cd modules/tmdoc
@@ -102,7 +111,7 @@ If the output file is not given (or is `-`), output goes to stdout.
 Prebuilt standalone binary (requires an installed Tcl/Tk):
 
 ```sh
-tmdoc-0.20.0.bin input.tmd output.html --css tmdoc.css
+tmdoc-0.20.1.bin input.tmd output.html --css tmdoc.css
 ```
 
 ## Build
@@ -113,23 +122,25 @@ make app
 
 What it does (top-level `Makefile`):
 
-1. Creates `app-build/tmdoc.vfs/lib/` with subdirs for `tmdoc`, `bibtex`,
+1. Creates a top-level `tmdoc.vfs/lib/` with subdirs for `tmdoc`, `bibtex`,
    `citer`, `cmdline`, `fileutil`, `markdown`, `textutil`, `yaml`, `tdot`,
    `tcrd`, `tsvg`, `tblocks`.
-2. Copies `modules/tmdoc/*.tcl` and `tmdoc.sty` into the VFS, plus the
-   vendored dependency modules (downloaded on demand into `modules/` by the
-   sub-targets `fileutil`, `cmdline`, `bibtex`, `markdown`, `yaml`, `textutil`,
-   `citer`, `tdot tsvg tblocks`).
-3. Runs `tpack wrap tmdoc.tapp --lz4` (the `tpack` bundler from a sibling
-   checkout) to produce the single-file `tmdoc.tapp`, and copies it to
-   `bin/tmdoc-<version>.bin`.
+2. Copies `modules/tmdoc/*.tcl` + `tmdoc.sty` and every vendored dependency
+   module (`modules/<name>/`, fetched on demand by the sub-targets and pinned
+   to commits) into the VFS.
+3. Wraps it into a single-file `tmdoc.tapp` (lz4-compressed) using `tpack`
+   (resolved from `~/.local/bin/tpack` or the `~/workspace/tpack` sibling),
+   and copies it to `bin/tmdoc-<version>.bin`.
 
 Consequences:
 
-- The build needs **`tpack` on the PATH** (from the `~/workspace/tpack`
-  sibling), network access for the vendored modules, and `tclsh`.
-- `make app` **overwrites** `app-build/` and `bin/tmdoc-*.bin`. Do not
-  hand-edit generated artifacts.
+- The build is **self-contained** with respect to the module sources: it
+  archives a top-level `tmdoc.vfs/` (not an `app-build/` wrapper), so the
+  tpack loader finds `main.tcl` at the right level.
+- It needs **`tpack`** (`~/.local/bin/tpack` or `~/workspace/tpack/tpack-b64.tcl`),
+  network access for the vendored modules (only on first fetch), and `tclsh`.
+- `make app` **overwrites** `tmdoc.vfs/`, `tmdoc.tapp`, `tmdoc.tcl` and
+  `bin/tmdoc-*.bin`. Do not hand-edit generated artifacts.
 - `TCL9` in the Makefile points at `~/.local/opt/bin/tclsh9.0`; the package is
   Tcl 8.6+ and Tcl 9 aware.
 
@@ -139,10 +150,13 @@ Consequences:
 make docu
 ```
 
-Uses `../tcllib/apps/dtplite` to render `modules/tmdoc/tmdoc.man` →
-`modules/tmdoc/tmdoc.html` and `apps/tmdoc.man` → `apps/tmdoc.html`, then runs
-`weasyprint` to produce `tmdoc.pdf` and `tmdoc-tutorial.pdf`. Requires the
-`tcllib` sibling and `weasyprint`; it will fail without them.
+Uses `tools/dtplite.tcl` (a lightweight doctools man-page → HTML generator
+backed by the vendored `tools/doctools` package + `modules/textutil`) to
+render `modules/tmdoc/tmdoc.man` → `modules/tmdoc/tmdoc.html` and
+`apps/tmdoc.man` → `apps/tmdoc.html`. Needs only `tclsh` + the repo's vendored
+`modules/textutil` — it no longer requires the `tcllib` sibling. The
+`tmdoc-tutorial.html`/`tmdoc.pdf` steps still need the `~/workspace/mndoc`
+sibling and `weasyprint`.
 
 The manual is also embedded in `modules/tmdoc/tmdoc.tcl` as `#'` comments; the
 `doctools` man pages (`tmdoc.man`) are the canonical form.
@@ -199,18 +213,22 @@ Regenerate the manual/HTML/PDF via `make docu` after the bump.
 
 ## Known issues and pitfalls
 
-- `make test` needs the sibling checkouts
-  (`mndoc`, `tcllib`, `tcrd`, `tsvg`, `tblocks`) to exist in `~/workspace/`;
-  use the direct `modules/tmdoc` invocation with `TCLLIBPATH=..` instead for
-  the package tests.
+- `make test` is self-contained (fetches the vendored modules, runs with
+  `-encoding cp1252`); only the external-tool tests need `octave`, `julia`,
+  `dot`/graphviz and `plantuml` installed.
+- `make docu`'s man-page HTML step is self-contained (`tools/dtplite.tcl`),
+  but the tutorial/PDF step needs the `~/workspace/mndoc` sibling and
+  `weasyprint` to be present.
 - `tmdoc.test` is cp1252/ISO-8859-1 encoded; a plain UTF-8 `tclsh` may reject
   it ("invalid or incomplete multibyte character"). Use `-encoding cp1252`.
 - `README.md` install snippets still reference older pinned binaries
-  (`v0.19.1`, `v0.14.1`, `v0.17.2`); the current version is **0.20.0**.
+  (`v0.19.1`, `v0.14.1`, `v0.17.2`); the current version is **0.20.1**.
 - The fetched `modules/` dependencies are pinned to specific commits in the
   `Makefile` (`TCLLIB_REF`, `CITER_REF`, `TDOT_REF`, `TBLOCKS_REF`, `TSVG_REF`,
   `TCRD_REF`); bump a pin only when you intentionally need a newer dependency
-  version.
+  version. The `tools/doctools` snapshot is likewise a pinned copy of Tcllib's
+  doctools — refresh its `*.tcl` files and the `mpformats/` dir together if you
+  bump doctools.
 - `mndoc` is a separate repository (sibling `~/workspace/mndoc`); it is not
   vendored here, so HTML conversion steps in the examples need it present.
 
