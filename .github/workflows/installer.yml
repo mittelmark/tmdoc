@@ -35,13 +35,13 @@ jobs:
       - name: Check the installed tmdoc and mndoc binaries
         run: |
           export PATH="$HOME/.local/bin:$PATH"
+          echo "PATH=$PATH"
           tmdoc --version
           mndoc --version
           # smoke-convert a small document with tmdoc (.tmd -> .md)
           printf '# CI check\n\nhello world\n' > ci-input.tmd
           tmdoc --mode weave ci-input.tmd ci-output.md
-          grep -q '<h1>CI check</h1>' ci-output.md || \
-            grep -q 'hello world' ci-output.md
+          grep -q 'hello world' ci-output.md
           # mndoc must be runnable alongside tmdoc (installer ships both)
           mndoc --help >/dev/null
           echo "tmdoc + mndoc install + functional check passed"
