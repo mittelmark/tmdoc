@@ -59,9 +59,12 @@ app:
 	-test -f tmdoc.ttcl && rm -f tmdoc.ttcl
 	-test -d tmdoc.vfs && rm -rf tmdoc.vfs
 
+# Regenerate the doctools man-page HTML files using the vendored doctools
+# package (tools/doctools) via the lightweight dtlite generator.  This no
+# longer depends on the tcllib sibling checkout.
 docu:
-	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o modules/tmdoc/tmdoc.html html modules/tmdoc/tmdoc.man
-	TCLLIBPATH=`pwd`/../tcllib/modules ../tcllib/apps/dtplite -o apps/tmdoc.html html apps/tmdoc.man
+	tclsh tools/dtplite.tcl -o modules/tmdoc/tmdoc.html modules/tmdoc/tmdoc.man
+	tclsh tools/dtplite.tcl -o apps/tmdoc.html apps/tmdoc.man
 test:
 	cd modules/tmdoc && LANG=en_US.UTF8 TCLLIBPATH=../ tclsh -encoding cp1252 tmdoc.test
 
