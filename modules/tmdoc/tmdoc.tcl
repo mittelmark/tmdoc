@@ -82,11 +82,16 @@
 #                                            adding basic suport for chemical formula and reactions
 #                 2026-02-23 version 0.19.1  fix for csv mode with comma or semikolon within quotes
 #                 2026-07-08 version 0.20.0  support for tblocks package
+#                 2026-10-27 version 0.20.1  restore missing filter-tblocks.tcl, fix
+#                                            test-name collision, pin vendored modules
+#                                            to commits, add AGENTS.md; the combined
+#                                            app now also ships the mndoc non-ISO date
+#                                            fix via the installer
 
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.20.0
+package provide tmdoc::tmdoc 0.20.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]

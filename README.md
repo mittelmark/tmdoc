@@ -460,6 +460,13 @@ as example for such embedded documentation.
 
 ## Changes
 
+- 2026-10-27: 0.20.1
+    - no new features: restore the missing `filter-tblocks.tcl`, fix the
+      `tmdoc-test-1.9` test-name collision, pin vendored modules to commits, and
+      add `AGENTS.md`
+    - the combined `tmdoc` application now also ships the latest `mndoc` fix
+      for non-ISO dates in the YAML header (the installer pulls the latest
+      `mndoc` release)
 - 2026-07-08: 0.20.0 
     - support for [tblocks diagrams](https://github.com/mittelmark/tblocks)
 - 2026-02-23: 0.19.1

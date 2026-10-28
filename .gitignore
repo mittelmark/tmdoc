@@ -22,3 +22,23 @@ modules/tmdoc/images/
 modules/tmdoc/include.md
 modules/tmdoc/*.png
 modules/tmdoc/*.svg
+modules/tmdoc/chunk-shell-*.txt
+modules/tmdoc/chunk-shell-*.c
+modules/tmdoc/chunk-shell-*.py
+modules/tmdoc/file.ext
+modules/tmdoc/hello
+modules/tmdoc/hello2
+modules/tmdoc/kroki/
+modules/tmdoc/*.toc
+
+# Build output
+app-build/
+tmdoc.vfs/
+tmdoc.tapp
+tmdoc.tcl
+tmdoc.tb64
+tmdoc.tb64.lz4
+tmdoc.ttcl
+
+# Prebuilt standalone binaries (released as GitHub release assets)
+bin/*.bin

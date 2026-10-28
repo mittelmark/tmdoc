@@ -1,0 +1,47 @@
+# Verifies the tmdoc installer (which installs both tmdoc and mndoc into
+# ~/.local/bin) on a clean Linux runner.
+#
+# The installer downloads the latest release assets, so this job must run only
+# after a release with those assets exists. It is triggered manually
+# (workflow_dispatch) and automatically on release, so it cannot fail the
+# normal push flow when no release is present yet.
+name: installer
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published, created]
+
+jobs:
+  check-installer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Show latest tmdoc and mndoc releases
+        run: |
+          curl -sI "https://github.com/mittelmark/tmdoc/releases/latest" \
+            | grep -i '^location:' || true
+          curl -sI "https://github.com/mittelmark/mndoc/releases/latest" \
+            | grep -i '^location:' || true
+
+      # The installer is interactive; answer "no" to the optional PATH prompt
+      # so the job stays deterministic.
+      - name: Run installer one-liner against the real release
+        run: |
+          printf 'n\n' | bash -c "$(curl -fsSL https://github.com/mittelmark/tmdoc/releases/latest/download/install-tmdoc.sh)"
+
+      - name: Check the installed tmdoc and mndoc binaries
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          tmdoc --version
+          mndoc --version
+          # smoke-convert a small document with tmdoc (.tmd -> .md)
+          printf '# CI check\n\nhello world\n' > ci-input.tmd
+          tmdoc --mode weave ci-input.tmd ci-output.md
+          grep -q '<h1>CI check</h1>' ci-output.md || \
+            grep -q 'hello world' ci-output.md
+          # mndoc must be runnable alongside tmdoc (installer ships both)
+          mndoc --help >/dev/null
+          echo "tmdoc + mndoc install + functional check passed"
