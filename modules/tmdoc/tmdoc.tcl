@@ -1262,7 +1262,7 @@ proc ::tmdoc::tmdoc {filename outfile args} {
                 continue
             } elseif {$mode eq "text" && [regexp {[> ]{0,2}```} $line]} {
                 set mode pretext
-                puts $out $line
+                puts $out  $line ;# [regsub -all {\.```} {```}]
                 continue
             } elseif {$mode eq "pretext" && [regexp {[> ]{0,2}```} $line]} {
                 puts $out $line
