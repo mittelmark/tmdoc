@@ -87,6 +87,13 @@ Since version 0.19.0: After you used this installer you might as well use the
 installed command __tmdoc-update__ to check for a newer version and install
 that if it is available.
 
+Since version 0.21.0: The installed __tmdoc__ binary can do the same check
+itself: __tmdoc --upgrade__ follows the GitHub `releases/latest` redirect, and
+if a newer release is available downloads and runs the official
+__install-tmdoc.sh__ again (refreshing __tmdoc__ and __mndoc__ in
+__~/.local/bin__; a source checkout is not touched). It needs __curl__ or
+__wget__ and network access and stays non-interactive.
+
 In case you would like to use your own Markdown to HTML converter, you can as
 well just install __tmdoc__ alone without __mndoc__ like this:
 
@@ -471,6 +478,10 @@ as example for such embedded documentation.
       may now be given before, between or after the file arguments; `OUTFILE`
       is optional (missing or `-` writes to stdout); unknown options and
       missing option values are reported with the usage text
+    - new `tmdoc --upgrade`: checks GitHub's `releases/latest` redirect and,
+      if a newer release exists, downloads and runs the official
+      `install-tmdoc.sh` (refreshes tmdoc and mndoc in `~/.local/bin`,
+      non-interactive; needs curl or wget)
     - `mndoc` v0.17.0 is fetched into the build on demand (`make mndoc`,
       pinned `MNDOC_REF`); the docu/tutorial and examples steps no longer
       need a sibling `~/workspace/mndoc` checkout

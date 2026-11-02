@@ -82,6 +82,14 @@ test:
 	TCLLIBPATH=$$PWD/modules tclsh apps/tmdoc --mode weave $$tmp/in.tmd - > $$tmp/d.md; \
 	cmp $$tmp/a.md $$tmp/d.md; \
 	TCLLIBPATH=$$PWD/modules tclsh apps/tmdoc --bogus $$tmp/in.tmd $$tmp/e.md 2>&1 | grep -q "not valid"; \
+	TCLLIBPATH=$$PWD/modules tclsh apps/tmdoc --help 2>&1 | grep -q -- "--upgrade"; \
+	echo "  ... upgrade help passing"; \
+	if env -i PATH= TCLLIBPATH=$$PWD/modules `command -v tclsh` apps/tmdoc --upgrade > $$tmp/upgrade.log 2>&1; then \
+	  echo "Error: --upgrade without curl/wget should have been refused!"; \
+	  exit 1; \
+	fi; \
+	grep -q "needs curl or wget" $$tmp/upgrade.log; \
+	echo "  ... upgrade refusal passing"; \
 	echo "CLI option-order tests passed"
 
 test9:

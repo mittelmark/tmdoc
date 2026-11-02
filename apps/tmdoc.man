@@ -30,6 +30,16 @@ The application prints its version number to standard output and exits.
 
 The application prints its license to standard output and exits.
 
+[call [cmd tmdoc] [option --upgrade]]
+
+[para] The application checks GitHub for a newer tmdoc release by following the
+[emph {releases/latest}] redirect. If a newer release is available, it downloads
+and runs the official [emph {install-tmdoc.sh}] installer, which refreshes the
+standalone binaries [emph {tmdoc}] and [emph {mndoc}] in [emph {~/.local/bin}]
+(a checkout of the source repository is not touched). The check needs
+[emph {curl}] or [emph {wget}] and network access; without a downloader the
+application refuses and exits with status 1.
+
 [call [cmd tmdoc] [arg input] [arg output] [opt "[option --mode] [arg weave|tangle]"]]
 
 [para] The application reads the [arg input] file, evaluates embedded Tcl code in code chunks and writes
@@ -83,6 +93,11 @@ document.
     
     tmdoc sample.ttyp sample.typ --abbrev abbrev.yml
     typst compile sample.typ
+    
+    # check GitHub for a newer tmdoc release and install it, if there is
+    # one (refreshes tmdoc and mndoc in ~/.local/bin)
+    
+    tmdoc --upgrade
 }]
 
 [section "Bugs, Ideas, Feedback"]

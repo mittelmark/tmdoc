@@ -189,13 +189,20 @@ cd modules/tmdoc && TCLLIBPATH=.. tclsh -encoding cp1252 tmdoc.test
 - `tests/` holds small standalone fixtures; `modules/tmdoc/test-man.tman`
   validates the Doctools man page (`tclsh ../../apps/tmdoc test-man.tman
   test-man.man`).
+- `make test` also runs shell-level CLI checks after the tcltest suite:
+  identical output for options given before / between / after the file
+  arguments, single-file stdout, the `-` outfile marker, unknown-option
+  refusal, plus the `--upgrade` help entry and the refusal path (run with
+  `env -i PATH=` so no curl/wget exists: status 1, "needs curl or wget";
+  no live GitHub check, by design).
 
 ## Version bumps
 
 The version appears in several independent places. Update all of them:
 
-1. `modules/tmdoc/tmdoc.tcl` — history header at the top, both `package
-   provide` lines, and the `CHANGES` section near the end.
+1. `modules/tmdoc/tmdoc.tcl` — history header at the top and both `package
+   provide` lines (the version notes live in that header; there is no
+   separate CHANGES section).
 2. `modules/tmdoc/pkgIndex.tcl` — both `package ifneeded` lines (the Makefile
    reads the version from here).
 3. `modules/tmdoc/tmdoc.man` and `apps/tmdoc.man` — `[vset VERSION ...]`.
@@ -219,6 +226,11 @@ Regenerate the manual/HTML/PDF via `make docu` after the bump.
   for OUTFILE) is the only dash argument treated as a file. OUTFILE is
   optional; without it the output goes to stdout. Keep the `valid_args`
   list in `main` and the `Usage` text in sync.
+- Value-less flags (`--help`, `--version`, `--license`, `--upgrade`) are
+  handled by early `lsearch` branches in `main` and are deliberately **not**
+  part of `valid_args` (which only feeds the value-pairing parse loop).
+  `--upgrade` must **`exit` and never return** from `main`: the installer it
+  runs may replace the very `tmdoc-*.bin` the interpreter is executing.
 - CLI changes belong into the doctools man pages (`apps/tmdoc.man`,
   `modules/tmdoc/tmdoc.man`, regenerated via `make docu`) and `README.md`;
   there is no `#'` embedded manual in `tmdoc.tcl` (contrary to the older
@@ -249,6 +261,15 @@ Regenerate the manual/HTML/PDF via `make docu` after the bump.
   but it is **not** bundled into the tmdoc app — `install-tmdoc.sh` installs
   the mndoc release binary separately. A sibling `~/workspace/mndoc` checkout
   is no longer required.
+- `tmdoc --upgrade` (like `mndoc --upgrade`) needs `curl` (or `wget`) and
+  network access; it refreshes only the standalone binaries in
+  `~/.local/bin` (a source checkout uses `git pull`). The `--upgrade` branch
+  in `main` must **`exit`, never return** (see code conventions).
+- Tcl ARE quirk (hit while writing `latest-version`): a non-greedy `.*?`
+  before a capture shortens the *whole* match, so the greedy star behind it
+  collapses — `location:.*?/tag/v([0-9]...)` captures only the leading
+  digit. The patterns in `latest-version` must stay greedy (a comment in
+  the code says so).
 
 ## Useful one-liners
 

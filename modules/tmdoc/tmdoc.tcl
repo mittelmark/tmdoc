@@ -1513,6 +1513,106 @@ proc ::tmdoc::include {filename args} {
         return $res
     }
 }
+## check GitHub for the latest tmdoc release, by following the redirect of
+## https://github.com/mittelmark/tmdoc/releases/latest/ (302 -> tag/vX.Y.Z)
+proc ::tmdoc::latest-version {} {
+    set url "https://github.com/mittelmark/tmdoc/releases/latest/"
+    set out ""
+    if {[auto_execok curl] ne ""} {
+        if {[catch {exec curl -isS $url 2>@1} out]} {
+            return -code error "Error: checking GitHub for the latest tmdoc release failed: $out"
+        }
+        # note: greedy '.*' - a non-greedy '.*?' before /tag/v shortens the
+        # whole match in Tcl's AREs and would truncate the version capture
+        if {![regexp -nocase -line {^location:.*/tag/v([0-9][0-9.]*)} $out -> version]} {
+            return -code error "Error: unexpected answer from GitHub while checking the latest tmdoc release!"
+        }
+    } elseif {[auto_execok wget] ne ""} {
+        catch {exec wget -S --spider $url 2>@1} out
+        if {![regexp -nocase {location:.*/tag/v([0-9][0-9.]*)} $out -> version]} {
+            return -code error "Error: could not read the latest tmdoc release tag from GitHub!"
+        }
+    } else {
+        return -code error "Error: 'tmdoc --upgrade' needs curl or wget to check GitHub for a newer release!"
+    }
+    return $version
+}
+## is version a strictly newer than version b? compared numerically
+## component by component, leading digits only, missing parts count as 0
+proc ::tmdoc::version-newer {a b} {
+    set va [split $a .]
+    set vb [split $b .]
+    while {[llength $va] < [llength $vb]} { lappend va 0 }
+    while {[llength $vb] < [llength $va]} { lappend vb 0 }
+    foreach x $va y $vb {
+        set xa 0
+        set ya 0
+        regexp {^[0-9]+} $x xa
+        regexp {^[0-9]+} $y ya
+        if {$xa > $ya} { return 1 }
+        if {$xa < $ya} { return 0 }
+    }
+    return 0
+}
+## download url into the file outfile, with curl or wget
+proc ::tmdoc::fetch {url outfile} {
+    if {[auto_execok curl] ne ""} {
+        set cmd [list {*}[auto_execok curl] -fsSL $url --output $outfile]
+    } elseif {[auto_execok wget] ne ""} {
+        set cmd [list {*}[auto_execok wget] -q -O $outfile $url]
+    } else {
+        return -code error "Error: downloading '$url' needs curl or wget!"
+    }
+    if {[catch {exec {*}$cmd 2>@1} out]} {
+        file delete -force $outfile
+        return -code error "Error: downloading '$url' failed: $out"
+    }
+}
+## 'tmdoc --upgrade': check GitHub for a newer release and, if there is one,
+## download and run the official install-tmdoc.sh installer again, which
+## refreshes the standalone binaries in ~/.local/bin (a checkout of the
+## source repository is not touched) - tmdoc and mndoc are refreshed in the
+## same run. The installer asks whether to add ~/.local/bin to the PATH, so
+## that directory is prepended to the PATH of the installer process -
+## --upgrade stays non-interactive and prints a PATH hint itself afterwards.
+proc ::tmdoc::upgrade {} {
+    set current [package provide tmdoc]
+    set latest [latest-version]
+    if {![version-newer $latest $current]} {
+        puts "tmdoc $current is already the latest release (GitHub: v$latest)."
+        return
+    }
+    puts "A newer tmdoc release is available: GitHub v$latest, local version: $current"
+    set url "https://github.com/mittelmark/tmdoc/releases/latest/download/install-tmdoc.sh"
+    set bindir ""
+    set envargs [list env]
+    if {[info exists ::env(HOME)]} {
+        set bindir [file join $::env(HOME) .local bin]
+        set path ""
+        if {[info exists ::env(PATH)]} {
+            set path $::env(PATH)
+        }
+        lappend envargs "PATH=$bindir:$path"
+    }
+    set fh [file tempfile script tmdoc-install-]
+    close $fh
+    set cmd [list {*}$envargs {*}[auto_execok bash] $script]
+    if {[catch {
+        fetch $url $script
+        exec {*}$cmd 2>@1
+    } out]} {
+        file delete -force $script
+        return -code error "Error: running the tmdoc install script failed!\n$out"
+    }
+    file delete -force $script
+    puts $out
+    puts "tmdoc and mndoc were upgraded to the latest release."
+    if {$bindir ne "" && (![info exists ::env(PATH)] || \
+            [lsearch -exact [split $::env(PATH) ":"] $bindir] == -1)} {
+        puts "Note: $bindir is not in your PATH yet, add it for example with:"
+        puts "  echo \$PATH | grep -q /.local/bin || export PATH=\$HOME/.local/bin:\$PATH"
+    }
+}
 proc ::tmdoc::main {argv} {
     global argv0
     set APP $argv0
@@ -1545,6 +1645,9 @@ proc ::tmdoc::main {argv} {
            --help               - displays this help page, and exit
            --version            - display version number, and exit
            --license            - display license information, and exit
+           --upgrade            - check GitHub for a newer tmdoc release and
+                                  install it (refreshes tmdoc and mndoc in
+                                  ~/.local/bin)
            --mode  weave|tangle - either `weave` for evaluating the code chunks
                                   or `tangle` for extracting all Tcl code  
            --abbrev  FILENAME  - an Yaml abbreviation file used to expand abbreviations
@@ -1571,6 +1674,11 @@ proc ::tmdoc::main {argv} {
            mndoc modules/tmdoc/tmdoc.md modules/tmdoc/tmdoc-tmdoc.html \
                  --css tmdoc.css
            
+           # check GitHub for a newer tmdoc release and install it, if there
+           # is one (refreshes tmdoc and mndoc in ~/.local/bin)
+           
+           __APP__ --upgrade
+           
       License: BSD
     }]
 
@@ -1583,6 +1691,17 @@ proc ::tmdoc::main {argv} {
     if {[lsearch -exact $argv {--license}] > -1} {
         puts "BSD License - see manual page"
         return
+    }
+    if {[lsearch -exact $argv {--upgrade}] > -1} {
+        # '--upgrade' must not return to the script: the installer may just
+        # have replaced the very file this interpreter is executing (an
+        # installed tmdoc-*.bin), so no further top-level commands of
+        # [info script] may be read - exit right after the upgrade instead
+        if {[catch {upgrade} err]} {
+            puts $err
+            exit 1
+        }
+        exit 0
     }
 
     set usage [regsub -all {__VERSION__} [regsub -all {__APP__} $Usage $APP] [package provide tmdoc]]
