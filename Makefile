@@ -23,6 +23,9 @@ TCLLIB=https://raw.githubusercontent.com/tcltk/tcllib/$(TCLLIB_REF)/modules
 CITER=https://raw.githubusercontent.com/mittelmark/citer/$(CITER_REF)
 TDOT=https://raw.githubusercontent.com/mittelmark/tdot/$(TDOT_REF)
 TBLOCKS=https://raw.githubusercontent.com/mittelmark/tblocks/$(TBLOCKS_REF)
+## mndoc v0.17.0 (the release install-tmdoc.sh pulls as well)
+MNDOC_REF=5d4d3283aa31b3c65a71f1c4323d37f8a7cb0627
+MNDOC=https://raw.githubusercontent.com/mittelmark/mndoc/$(MNDOC_REF)
 default:
 	echo "Usage: make app|docu|test"
 app:
@@ -67,6 +70,19 @@ docu:
 	tclsh tools/dtplite.tcl -o apps/tmdoc.html apps/tmdoc.man
 test:
 	cd modules/tmdoc && LANG=en_US.UTF8 TCLLIBPATH=../ tclsh -encoding cp1252 tmdoc.test
+	@set -e; \
+	tmp=$$(mktemp -d); \
+	trap 'rm -rf $$tmp' EXIT; \
+	printf '```{.tcl}\nputs "cli order test"\n```\n' > $$tmp/in.tmd; \
+	TCLLIBPATH=$$PWD/modules tclsh apps/tmdoc $$tmp/in.tmd $$tmp/a.md; \
+	TCLLIBPATH=$$PWD/modules tclsh apps/tmdoc --mode weave $$tmp/in.tmd $$tmp/b.md; \
+	TCLLIBPATH=$$PWD/modules tclsh apps/tmdoc $$tmp/in.tmd --mode weave $$tmp/c.md; \
+	cmp $$tmp/a.md $$tmp/b.md; \
+	cmp $$tmp/a.md $$tmp/c.md; \
+	TCLLIBPATH=$$PWD/modules tclsh apps/tmdoc --mode weave $$tmp/in.tmd - > $$tmp/d.md; \
+	cmp $$tmp/a.md $$tmp/d.md; \
+	TCLLIBPATH=$$PWD/modules tclsh apps/tmdoc --bogus $$tmp/in.tmd $$tmp/e.md 2>&1 | grep -q "not valid"; \
+	echo "CLI option-order tests passed"
 
 test9:
 	cd modules/tmdoc && LANG=en_US.UTF8 TCLLIBPATH=../ $(TCL9) -encoding cp1252 tmdoc.test	
@@ -125,6 +141,15 @@ tcrd:
 	@[ ! -d modules/tcrd ] && mkdir -p modules/tcrd
 	@[ ! -f modules/tcrd/tcrd.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tcrd/$(TCRD_REF)/tcrd/tcrd.tcl -O modules/tcrd/tcrd.tcl
 	@[ ! -f modules/tcrd/pkgIndex.tcl ] && wget -q https://raw.githubusercontent.com/mittelmark/tcrd/$(TCRD_REF)/tcrd/pkgIndex.tcl -O modules/tcrd/pkgIndex.tcl
+## mndoc is fetched from its own repo (pinned to MNDOC_REF) and used by the
+## docu/tutorial steps in place of a sibling mndoc checkout; it is NOT part
+## of the tmdoc app bundle - the installer installs mndoc separately
+## (recipe is idempotent: existing files are kept, missing ones are fetched)
+mndoc:
+	@test -d modules/mndoc || mkdir -p modules/mndoc
+	@test -f modules/mndoc/mndoc.tcl || wget -q $(MNDOC)/mndoc/mndoc.tcl -O modules/mndoc/mndoc.tcl
+	@test -f modules/mndoc/pkgIndex.tcl || wget -q $(MNDOC)/mndoc/pkgIndex.tcl -O modules/mndoc/pkgIndex.tcl
+	@test -f modules/mndoc/mndoc-app.tcl || wget -q $(MNDOC)/apps/mndoc -O modules/mndoc/mndoc-app.tcl
 			
 lib:
 	@[[ -d lib ]] || mkdir -p lib

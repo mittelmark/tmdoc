@@ -130,6 +130,12 @@ Thereafter you can process the file  like this:
 tmdoc test.tmd test.md
 ```
 
+Options may as well be given before, between or after the file arguments:
+
+```
+tmdoc --mode weave test.tmd test.md
+```
+
 which should create the file test.md with the following content:
 
 ```
@@ -460,6 +466,17 @@ as example for such embedded documentation.
 
 ## Changes
 
+- 2026-11-02: 0.21.0
+    - flexible command line parsing: options (`--mode`, `--abbrev`, `--toc`)
+      may now be given before, between or after the file arguments; `OUTFILE`
+      is optional (missing or `-` writes to stdout); unknown options and
+      missing option values are reported with the usage text
+    - `mndoc` v0.17.0 is fetched into the build on demand (`make mndoc`,
+      pinned `MNDOC_REF`); the docu/tutorial and examples steps no longer
+      need a sibling `~/workspace/mndoc` checkout
+    - the Julia filter now uses the Tcl `2>@1` redirection like the R,
+      Python and Octave filters, so no stray `&1` file is created under
+      Tcl 9; the help page examples say `mndoc` instead of the old `mkdoc`
 - 2026-10-27: 0.20.1
     - no new features: restore the missing `filter-tblocks.tcl`, fix the
       `tmdoc-test-1.9` test-name collision, pin vendored modules to commits, and

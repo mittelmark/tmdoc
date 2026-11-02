@@ -47,7 +47,7 @@ namespace eval tmdoc::julia {
         variable done
         set res ""
         if {$pipe eq ""} {
-            set pipe [open "|julia -q 2>&1" r+]
+            set pipe [open "|julia -q 2>@1" r+]
             fconfigure $pipe -buffering line -blocking 0
             fileevent $pipe readable [list ::tmdoc::julia::piperead $pipe]
             set res ""

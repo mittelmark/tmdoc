@@ -31,13 +31,13 @@ ARGS=
 tasks:  ## list all tasks
 	@grep -Eo '^[a-z0-9]+:.+' $(CURRENT_MAKEFILE) | sed -E 's/:\s+##/\t- /g'
 
-default: ## ause lang=c|cpp|py for processing
+default: mndoc ## ause lang=c|cpp|py for processing
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $(lang).tmd - | \
-	TCLLIBPATH=~/workspace/mndoc tclsh ../../mndoc/apps/mndoc - $(lang).html --css tmdoc.css
+	TCLLIBPATH=../modules tclsh ../modules/mndoc/mndoc-app.tcl - $(lang).html --css tmdoc.css
 
-c cpp dot emf mtex py pipe literature abcmusic:      ## process C examples
-	TCLLIBPATH=~/workspace/tmdoc/modules ../apps/tmdoc --mode weave $@.tmd $@.md
-	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc $@.md $@.html --css tmdoc.css
+c cpp dot emf mtex py pipe literature abcmusic: mndoc ## process C examples
+	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $@.tmd $@.md
+	TCLLIBPATH=../modules tclsh ../modules/mndoc/mndoc-app.tcl $@.md $@.html --css tmdoc.css
 latex-test:
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc $@.snw $@.tex
 	pdflatex $@.tex 
@@ -52,16 +52,21 @@ adoc:
 typst:
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --abbrev abbrev.yml typst.ttyp typst.typ
 	typst compile typst.typ
-quarkdown:
+quarkdown: mndoc
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --abbrev abbrev.yml quarkdown.tqd quarkdown.qd
 	quarkdown compile quarkdown.qd
 	perl -pe 's/theme\/theme.css/tmdoc.css/' output/QuarkdownExample/index.html > temp.html
-	TCLLIBPATH=../modules tclsh ../../mndoc/apps/mndoc temp.html quarkdown.html
-toc-example:
+	TCLLIBPATH=../modules tclsh ../modules/mndoc/mndoc-app.tcl temp.html quarkdown.html
+toc-example: mndoc
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --toc true toc-example.tmd toc-example.md
-	TCLLIBPATH=../modules tclsh ../../mndoc/apps/mndoc toc-example.md toc-example.html
+	TCLLIBPATH=../modules tclsh ../modules/mndoc/mndoc-app.tcl toc-example.md toc-example.html
 ## run with make c.html, make cpp.html, make emf, make py
-%.html: %.tmd mini.css ## that does not work
+%.html: %.tmd mini.css mndoc ## that does not work
 	TCLLIBPATH=../modules tclsh ../apps/tmdoc --mode weave $<.tmd $<.md
-	TCLLIBPATH="~/workspace/mkdoc ../modules" tclsh ../../mkdoc/apps/mkdoc $<.md $<.html --css tmdoc.css
+	TCLLIBPATH=../modules tclsh ../modules/mndoc/mndoc-app.tcl $<.md $<.html --css tmdoc.css
+
+## fetch the pinned mndoc source (top-level target) used for the HTML steps
+.PHONY: mndoc
+mndoc:
+	$(MAKE) -C .. mndoc
 	

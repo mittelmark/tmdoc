@@ -51,6 +51,7 @@ non-ISO date normalizer in mndoc 0.15.5) without bundling mndoc.
 | `bin/encoding.tcl` | encoding helper script |
 | `examples/` | sample `.tmd`/`.tdoc`/`.ttyp`/`.tqd` inputs and reference HTML |
 | `tests/` | a few small test fixtures (`empty.tmd`, `umlauts.Rmd`) |
+| `modules/mndoc/` | **fetched, not tracked**: pinned mndoc source (v0.17.0) + launcher `mndoc-app.tcl` used by the `.md` → HTML steps (see `make mndoc`) |
 | `tools/dtplite.tcl` | lightweight doctools man-page → HTML generator (replaces the tcllib-sibling `dtlite`) |
 | `tools/doctools/` | vendored Tcllib doctools package + `mpformats/` (used by `dtlite.tcl`; self-contained, no tcllib sibling needed) |
 
@@ -63,7 +64,8 @@ The source tree itself only tracks `modules/tmdoc/`. The **build** and the
 - Tcllib modules are vendored into `modules/<name>/` on demand by the Makefile
   targets (`fileutil`, `cmdline`, `bibtex`, `markdown`, `textutil`, `yaml`
   are downloaded from Tcllib; `citer`, `tdot`, `tsvg`, `tblocks`, `tcrd`
-  from their own repos). Each is pinned to a commit in the `Makefile`.
+  from their own repos; `mndoc` from the mndoc repo, pinned to
+  `MNDOC_REF` = v0.17.0). Each is pinned to a commit in the `Makefile`.
 - **The fetched `modules/` subdirectories are NOT tracked in git** (see
   `.gitignore`). They are downloaded on demand from **pinned commits** — the
   `*_REF` variables at the top of the `Makefile`. To reproduce a build, the
@@ -72,8 +74,13 @@ The source tree itself only tracks `modules/tmdoc/`. The **build** and the
 - `make app` and the man-page HTML step of `make docu` are **self-contained**:
   they fetch the vendored modules from the network and use `tools/dtplite.tcl`
   + the vendored `tools/doctools`. No sibling checkouts are required.
-- Only the **tutorial/PDF** part of `make docu` calls `~/workspace/mndoc`
-  (a sibling of this repo) to convert `.md` to HTML, plus `weasyprint`.
+- The `.md` → HTML steps of `modules/tmdoc/Makefile` (tutorial, `filter-*`,
+  `test-eq`) and `examples/Makefile` use the **fetched mndoc source**
+  (`modules/mndoc/`, via `make mndoc`) instead of a sibling `~/workspace/mndoc`
+  checkout. The mndoc fetch targets are prerequisites of those make targets,
+  so a plain `make` of them fetches mndoc on demand (network, first run only).
+  mndoc is **not** part of the tmdoc app bundle; `install-tmdoc.sh` installs
+  the mndoc release binary separately.
 
 Consequences:
 
@@ -83,9 +90,9 @@ Consequences:
 - `make app` and the man-page HTML of `make docu` are self-contained too;
   they need `tclsh` (+ `weasyprint` for the PDFs) and the `tpack` bundler
   (`~/.local/bin/tpack` or the `~/workspace/tpack` sibling).
-- `make docu`'s tutorial step **does** need the `~/workspace/mndoc` sibling;
-  on a machine without it, that part fails but the man-page HTML still
-  regenerates.
+- `make docu`'s tutorial steps (in `modules/tmdoc/Makefile`) need the
+  fetched mndoc source (`make mndoc`, pinned to `MNDOC_REF`) plus
+  `weasyprint`; the fetch happens automatically as a make prerequisite.
 - To run the *package* tests only:
   ```sh
   cd modules/tmdoc
@@ -155,8 +162,9 @@ backed by the vendored `tools/doctools` package + `modules/textutil`) to
 render `modules/tmdoc/tmdoc.man` → `modules/tmdoc/tmdoc.html` and
 `apps/tmdoc.man` → `apps/tmdoc.html`. Needs only `tclsh` + the repo's vendored
 `modules/textutil` — it no longer requires the `tcllib` sibling. The
-`tmdoc-tutorial.html`/`tmdoc.pdf` steps still need the `~/workspace/mndoc`
-sibling and `weasyprint`.
+`tmdoc-tutorial.html`/`tmdoc.pdf` steps (in `modules/tmdoc/Makefile`) use the
+fetched mndoc source (`make mndoc`, pinned to `MNDOC_REF`) plus `weasyprint`
+— no `~/workspace/mndoc` sibling needed.
 
 The manual is also embedded in `modules/tmdoc/tmdoc.tcl` as `#'` comments; the
 `doctools` man pages (`tmdoc.man`) are the canonical form.
@@ -200,14 +208,21 @@ Regenerate the manual/HTML/PDF via `make docu` after the bump.
 - Tcl 8.6-compatible code; `package require Tcl 8.6-`. Keep Tcl 9 working.
 - 4-space indentation, opening brace on the same line.
 - Public entry points:
-  - `::tmdoc::tmdoc infile outfile ?--mode weave|tangle? ?--abbrev f.yml?
-    ?--toc true?` — the document processor,
+  - `::tmdoc::tmdoc infile outfile ?-mode weave|tangle? ?-abbrev f.yml?
+    ?-toc true?` — the document processor,
   - `::tmdoc::tmeval text ?ext tmd?` — evaluate a code chunk / filter string,
   - `::tmdoc::main argv` — command-line handling.
-- Options are `--long-option value` pairs; keep the option list in `main`
-  (`valid_args`/`GetOpts`) and the `Usage` text in sync.
-- The manual is embedded in `modules/tmdoc/tmdoc.tcl` as `#'` comments;
-  user-facing behaviour changes should be documented there and in `README.md`.
+- CLI options are `--long-option value` pairs and may be given **before,
+  between or after** the file arguments (single-pass parser in `main`, the
+  mndoc 0.17.0 style): every dash argument must be in `valid_args` and
+  consumes the argument right behind it as its value. `-` (the stdout marker
+  for OUTFILE) is the only dash argument treated as a file. OUTFILE is
+  optional; without it the output goes to stdout. Keep the `valid_args`
+  list in `main` and the `Usage` text in sync.
+- CLI changes belong into the doctools man pages (`apps/tmdoc.man`,
+  `modules/tmdoc/tmdoc.man`, regenerated via `make docu`) and `README.md`;
+  there is no `#'` embedded manual in `tmdoc.tcl` (contrary to the older
+  note in this file's layout table).
 - HTML is assembled with `string map`/`subst`/regexes. Keep changes small and
   test against `modules/tmdoc/filter-*` and `examples/`.
 
@@ -216,21 +231,24 @@ Regenerate the manual/HTML/PDF via `make docu` after the bump.
 - `make test` is self-contained (fetches the vendored modules, runs with
   `-encoding cp1252`); only the external-tool tests need `octave`, `julia`,
   `dot`/graphviz and `plantuml` installed.
-- `make docu`'s man-page HTML step is self-contained (`tools/dtplite.tcl`),
-  but the tutorial/PDF step needs the `~/workspace/mndoc` sibling and
-  `weasyprint` to be present.
+- `make docu`'s man-page HTML step is self-contained (`tools/dtplite.tcl`);
+  the tutorial/PDF steps in `modules/tmdoc/Makefile` need the fetched mndoc
+  source (`make mndoc`, a make prerequisite there) and `weasyprint`.
 - `tmdoc.test` is cp1252/ISO-8859-1 encoded; a plain UTF-8 `tclsh` may reject
   it ("invalid or incomplete multibyte character"). Use `-encoding cp1252`.
 - `README.md` install snippets still reference older pinned binaries
   (`v0.19.1`, `v0.14.1`, `v0.17.2`); the current version is **0.20.1**.
 - The fetched `modules/` dependencies are pinned to specific commits in the
   `Makefile` (`TCLLIB_REF`, `CITER_REF`, `TDOT_REF`, `TBLOCKS_REF`, `TSVG_REF`,
-  `TCRD_REF`); bump a pin only when you intentionally need a newer dependency
-  version. The `tools/doctools` snapshot is likewise a pinned copy of Tcllib's
-  doctools — refresh its `*.tcl` files and the `mpformats/` dir together if you
-  bump doctools.
-- `mndoc` is a separate repository (sibling `~/workspace/mndoc`); it is not
-  vendored here, so HTML conversion steps in the examples need it present.
+  `TCRD_REF`, `MNDOC_REF`); bump a pin only when you intentionally need a newer
+  dependency version. The `tools/doctools` snapshot is likewise a pinned copy of
+  Tcllib's doctools — refresh its `*.tcl` files and the `mpformats/` dir
+  together if you bump doctools.
+- `mndoc` is a separate repository; its source is fetched on demand into
+  `modules/mndoc/` (pinned `MNDOC_REF` = v0.17.0) for the `.md` → HTML steps,
+  but it is **not** bundled into the tmdoc app — `install-tmdoc.sh` installs
+  the mndoc release binary separately. A sibling `~/workspace/mndoc` checkout
+  is no longer required.
 
 ## Useful one-liners
 
@@ -238,9 +256,10 @@ Regenerate the manual/HTML/PDF via `make docu` after the bump.
 # run the regression suite from source
 cd modules/tmdoc && TCLLIBPATH=.. tclsh -encoding cp1252 tmdoc.test
 
-# convert a .tmd to markdown, then to HTML with mndoc
+# convert a .tmd to markdown, then to HTML with the fetched mndoc
 TCLLIBPATH="$PWD/modules" tclsh apps/tmdoc examples/c.tmd /tmp/c.md --mode weave
-TCLLIBPATH="$HOME/workspace/mndoc/modules" tclsh "$HOME/workspace/mndoc/apps/mndoc" /tmp/c.md /tmp/c.html --css modules/tmdoc/tmdoc.css
+make mndoc
+TCLLIBPATH="$PWD/modules" tclsh modules/mndoc/mndoc-app.tcl /tmp/c.md /tmp/c.html --css modules/tmdoc/tmdoc.css
 
 # show version / help
 TCLLIBPATH="$PWD/modules" tclsh apps/tmdoc --version

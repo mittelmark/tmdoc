@@ -87,11 +87,19 @@
 #                                            to commits, add AGENTS.md; the combined
 #                                            app now also ships the mndoc non-ISO date
 #                                            fix via the installer
+#                 2026-11-02 version 0.21.0  flexible command line parsing: options may
+#                                            be given before, between or after the file
+#                                            arguments; OUTFILE is optional (stdout)
+#                                            mndoc v0.17.0 is fetched into the build
+#                                            (make mndoc) instead of a sibling checkout
+#                                            Julia filter uses 2>@1 so no stray &1 file
+#                                            is created under Tcl 9; help examples
+#                                            say mndoc instead of the old mkdoc
 
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.20.1
+package provide tmdoc::tmdoc 0.21.0
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -1512,15 +1520,17 @@ proc ::tmdoc::main {argv} {
         set APP "tclmain -m tmdoc"
     }
     set Usage [string map [list "\n    " "\n"] {
-        Usage: __APP__ ?[--help|version]? INFILE OUTFILE ?--mode weave|tangle?   
-               
+        Usage: __APP__ ?options? INFILE ?OUTFILE?
+               __APP__ INFILE ?OUTFILE? ?options?
+               (options may as well be given before, between or after the file names)
+
         tmdoc - Literate programming with Tcl for Markdown, AsciiDoc, Typst, 
                 Quarkdown  and LaTeX documents, Version __VERSION__
                 Converts Markdown, AsciiDoc, Typst, Quarkdown or LaTeX documents
                 with embedded R, Python, Octave, Tcl Diagram code and other
                 extensions with evaluated code chunks and embedded images
                 
-        Positional arguments (required):
+        Positional arguments:
         
             INFILE  - input file usually Markdown or LaTeX with embedded Tcl code
                       either in code chunks starting with ```{.tcl} or in short
@@ -1537,7 +1547,7 @@ proc ::tmdoc::main {argv} {
            --license            - display license information, and exit
            --mode  weave|tangle - either `weave` for evaluating the code chunks
                                   or `tangle` for extracting all Tcl code  
-           --abbrev  FILENAM E  - an Yaml abbreviation file used to expand abbreviations
+           --abbrev  FILENAME  - an Yaml abbreviation file used to expand abbreviations
                                   within curly braces
            --toc   false|true   - should a table of contents file (toc.md) 
                                   ready for inclusion being generated
@@ -1547,20 +1557,24 @@ proc ::tmdoc::main {argv} {
         
            # convert the tutorial in the modules/tmdoc folder
            __APP__ modules/tmdoc/tmdoc-tutorial.Tmd modules/tmdoc/tmdoc-tutorial.md
-           # convert it furthermore to HTML using mkdoc
-           mkdoc modules/tmdoc/tmdoc-tutorial.md modules/tmdoc/tmdoc-tutorial.html \
+           # the options may as well be given before or between the file names
+           __APP__ --mode weave modules/tmdoc/tmdoc-tutorial.Tmd modules/tmdoc/tmdoc-tutorial.md
+           # convert it furthermore to HTML using mndoc
+           mndoc modules/tmdoc/tmdoc-tutorial.md modules/tmdoc/tmdoc-tutorial.html \
                  --css tmdoc.css
            
            # extract inline examples from the package code
-           mkdoc modules/tmdoc/tmdoc.tcl modules/tmdoc/tmdoc.tmd
+           mndoc modules/tmdoc/tmdoc.tcl modules/tmdoc/tmdoc.tmd
            # evaluate the examples and add the code output
            __APP__ modules/tmdoc/tmdoc.tmd modules/tmdoc/tmdoc.md
            # convert it to HTML 
-           mkdoc modules/tmdoc/tmdoc.md modules/tmdoc/tmdoc-tmdoc.html \
+           mndoc modules/tmdoc/tmdoc.md modules/tmdoc/tmdoc-tmdoc.html \
                  --css tmdoc.css
            
       License: BSD
     }]
+
+    set valid_args [list --help --version --license --mode --abbrev --toc]
 
     if {[lsearch -exact $argv {--version}] > -1} {
         puts "[package provide tmdoc::tmdoc]"
@@ -1571,47 +1585,84 @@ proc ::tmdoc::main {argv} {
         return
     }
 
-    if {[llength $argv] < 2 || [lsearch -exact $argv {--help}] > -1} {
-        set usage [regsub -all {__VERSION__} [regsub -all {__APP__} $Usage $APP] [package provide tmdoc]]
+    set usage [regsub -all {__VERSION__} [regsub -all {__APP__} $Usage $APP] [package provide tmdoc]]
+    if {[lsearch -exact $argv {--help}] > -1} {
         puts $usage
         exit 0
     } else {
-        set idxm [lsearch -exact $argv {--mode}]
-        set idxa [lsearch -exact $argv {--abbrev}]
-        set idxt [lsearch -exact $argv {--toc}]        
-        set mode weave
-        set abbrevfile ""
-        set toc false
-        if {$idxt > -1} {
-            set toc [lindex $argv [expr {$idxt + 1}]]
-            if {![string is boolean $toc]} {
-                puts "Error: The argument for --toc must be either true or false!"
-                puts $usage
-                exit 0
-            }
-            set argv [lreplace $argv $idxt [expr {$idxt + 1}]]
-        }
-        
-        if {$idxa > -1} {
-            set abbrevfile [lindex $argv [expr {$idxa + 1}]]
-            if {![file exists $abbrevfile]} {
-                puts "Error: Abbreviation file '$abbrevfile' does not exists!"
-                puts $usage
-                exit 0
-            }
-            set argv [lreplace $argv $idxa [expr {$idxa + 1}]]
-        }
-        if {$idxm > -1} {
-            if {[llength $argv] != 4} {
-                puts "Usage: Error - argument --mode must have an argument either weave or tangle"
-            } elseif {[lindex $argv [expr {$idxm + 1}]] ni [list weave tangle]} {
-                puts "Usage: Error - --mode must have as values on of weave or tangle"
+        # options may be given before, between or after the file names,
+        # every option consumes the argument right behind it as its value
+        set files [list]
+        set options [list]
+        set err ""
+        set max [llength $argv]
+        for {set i 0} {$i < $max} {incr i} {
+            set opt [lindex $argv $i]
+            if {[regexp {^-.+} $opt] && $opt ne {-}} {
+                if {$opt ni $valid_args} {
+                    set err "Error: The argument '$opt' is not valid!"
+                    break
+                }
+                incr i
+                if {$i >= $max || [lindex $argv $i] in $valid_args} {
+                    set err "Error: the option '$opt' needs a value!"
+                    break
+                }
+                lappend options $opt [lindex $argv $i]
             } else {
-                set mode [lindex $argv [expr {$idxm + 1}]]
+                ## '-' is the stdout marker for OUTFILE, not an option
+                lappend files $opt
             }
-            set argv [lreplace $argv $idxm [expr {$idxm + 1}]]
         }
-        tmdoc::tmdoc [lindex $argv 0] [lindex $argv 1] [list -mode $mode -abbrev $abbrevfile -toc $toc]
+        if {$err ne ""} {
+            puts $err
+            puts $usage
+            exit 0
+        } elseif {[llength $files] < 1} {
+            puts $usage
+            exit 0
+        } elseif {[llength $files] > 2} {
+            puts "Error: expected INFILE ?OUTFILE?, got: [join $files { }]"
+            puts $usage
+            exit 0
+        } else {
+            set infile [lindex $files 0]
+            if {[llength $files] == 2} {
+                set outfile [lindex $files 1]
+            } else {
+                set outfile stdout
+            }
+            set mode weave
+            set abbrevfile ""
+            set toc false
+            for {set i 0} {$i < [llength $options]} {incr i 2} {
+                set opt [lindex $options $i]
+                set val [lindex $options [expr {$i + 1}]]
+                if {$opt eq {--mode}} {
+                    if {$val ni [list weave tangle]} {
+                        puts "Error: --mode must have as value one of weave or tangle!"
+                        puts $usage
+                        exit 0
+                    }
+                    set mode $val
+                } elseif {$opt eq {--abbrev}} {
+                    if {![file exists $val]} {
+                        puts "Error: Abbreviation file '$val' does not exist!"
+                        puts $usage
+                        exit 0
+                    }
+                    set abbrevfile $val
+                } elseif {$opt eq {--toc}} {
+                    if {![string is boolean $val]} {
+                        puts "Error: The argument for --toc must be either true or false!"
+                        puts $usage
+                        exit 0
+                    }
+                    set toc $val
+                }
+            }
+            tmdoc::tmdoc $infile $outfile [list -mode $mode -abbrev $abbrevfile -toc $toc]
+        }
     }
 }
 

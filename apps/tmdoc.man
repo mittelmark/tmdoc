@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl-doctools ; fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.20.1]
+[vset VERSION 0.21.0]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2026, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
@@ -11,6 +11,10 @@ This document describes [cmd tmdoc], an application to evaluate embedded Tcl cod
 of Markup languages like Markdown and LaTeX for literate programming.
 
 [section {Command Line}]
+
+[para] The options may as well be given before, between or after the file
+arguments, for example [emph {tmdoc --mode weave INPUT OUTPUT}]. If
+[emph {OUTPUT}] is not given, the result is written to stdout.
 
 [list_begin definitions]
 
@@ -59,6 +63,9 @@ document.
     # for example with pandoc or with mndoc into for instance a html file.
     
     tmdoc sample.tmd sample.md
+    
+    # the options may as well be given before the file arguments
+    tmdoc --mode weave sample.tmd sample.md
     
     # Document conversion can be done as well using a pipe with mndoc like this:
     

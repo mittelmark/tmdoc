@@ -1,8 +1,8 @@
 ##-*- makefile -*-############################################################
 
-default:
+default: mndoc
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd - --toc true | \
-	TCLLIBPATH=.. tclsh ../../../mndoc/apps/mndoc - tmdoc-tutorial.html --css tmdoc.css
+	TCLLIBPATH=.. tclsh ../../modules/mndoc/mndoc-app.tcl - tmdoc-tutorial.html --css tmdoc.css
 	weasyprint -q -s small.css tmdoc-tutorial.html tmdoc-tutorial.pdf
 	TCLLIBPATH="~/workspace/tcllib/modules" \
 		~/workspace/tcllib/apps/dtplite -o tmdoc.html html tmdoc.man
@@ -16,12 +16,17 @@ test:
 tmdoc:
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave tmdoc-tutorial.tmd out.md
 
-filter-julia filter-r filter-python filter-octave filter-mtex filter-tcl filter-abbrev filter-tcrd:
+filter-julia filter-r filter-python filter-octave filter-mtex filter-tcl filter-abbrev filter-tcrd: mndoc
 	test -d images || mkdir images
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave $@.tmd - | \
-	TCLLIBPATH=.. tclsh ../../../mndoc/apps/mndoc - $@.html --css tmdoc.css
+	TCLLIBPATH=.. tclsh ../../modules/mndoc/mndoc-app.tcl - $@.html --css tmdoc.css
 	
 
-test-eq:
+test-eq: mndoc
 	TCLLIBPATH=.. tclsh ../../apps/tmdoc --mode weave test.Rmd - --toc true | \
-	TCLLIBPATH=.. tclsh ../../../mndoc/apps/mndoc - test.htm --css tmdoc.css
+	TCLLIBPATH=.. tclsh ../../modules/mndoc/mndoc-app.tcl - test.htm --css tmdoc.css
+
+## fetch the pinned mndoc source (top-level target) used for the HTML steps
+.PHONY: mndoc
+mndoc:
+	$(MAKE) -C ../.. mndoc
