@@ -437,10 +437,34 @@ for the conversion of that document. Here a typical pipeline.
 
 ![](https://kroki.io/graphviz/svg/eNp1zM0KwjAQBOB7niLk3AriUSIIRTxUFOmt9JDmxy6N3ZIEVMR3NykUQfQ0zM7HKrg4MXb0Qp-EDqh07Tsxat7iPfPhYTU3YK1WWQqJFh2X6AYPts9uoELHl4tVsybUiaFX4DgrzyzWSqGk-YZuY9ZWtNpyFq6xsITTlaZ5Xx3KeRZeAsQhoPugaE7F7gfJR2VYQ8n04ouV0DqNxoDU06eZHIvqD3kR8gZ5gVYU)
 
+If your output is a [LaTeX](https://www.latex-project.org/) document, either an
+input file with a `.tnw`, `.snw` or `.tex` extension or an output file with a
+`.tex` extension, then the code and output blocks of the woven document are
+written into the `lpverbatim`, `lrverbatim` and `lcverbatim` environments.
+These environments are defined in the style file
+[`tmdoc.sty`](modules/tmdoc/tmdoc.sty). Whenever LaTeX output is produced,
+tmdoc copies that file out of the package into the folder of your document, so
+that it sits next to the generated `.tex` file (an existing copy is never
+overwritten). Load it in the preamble of your document:
+
+```latex
+\documentclass{article}
+\usepackage{tmdoc}
+
+\begin{document}
+...
+\end{document}
+```
+
+`\usepackage{tmdoc}` reads `tmdoc.sty` from the current directory, you may as
+well use `\input{tmdoc.sty}` at the same place. The style file needs the
+`graphicx`, `fancyvrb`, `xcolor` and `url` packages, all of them part of a
+standard TeX installation.
+
 If you like to better retain the formatting of your HTML documents in your PDF
 output, you should use the Python package
 [WeasyPrint](https://pypi.org/project/weasyprint/).
- 
+
 To give an example the tmdoc tutorial ([source](modules/tmdoc/tmdoc-tutorial.tmd), 
 [HTML](http://htmlpreview.github.io/?https://github.com/mittelmark/tmdoc/blob/master/modules/tmdoc/tmdoc-tutorial.html)
 is processed with the following commands.
@@ -473,6 +497,15 @@ as example for such embedded documentation.
 
 ## Changes
 
+- 2026-11-03: 0.21.1
+    - the tblocks examples render again in the tutorial PDF: the unquoted
+      web-font `@import` line that tblocks writes into the generated SVG is
+      now stripped, since weasyPrint refuses to parse it and drops the whole
+      figure (browsers block it for SVGs used as images anyway)
+    - `tmdoc.sty` is copied next to `.tex` output files as well (previously
+      only next to `.tnw`/`.snw`/`.tex` inputs) and its unused `tcolorbox`
+      requirement, which is absent from a stock TeX Live, was dropped;
+      usage is documented in the manual, the man page and above
 - 2026-11-02: 0.21.0
     - flexible command line parsing: options (`--mode`, `--abbrev`, `--toc`)
       may now be given before, between or after the file arguments; `OUTFILE`

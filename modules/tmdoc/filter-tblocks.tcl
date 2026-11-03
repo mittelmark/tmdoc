@@ -21,6 +21,30 @@
 package require tblocks
 namespace eval ::tmdoc::tblocks { }
 
+# Drop external @import rules from a generated SVG.  tblocks writes the
+# web font import as
+#   @import url(https://fonts.bunny.net/css?family=...);
+# with an unquoted url() token, which weasyPrint refuses to parse - it then
+# drops the whole figure from the PDF (the missing tblocks examples in the
+# tutorial).  Browsers block external references for SVGs used as images
+# anyway, so the font never applied there either.  The class rules in the
+# same <style> block are kept, the text just falls back to the default font.
+proc ::tmdoc::tblocks::sanitize {path} {
+    if {![file exists $path]} {
+        return
+    }
+    set fh [open $path r]
+    fconfigure $fh -encoding iso8859-1
+    set svg [read $fh]
+    close $fh
+    ## @import ...; up to the first semicolon, both url() and quoted forms
+    set svg [regsub -line {^[ \t]*@import[ \t]+[^;]*;[ \t]*$} $svg ""]
+    set fh [open $path w]
+    fconfigure $fh -encoding iso8859-1
+    puts -nonewline $fh $svg
+    close $fh
+}
+
 proc ::tmdoc::tblocks::filter {cont dict} {
     # Default chunk options; merge the ones given on the code fence.
     set def [dict create results show eval true include true label null \
@@ -55,6 +79,8 @@ proc ::tmdoc::tblocks::filter {cont dict} {
         close $infh
         if {[catch {
             ::tblocks::main [list $tmpmd $tmpout]
+            ## make the SVG loadable by weasyPrint / browsers (see above)
+            sanitize $tmpout
             if {$outext ne ".svg"} {
                 tmdoc::cairosvg $tmpout [array get dict dict]
             }

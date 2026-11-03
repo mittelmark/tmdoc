@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl-doctools ; fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.21.0]
+[vset VERSION 0.21.1]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2026, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl}]
@@ -98,6 +98,13 @@ document.
     # one (refreshes tmdoc and mndoc in ~/.local/bin)
     
     tmdoc --upgrade
+    
+    # weave a LaTeX document: code and output blocks become lpverbatim /
+    # lrverbatim / lcverbatim environments and the style file tmdoc.sty
+    # which defines them is copied next to the output file as well
+    
+    tmdoc report.tmd report.tex
+    pdflatex report.tex
 }]
 
 [section "Bugs, Ideas, Feedback"]

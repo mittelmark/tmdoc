@@ -95,11 +95,17 @@
 #                                            Julia filter uses 2>@1 so no stray &1 file
 #                                            is created under Tcl 9; help examples
 #                                            say mndoc instead of the old mkdoc
+#                 2026-11-03 version 0.21.1  strip the unquoted web-font @import
+#                                            from generated tblocks SVGs so the
+#                                            figures survive weasyPrint; copy
+#                                            tmdoc.sty next to .tex output files
+#                                            too and drop the unused tcolorbox
+#                                            requirement from it
 
 package require Tcl 8.6-
 package require fileutil
 package require yaml
-package provide tmdoc::tmdoc 0.21.0
+package provide tmdoc::tmdoc 0.21.1
 package provide tmdoc [package provide tmdoc::tmdoc]
 source [file join [file dirname [info script]] filter-r.tcl]
 source [file join [file dirname [info script]] filter-python.tcl]
@@ -637,16 +643,28 @@ proc tmdoc::waitchunk {} {
     }
     #puts stderr "x was $x"
 }
+
+## Pull the tmdoc.sty style file out of the package into the directory $dir
+## (usually the folder of the LaTeX document just written).  The style file
+## defines the lpverbatim, lrverbatim, lcverbatim, cverbatim and dverbatim
+## environments which the LaTeX output of tmdoc uses; without it pdflatex
+## stops with "Environment lpverbatim undefined".  The copy is skipped when
+## the file is already there or when the package ships no style file.
+proc tmdoc::ensureSty {dir} {
+    variable script
+    set src [file join [file dirname $script] tmdoc.sty]
+    if {[file exists [file join $dir tmdoc.sty]] || ![file exists $src]} {
+        return
+    }
+    file copy $src $dir
+}
 # public functions - the main function process the files
 
 proc ::tmdoc::tmdoc {filename outfile args} {
-    variable script
     if {[string tolower [file extension $filename]] in [list .tnw .tex .snw]} {
         set inmode latex
-        if {![file exists [file join [file dirname $filename] tmdoc.sty]]} {
-            ## copy out tmdoc.sty
-            file copy [file join [file dirname $script] tmdoc.sty] [file dirname $filename]
-        }
+        ## copy out tmdoc.sty next to the input document
+        ensureSty [file dirname $filename]
     } elseif {[string tolower [file extension $filename]] in [list .tan .man .tman]} {
         set inmode man
     } elseif {[regexp {doc$} [string tolower [file extension $filename]]]} {
@@ -680,6 +698,8 @@ proc ::tmdoc::tmdoc {filename outfile args} {
     if {$arg(outfile) ni [list stdout -]} {
         if {[file extension $arg(outfile)] eq ".tex"} {
             set inmode latex
+            ## pull tmdoc.sty out of the package next to the output document
+            ensureSty [file dirname $arg(outfile)]
         }
         if {[file extension $arg(outfile)] eq ".man"} {
             set inmode man

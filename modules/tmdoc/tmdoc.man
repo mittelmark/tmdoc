@@ -1,5 +1,5 @@
 [comment {-*- mode: tcl-doctools ;fill-column: 90 -*- doctools manpage}]
-[vset VERSION 0.21.0]
+[vset VERSION 0.21.1]
 [manpage_begin tmdoc n [vset VERSION]]
 [copyright {2020-2026, Detlef Groth <dgroth(at)uni(minus)potsdam(dot)de>}]
 [moddesc   {Literate programming using Tcl/Tk and various command line tools} ]
@@ -605,6 +605,47 @@ Some more Markup text ...
 if you are using the file extension [file .tmd], 
 AsciiDoc if you use the [file .tdoc] extension
 and LaTeX if you use the file extensions [file .tnw].
+
+[section "LaTeX Output and tmdoc.sty"]
+
+[para] A document is processed as LaTeX if the [arg input] file has one of the
+extensions [file .tnw], [file .snw] or [file .tex], or if the [arg output]
+file has the extension [file .tex]. Code and output blocks in the woven
+document are then placed into the environments [const lpverbatim],
+[const lrverbatim] and [const lcverbatim].
+
+[para] These environments are defined in the style file [file tmdoc.sty]
+which ships with the package. Whenever LaTeX output is produced, [cmd tmdoc]
+copies that file out of the package into the folder of your document, so
+that it sits next to the generated [file .tex] file. A copy which is
+already there is never overwritten:
+
+[example {
+    # weave report.tmd into LaTeX, tmdoc.sty is copied as well
+    tmdoc report.tmd report.tex
+    
+    # compile it, the preamble of the example below loads tmdoc.sty
+    pdflatex report.tex
+}]
+
+[para] Load the style file in the preamble of your LaTeX document:
+
+[example {
+    \documentclass{article}
+    \usepackage{tmdoc}
+    
+    \begin{document}
+    ...
+    \end{document}
+}]
+
+[para] [const {\usepackage{tmdoc}}] reads [file tmdoc.sty] from the current
+directory, alternatively [const {\input{tmdoc.sty}}] can be used at the same
+place in the preamble. The style file needs the packages [package graphicx],
+[package fancyvrb], [package xcolor] and [package url] which all belong to a
+standard TeX installation. It renders the code and output blocks on a light
+gray background; the colors used for these backgrounds can be redefined in
+your document after the style file has been loaded.
 
 [section "See Also"]
 

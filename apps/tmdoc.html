@@ -100,7 +100,7 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.21.0  &quot;Literate programming using Tcl&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.21.1  &quot;Literate programming using Tcl&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
 <p>tmdoc - Evaluate embedded R, Python, Tcl, Octave, GraphViz and Shell code in Markdown, AsciiDoc, Typst or LaTeX documents</p>
 </div>
@@ -204,6 +204,13 @@ document.</p></dd>
     # one (refreshes tmdoc and mndoc in ~/.local/bin)
     
     tmdoc --upgrade
+    
+    # weave a LaTeX document: code and output blocks become lpverbatim /
+    # lrverbatim / lcverbatim environments and the style file tmdoc.sty
+    # which defines them is copied next to the output file as well
+    
+    tmdoc report.tmd report.tex
+    pdflatex report.tex
 </pre>
 </div>
 <div id="section4" class="doctools_section"><h2><a name="section4">Bugs, Ideas, Feedback</a></h2>

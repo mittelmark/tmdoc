@@ -100,7 +100,7 @@
 <!-- tmdoc.n
    -->
 <body><div class="doctools">
-<h1 class="doctools_title">tmdoc(n) 0.21.0  &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
+<h1 class="doctools_title">tmdoc(n) 0.21.1  &quot;Literate programming using Tcl/Tk and various command line tools&quot;</h1>
 <div id="name" class="doctools_section"><h2><a name="name">Name</a></h2>
 <p>tmdoc - Evaluate embedded R, Python, Julia, Octave and Tcl code or other command line tool input in Markdown, Typst, AsciiDoc or LaTeX documents</p>
 </div>
@@ -130,9 +130,10 @@
 <li class="doctools_section"><a href="#section20">Kroki Webservice</a></li>
 <li class="doctools_section"><a href="#section21">Examples</a></li>
 <li class="doctools_section"><a href="#section22">Filetypes</a></li>
-<li class="doctools_section"><a href="#section23">See Also</a></li>
-<li class="doctools_section"><a href="#section24">Bugs, Ideas, Feedback</a></li>
-<li class="doctools_section"><a href="#section25">Code Copyright</a></li>
+<li class="doctools_section"><a href="#section23">LaTeX Output and tmdoc.sty</a></li>
+<li class="doctools_section"><a href="#section24">See Also</a></li>
+<li class="doctools_section"><a href="#section25">Bugs, Ideas, Feedback</a></li>
+<li class="doctools_section"><a href="#section26">Code Copyright</a></li>
 <li class="doctools_section"><a href="#category">Category</a></li>
 <li class="doctools_section"><a href="#copyright">Copyright</a></li>
 </ul>
@@ -627,19 +628,54 @@ if you are using the file extension &quot;<b class="file">.tmd</b>&quot;,
 AsciiDoc if you use the &quot;<b class="file">.tdoc</b>&quot; extension
 and LaTeX if you use the file extensions &quot;<b class="file">.tnw</b>&quot;.</p>
 </div>
-<div id="section23" class="doctools_section"><h2><a name="section23">See Also</a></h2>
+<div id="section23" class="doctools_section"><h2><a name="section23">LaTeX Output and tmdoc.sty</a></h2>
+<p>A document is processed as LaTeX if the <i class="arg">input</i> file has one of the
+extensions &quot;<b class="file">.tnw</b>&quot;, &quot;<b class="file">.snw</b>&quot; or &quot;<b class="file">.tex</b>&quot;, or if the <i class="arg">output</i>
+file has the extension &quot;<b class="file">.tex</b>&quot;. Code and output blocks in the woven
+document are then placed into the environments <b class="const">lpverbatim</b>,
+<b class="const">lrverbatim</b> and <b class="const">lcverbatim</b>.</p>
+<p>These environments are defined in the style file &quot;<b class="file">tmdoc.sty</b>&quot;
+which ships with the package. Whenever LaTeX output is produced, <b class="cmd">tmdoc</b>
+copies that file out of the package into the folder of your document, so
+that it sits next to the generated &quot;<b class="file">.tex</b>&quot; file. A copy which is
+already there is never overwritten:</p>
+<pre class="doctools_example">
+    # weave report.tmd into LaTeX, tmdoc.sty is copied as well
+    tmdoc report.tmd report.tex
+    
+    # compile it, the preamble of the example below loads tmdoc.sty
+    pdflatex report.tex
+</pre>
+<p>Load the style file in the preamble of your LaTeX document:</p>
+<pre class="doctools_example">
+    \documentclass{article}
+    \usepackage{tmdoc}
+    
+    \begin{document}
+    ...
+    \end{document}
+</pre>
+<p><b class="const">\usepackage{tmdoc}</b> reads &quot;<b class="file">tmdoc.sty</b>&quot; from the current
+directory, alternatively <b class="const">\input{tmdoc.sty}</b> can be used at the same
+place in the preamble. The style file needs the packages <b class="package">graphicx</b>,
+<b class="package">fancyvrb</b>, <b class="package">xcolor</b> and <b class="package">url</b> which all belong to a
+standard TeX installation. It renders the code and output blocks on a light
+gray background; the colors used for these backgrounds can be redefined in
+your document after the style file has been loaded.</p>
+</div>
+<div id="section24" class="doctools_section"><h2><a name="section24">See Also</a></h2>
 <p>For a detailed tutorial on how to do literate programming with Tcl have a look at the <a href="tmdoc-tutorial.html">tmdoc-tutorial</a>.</p>
 <ul class="doctools_itemized">
 <li><p><a href="tmdoc-tutorial.html">tmdoc-tutorial</a></p></li>
 <li><p><a href="../apps/tmdoc.html">tmdoc-application</a></p></li>
 </ul>
 </div>
-<div id="section24" class="doctools_section"><h2><a name="section24">Bugs, Ideas, Feedback</a></h2>
+<div id="section25" class="doctools_section"><h2><a name="section25">Bugs, Ideas, Feedback</a></h2>
 <p>This document, and the package it describes, will undoubtedly contain bugs and other
 problems. Please report such to the author of this package. Please also report any ideas
 for enhancements you may have for either package and/or documentation.</p>
 </div>
-<div id="section25" class="doctools_section"><h2><a name="section25">Code Copyright</a></h2>
+<div id="section26" class="doctools_section"><h2><a name="section26">Code Copyright</a></h2>
 <p>BSD License type:</p>
 <p>The following terms apply to all files a ssociated with the software unless
 explicitly disclaimed in individual files.</p>
